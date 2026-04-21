@@ -1,0 +1,63 @@
+---
+const year = new Date().getFullYear();
+---
+<footer id="contact" class="footer">
+  <div class="container footer__grid">
+    <div>
+      <p class="footer__name">Andrzej Białas</p>
+      <p class="footer__tagline"><!-- TAGLINE: deferred until H1 copy is set --></p>
+    </div>
+    <div>
+      <p class="meta">Contact</p>
+      <ul>
+        <li><a href="mailto:hello@abialas.pl">hello@abialas.pl</a></li>
+        <li><a href="https://www.linkedin.com/in/andrzejbialas/" rel="me">LinkedIn</a></li>
+        <li><a href="https://github.com/risukisu" rel="me">GitHub</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="meta">Elsewhere</p>
+      <ul>
+        <li><a href="https://risu.pl">risu.pl</a></li>
+        <li><a href="https://grugbrained.substack.com">Grug-Brained Marketer</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer__strip">
+    <span>© {year}</span>
+    <span>built with Astro</span>
+    <a href="/resume.pdf" download>Download resume (PDF)</a>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--color-hairline);
+    padding-top: 64px;
+    padding-bottom: 32px;
+    margin-top: var(--section-padding);
+  }
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .footer__grid ul { list-style: none; margin: 0; padding: 0; }
+  .footer__grid li { margin-bottom: 4px; }
+  .footer__name { font-weight: 500; margin-bottom: 4px; }
+  .footer__tagline { color: var(--color-muted); margin: 0; }
+  .footer__strip {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--color-muted);
+    padding-top: 24px;
+    border-top: 1px solid var(--color-hairline);
+  }
+  @media (max-width: 768px) {
+    .footer__grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer__strip { flex-direction: column; gap: 8px; align-items: flex-start; }
+  }
+</style>
