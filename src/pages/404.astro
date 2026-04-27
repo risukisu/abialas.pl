@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Lost? — Andrzej Białas" noindex={true}>
+  <section class="container four04">
+    <p class="meta">404</p>
+    <h1>Lost?</h1>
+    <p>That page doesn't exist — or is still drafting.</p>
+    <div class="four04__links">
+      <a href="/">Home →</a>
+      <a href="/work">Work →</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .four04 {
+    padding-top: 96px;
+    padding-bottom: var(--section-padding);
+    max-width: 640px;
+  }
+  .four04 h1 { margin: 16px 0 24px; }
+  .four04 p { color: var(--color-muted); margin-bottom: 32px; }
+  .four04__links { display: flex; gap: 32px; }
+</style>

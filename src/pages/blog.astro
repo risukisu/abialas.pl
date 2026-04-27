@@ -1,0 +1,23 @@
+---
+/*
+  GitHub Pages does not support server-side 301 redirects on static hosting.
+  We use meta-refresh with refresh=0 + canonical + JS fallback.
+  Crawlers honor the canonical; users get redirected instantly.
+*/
+const target = "https://risu.pl";
+Astro.response.headers.set("Cache-Control", "public, max-age=300");
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting to risu.pl</title>
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={target} />
+    <meta name="robots" content="noindex" />
+    <script is:inline set:html={`window.location.replace(${JSON.stringify(target)});`} />
+  </head>
+  <body>
+    <p>Redirecting to <a href={target}>risu.pl</a>…</p>
+  </body>
+</html>
