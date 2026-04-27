@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BentoGrid from "../../components/BentoGrid.astro";
+import BentoTile from "../../components/BentoTile.astro";
+import { getCollection } from "astro:content";
+import { sortByOrder } from "../../lib/pieces";
+
+const all = await getCollection("work");
+const pieces = sortByOrder(all);
+
+/* Connective-tissue tiles — drop into the grid after fixed positions
+   to keep the rhythm interesting even when most pieces are drafts. */
+const connective = [
+  {
+    variant: "stat" as const,
+    tileSize: "square" as const,
+    body: "4 → 12",
+    caption: "Team scaled",
+  },
+  {
+    variant: "concept" as const,
+    tileSize: "wide" as const,
+    body: "Marketing is engineering. The system is the artifact.",
+  },
+  {
+    variant: "excerpt" as const,
+    tileSize: "std" as const,
+    body: "A marketing team without a system is a freelance collective.",
+    caption: "From: Marketing Operating System",
+  },
+];
+---
+<BaseLayout title="Work — Andrzej Białas" description="Ten frameworks from my time at Appsilon.">
+  <section class="container work-head">
+    <h2>Work</h2>
+    <p>Ten frameworks from marketing leadership at Appsilon. Written up as standalone pieces.</p>
+  </section>
+
+  <section class="container">
+    <BentoGrid>
+      {pieces.slice(0, 3).map((p) => <BentoTile piece={p} />)}
+      <BentoTile content={connective[0]} />
+      {pieces.slice(3, 6).map((p) => <BentoTile piece={p} />)}
+      <BentoTile content={connective[1]} />
+      {pieces.slice(6).map((p) => <BentoTile piece={p} />)}
+      <BentoTile content={connective[2]} />
+    </BentoGrid>
+  </section>
+</BaseLayout>
+
+<style>
+  .work-head { padding-top: 48px; }
+  .work-head h2 { margin-bottom: 16px; }
+  .work-head p { color: var(--color-muted); }
+</style>
