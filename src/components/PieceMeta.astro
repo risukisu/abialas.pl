@@ -1,0 +1,29 @@
+---
+export interface Props {
+  role?: string;
+  timeframe?: string;
+  scope?: string;
+}
+const { role, timeframe, scope } = Astro.props;
+const parts = [role, timeframe, scope].filter(Boolean);
+---
+{parts.length > 0 && (
+  <p class="meta piece-meta">
+    {parts.map((part, i) => (
+      <>
+        {i > 0 && <span class="sep"> · </span>}
+        <span>{part}</span>
+      </>
+    ))}
+  </p>
+)}
+
+<style>
+  .piece-meta {
+    border-top: 1px solid var(--color-hairline);
+    border-bottom: 1px solid var(--color-hairline);
+    padding: 12px 0;
+    margin: 24px 0 48px;
+  }
+  .sep { color: var(--color-muted); }
+</style>
