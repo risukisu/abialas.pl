@@ -1,0 +1,142 @@
+---
+import type { CollectionEntry } from "astro:content";
+import GradientHalo from "./GradientHalo.astro";
+
+export interface Props {
+  piece?: CollectionEntry<"work">;
+  /** For "connective tissue" tiles without a piece */
+  content?: {
+    variant: "stat" | "concept" | "excerpt";
+    tileSize: "hero" | "wide" | "square" | "std" | "tall";
+    body: string;
+    caption?: string;
+    gradient?: [string, string];
+  };
+}
+
+const { piece, content } = Astro.props;
+
+// Normalize into a common render spec
+const spec = piece
+  ? {
+      variant: piece.data.tileVariant,
+      tileSize: piece.data.tileSize,
+      title: piece.data.title,
+      summary: piece.data.summary,
+      slug: piece.slug,
+      status: piece.data.status,
+      image: piece.data.hero?.image,
+      gradient: piece.data.hero?.gradient,
+    }
+  : null;
+
+const sizeClass = (piece?.data.tileSize ?? content?.tileSize) ?? "std";
+const isDraft = spec?.status === "draft";
+const href = !isDraft && spec ? `/work/${spec.slug}` : null;
+---
+<article class={`tile tile--${sizeClass} tile--${spec?.variant ?? content?.variant ?? "concept"} ${isDraft ? "tile--draft" : ""}`}>
+  {href ? (
+    <a href={href} class="tile__link">
+      {spec?.variant === "screenshot" && spec.image && (
+        <GradientHalo gradient={spec.gradient}>
+          <img src={spec.image} alt={spec.title} loading="lazy" />
+        </GradientHalo>
+      )}
+      <h3 class="tile__title">{spec.title}</h3>
+      {spec.summary && <p class="tile__summary">{spec.summary}</p>}
+    </a>
+  ) : isDraft && spec ? (
+    <div class="tile__draft">
+      <p class="meta">Drafting</p>
+      <h3 class="tile__title">{spec.title}</h3>
+      {spec.summary && <p class="tile__summary">{spec.summary}</p>}
+    </div>
+  ) : content ? (
+    content.variant === "stat" ? (
+      <div class="tile__stat">
+        <p class="tile__stat-number">{content.body}</p>
+        {content.caption && <p class="meta">{content.caption}</p>}
+      </div>
+    ) : content.variant === "concept" ? (
+      <blockquote class="tile__quote">{content.body}</blockquote>
+    ) : (
+      <div class="tile__excerpt">
+        <p>{content.body}</p>
+        {content.caption && <p class="meta">{content.caption}</p>}
+      </div>
+    )
+  ) : null}
+</article>
+
+<style>
+  .tile {
+    border: 1px solid var(--color-hairline);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    transition: background-color 150ms ease, border-color 150ms ease;
+    min-height: 120px;
+  }
+  .tile--hero   { grid-column: span 6; grid-row: span 2; }
+  .tile--wide   { grid-column: span 4; }
+  .tile--square { grid-column: span 2; grid-row: span 2; }
+  .tile--std    { grid-column: span 2; }
+  .tile--tall   { grid-column: span 2; grid-row: span 3; }
+
+  @media (max-width: 1024px) {
+    .tile--hero   { grid-column: span 4; }
+    .tile--wide   { grid-column: span 4; }
+    .tile--square { grid-column: span 2; }
+    .tile--std    { grid-column: span 2; }
+    .tile--tall   { grid-column: span 2; }
+  }
+  @media (max-width: 640px) {
+    .tile--hero, .tile--wide, .tile--square, .tile--std, .tile--tall {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+  }
+
+  .tile__link {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border: none;
+    color: inherit;
+    height: 100%;
+  }
+  .tile__link:hover + .tile,
+  .tile:has(.tile__link:hover) { background: rgb(30 77 216 / 0.02); border-color: rgb(30 77 216 / 0.6); }
+  .tile:hover:not(.tile--draft) { background: rgb(30 77 216 / 0.02); border-color: rgb(30 77 216 / 0.6); }
+
+  .tile__title { font-size: var(--text-h3); margin: 0; }
+  .tile__summary { color: var(--color-muted); font-size: 1rem; margin: 0; }
+
+  .tile--draft {
+    background-image: repeating-linear-gradient(45deg, transparent 0 10px, rgb(30 77 216 / 0.03) 10px 11px);
+    color: var(--color-muted);
+  }
+  .tile--draft .tile__title { color: var(--color-ink); opacity: 0.55; }
+
+  .tile__stat { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+  .tile__stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-cobalt);
+    margin: 0;
+  }
+  .tile__quote {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    font-style: italic;
+    margin: 0;
+    border-left: 2px solid var(--color-cobalt);
+    padding-left: 16px;
+  }
+  .tile__excerpt p:first-child { font-size: 1rem; margin: 0 0 12px; }
+
+  .tile img { width: 100%; height: auto; border-radius: 4px; }
+</style>
