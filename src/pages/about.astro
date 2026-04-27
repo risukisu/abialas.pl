@@ -1,11 +1,24 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import JsonLd from "../components/JsonLd.astro";
 import { getEntry } from "astro:content";
+import { personSchema } from "../lib/jsonld";
 
 const narrative = await getEntry("about", "narrative");
 const { Content } = await narrative.render();
+
+const person = personSchema({
+  name: "Andrzej Białas",
+  url: "https://abialas.pl",
+  jobTitle: "Marketing Director",
+  sameAs: [
+    "https://www.linkedin.com/in/andrzejbialas/",
+    "https://github.com/risukisu",
+  ],
+});
 ---
 <BaseLayout title="About — Andrzej Białas" description="Marketing systems for technical companies.">
+  <JsonLd slot="head" data={person} />
   <section class="container about">
     <div class="about__layout">
       <aside class="about__aside">

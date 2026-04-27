@@ -2,15 +2,25 @@
 import BaseLayout from "./BaseLayout.astro";
 import PieceMeta from "../components/PieceMeta.astro";
 import GradientHalo from "../components/GradientHalo.astro";
+import JsonLd from "../components/JsonLd.astro";
 import type { CollectionEntry } from "astro:content";
+import { creativeWorkSchema } from "../lib/jsonld";
 
 export interface Props {
   piece: CollectionEntry<"work">;
 }
 const { piece } = Astro.props;
 const { data } = piece;
+
+const workLd = creativeWorkSchema({
+  name: data.title,
+  url: `https://abialas.pl/work/${piece.slug}`,
+  author: "Andrzej Białas",
+  description: data.summary,
+});
 ---
 <BaseLayout title={`${data.title} — Andrzej Białas`} description={data.summary || data.title} ogImage={`/images/work/${piece.slug}-og.png`}>
+  <JsonLd slot="head" data={workLd} />
   <article class="piece container">
     <header class="piece__header">
       <h1>{data.title}</h1>
