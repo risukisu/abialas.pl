@@ -10,7 +10,7 @@ export interface Props {
 const { piece } = Astro.props;
 const { data } = piece;
 ---
-<BaseLayout title={`${data.title} — Andrzej Białas`} description={data.summary ?? data.title} ogImage={`/images/work/${piece.slug}-og.png`}>
+<BaseLayout title={`${data.title} — Andrzej Białas`} description={data.summary || data.title} ogImage={`/images/work/${piece.slug}-og.png`}>
   <article class="piece container">
     <header class="piece__header">
       <h1>{data.title}</h1>
