@@ -1,9 +1,85 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import NowRibbon from "../components/NowRibbon.astro";
+import FeaturedWork from "../components/FeaturedWork.astro";
+import { getCollection } from "astro:content";
+import { featuredPieces, publishedOnly, sortByOrder } from "../lib/pieces";
+
+const all = await getCollection("work");
+const featured = featuredPieces(all, 3);
+
+/* Fallback: if fewer than 3 published+featured pieces exist at launch,
+   top up with the most recent published pieces. */
+const published = sortByOrder(publishedOnly(all));
+const ids = new Set(featured.map((p) => p.slug));
+for (const p of published) {
+  if (featured.length >= 3) break;
+  if (!ids.has(p.slug)) featured.push(p);
+}
 ---
-<BaseLayout title="Andrzej Białas">
-  <section class="container">
-    <h1>Andrzej Białas</h1>
-    <p>Portfolio coming soon.</p>
+<BaseLayout title="Andrzej Białas" description="Marketing systems for technical companies.">
+  <section class="container hero">
+    <h1>Marketing systems for<br/>technical companies.</h1>
+    <p class="hero__sub">A portfolio of ten frameworks from the field. Built at Appsilon, written up here.</p>
+    <div class="hero__ctas">
+      <a href="/work" class="btn btn--primary">See the work →</a>
+      <a href="/about" class="btn btn--secondary">About</a>
+    </div>
+  </section>
+
+  <NowRibbon message={`Drafting 10 portfolio pieces — ${published.length} of 10 live`} />
+
+  <section class="container featured-wrap">
+    <h2>Featured</h2>
+    <FeaturedWork pieces={featured} />
+  </section>
+
+  <section class="container tease">
+    <h2>About</h2>
+    <p>Marketing lead at Appsilon since 2022. Built the team, the system, and the playbooks that run both. <a href="/about">Read the story →</a></p>
+  </section>
+
+  <section class="container contact-strip">
+    <h2>Let's talk.</h2>
+    <p><a href="mailto:hello@abialas.pl">hello@abialas.pl</a></p>
   </section>
 </BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+  .hero h1 { max-width: 18ch; margin-bottom: 24px; }
+  .hero__sub { font-size: 1.25rem; color: var(--color-muted); max-width: 50ch; margin-bottom: 32px; }
+  .hero__ctas { display: flex; gap: 16px; }
+  .btn {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 2px;
+    border: 1px solid var(--color-hairline);
+    font-weight: 500;
+    transition: background 150ms ease, border-color 150ms ease;
+  }
+  .btn--primary { background: var(--color-ink); color: var(--color-bg); border-color: var(--color-ink); }
+  .btn--primary:hover { background: var(--color-cobalt); border-color: var(--color-cobalt); }
+  .btn--secondary { color: var(--color-ink); }
+  .btn--secondary:hover { border-color: var(--color-cobalt); }
+
+  .featured-wrap { padding-top: var(--section-padding); }
+  .featured-wrap h2 { margin-bottom: 48px; }
+
+  .tease {
+    padding-top: var(--section-padding);
+    border-top: 1px solid var(--color-hairline);
+    margin-top: var(--section-padding);
+  }
+  .tease h2 { margin-bottom: 16px; }
+
+  .contact-strip {
+    padding-top: var(--section-padding);
+    padding-bottom: var(--section-padding);
+    text-align: center;
+  }
+  .contact-strip h2 { font-size: 3rem; margin-bottom: 16px; }
+</style>

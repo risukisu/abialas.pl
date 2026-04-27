@@ -1,0 +1,64 @@
+---
+import type { CollectionEntry } from "astro:content";
+import GradientHalo from "./GradientHalo.astro";
+
+export interface Props {
+  pieces: CollectionEntry<"work">[];
+}
+const { pieces } = Astro.props;
+---
+<section class="featured">
+  {pieces.map((piece, i) => (
+    <div class={`feat ${i % 2 === 1 ? "feat--reverse" : ""}`}>
+      <div class="feat__visual">
+        {piece.data.hero?.image ? (
+          <GradientHalo gradient={piece.data.hero.gradient}>
+            <img src={piece.data.hero.image} alt={piece.data.title} loading="lazy" />
+          </GradientHalo>
+        ) : (
+          <GradientHalo gradient={piece.data.hero?.gradient ?? ["#1E4DD8", "#22D3EE"]}>
+            <div class="feat__placeholder"><span class="meta">{piece.data.title}</span></div>
+          </GradientHalo>
+        )}
+      </div>
+      <div class="feat__text">
+        <p class="meta">{piece.data.role ?? "Marketing"}  ·  {piece.data.timeframe ?? "Appsilon"}</p>
+        <h3>{piece.data.title}</h3>
+        <p>{piece.data.summary ?? piece.data.scope}</p>
+        <a href={`/work/${piece.slug}`} class="feat__link">Read →</a>
+      </div>
+    </div>
+  ))}
+</section>
+
+<style>
+  .featured { display: flex; flex-direction: column; gap: 96px; }
+  .feat {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .feat--reverse .feat__visual { order: 2; }
+  .feat__visual img,
+  .feat__visual .feat__placeholder {
+    width: 100%;
+    border-radius: 4px;
+  }
+  .feat__placeholder {
+    aspect-ratio: 16 / 10;
+    background: var(--color-bg);
+    border: 1px solid var(--color-hairline);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .feat__text h3 { font-size: 2rem; margin: 8px 0 16px; }
+  .feat__text p { margin: 0 0 16px; color: var(--color-muted); }
+  .feat__link { font-weight: 500; }
+
+  @media (max-width: 768px) {
+    .feat { grid-template-columns: 1fr; }
+    .feat--reverse .feat__visual { order: 0; }
+  }
+</style>
