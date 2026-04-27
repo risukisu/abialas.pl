@@ -22,9 +22,9 @@ const { pieces } = Astro.props;
         )}
       </div>
       <div class="feat__text">
-        <p class="meta">{piece.data.role ?? "Marketing"}  ·  {piece.data.timeframe ?? "Appsilon"}</p>
+        <p class="meta">{piece.data.role || "Marketing"}  ·  {piece.data.timeframe || "Appsilon"}</p>
         <h3>{piece.data.title}</h3>
-        <p>{piece.data.summary ?? piece.data.scope}</p>
+        <p>{piece.data.summary || piece.data.scope}</p>
         <a href={`/work/${piece.slug}`} class="feat__link">Read →</a>
       </div>
     </div>
