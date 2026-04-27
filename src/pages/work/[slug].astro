@@ -1,0 +1,20 @@
+---
+import { getCollection } from "astro:content";
+import PieceLayout from "../../layouts/PieceLayout.astro";
+import { publishedOnly } from "../../lib/pieces";
+
+export async function getStaticPaths() {
+  const all = await getCollection("work");
+  // Only generate pages for published pieces — drafts return 404.
+  return publishedOnly(all).map((piece) => ({
+    params: { slug: piece.slug },
+    props: { piece },
+  }));
+}
+
+const { piece } = Astro.props;
+const { Content } = await piece.render();
+---
+<PieceLayout piece={piece}>
+  <Content />
+</PieceLayout>

@@ -1,0 +1,59 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import PieceMeta from "../components/PieceMeta.astro";
+import GradientHalo from "../components/GradientHalo.astro";
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  piece: CollectionEntry<"work">;
+}
+const { piece } = Astro.props;
+const { data } = piece;
+---
+<BaseLayout title={`${data.title} — Andrzej Białas`} description={data.summary ?? data.title} ogImage={`/images/work/${piece.slug}-og.png`}>
+  <article class="piece container">
+    <header class="piece__header">
+      <h1>{data.title}</h1>
+      {data.anatomy === "outcome" && (
+        <PieceMeta role={data.role} timeframe={data.timeframe} scope={data.scope} />
+      )}
+      {data.anatomy === "concept" && data.summary && (
+        <p class="piece__tldr">{data.summary}</p>
+      )}
+    </header>
+
+    {data.anatomy === "outcome" && data.hero?.image && (
+      <GradientHalo gradient={data.hero.gradient}>
+        <img src={data.hero.image} alt={`${data.title} — hero`} class="piece__hero" loading="eager" />
+      </GradientHalo>
+    )}
+
+    <div class="piece__body prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .piece {
+    padding-top: 48px;
+    padding-bottom: var(--section-padding);
+  }
+  .piece h1 { max-width: 16ch; }
+  .piece__tldr {
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--color-muted);
+    max-width: 60ch;
+    margin: 24px 0 48px;
+  }
+  .piece__hero {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 48px 0;
+  }
+  .prose { max-width: 65ch; margin: 0 auto; }
+  .prose :global(h2) { margin-top: 48px; }
+  .prose :global(p) { margin-bottom: 24px; }
+</style>
