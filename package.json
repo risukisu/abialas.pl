@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "astro preview --port 4321",
     "astro": "astro",
+    "test:e2e": "playwright test",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest"
   },
