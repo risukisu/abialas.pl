@@ -107,9 +107,9 @@ const href = !isDraft && spec ? `/work/${spec.slug}` : null;
     color: inherit;
     height: 100%;
   }
-  .tile__link:hover + .tile,
   .tile:has(.tile__link:hover) { background: rgb(30 77 216 / 0.02); border-color: rgb(30 77 216 / 0.6); }
   .tile:hover:not(.tile--draft) { background: rgb(30 77 216 / 0.02); border-color: rgb(30 77 216 / 0.6); }
+  .tile:focus-within:not(.tile--draft) { background: rgb(30 77 216 / 0.02); border-color: rgb(30 77 216 / 0.6); }
 
   .tile__title { font-size: var(--text-h3); margin: 0; }
   .tile__summary { color: var(--color-muted); font-size: 1rem; margin: 0; }
