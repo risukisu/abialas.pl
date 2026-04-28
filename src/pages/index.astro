@@ -5,7 +5,7 @@ import FeaturedWork from "../components/FeaturedWork.astro";
 import { getCollection } from "astro:content";
 import { featuredPieces, publishedOnly, sortByOrder } from "../lib/pieces";
 
-const all = await getCollection("work");
+const all = await getCollection("writing");
 const featured = featuredPieces(all, 3);
 
 /* Fallback: if fewer than 3 published+featured pieces exist at launch,
@@ -17,17 +17,17 @@ for (const p of published) {
   if (!ids.has(p.slug)) featured.push(p);
 }
 ---
-<BaseLayout title="Andrzej Białas" description="Marketing systems for technical companies.">
+<BaseLayout title="Andrzej Białas" description="Notes on marketing, AI, and leadership.">
   <section class="container hero">
-    <h1>Marketing systems for<br/>technical companies.</h1>
-    <p class="hero__sub">A portfolio of ten frameworks from the field. Built at Appsilon, written up here.</p>
+    <h1>Notes on marketing,<br/>AI, and leadership.</h1>
+    <p class="hero__sub">Long-form essays. Shorter notes. Mostly about the things I do for a living.</p>
     <div class="hero__ctas">
-      <a href="/work" class="btn btn--primary">See the work →</a>
+      <a href="/writing" class="btn btn--primary">Read →</a>
       <a href="/about" class="btn btn--secondary">About</a>
     </div>
   </section>
 
-  <NowRibbon message={`Drafting 10 portfolio pieces — ${published.length} of 10 live`} />
+  <NowRibbon message={`Currently: ${published.length} piece${published.length === 1 ? "" : "s"} live, ${10 - published.length} in progress.`} />
 
   <section class="container featured-wrap">
     <h2>Featured</h2>
@@ -36,12 +36,7 @@ for (const p of published) {
 
   <section class="container tease">
     <h2>About</h2>
-    <p>Marketing lead at Appsilon since 2022. Built the team, the system, and the playbooks that run both. <a href="/about">Read the story →</a></p>
-  </section>
-
-  <section class="container contact-strip">
-    <h2>Let's talk.</h2>
-    <p><a href="mailto:hello@abialas.pl">hello@abialas.pl</a></p>
+    <p>I'm marketing lead at Appsilon. Most of what I know about marketing came from doing it badly first. <a href="/about">More →</a></p>
   </section>
 </BaseLayout>
 
@@ -71,15 +66,9 @@ for (const p of published) {
 
   .tease {
     padding-top: var(--section-padding);
+    padding-bottom: var(--section-padding);
     border-top: 1px solid var(--color-hairline);
     margin-top: var(--section-padding);
   }
   .tease h2 { margin-bottom: 16px; }
-
-  .contact-strip {
-    padding-top: var(--section-padding);
-    padding-bottom: var(--section-padding);
-    text-align: center;
-  }
-  .contact-strip h2 { font-size: 3rem; margin-bottom: 16px; }
 </style>

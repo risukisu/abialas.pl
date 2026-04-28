@@ -18,7 +18,7 @@ describe("jsonld helpers", () => {
   it("creativeWorkSchema returns valid CreativeWork JSON", () => {
     const w = creativeWorkSchema({
       name: "Marketing Operating System",
-      url: "https://abialas.pl/work/marketing-operating-system",
+      url: "https://abialas.pl/writing/marketing-operating-system",
       author: "Andrzej Białas",
       description: "A system for running marketing as engineering.",
     });

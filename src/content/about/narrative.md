@@ -3,8 +3,8 @@ title: "About"
 kind: "narrative"
 ---
 
-Marketing is a systems problem. The team at Appsilon — marketing a technical product (Shiny and Posit) to a technical audience — had the usual founder-era chaos, and needed engineering discipline to scale past it.
+I have a degree in environmental conservation and spent a decade working in NGOs before ending up running marketing for a tech company.
 
-Between 2022 and 2025 the team grew from four people to twelve, and from a freelance collective running campaigns to a system running campaigns. The pieces linked on this site document how.
+Most of what I know came from doing the work badly for a while — running on instinct, mistaking activity for impact, treating campaigns as one-off scrambles instead of as a system that compounds. The pieces here are write-ups of what eventually started working.
 
-Before Appsilon: product marketing at a Kubernetes platform, content operations at a data-infrastructure startup, five years of doing the work badly before doing it in a structured way.
+I'm currently marketing lead at Appsilon, where over the last three years the team grew from four people to twelve and the work shifted from a freelance collective hoping for inbound to something that runs more like an engineering org. I write about the systems behind the work, plus shorter notes on AI and leadership when there's something worth saying.

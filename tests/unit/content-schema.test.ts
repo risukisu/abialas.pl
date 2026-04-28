@@ -2,9 +2,9 @@ import { describe, it, expect } from "vitest";
 import { z } from "astro/zod";
 
 // Import the schema we're about to write. Will fail until Step 4.3.
-import { workSchema } from "../../src/content/config";
+import { writingSchema } from "../../src/content/config";
 
-describe("work content schema", () => {
+describe("writing content schema", () => {
   it("accepts a fully-specified published piece", () => {
     const valid = {
       title: "Marketing Operating System",
@@ -18,13 +18,13 @@ describe("work content schema", () => {
       summary: "A system for running marketing as engineering.",
       hero: {
         type: "screenshot",
-        image: "/images/work/marketing-os-hero.png",
+        image: "/images/writing/marketing-os-hero.png",
         gradient: ["#1E4DD8", "#22D3EE"],
       },
       tileSize: "hero",
       tileVariant: "screenshot",
     };
-    expect(() => workSchema.parse(valid)).not.toThrow();
+    expect(() => writingSchema.parse(valid)).not.toThrow();
   });
 
   it("accepts a minimal draft piece", () => {
@@ -36,7 +36,7 @@ describe("work content schema", () => {
       tileSize: "std",
       tileVariant: "draft",
     };
-    expect(() => workSchema.parse(valid)).not.toThrow();
+    expect(() => writingSchema.parse(valid)).not.toThrow();
   });
 
   it("rejects invalid status", () => {
@@ -48,7 +48,7 @@ describe("work content schema", () => {
       tileSize: "std",
       tileVariant: "draft",
     };
-    expect(() => workSchema.parse(invalid)).toThrow();
+    expect(() => writingSchema.parse(invalid)).toThrow();
   });
 
   it("rejects invalid tileSize", () => {
@@ -60,6 +60,6 @@ describe("work content schema", () => {
       tileSize: "gigantic",
       tileVariant: "draft",
     };
-    expect(() => workSchema.parse(invalid)).toThrow();
+    expect(() => writingSchema.parse(invalid)).toThrow();
   });
 });

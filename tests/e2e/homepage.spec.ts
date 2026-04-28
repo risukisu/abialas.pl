@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("homepage renders hero, ribbon, featured, contact", async ({ page }) => {
+test("homepage renders hero, ribbon, featured, footer mailto", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("h1")).toBeVisible();
   await expect(page.locator(".ribbon")).toBeVisible();
@@ -10,6 +10,6 @@ test("homepage renders hero, ribbon, featured, contact", async ({ page }) => {
 
 test("homepage nav links work", async ({ page }) => {
   await page.goto("/");
-  await page.click("nav a[href='/work']");
-  await expect(page).toHaveURL(/\/work$/);
+  await page.click("nav a[href='/writing']");
+  await expect(page).toHaveURL(/\/writing$/);
 });

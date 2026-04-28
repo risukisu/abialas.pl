@@ -4,9 +4,8 @@ const currentPath = Astro.url.pathname;
 <nav class="nav container">
   <a href="/" class="nav__brand">Andrzej Białas</a>
   <ul class="nav__links">
-    <li><a href="/work" aria-current={currentPath.startsWith('/work') ? 'page' : undefined}>Work</a></li>
+    <li><a href="/writing" aria-current={currentPath.startsWith('/writing') ? 'page' : undefined}>Writing</a></li>
     <li><a href="/about" aria-current={currentPath === '/about' ? 'page' : undefined}>About</a></li>
-    <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 

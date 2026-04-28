@@ -10,7 +10,7 @@ scope: "Built a 12-person marketing system — doubled MQL volume"
 summary: ""
 hero:
   type: screenshot
-  image: "/images/work/marketing-os-hero.png"
+  image: "/images/writing/marketing-os-hero.png"
   gradient: ["#1E4DD8", "#22D3EE"]
 tileSize: hero
 tileVariant: screenshot

@@ -15,4 +15,4 @@ test("/about has Person JSON-LD", async ({ page }) => {
 
 // TODO: When Task 13 (CV inline) lands, restore these tests:
 //   - .cv visible, .cv__download href === "/resume.pdf"
-//   - .cv-job__bullets a[href^='/work/'] visible
+//   - .cv-job__bullets a[href^='/writing/'] visible

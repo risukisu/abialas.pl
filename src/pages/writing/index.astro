@@ -5,7 +5,7 @@ import BentoTile from "../../components/BentoTile.astro";
 import { getCollection } from "astro:content";
 import { sortByOrder } from "../../lib/pieces";
 
-const all = await getCollection("work");
+const all = await getCollection("writing");
 const pieces = sortByOrder(all);
 
 /* Connective-tissue tiles — drop into the grid after fixed positions
@@ -30,10 +30,10 @@ const connective = [
   },
 ];
 ---
-<BaseLayout title="Work — Andrzej Białas" description="Ten frameworks from my time at Appsilon.">
-  <section class="container work-head">
-    <h2>Work</h2>
-    <p>Ten frameworks from marketing leadership at Appsilon. Written up as standalone pieces.</p>
+<BaseLayout title="Writing — Andrzej Białas" description="Long-form essays on systems I've built. Shorter notes when there's something worth saying.">
+  <section class="container writing-head">
+    <h2>Writing</h2>
+    <p>Long-form essays on systems I've built. Shorter notes on marketing, AI, and leadership when there's something worth saying.</p>
   </section>
 
   <section class="container">
@@ -49,7 +49,7 @@ const connective = [
 </BaseLayout>
 
 <style>
-  .work-head { padding-top: 48px; }
-  .work-head h2 { margin-bottom: 16px; }
-  .work-head p { color: var(--color-muted); }
+  .writing-head { padding-top: 48px; }
+  .writing-head h2 { margin-bottom: 16px; }
+  .writing-head p { color: var(--color-muted); }
 </style>

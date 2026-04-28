@@ -3,7 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import GradientHalo from "./GradientHalo.astro";
 
 export interface Props {
-  piece?: CollectionEntry<"work">;
+  piece?: CollectionEntry<"writing">;
   /** For "connective tissue" tiles without a piece */
   content?: {
     variant: "stat" | "concept" | "excerpt";
@@ -32,7 +32,7 @@ const spec = piece
 
 const sizeClass = (piece?.data.tileSize ?? content?.tileSize) ?? "std";
 const isDraft = spec?.status === "draft";
-const href = !isDraft && spec ? `/work/${spec.slug}` : null;
+const href = !isDraft && spec ? `/writing/${spec.slug}` : null;
 ---
 <article class={`tile tile--${sizeClass} tile--${spec?.variant ?? content?.variant ?? "concept"} ${isDraft ? "tile--draft" : ""}`}>
   {href ? (

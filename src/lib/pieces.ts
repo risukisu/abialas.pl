@@ -20,4 +20,4 @@ export function featuredPieces<T extends PieceLike>(pieces: T[], limit = 3): T[]
   return sortByOrder(publishedOnly(pieces).filter((p) => p.data.featured)).slice(0, limit);
 }
 
-export type WorkEntry = CollectionEntry<"work">;
+export type WritingEntry = CollectionEntry<"writing">;

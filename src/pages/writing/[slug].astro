@@ -4,7 +4,7 @@ import PieceLayout from "../../layouts/PieceLayout.astro";
 import { publishedOnly } from "../../lib/pieces";
 
 export async function getStaticPaths() {
-  const all = await getCollection("work");
+  const all = await getCollection("writing");
   // Only generate pages for published pieces — drafts return 404.
   return publishedOnly(all).map((piece) => ({
     params: { slug: piece.slug },

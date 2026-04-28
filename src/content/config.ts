@@ -2,7 +2,7 @@ import { z, defineCollection } from "astro:content";
 
 const gradientTuple = z.tuple([z.string(), z.string()]);
 
-export const workSchema = z.object({
+export const writingSchema = z.object({
   title: z.string(),
   status: z.enum(["published", "draft"]),
   anatomy: z.enum(["outcome", "concept"]),
@@ -23,9 +23,9 @@ export const workSchema = z.object({
   tileVariant: z.enum(["screenshot", "concept", "stat", "excerpt", "draft"]),
 });
 
-const work = defineCollection({
+const writing = defineCollection({
   type: "content",
-  schema: workSchema,
+  schema: writingSchema,
 });
 
 const about = defineCollection({
@@ -36,4 +36,4 @@ const about = defineCollection({
   }),
 });
 
-export const collections = { work, about };
+export const collections = { writing, about };
