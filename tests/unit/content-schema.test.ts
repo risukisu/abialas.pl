@@ -19,6 +19,10 @@ describe("writing schema", () => {
   it("rejects invalid status", () => {
     expect(() => writingSchema.parse({ title: "x", status: "wip", anatomy: "concept", date: "2025-01-01", order: 1 })).toThrow();
   });
+  it("defaults status to draft when omitted", () => {
+    const v = { title: "x", anatomy: "concept", date: "2025-01-01", order: 1 };
+    expect(writingSchema.parse(v).status).toBe("draft");
+  });
 });
 
 describe("work (case study) schema", () => {
@@ -26,5 +30,10 @@ describe("work (case study) schema", () => {
     const v = { title: "MOS", status: "published", order: 1, featured: true,
       summary: "x", problem: "p", approach: "a", result: "r" };
     expect(() => workSchema.parse(v)).not.toThrow();
+  });
+  it("defaults status to published and featured to false", () => {
+    const parsed = workSchema.parse({ title: "MOS", order: 1, summary: "x" });
+    expect(parsed.status).toBe("published");
+    expect(parsed.featured).toBe(false);
   });
 });

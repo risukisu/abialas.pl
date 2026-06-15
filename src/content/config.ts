@@ -2,7 +2,8 @@ import { z, defineCollection } from "astro:content";
 
 export const writingSchema = z.object({
   title: z.string(),
-  status: z.enum(["published", "draft"]),
+  // Essays start as drafts; set "published" when ready. (workSchema defaults to "published" — case studies are added only once done.)
+  status: z.enum(["published", "draft"]).default("draft"),
   anatomy: z.enum(["outcome", "concept"]),
   date: z.coerce.date(),
   topics: z.array(z.string()).default([]),
@@ -24,7 +25,7 @@ export const workSchema = z.object({
   approach: z.string().optional(),
   result: z.string().optional(),
   client: z.string().optional(),
-  date: z.coerce.date().optional(),
+  date: z.coerce.date().optional(), // optional until finalized — guard in any date-dependent consumer
 });
 
 const writing = defineCollection({ type: "content", schema: writingSchema });
