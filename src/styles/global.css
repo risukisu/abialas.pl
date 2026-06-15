@@ -4,98 +4,86 @@
 @import "tailwindcss";
 
 @theme {
-  /* Palette (ink-cool) */
-  --color-bg: #FDFDFC;
-  --color-ink: #0E0E12;
-  --color-cobalt: #1E4DD8;
-  --color-cyan: #22D3EE;
-  --color-muted: #6B7280;
-  --color-hairline: rgb(30 77 216 / 0.2);
+  /* Palette — Drafting Table */
+  --color-bg:    #E9EDF2;   /* mist — ground */
+  --color-ink:   #15324E;   /* ink-blue — dominant */
+  --color-paper: #EAF0F6;   /* text on ink */
+  --color-body:  #26384A;   /* body text */
+  --color-muted: #5F7384;   /* secondary text */
+  --color-accent:#DE3C26;   /* vermilion — scarce accent */
+  --color-line:   rgb(21 50 78 / 0.20);
+  --color-line-2: rgb(21 50 78 / 0.42);
 
-  /* Typography — Geist sans + mono */
-  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, "Cascadia Code", monospace;
+  /* Type */
+  --font-serif: "Newsreader Variable", Newsreader, Georgia, serif;
+  --font-sans:  "Geist Variable", Geist, ui-sans-serif, system-ui, sans-serif;
+  --font-mono:  "Geist Mono Variable", "Geist Mono", ui-monospace, monospace;
 
   /* Type scale */
-  --text-h1: 4rem;           /* 64px */
-  --text-h1--line-height: 1.05;
-  --text-h2: 2.5rem;         /* 40px */
-  --text-h2--line-height: 1.15;
-  --text-h3: 1.5rem;         /* 24px */
-  --text-h3--line-height: 1.2;
-  --text-body: 1.125rem;     /* 18px */
-  --text-body--line-height: 1.6;
-  --text-meta: 0.875rem;     /* 14px */
-  --text-meta--line-height: 1.5;
+  --text-display: 3.75rem; --text-display--line-height: 1.05;
+  --text-h2: 2.25rem;      --text-h2--line-height: 1.15;
+  --text-h3: 1.4rem;       --text-h3--line-height: 1.25;
+  --text-body: 1.125rem;   --text-body--line-height: 1.65;
+  --text-meta: 0.8125rem;  --text-meta--line-height: 1.5;
 
-  /* Spacing */
-  --container-max: 1240px;
-  --section-padding: clamp(64px, 10vw, 160px);
-  --grid-gap: 24px;
+  --container-max: 1200px;
+  --section-padding: clamp(64px, 9vw, 150px);
+}
+
+:root {
+  --bg: var(--color-bg);
+  --ink: var(--color-ink);
+  --paper: var(--color-paper);
+  --body: var(--color-body);
+  --muted: var(--color-muted);
+  --accent: var(--color-accent);
+  --line: var(--color-line);
+  --line-2: var(--color-line-2);
+  --serif: var(--font-serif);
+  --sans: var(--font-sans);
+  --mono: var(--font-mono);
 }
 
 html {
   font-family: var(--font-sans);
   background: var(--color-bg);
-  color: var(--color-ink);
+  color: var(--color-body);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
-  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
 }
+body { max-width: 100%; overflow-x: hidden; }
 
-body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-h1 {
-  font-size: var(--text-h1);
-  line-height: var(--text-h1--line-height);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-h2 {
-  font-size: var(--text-h2);
-  line-height: var(--text-h2--line-height);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-h3 {
-  font-size: var(--text-h3);
-  line-height: var(--text-h3--line-height);
-  font-weight: 600;
-}
-
+h1, h2, h3 { font-family: var(--font-serif); color: var(--color-ink); font-weight: 500; letter-spacing: -0.01em; }
+h1 { font-size: var(--text-display); line-height: var(--text-display--line-height); letter-spacing: -0.02em; }
+h2 { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
+h3 { font-size: var(--text-h3); line-height: var(--text-h3--line-height); }
 p { max-width: 65ch; }
 
-a {
-  color: var(--color-cobalt);
-  text-decoration: none;
-  border-bottom: 1px solid var(--color-hairline);
-  transition: border-color 150ms ease;
-}
-a:hover { border-color: var(--color-cobalt); }
+.container { max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
 
-.container {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 0 24px;
+.measure {
+  font-family: var(--font-mono); font-size: var(--text-meta);
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted);
 }
 
-.meta {
-  font-family: var(--font-mono);
-  font-size: var(--text-meta);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--color-muted);
+/* Faint blueprint grid for hero zones */
+.blueprint {
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Accessibility: visible focus everywhere */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-accent); outline-offset: 4px; border-radius: 2px;
 }
 
 @media (max-width: 640px) {
   :root {
-    --text-h1: 3rem;
-    --text-h2: 2rem;
+    --text-display: 2.75rem;
+    --text-h2: 1.85rem;
     --text-h3: 1.25rem;
     --text-body: 1rem;
   }
