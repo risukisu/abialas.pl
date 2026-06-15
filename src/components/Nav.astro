@@ -1,43 +1,20 @@
 ---
-const currentPath = Astro.url.pathname;
+const path = Astro.url.pathname;
+const is = (p: string) => path === p || path.startsWith(p + "/");
 ---
 <nav class="nav container">
   <a href="/" class="nav__brand">Andrzej Białas</a>
   <ul class="nav__links">
-    <li><a href="/writing" aria-current={currentPath.startsWith('/writing') ? 'page' : undefined}>Writing</a></li>
-    <li><a href="/about" aria-current={currentPath === '/about' ? 'page' : undefined}>About</a></li>
+    <li><a href="/work" aria-current={is("/work") ? "page" : undefined}>Work</a></li>
+    <li><a href="/about" aria-current={is("/about") ? "page" : undefined}>About</a></li>
   </ul>
 </nav>
-
 <style>
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 24px;
-    padding-bottom: 24px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: var(--color-bg);
-    border-bottom: 1px solid transparent;
-    transition: border-color 150ms ease;
-  }
-  .nav__brand {
-    font-weight: 500;
-    color: var(--color-ink);
-    border: none;
-  }
-  .nav__links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .nav__links a {
-    color: var(--color-ink);
-    border: none;
-  }
-  .nav__links a[aria-current="page"] { color: var(--color-cobalt); }
+  .nav { display:flex; justify-content:space-between; align-items:center;
+         padding:22px 24px; position:sticky; top:0; z-index:10;
+         background:var(--color-bg); border-bottom:1px solid transparent; }
+  .nav__brand { font-family:var(--font-serif); font-size:1.15rem; color:var(--color-ink); border:none; text-decoration:none; }
+  .nav__links { display:flex; gap:28px; list-style:none; margin:0; padding:0; }
+  .nav__links a { font:500 15px var(--font-sans); color:var(--color-ink); text-decoration:none; border:none; }
+  .nav__links a[aria-current="page"] { color:var(--color-accent); }
 </style>
