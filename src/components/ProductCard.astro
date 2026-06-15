@@ -1,0 +1,171 @@
+---
+import type { Product } from "../data/products";
+import SecondaryCta from "./cta/SecondaryCta.astro";
+
+export interface Props { product: Product; count: number; }
+const { product, count } = Astro.props;
+
+const index = String(product.order).padStart(2, "0");
+const tag = product.tag.toUpperCase();
+const countLabel =
+  count === 0 ? "In progress" : count === 1 ? "1 piece" : `${count} pieces`;
+---
+
+<article class="card">
+  <div class="head">
+    <span class="measure idx">{index} / {tag}</span>
+  </div>
+
+  <h3 class="name">{product.name}</h3>
+  <p class="blurb">{product.blurb}</p>
+
+  <div class="foot">
+    <span class="measure count">{countLabel}</span>
+    <SecondaryCta href={`/${product.slug}`} label="Enter" class="cta" />
+  </div>
+</article>
+
+<style>
+  /* ── The exhibit plate ───────────────────────────────────────
+     Rest: ink-on-mist, hairline frame, generous padding. Quiet,
+     no vermilion. Hover / focus-within "lights" the plate: the
+     frame sharpens and vermilion connective marks draw in —
+     a leader rule off the index label + a registration tick in
+     the corner, echoing the SecondaryCta's own corner marks. */
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 34px 32px 26px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+    /* inset hairline stays invisible at rest, sharpens on hover */
+    box-shadow: inset 0 0 0 0 transparent;
+    transition: border-color 0.28s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.28s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  /* Registration tick — top-right corner. Drawn (scaled in) on hover. */
+  .card::after {
+    content: "";
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid var(--color-accent);
+    border-right: 2px solid var(--color-accent);
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: top right;
+    transition: transform 0.26s cubic-bezier(0.3, 0.8, 0.3, 1),
+      opacity 0.26s ease;
+  }
+
+  .card:hover,
+  .card:focus-within {
+    border-color: var(--color-line-2);
+    box-shadow: inset 0 0 0 1px var(--color-line-2);
+  }
+
+  .card:hover::after,
+  .card:focus-within::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ── Index label + its leader rule ──────────────────────────── */
+  .head {
+    display: flex;
+    align-items: center;
+  }
+
+  .idx {
+    position: relative;
+    /* room for the leader rule to draw into without shifting text */
+    padding-right: 0;
+  }
+
+  /* Horizontal callout leader extending from the index label. */
+  .idx::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 10px);
+    width: 44px;
+    height: 2px;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.3s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  .card:hover .idx::after,
+  .card:focus-within .idx::after {
+    transform: scaleX(1);
+  }
+
+  /* ── Type ────────────────────────────────────────────────────── */
+  .name {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .blurb {
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    color: var(--color-body);
+    max-width: 42ch;
+    margin: 0 0 4px;
+  }
+
+  /* ── Foot: count line + Enter affordance ─────────────────────── */
+  .foot {
+    margin-top: auto;
+    padding-top: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .count {
+    color: var(--color-muted);
+  }
+
+  /* Pull the CTA's padding tight to the foot baseline; its corner
+     marks remain the affordance and turn vermilion on hover/focus. */
+  .foot :global(.secondary) {
+    padding: 8px 16px;
+    margin-right: -4px;
+  }
+
+  /* ── Reduced motion: marks still appear, but no draw/scale ─────
+     Color/opacity only — no transform-based animation. The global
+     reduce rule also clamps transitions; here we make the marks
+     legible at rest-of-hover without any positional motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .card::after {
+      transform: scale(1);
+      transition: opacity 0.2s ease;
+    }
+    .idx::after {
+      transform: scaleX(1);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .card:hover .idx::after,
+    .card:focus-within .idx::after {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+</style>
