@@ -8,11 +8,11 @@ const { role, timeframe, scope } = Astro.props;
 const parts = [role, timeframe, scope].filter(Boolean);
 ---
 {parts.length > 0 && (
-  <p class="meta piece-meta">
+  <p class="piece-meta">
     {parts.map((part, i) => (
       <>
-        {i > 0 && <span class="sep"> · </span>}
-        <span>{part}</span>
+        {i > 0 && <span class="piece-meta__sep" aria-hidden="true">·</span>}
+        <span class="piece-meta__item">{part}</span>
       </>
     ))}
   </p>
@@ -20,10 +20,29 @@ const parts = [role, timeframe, scope].filter(Boolean);
 
 <style>
   .piece-meta {
-    border-top: 1px solid var(--color-hairline);
-    border-bottom: 1px solid var(--color-hairline);
-    padding: 12px 0;
-    margin: 24px 0 48px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.75rem;
+    max-width: none;
+    margin: 1.5rem 0 0;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: var(--text-meta--line-height);
+    letter-spacing: 0.05em;
+    color: var(--color-muted);
   }
-  .sep { color: var(--color-muted); }
+
+  .piece-meta__item {
+    color: var(--color-body);
+  }
+
+  .piece-meta__sep {
+    color: var(--color-line-2);
+    user-select: none;
+  }
 </style>

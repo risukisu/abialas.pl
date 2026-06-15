@@ -1,10 +1,13 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
 import PieceMeta from "../components/PieceMeta.astro";
-import GradientHalo from "../components/GradientHalo.astro";
+import ReadingProgress from "../components/ReadingProgress.astro";
+import EssayCard from "../components/EssayCard.astro";
 import JsonLd from "../components/JsonLd.astro";
 import type { CollectionEntry } from "astro:content";
 import { creativeWorkSchema } from "../lib/jsonld";
+import { getCollection } from "astro:content";
+import { byTopic } from "../lib/pieces";
 
 export interface Props {
   piece: CollectionEntry<"writing">;
@@ -18,52 +21,256 @@ const workLd = creativeWorkSchema({
   author: "Andrzej Białas",
   description: data.summary,
 });
+
+const dateLabel = data.date.toLocaleString("en-US", { month: "short", year: "numeric" });
+const topic = data.topics[0];
+const metaLine = topic ? `${dateLabel} · ${topic}` : dateLabel;
+
+// Related = published essays sharing this piece's first topic, minus this one, up to 3.
+const all = await getCollection("writing");
+const tag = data.topics[0];
+const related = (tag ? byTopic(all, tag) : []).filter((p) => p.slug !== piece.slug).slice(0, 3);
 ---
 <BaseLayout title={`${data.title} — Andrzej Białas`} description={data.summary || data.title} ogImage={`/images/writing/${piece.slug}-og.png`}>
   <JsonLd slot="head" data={workLd} />
+  <ReadingProgress />
+
   <article class="piece container">
-    <header class="piece__header">
-      <h1>{data.title}</h1>
+    <header class="piece__header measure-col">
+      <p class="measure piece__kicker">{metaLine}</p>
+      <h1 class="piece__title">{data.title}</h1>
       {data.anatomy === "outcome" && (
         <PieceMeta role={data.role} timeframe={data.timeframe} scope={data.scope} />
       )}
       {data.anatomy === "concept" && data.summary && (
-        <p class="piece__tldr">{data.summary}</p>
+        <p class="piece__standfirst">{data.summary}</p>
       )}
     </header>
-
-    {data.anatomy === "outcome" && data.hero?.image && (
-      <GradientHalo gradient={data.hero.gradient}>
-        <img src={data.hero.image} alt={`${data.title} — hero`} class="piece__hero" loading="eager" />
-      </GradientHalo>
-    )}
 
     <div class="piece__body prose">
       <slot />
     </div>
+
+    {related.length > 0 && (
+      <aside class="piece__related measure-col" aria-label="Related essays">
+        <p class="measure piece__related-label">Related</p>
+        <div class="piece__related-list">
+          {related.map((p) => <EssayCard piece={p} />)}
+        </div>
+      </aside>
+    )}
   </article>
 </BaseLayout>
 
 <style>
+  /* ── Reading column ─────────────────────────────────────────
+     One comfortable measure for the whole reading experience —
+     header, body, and related strip all share the same column. */
   .piece {
-    padding-top: 48px;
+    padding-top: clamp(40px, 6vw, 72px);
     padding-bottom: var(--section-padding);
   }
-  .piece h1 { max-width: 16ch; }
-  .piece__tldr {
-    font-style: italic;
-    font-size: 1.25rem;
-    color: var(--color-muted);
-    max-width: 60ch;
-    margin: 24px 0 48px;
+  .measure-col {
+    max-width: 66ch;
+    margin-inline: auto;
   }
-  .piece__hero {
-    width: 100%;
+
+  /* ── Header ── */
+  .piece__header {
+    margin-bottom: clamp(40px, 5vw, 56px);
+  }
+  .piece__kicker {
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  .piece__title {
+    max-width: 18ch;
+    font-size: clamp(2.4rem, 5vw, 3.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .piece__standfirst {
+    max-width: none;
+    margin: 1.5rem 0 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.35rem;
+    line-height: 1.45;
+    color: var(--color-muted);
+  }
+
+  /* ── Prose body — the reading experience ──────────────────── */
+  .prose {
+    max-width: 66ch;
+    margin-inline: auto;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--color-body);
+  }
+
+  .prose :global(p) {
+    max-width: none;
+    margin: 0 0 1.5rem;
+  }
+
+  /* Refined drop-cap on the opening paragraph: Newsreader, ~3 lines, ink.
+     No colour flourish. Suppressed on narrow screens where it crowds. */
+  .prose > :global(p:first-of-type)::first-letter {
+    float: left;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 3.4em;
+    line-height: 0.82;
+    padding: 0.05em 0.08em 0 0;
+    color: var(--color-ink);
+  }
+
+  .prose :global(h2),
+  .prose :global(h3) {
+    font-family: var(--font-serif);
+    color: var(--color-ink);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .prose :global(h2) {
+    font-size: 1.85rem;
+    line-height: 1.2;
+    margin: 2.75rem 0 1rem;
+  }
+  .prose :global(h3) {
+    font-size: 1.4rem;
+    line-height: 1.3;
+    margin: 2.25rem 0 0.75rem;
+  }
+  /* A hint of measure-mark styling: a hairline tick before each h2. */
+  .prose :global(h2)::before {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 1px;
+    margin-bottom: 1rem;
+    background: var(--color-line-2);
+  }
+
+  /* Inked-link treatment for markdown links (no node span possible here —
+     just the hairline underline that warms to vermilion on hover). */
+  .prose :global(a) {
+    color: var(--color-ink);
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--color-line-2);
+    padding-bottom: 1px;
+    transition: border-color 0.2s;
+  }
+  .prose :global(a:hover),
+  .prose :global(a:focus-visible) {
+    border-color: var(--color-accent);
+  }
+
+  /* Pull-quote: larger serif, vermilion hanging rule, set apart. */
+  .prose :global(blockquote) {
+    margin: 2.5rem 0;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--color-accent);
+    font-size: 1.5rem;
+    line-height: 1.4;
+    font-style: italic;
+    color: var(--color-ink);
+  }
+  .prose :global(blockquote p) {
+    margin-bottom: 0.75rem;
+  }
+  .prose :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+  .prose :global(blockquote cite) {
+    display: block;
+    margin-top: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    font-style: normal;
+    letter-spacing: 0.05em;
+    color: var(--color-muted);
+  }
+
+  .prose :global(strong) { font-weight: 600; color: var(--color-ink); }
+  .prose :global(em) { font-style: italic; }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    max-width: none;
+    margin: 0 0 1.5rem;
+    padding-left: 1.4rem;
+  }
+  .prose :global(li) {
+    margin-bottom: 0.5rem;
+  }
+  .prose :global(li::marker) {
+    color: var(--color-muted);
+  }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: rgb(21 50 78 / 0.06);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    color: var(--color-ink);
+  }
+  .prose :global(pre) {
+    margin: 1.75rem 0;
+    padding: 1.1rem 1.25rem;
+    overflow-x: auto;
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    background: rgb(21 50 78 / 0.04);
+  }
+  .prose :global(pre code) {
+    background: none;
+    padding: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .prose :global(hr) {
+    max-width: none;
+    margin: 2.5rem 0;
+    border: none;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .prose :global(img) {
+    max-width: 100%;
     height: auto;
     border-radius: 4px;
-    margin: 48px 0;
+    margin: 2rem 0;
   }
-  .prose { max-width: 65ch; margin: 0 auto; }
-  .prose :global(h2) { margin-top: 48px; }
-  .prose :global(p) { margin-bottom: 24px; }
+
+  /* ── Related strip ── */
+  .piece__related {
+    margin-top: clamp(56px, 8vw, 88px);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-line-2);
+  }
+  .piece__related-label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .piece__related-list {
+    font-family: var(--font-serif);
+  }
+
+  @media (max-width: 640px) {
+    .prose { font-size: 1.1rem; }
+    /* Drop-cap crowds the smaller measure — drop it. */
+    .prose > :global(p:first-of-type)::first-letter {
+      float: none;
+      font-size: inherit;
+      line-height: inherit;
+      padding: 0;
+      color: inherit;
+    }
+  }
 </style>

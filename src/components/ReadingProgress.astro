@@ -1,0 +1,16 @@
+---
+// Hairline scroll-progress mark. CSS-only via scroll-driven animation.
+// On browsers without animation-timeline support, the bar stays hidden
+// (scaleX(0)) — acceptable progressive enhancement.
+---
+<div class="reading-progress" aria-hidden="true"></div>
+<style>
+  .reading-progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 100%;
+    transform-origin: 0 50%; background: var(--color-accent); z-index: 20;
+    transform: scaleX(0);
+    animation: rp linear; animation-timeline: scroll(root block);
+  }
+  @keyframes rp { to { transform: scaleX(1); } }
+  @media (prefers-reduced-motion: reduce) { .reading-progress { display: none; } }
+</style>
