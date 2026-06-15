@@ -10,3 +10,7 @@ dist/
 test-results/
 playwright-report/
 *.log
+
+# Throwaway verification screenshots / scratch scripts (root-level, "_"-prefixed)
+/_*.png
+/_*.mjs
