@@ -1,11 +1,14 @@
 import { test, expect } from "@playwright/test";
 
-// The storefront homepage is rebuilt in Wave B; this test is rewritten there.
-test.skip("homepage renders hero, ribbon, featured, footer mailto", async ({ page }) => {
+test("storefront renders header CTA, products, footer mailto", async ({ page }) => {
   await page.goto("/");
+  await expect(page.locator("h1")).toBeVisible();
+  await expect(page.locator(".primary")).toBeVisible();
+  await expect(page.locator("a[href='/system']").first()).toBeVisible();
+  await expect(page.locator("a[href^='mailto:']").first()).toBeVisible();
 });
 
-test("homepage nav links work", async ({ page }) => {
+test("home nav → work", async ({ page }) => {
   await page.goto("/");
   await page.click("nav a[href='/work']");
   await expect(page).toHaveURL(/\/work$/);

@@ -1,74 +1,278 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import NowRibbon from "../components/NowRibbon.astro";
-import FeaturedWork from "../components/FeaturedWork.astro";
+import ProductCard from "../components/ProductCard.astro";
+import EssayCard from "../components/EssayCard.astro";
+import PrimaryCta from "../components/cta/PrimaryCta.astro";
+import SecondaryCta from "../components/cta/SecondaryCta.astro";
+import InkedLink from "../components/cta/InkedLink.astro";
 import { getCollection } from "astro:content";
-import { featuredPieces, publishedOnly, sortByOrder } from "../lib/pieces";
+import { byTopic, latest } from "../lib/pieces";
+import { products } from "../data/products";
 
 const all = await getCollection("writing");
-const featured = featuredPieces(all, 3);
-
-/* Fallback: if fewer than 3 published+featured pieces exist at launch,
-   top up with the most recent published pieces. */
-const published = sortByOrder(publishedOnly(all));
-const ids = new Set(featured.map((p) => p.slug));
-for (const p of published) {
-  if (featured.length >= 3) break;
-  if (!ids.has(p.slug)) featured.push(p);
-}
+const sortedProducts = [...products].sort((a, b) => a.order - b.order);
+const recent = latest(all, 3);
+const countFor = (tag: string) => byTopic(all, tag).length;
 ---
-<BaseLayout title="Andrzej Białas" description="Notes on marketing, AI, and leadership.">
-  <section class="container hero">
-    <h1>Notes on marketing,<br/>AI, and leadership.</h1>
-    <p class="hero__sub">Long-form essays. Shorter notes. Mostly about the things I do for a living.</p>
-    <div class="hero__ctas">
-      <a href="/writing" class="btn btn--primary">Read →</a>
-      <a href="/about" class="btn btn--secondary">About</a>
+<BaseLayout
+  title="Andrzej Białas"
+  description="I lead marketing at Appsilon and write about how I run it as a system — what compounds, what breaks, the parts that don't make it into case studies."
+>
+  <!-- ── 1 · Business-card header ─────────────────────────────────
+       The drafting sheet. Name dominant in Newsreader; the blueprint
+       grid sits behind THIS zone only, fading at the edges so it reads
+       as a sheet on a table, not a full-bleed background. One restrained
+       page-load reveal, staggered, reduced-motion honored. -->
+  <header class="masthead">
+    <div class="masthead__grid blueprint" aria-hidden="true"></div>
+    <div class="container masthead__inner">
+      <span class="measure masthead__coord reveal" style="--i:0">00 / index</span>
+      <h1 class="masthead__name reveal" style="--i:1">I build marketing systems.</h1>
+      <p class="masthead__sub reveal" style="--i:2">
+        I'm Andrzej Białas. I lead marketing at Appsilon, where I run it as a
+        system instead of a string of campaigns. This is where I write down how
+        that actually works — what compounds, what breaks, and the parts that
+        don't make it into the case studies.
+      </p>
+      <div class="masthead__ctas reveal" style="--i:3">
+        <PrimaryCta href="/system" label="Read the model" />
+        <SecondaryCta href="/work" label="See the work" />
+      </div>
+    </div>
+  </header>
+
+  <!-- ── 2 · Products on display ──────────────────────────────────
+       The storefront's heart. Exhibit plates on a gridded surface:
+       2-up on desktop, 1-up on mobile. -->
+  <section class="display">
+    <div class="container">
+      <div class="section-head">
+        <span class="measure">On display</span>
+        <span class="measure section-head__rule" aria-hidden="true"></span>
+      </div>
+      <div class="display__grid">
+        {sortedProducts.map((p) => (
+          <ProductCard product={p} count={countFor(p.tag)} />
+        ))}
+      </div>
     </div>
   </section>
 
-  <NowRibbon message={`Currently: ${published.length} piece${published.length === 1 ? "" : "s"} live, ${10 - published.length} in progress.`} />
+  <!-- ── 3 · Latest ───────────────────────────────────────────────
+       A quieter strip. One published essay today → one row, which must
+       read as intentional. Section omitted entirely if nothing is live. -->
+  {recent.length > 0 && (
+    <section class="latest">
+      <div class="container">
+        <div class="section-head section-head--split">
+          <span class="measure">Latest</span>
+          <InkedLink href="/writing">All writing</InkedLink>
+        </div>
+        <div class="latest__list">
+          {recent.map((piece) => (
+            <EssayCard piece={piece} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
-  <section class="container featured-wrap">
-    <h2>Featured</h2>
-    <FeaturedWork pieces={featured} />
-  </section>
-
-  <section class="container tease">
-    <h2>About</h2>
-    <p>I'm marketing lead at Appsilon. Most of what I know about marketing came from doing it badly first. <a href="/about">More →</a></p>
+  <!-- ── 4 · About teaser ─────────────────────────────────────────
+       One honest paragraph, first person. Plain. -->
+  <section class="about">
+    <div class="container about__inner">
+      <span class="measure">About</span>
+      <p class="about__body">
+        I spent a decade in environmental NGOs before I ended up running
+        marketing for a tech company. Most of what I know I learned by doing
+        it badly first. <InkedLink href="/about">More</InkedLink>
+      </p>
+    </div>
   </section>
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 96px;
-    padding-bottom: 96px;
-  }
-  .hero h1 { max-width: 18ch; margin-bottom: 24px; }
-  .hero__sub { font-size: 1.25rem; color: var(--color-muted); max-width: 50ch; margin-bottom: 32px; }
-  .hero__ctas { display: flex; gap: 16px; }
-  .btn {
-    display: inline-block;
-    padding: 12px 20px;
-    border-radius: 2px;
-    border: 1px solid var(--color-hairline);
-    font-weight: 500;
-    transition: background 150ms ease, border-color 150ms ease;
-  }
-  .btn--primary { background: var(--color-ink); color: var(--color-bg); border-color: var(--color-ink); }
-  .btn--primary:hover { background: var(--color-cobalt); border-color: var(--color-cobalt); }
-  .btn--secondary { color: var(--color-ink); }
-  .btn--secondary:hover { border-color: var(--color-cobalt); }
+  /* ════════════════════════════════════════════════════════════════
+     HOME · The Digital Storefront
+     Business card → products on display → latest → about teaser.
+     Catalog macrostructure, not hero→features→CTA. Restraint over
+     density; hairlines and measure marks carry the schematic feel.
+     ════════════════════════════════════════════════════════════════ */
 
-  .featured-wrap { padding-top: var(--section-padding); }
-  .featured-wrap h2 { margin-bottom: 48px; }
-
-  .tease {
-    padding-top: var(--section-padding);
+  /* ── 1 · Masthead ─────────────────────────────────────────────── */
+  .masthead {
+    position: relative;
+    padding-top: clamp(56px, 8vw, 104px);
     padding-bottom: var(--section-padding);
-    border-top: 1px solid var(--color-hairline);
-    margin-top: var(--section-padding);
+    overflow: hidden;
   }
-  .tease h2 { margin-bottom: 16px; }
+
+  /* Blueprint sheet behind the header only. Masked so the grid fades
+     out toward the edges — a sheet laid on the table, not wallpaper. */
+  .masthead__grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.55;
+    -webkit-mask-image: radial-gradient(
+      120% 90% at 24% 32%,
+      #000 0%,
+      rgba(0, 0, 0, 0.55) 46%,
+      transparent 78%
+    );
+    mask-image: radial-gradient(
+      120% 90% at 24% 32%,
+      #000 0%,
+      rgba(0, 0, 0, 0.55) 46%,
+      transparent 78%
+    );
+  }
+
+  .masthead__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .masthead__coord {
+    display: block;
+    margin-bottom: 22px;
+    color: var(--color-muted);
+  }
+
+  .masthead__name {
+    font-size: clamp(2.75rem, 7vw, 4.75rem);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    max-width: 16ch;
+    margin: 0 0 28px;
+  }
+
+  .masthead__sub {
+    font-family: var(--font-serif);
+    font-size: clamp(1.15rem, 2.1vw, 1.4rem);
+    line-height: 1.5;
+    color: var(--color-body);
+    max-width: 54ch;
+    margin: 0 0 40px;
+    font-weight: 400;
+    /* normalise the .measure mono styling we don't want here */
+    letter-spacing: -0.005em;
+    text-transform: none;
+  }
+
+  .masthead__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* ── 2 · Products on display ──────────────────────────────────── */
+  .display {
+    padding-top: var(--section-padding);
+  }
+
+  .display__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px; /* hairline gutter — cards meet on the gridded surface */
+    background: var(--color-line);
+    border: 1px solid var(--color-line);
+  }
+
+  /* Each card already paints --color-bg; the 1px gap + frame let the
+     grid read as a ruled modular surface the exhibits sit within. */
+  .display__grid > :global(.card) {
+    border: none;
+  }
+  .display__grid > :global(.card:hover),
+  .display__grid > :global(.card:focus-within) {
+    /* keep the lit inset hairline from the card's own hover state */
+    box-shadow: inset 0 0 0 1px var(--color-line-2);
+  }
+
+  /* ── 3 · Latest ───────────────────────────────────────────────── */
+  .latest {
+    padding-top: var(--section-padding);
+  }
+
+  /* The list's first essay-card draws its own top hairline; combined
+     with the section head's rule it frames a single row cleanly, so one
+     published piece reads as a deliberate entry, not a broken grid. */
+  .latest__list {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  /* ── 4 · About teaser ─────────────────────────────────────────── */
+  .about {
+    padding-top: var(--section-padding);
+  }
+
+  .about__inner {
+    max-width: 60ch;
+  }
+
+  .about__body {
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+    line-height: 1.55;
+    color: var(--color-ink);
+    margin: 18px 0 0;
+    max-width: 46ch;
+    font-weight: 400;
+  }
+
+  /* ── Shared section heads ─────────────────────────────────────── */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 34px;
+  }
+
+  /* A measure rule trailing the label — schematic callout. */
+  .section-head__rule {
+    flex: 1;
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  .section-head--split {
+    justify-content: space-between;
+  }
+
+  /* ── Page-load reveal ─────────────────────────────────────────────
+     One orchestrated, staggered fade-rise in the masthead only.
+     Fully disabled under prefers-reduced-motion. ──────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: reveal 0.62s cubic-bezier(0.22, 0.7, 0.25, 1) forwards;
+    animation-delay: calc(var(--i) * 0.09s + 0.05s);
+  }
+
+  @keyframes reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+
+  /* ── Responsive ───────────────────────────────────────────────── */
+  @media (max-width: 720px) {
+    .display__grid {
+      grid-template-columns: 1fr;
+    }
+    .section-head {
+      gap: 14px;
+    }
+  }
 </style>
