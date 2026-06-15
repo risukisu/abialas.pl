@@ -147,12 +147,15 @@ p { max-width: 65ch; }
 .inked:hover .node,.inked:focus-visible .node{transform:scale(1)}
 
 /* CTA — disabled / loading / error / success + reduced-motion */
+/* :disabled matches <button>; aria-disabled="true" matches the <a> CTAs — both kept for forward-compat */
 .primary[aria-disabled="true"], .primary:disabled { opacity:.5; pointer-events:none; }
 .primary.is-loading { pointer-events:none; }
 .primary.is-loading .lbl { opacity:.6; }
 .primary.is-loading .fill { width:100%; clip-path:none; }
 .primary.is-error   { background:#7A1B12; }
+.primary.is-error .fill { display:none; }
 .primary.is-success .fill { width:100%; clip-path:none; background:var(--color-ink); }
+.primary.is-success .lbl::after { content:" \2713"; }
 
 .secondary[aria-disabled="true"], .secondary:disabled { opacity:.5; pointer-events:none; }
 .inked[aria-disabled="true"] { opacity:.5; pointer-events:none; }
