@@ -1,0 +1,5 @@
+---
+export interface Props { href: string; class?: string; }
+const { href, class: cls = "" } = Astro.props;
+---
+<a class={`inked ${cls}`} href={href}><slot /><span class="node"></span></a>

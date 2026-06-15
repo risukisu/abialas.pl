@@ -10,7 +10,7 @@
   --color-paper: #EAF0F6;   /* text on ink */
   --color-body:  #26384A;   /* body text */
   --color-muted: #5F7384;   /* secondary text */
-  --color-accent:#DE3C26;   /* vermilion — scarce accent */
+  --color-accent: #DE3C26;  /* vermilion — scarce accent */
   --color-line:   rgb(21 50 78 / 0.20);
   --color-line-2: rgb(21 50 78 / 0.42);
 
@@ -94,4 +94,72 @@ p { max-width: 65ch; }
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ── CTA system (locked — Appendix A) ───────────────────────── */
+.primary{position:relative;display:inline-flex;align-items:center;padding:16px 26px;background:var(--ink);border:none;border-radius:7px;cursor:pointer;text-decoration:none;overflow:hidden}
+.primary .lbl{position:relative;z-index:2;font:600 15px var(--sans);color:var(--paper);transition:color .25s}
+.primary .fill{
+  position:absolute;top:0;bottom:0;left:0;width:15px;z-index:1;
+  background:
+    repeating-conic-gradient(rgba(7,18,30,.20) 0% 25%, transparent 0% 50%) 0 0 / 6px 6px,
+    var(--accent);
+  image-rendering:pixelated;
+  clip-path:polygon(
+    0 0, 100% 0,
+    100% 11%, calc(100% - 5px) 11%, calc(100% - 5px) 22%, 100% 22%,
+    100% 33%, calc(100% - 6px) 33%, calc(100% - 6px) 46%, 100% 46%,
+    100% 55%, calc(100% - 5px) 55%, calc(100% - 5px) 66%, 100% 66%,
+    100% 77%, calc(100% - 5px) 77%, calc(100% - 5px) 88%, 100% 88%,
+    100% 100%, 0 100%
+  );
+  transition:width .34s cubic-bezier(.3,.8,.3,1), clip-path .34s cubic-bezier(.3,.8,.3,1);
+}
+.primary:hover .fill,.primary.is-hover .fill{
+  width:100%;
+  clip-path:polygon(
+    0 0, 100% 0,
+    100% 11%, 100% 11%, 100% 22%, 100% 22%,
+    100% 33%, 100% 33%, 100% 46%, 100% 46%,
+    100% 55%, 100% 55%, 100% 66%, 100% 66%,
+    100% 77%, 100% 77%, 100% 88%, 100% 88%,
+    100% 100%, 0 100%
+  );
+}
+.primary:hover .lbl,.primary.is-hover .lbl{color:#fff}
+.primary:active{transform:translateY(1px)}
+
+.secondary{position:relative;display:inline-flex;align-items:center;justify-content:center;padding:16px 28px;background:transparent;border:none;cursor:pointer;font:600 15px var(--sans);color:var(--ink);text-decoration:none}
+.secondary .corner{position:absolute;width:13px;height:13px;border:2px solid var(--ink);transition:transform .24s cubic-bezier(.3,.8,.3,1),border-color .24s}
+.secondary .tl{top:0;left:0;border-right:none;border-bottom:none}
+.secondary .tr{top:0;right:0;border-left:none;border-bottom:none}
+.secondary .bl{bottom:0;left:0;border-right:none;border-top:none}
+.secondary .br{bottom:0;right:0;border-left:none;border-top:none}
+.secondary:hover .corner,.secondary:focus-visible .corner{border-color:var(--accent)}
+.secondary:hover .tl{transform:translate(4px,4px)}
+.secondary:hover .tr{transform:translate(-4px,4px)}
+.secondary:hover .bl{transform:translate(4px,-4px)}
+.secondary:hover .br{transform:translate(-4px,-4px)}
+
+.inked{position:relative;display:inline-block;font:500 17px var(--serif);color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--line-2);padding-bottom:3px;transition:border-color .2s}
+.inked .node{position:absolute;right:-3px;bottom:-4px;width:6px;height:6px;background:var(--accent);transform:scale(0);transform-origin:center;transition:transform .2s cubic-bezier(.3,.8,.3,1)}
+.inked:hover,.inked:focus-visible{border-color:var(--accent)}
+.inked:hover .node,.inked:focus-visible .node{transform:scale(1)}
+
+/* CTA — disabled / loading / error / success + reduced-motion */
+.primary[aria-disabled="true"], .primary:disabled { opacity:.5; pointer-events:none; }
+.primary.is-loading { pointer-events:none; }
+.primary.is-loading .lbl { opacity:.6; }
+.primary.is-loading .fill { width:100%; clip-path:none; }
+.primary.is-error   { background:#7A1B12; }
+.primary.is-success .fill { width:100%; clip-path:none; background:var(--color-ink); }
+
+.secondary[aria-disabled="true"], .secondary:disabled { opacity:.5; pointer-events:none; }
+.inked[aria-disabled="true"] { opacity:.5; pointer-events:none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .primary .fill { transition:none; }
+  .secondary .corner { transition:border-color .24s; }
+  .secondary:hover .corner { transform:none; }
+  .inked .node { transition:none; }
 }

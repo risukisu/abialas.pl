@@ -1,0 +1,8 @@
+---
+export interface Props { href: string; label: string; class?: string; }
+const { href, label, class: cls = "" } = Astro.props;
+---
+<a class={`primary ${cls}`} href={href}>
+  <span class="fill"></span>
+  <span class="lbl">{label}</span>
+</a>
