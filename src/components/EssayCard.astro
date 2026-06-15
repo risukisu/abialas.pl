@@ -1,0 +1,49 @@
+---
+import type { CollectionEntry } from "astro:content";
+import InkedLink from "./cta/InkedLink.astro";
+
+export interface Props { piece: CollectionEntry<"writing">; }
+const { piece } = Astro.props;
+const { title, date, topics, summary } = piece.data;
+
+const dateLabel = date.toLocaleString("en-US", { month: "short", year: "numeric" });
+const meta = topics.length ? `${dateLabel} · ${topics[0]}` : dateLabel;
+---
+<article class="essay-card">
+  <span class="measure essay-card__meta">{meta}</span>
+  <h3 class="essay-card__title"><InkedLink href={`/writing/${piece.slug}`}>{title}</InkedLink></h3>
+  {summary && <p class="essay-card__summary">{summary}</p>}
+</article>
+
+<style>
+  .essay-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 18px 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .essay-card__meta {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .essay-card__title {
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  .essay-card__summary {
+    margin: 8px 0 0;
+    max-width: 60ch;
+    color: var(--color-muted);
+    font-size: 1rem;
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
