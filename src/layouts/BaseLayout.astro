@@ -10,7 +10,7 @@ export interface Props {
   noindex?: boolean;
 }
 
-const { title, description = "Andrzej Białas — portfolio", ogImage = "/images/og-default.png", noindex = false } = Astro.props;
+const { title, description = "Andrzej Białas — marketing systems, plainly.", ogImage = "/og-default.png", noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://abialas.pl").toString();
 ---
 <!doctype html>
