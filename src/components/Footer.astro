@@ -8,7 +8,7 @@ const year = new Date().getFullYear();
       <p class="footer__tagline"><!-- TAGLINE: deferred until H1 copy is set --></p>
     </div>
     <div>
-      <p class="meta">Contact</p>
+      <p class="measure">Contact</p>
       <ul>
         <li><a href="mailto:hello@abialas.pl">hello@abialas.pl</a></li>
         <li><a href="https://www.linkedin.com/in/andrzejbialas/" rel="me">LinkedIn</a></li>
@@ -16,8 +16,9 @@ const year = new Date().getFullYear();
       </ul>
     </div>
     <div>
-      <p class="meta">Elsewhere</p>
+      <p class="measure">Elsewhere</p>
       <ul>
+        <li><a href="/writing">Writing</a></li>
         <li><a href="https://risu.pl">risu.pl</a></li>
         <li><a href="https://grugbrained.substack.com">Grug-Brained Marketer</a></li>
       </ul>
@@ -26,13 +27,13 @@ const year = new Date().getFullYear();
   <div class="container footer__strip">
     <span>© {year}</span>
     <span>built with Astro</span>
-    <a href="/resume.pdf" download>Download resume (PDF)</a>
+    <a href="/resume.pdf" download class="footer__resume">Download resume (PDF)</a>
   </div>
 </footer>
 
 <style>
   .footer {
-    border-top: 1px solid var(--color-hairline);
+    border-top: 1px solid var(--color-line);
     padding-top: 64px;
     padding-bottom: 32px;
     margin-top: var(--section-padding);
@@ -45,7 +46,23 @@ const year = new Date().getFullYear();
   }
   .footer__grid ul { list-style: none; margin: 0; padding: 0; }
   .footer__grid li { margin-bottom: 4px; }
-  .footer__name { font-weight: 500; margin-bottom: 4px; }
+  .footer__grid a {
+    color: var(--color-body);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .footer__grid a:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+  .footer__name {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    color: var(--color-ink);
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
   .footer__tagline { color: var(--color-muted); margin: 0; }
   .footer__strip {
     display: flex;
@@ -54,7 +71,17 @@ const year = new Date().getFullYear();
     font-size: var(--text-meta);
     color: var(--color-muted);
     padding-top: 24px;
-    border-top: 1px solid var(--color-hairline);
+    border-top: 1px solid var(--color-line);
+  }
+  .footer__resume {
+    color: var(--color-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-line-2);
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .footer__resume:hover {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-accent);
   }
   @media (max-width: 768px) {
     .footer__grid { grid-template-columns: 1fr; gap: 32px; }
