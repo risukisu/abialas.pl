@@ -61,24 +61,23 @@ const pillars: Pillar[] = [
   </figcaption>
 
   <div class="board">
-    {/* Connector layer — decorative; the diagram's meaning is in the HTML below. */}
+    {/* Connector layer — decorative; the diagram's meaning is in the HTML below.
+        The viewBox + path `d` are set by the progressive-enhancement script from
+        measured node/core positions, so the leaders land on the real plates at
+        any width. Without JS the paths have no `d` and simply don't draw — the
+        plates stay fully readable. */}
     <svg
       class="wires"
-      viewBox="0 0 100 100"
       preserveAspectRatio="none"
       aria-hidden="true"
       focusable="false"
     >
       {/* Orthogonal leader lines: each runs from the central core out to its
-          pillar with a right-angle elbow — drafting leaders, not curves.
-          Endpoints are in the same 0–100 percentage space as the grid plates,
-          targeting each plate's connection node (top plates sit above the core,
-          so leaders rise to ~y38; the bottom plate sits below, leader drops to
-          ~y62). Deliberate overlap past the node tick keeps the join clean even
-          as content-driven row heights shift the plates a little. */}
-      <path class="wire wire-brand"   d="M 50 50 H 17 V 38" />
-      <path class="wire wire-sensing" d="M 50 50 H 83 V 38" />
-      <path class="wire wire-leadgen" d="M 50 50 V 62" />
+          pillar's connection node with right-angle elbows — drafting leaders,
+          not curves. The `d` is computed at runtime (see drawWires below). */}
+      <path class="wire wire-brand" />
+      <path class="wire wire-sensing" />
+      <path class="wire wire-leadgen" />
     </svg>
 
     {/* Central core node — the operating system itself. */}
@@ -110,13 +109,17 @@ const pillars: Pillar[] = [
 </figure>
 
 <script>
-  // Progressive enhancement only: toggle state classes. CSS does the drawing.
+  // Progressive enhancement: toggle state classes AND draw the connector
+  // geometry from the real layout. The leaders are computed from measured
+  // node/core positions (relative to the board) so they land on the plates at
+  // any width — then animated purely by CSS via stroke-dashoffset.
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const root = document.querySelector<HTMLElement>(".schematic");
 
   if (root) {
     if (reduce) root.classList.add("no-draw");
 
+    // ── State toggling (mouse / touch / keyboard) ──────────────────────────
     root.querySelectorAll<HTMLElement>("[data-pillar]").forEach((el) => {
       const key = el.dataset.pillar;
       if (!key) return;
@@ -130,6 +133,77 @@ const pillars: Pillar[] = [
       // Keyboard focus lights the pillar and draws its connector.
       el.addEventListener("focusin", on);
       el.addEventListener("focusout", off);
+    });
+
+    // ── Connector geometry ─────────────────────────────────────────────────
+    const board = root.querySelector<HTMLElement>(".board");
+    const svg = root.querySelector<SVGSVGElement>(".wires");
+    const core = root.querySelector<HTMLElement>(".core");
+
+    // Centre of an element's box, in coordinates relative to the board's box.
+    const centreRelTo = (el: Element, base: DOMRect) => {
+      const r = el.getBoundingClientRect();
+      return {
+        x: r.left - base.left + r.width / 2,
+        y: r.top - base.top + r.height / 2,
+      };
+    };
+
+    function drawWires() {
+      if (!board || !svg || !core) return;
+
+      const boardRect = board.getBoundingClientRect();
+      if (boardRect.width === 0 || boardRect.height === 0) return;
+
+      // Match the SVG user space to the board's pixel box so 1 unit = 1px.
+      svg.setAttribute("viewBox", `0 0 ${boardRect.width} ${boardRect.height}`);
+
+      const c = centreRelTo(core, boardRect);
+
+      for (const key of ["brand", "sensing", "leadgen"] as const) {
+        const pillar = root!.querySelector(`.pillar-${key}`);
+        const node = pillar?.querySelector(".node");
+        const path = svg.querySelector<SVGPathElement>(`.wire-${key}`);
+        if (!pillar || !node || !path) continue;
+
+        const n = centreRelTo(node, boardRect);
+
+        // Orthogonal drafting leader from the core out to the node.
+        //  - leadgen sits directly under the core → a clean vertical drop.
+        //  - brand / sensing sit off to the side and above → an L-elbow:
+        //    run horizontally from the core to the node's x, then vertically
+        //    up to the node's y. The right-angle elbow lands square on the tick.
+        let d: string;
+        if (Math.abs(n.x - c.x) < 1) {
+          d = `M ${c.x} ${c.y} V ${n.y}`;
+        } else {
+          d = `M ${c.x} ${c.y} H ${n.x} V ${n.y}`;
+        }
+        path.setAttribute("d", d);
+
+        // Length-driven dash: hidden at rest (offset == length). The active
+        // state pulls the offset to 0 (CSS) to draw it in.
+        const len = path.getTotalLength();
+        path.style.strokeDasharray = String(len);
+        // .no-draw shows wires instantly; otherwise hide until activated.
+        path.style.strokeDashoffset = root!.classList.contains("no-draw")
+          ? "0"
+          : String(len);
+      }
+    }
+
+    // Initial draw — after first paint so layout (incl. fonts) has settled.
+    requestAnimationFrame(() => requestAnimationFrame(drawWires));
+    // Redraw on web-font load (changes plate heights → node positions).
+    if ((document as any).fonts?.ready) {
+      (document as any).fonts.ready.then(() => drawWires());
+    }
+
+    // Keep correct on resize (debounced).
+    let t: number | undefined;
+    window.addEventListener("resize", () => {
+      if (t) window.clearTimeout(t);
+      t = window.setTimeout(drawWires, 120);
     });
   }
 </script>
@@ -158,14 +232,18 @@ const pillars: Pillar[] = [
     color: var(--color-ink);
   }
 
-  /* The board is a 3-column / 2-row grid. Pillars sit top-left, top-right and
-     bottom-center; the core sits dead-centre. These track positions line up
-     (in percentage terms) with the SVG path endpoints below — no JS geometry. */
+  /* The board is a 3-column / 3-row grid:
+       row 1 — the two top plates (brand left, sensing right)
+       row 2 — the central core, alone in its own band (the hub)
+       row 3 — the leadgen plate, centred under the core
+     The core having its own row keeps it clear of both the top plates and
+     leadgen at any content height, so every measured leader has open space to
+     run through. The script derives the exact endpoints from the live layout. */
   .board {
     position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto auto auto;
     gap: 28px 36px;
     align-items: start;
     padding: clamp(28px, 5vw, 56px) clamp(22px, 4vw, 44px) clamp(40px, 6vw, 64px);
@@ -185,10 +263,11 @@ const pillars: Pillar[] = [
   }
 
   /* ── Connector layer ──────────────────────────────────────────────────────
-     viewBox 0 0 100 100 + preserveAspectRatio:none → endpoints expressed as
-     percentages that track the grid plates exactly. non-scaling-stroke keeps
-     the 2px hairline constant under the non-uniform scale, and the right-angle
-     elbows stay crisp. The layer is decorative and sits *behind* the plates. */
+     The SVG user space is set at runtime to the board's pixel box (1 unit =
+     1px) and each leader's `d` is computed from measured node/core positions,
+     so endpoints land on the real plates at any width. non-scaling-stroke keeps
+     the 2px hairline constant. The layer is decorative and sits *behind* the
+     plates. */
   .wires {
     position: absolute;
     inset: 0;
@@ -206,43 +285,39 @@ const pillars: Pillar[] = [
     stroke-linecap: square;
     stroke-linejoin: miter;
     vector-effect: non-scaling-stroke;
-    /* Hidden at rest: fully dashed, offset out of view. Each path gets its own
-       length so the draw timing is even per leader. */
-    stroke-dasharray: var(--len);
-    stroke-dashoffset: var(--len);
+    /* Hidden at rest. The script sets stroke-dasharray + stroke-dashoffset
+       inline (== the measured path length) so the leader is fully retracted;
+       the active rule below pulls the offset to 0 to draw it in. */
     opacity: 0;
-    /* --draw scales the duration to the leader's length so every line is laid
-       down at roughly the same draftsman's pace, long or short. */
+    /* --draw keeps each leader laid down at roughly the same draftsman's pace,
+       long or short. */
     transition:
       stroke-dashoffset var(--draw, 0.5s) cubic-bezier(0.3, 0.8, 0.3, 1),
       opacity 0.18s ease;
   }
-  /* Path lengths in the 0–100 user space (sum of |segments|), so the dash
-     covers the whole leader exactly: brand/sensing = |50-17| + |50-38| = 45;
-     leadgen = |62-50| = 12. dasharray == dashoffset hides it; offset→0 draws. */
   .wire-brand,
   .wire-sensing {
-    --len: 45;
     --draw: 0.5s;
   }
   .wire-leadgen {
-    --len: 12;
     --draw: 0.22s;
   }
 
-  /* Active pillar → its leader draws in (offset → 0) and becomes visible. */
+  /* Active pillar → its leader draws in (offset → 0) and becomes visible.
+     !important beats the inline stroke-dashoffset the script sets at rest. */
   .schematic.active-brand .wire-brand,
   .schematic.active-sensing .wire-sensing,
   .schematic.active-leadgen .wire-leadgen {
     opacity: 1;
-    stroke-dashoffset: 0;
+    stroke-dashoffset: 0 !important;
   }
 
   /* ── Central core node ─────────────────────────────────────────────────────
-     Sits dead-centre of the board (row 2 spans under the top pillars). */
+     The hub. Sits alone in the middle row (row 2), centred in column 2 between
+     the two top plates and above leadgen — a clean band the leaders fan out of. */
   .core {
     grid-column: 2;
-    grid-row: 1 / 3;
+    grid-row: 2;
     place-self: center;
     position: relative;
     z-index: 1;
@@ -295,7 +370,7 @@ const pillars: Pillar[] = [
   }
   .pillar-leadgen {
     grid-column: 2;
-    grid-row: 2;
+    grid-row: 3;
   }
 
   /* Connection node — the point a leader meets the plate. Square draftsman tick;
@@ -372,9 +447,10 @@ const pillars: Pillar[] = [
   }
 
   /* ── Responsive ────────────────────────────────────────────────────────────
-     Below the fold of a comfortable two-up, collapse to a single column. The
-     core and the angled leaders stop earning their keep at narrow widths, so we
-     stack the plates with short vertical leaders between them instead. */
+     Below the fold of a comfortable two-up, collapse to a single column with
+     the core reading first. The leaders need no manual re-routing here: the
+     script re-measures the stacked layout (core above, plates below, all
+     centred) and redraws the geometry to match on resize. */
   @media (max-width: 720px) {
     .board {
       grid-template-columns: 1fr;
@@ -390,21 +466,7 @@ const pillars: Pillar[] = [
     }
     .core {
       order: -1; /* core reads first, then the three pillars below it */
-      place-self: start;
-    }
-    /* Re-route the leaders as straight vertical drops down the stacked column.
-       Endpoints still match the plate nodes (all centred, x≈50). */
-    .wire-brand {
-      d: path("M 50 16 V 40");
-      --len: 24;
-    }
-    .wire-sensing {
-      d: path("M 50 46 V 70");
-      --len: 24;
-    }
-    .wire-leadgen {
-      d: path("M 50 76 V 100");
-      --len: 24;
+      place-self: start center; /* centred over the stacked column */
     }
     .pillar-brand .node,
     .pillar-sensing .node {
@@ -416,9 +478,6 @@ const pillars: Pillar[] = [
       bottom: auto;
     }
   }
-
-  /* Browsers without CSS `d:` support keep the server-rendered geometry; the
-     plates remain readable and the highlight still works, so this is safe. */
 
   /* ── Reduced motion ────────────────────────────────────────────────────────
      Two belts-and-braces: the global reduce rule clamps transition durations,
