@@ -1,65 +1,30 @@
 import { describe, it, expect } from "vitest";
-import { z } from "astro/zod";
+import { writingSchema, workSchema } from "../../src/content/config";
 
-// Import the schema we're about to write. Will fail until Step 4.3.
-import { writingSchema } from "../../src/content/config";
-
-describe("writing content schema", () => {
-  it("accepts a fully-specified published piece", () => {
-    const valid = {
-      title: "Marketing Operating System",
-      status: "published",
-      anatomy: "outcome",
-      order: 1,
-      featured: true,
-      role: "Marketing Director",
-      timeframe: "2022–2025",
-      scope: "Rebuilt team 4 → 12, doubled MQL volume",
-      summary: "A system for running marketing as engineering.",
-      hero: {
-        type: "screenshot",
-        image: "/images/writing/marketing-os-hero.png",
-        gradient: ["#1E4DD8", "#22D3EE"],
-      },
-      tileSize: "hero",
-      tileVariant: "screenshot",
+describe("writing schema", () => {
+  it("accepts a published essay with date + topics", () => {
+    const v = {
+      title: "Marketing Operating System", status: "published", anatomy: "outcome",
+      date: "2024-03-01", topics: ["system"], order: 1, featured: true,
+      role: "Marketing Director", timeframe: "2022–2025", scope: "Doubled MQL volume",
+      summary: "Run marketing as engineering.",
     };
-    expect(() => writingSchema.parse(valid)).not.toThrow();
+    expect(() => writingSchema.parse(v)).not.toThrow();
+    expect(writingSchema.parse(v).date).toBeInstanceOf(Date);
   });
-
-  it("accepts a minimal draft piece", () => {
-    const valid = {
-      title: "SCRUM in Marketing",
-      status: "draft",
-      anatomy: "concept",
-      order: 9,
-      tileSize: "std",
-      tileVariant: "draft",
-    };
-    expect(() => writingSchema.parse(valid)).not.toThrow();
+  it("defaults topics to [] and accepts a minimal draft", () => {
+    const v = { title: "ICP", status: "draft", anatomy: "concept", date: "2025-01-01", order: 9 };
+    expect(writingSchema.parse(v).topics).toEqual([]);
   });
-
   it("rejects invalid status", () => {
-    const invalid = {
-      title: "Bad",
-      status: "wip",
-      anatomy: "concept",
-      order: 1,
-      tileSize: "std",
-      tileVariant: "draft",
-    };
-    expect(() => writingSchema.parse(invalid)).toThrow();
+    expect(() => writingSchema.parse({ title: "x", status: "wip", anatomy: "concept", date: "2025-01-01", order: 1 })).toThrow();
   });
+});
 
-  it("rejects invalid tileSize", () => {
-    const invalid = {
-      title: "Bad",
-      status: "draft",
-      anatomy: "concept",
-      order: 1,
-      tileSize: "gigantic",
-      tileVariant: "draft",
-    };
-    expect(() => writingSchema.parse(invalid)).toThrow();
+describe("work (case study) schema", () => {
+  it("accepts a case study", () => {
+    const v = { title: "MOS", status: "published", order: 1, featured: true,
+      summary: "x", problem: "p", approach: "a", result: "r" };
+    expect(() => workSchema.parse(v)).not.toThrow();
   });
 });

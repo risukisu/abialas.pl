@@ -2,9 +2,9 @@
 title: "SCRUM in Marketing"
 status: draft
 anatomy: concept
+date: 2024-11-01
+topics: ["system"]
 order: 2
-tileSize: std
-tileVariant: draft
 summary: "Running marketing sprints like an engineering team."
 ---
 

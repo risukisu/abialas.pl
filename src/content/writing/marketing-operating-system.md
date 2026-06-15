@@ -2,18 +2,14 @@
 title: "Marketing Operating System"
 status: published
 anatomy: outcome
+date: 2024-03-01
+topics: ["system"]
 order: 1
 featured: true
 role: "Marketing Director, Appsilon"
 timeframe: "2022–2025"
 scope: "Built a 12-person marketing system — doubled MQL volume"
-summary: ""
-hero:
-  type: screenshot
-  image: "/images/writing/marketing-os-hero.png"
-  gradient: ["#1E4DD8", "#22D3EE"]
-tileSize: hero
-tileVariant: screenshot
+summary: "How I rebuilt a B2B marketing function as a system with three measurable pillars."
 ---
 
 When I joined Appsilon as Head of Marketing, there was no marketing function. There was a team, sure — talented people doing good work. But there was no system. No shared model for why we did what we did. Content got published because it was someone's turn. Events happened because someone said yes to a booth. Leads came in — or didn't — and nobody could explain why.
