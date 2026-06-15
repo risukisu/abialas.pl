@@ -1,55 +1,171 @@
 ---
+/**
+ * Writing archive — "The Drafting Table"
+ *
+ * The complete archive of essays, grouped by product/topic. Reachable from
+ * the storefront ("All writing") and the footer. Designed to scale: add a
+ * product, its group appears automatically; remove all pieces from a product
+ * and its group disappears. With one published piece the page reads as a
+ * deliberate entry, not a broken grid.
+ *
+ * Section heads match the storefront and alley pages exactly — same
+ * `.section-head` + `.section-head__rule` idiom for coherence across the site.
+ */
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import BentoGrid from "../../components/BentoGrid.astro";
-import BentoTile from "../../components/BentoTile.astro";
+import EssayCard from "../../components/EssayCard.astro";
+import InkedLink from "../../components/cta/InkedLink.astro";
 import { getCollection } from "astro:content";
-import { sortByOrder } from "../../lib/pieces";
+import { byTopic } from "../../lib/pieces";
+import { products } from "../../data/products";
 
 const all = await getCollection("writing");
-const pieces = sortByOrder(all);
+const sortedProducts = [...products].sort((a, b) => a.order - b.order);
 
-/* Connective-tissue tiles — drop into the grid after fixed positions
-   to keep the rhythm interesting even when most pieces are drafts. */
-const connective = [
-  {
-    variant: "stat" as const,
-    tileSize: "square" as const,
-    body: "4 → 12",
-    caption: "Team scaled",
-  },
-  {
-    variant: "concept" as const,
-    tileSize: "wide" as const,
-    body: "Marketing is engineering. The system is the artifact.",
-  },
-  {
-    variant: "excerpt" as const,
-    tileSize: "std" as const,
-    body: "A marketing team without a system is a freelance collective.",
-    caption: "From: Marketing Operating System",
-  },
-];
+// Each group = a product and its published essays (newest-first). Omit empty groups.
+const groups = sortedProducts
+  .map((p) => ({ product: p, pieces: byTopic(all, p.tag) }))
+  .filter((g) => g.pieces.length > 0);
 ---
-<BaseLayout title="Writing — Andrzej Białas" description="Long-form essays on systems I've built. Shorter notes when there's something worth saying.">
-  <section class="container writing-head">
-    <h2>Writing</h2>
-    <p>Long-form essays on systems I've built. Shorter notes on marketing, AI, and leadership when there's something worth saying.</p>
-  </section>
+<BaseLayout
+  title="Writing — Andrzej Białas"
+  description="Essays on marketing systems, plainly."
+>
+  <!-- ── Archive header ────────────────────────────────────────────
+       Index coordinate (measure mono), H1 in Newsreader, one honest
+       standfirst. No blueprint grid here — this is a downstream room,
+       quieter than the storefront masthead. -->
+  <header class="archive-head">
+    <div class="container">
+      <span class="measure archive-head__coord">Archive / Writing</span>
+      <h1 class="archive-head__title">Writing</h1>
+      <p class="archive-head__standfirst">
+        Essays on the systems behind the work — plus shorter notes when
+        there's something worth saying.
+      </p>
+    </div>
+  </header>
 
-  <section class="container">
-    <BentoGrid>
-      {pieces.slice(0, 3).map((p) => <BentoTile piece={p} />)}
-      <BentoTile content={connective[0]} />
-      {pieces.slice(3, 6).map((p) => <BentoTile piece={p} />)}
-      <BentoTile content={connective[1]} />
-      {pieces.slice(6).map((p) => <BentoTile piece={p} />)}
-      <BentoTile content={connective[2]} />
-    </BentoGrid>
-  </section>
+  <!-- ── Grouped archive ───────────────────────────────────────────
+       One section per product that has published pieces. Section head:
+       measure label (links to the product alley) + trailing hairline rule.
+       Essays in a single-column list. Omits empty groups entirely. -->
+  {groups.length > 0 ? (
+    groups.map(({ product, pieces }) => (
+      <section class="archive-group">
+        <div class="container">
+          <div class="section-head">
+            <span class="measure">
+              <InkedLink href={`/${product.slug}`}>{product.name}</InkedLink>
+            </span>
+            <span class="section-head__rule" aria-hidden="true"></span>
+          </div>
+          <div class="archive-group__list">
+            {pieces.map((piece) => <EssayCard piece={piece} />)}
+          </div>
+        </div>
+      </section>
+    ))
+  ) : (
+    <section class="archive-empty">
+      <div class="container">
+        <p class="archive-empty__line">Nothing published yet — pieces in progress.</p>
+      </div>
+    </section>
+  )}
 </BaseLayout>
 
 <style>
-  .writing-head { padding-top: 48px; }
-  .writing-head h2 { margin-bottom: 16px; }
-  .writing-head p { color: var(--color-muted); }
+  /* ════════════════════════════════════════════════════════════════
+     WRITING ARCHIVE · The Drafting Table
+     Matte, precise, editorial. Grouped by product so the structure
+     scales gracefully. One published piece renders a single deliberate
+     row — not a broken grid, not an error state.
+     Of-a-piece with the storefront and the product alleys.
+     ════════════════════════════════════════════════════════════════ */
+
+  /* ── Archive header ───────────────────────────────────────────── */
+  .archive-head {
+    padding-top: clamp(48px, 7vw, 88px);
+    padding-bottom: var(--section-padding);
+  }
+
+  .archive-head__coord {
+    display: block;
+    margin-bottom: 22px;
+    color: var(--color-muted);
+  }
+
+  .archive-head__title {
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    max-width: 18ch;
+    margin: 0 0 26px;
+  }
+
+  .archive-head__standfirst {
+    font-family: var(--font-serif);
+    font-size: clamp(1.15rem, 2.1vw, 1.4rem);
+    line-height: 1.5;
+    color: var(--color-body);
+    max-width: 52ch;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+
+  /* ── Grouped sections ─────────────────────────────────────────── */
+  .archive-group {
+    padding-top: var(--section-padding);
+    padding-bottom: var(--section-padding);
+  }
+
+  /* The list's first essay-card draws its own top hairline via
+     .essay-card { border-top }; combined with the section-head rule
+     above and this bottom hairline, a single card frames as a
+     deliberate entry rather than a broken list. */
+  .archive-group__list {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  /* ── Section head ─────────────────────────────────────────────────
+     Measure label + trailing hairline rule — the same schematic
+     callout used on the storefront and product alleys, kept identical
+     for coherence. The label links to the product alley. */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 34px;
+  }
+
+  .section-head__rule {
+    flex: 1;
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  /* ── Empty state ──────────────────────────────────────────────── */
+  .archive-empty {
+    padding-top: var(--section-padding);
+    padding-bottom: var(--section-padding);
+  }
+
+  .archive-empty__line {
+    font-family: var(--font-serif);
+    font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+    line-height: 1.5;
+    color: var(--color-muted);
+    margin: 0;
+    max-width: 46ch;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+
+  /* ── Responsive ───────────────────────────────────────────────── */
+  @media (max-width: 720px) {
+    .section-head {
+      gap: 14px;
+    }
+  }
 </style>
