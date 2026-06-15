@@ -1,14 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import InkedLink from "../components/cta/InkedLink.astro";
 ---
 <BaseLayout title="Lost? — Andrzej Białas" noindex={true}>
   <section class="container four04">
-    <p class="meta">404</p>
+    <p class="measure four04__coord">404</p>
     <h1>Lost?</h1>
     <p>That page doesn't exist — or is still drafting.</p>
     <div class="four04__links">
-      <a href="/">Home →</a>
-      <a href="/writing">Writing →</a>
+      <InkedLink href="/">Home</InkedLink>
+      <InkedLink href="/writing">Writing</InkedLink>
     </div>
   </section>
 </BaseLayout>
@@ -19,7 +20,26 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     padding-bottom: var(--section-padding);
     max-width: 640px;
   }
-  .four04 h1 { margin: 16px 0 24px; }
-  .four04 p { color: var(--color-muted); margin-bottom: 32px; }
-  .four04__links { display: flex; gap: 32px; }
+
+  .four04__coord {
+    margin: 0 0 16px;
+  }
+
+  .four04 h1 {
+    margin: 0 0 24px;
+  }
+
+  .four04 > p {
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    line-height: 1.65;
+    margin-bottom: 40px;
+  }
+
+  .four04__links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
 </style>

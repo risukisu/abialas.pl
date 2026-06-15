@@ -24,9 +24,9 @@ const person = personSchema({
       <aside class="about__aside">
         <!-- Photo slot — add src/images/portrait.jpg later -->
         <div class="about__photo-placeholder"></div>
-        <p class="meta">Based in Warsaw</p>
+        <p class="measure about__caption">Based in Warsaw</p>
       </aside>
-      <div class="about__narrative prose">
+      <div class="about__narrative">
         <h1>About</h1>
         <Content />
       </div>
@@ -35,23 +35,67 @@ const person = personSchema({
 </BaseLayout>
 
 <style>
-  .about { padding-top: 48px; padding-bottom: var(--section-padding); }
+  .about {
+    padding-top: 48px;
+    padding-bottom: var(--section-padding);
+  }
+
   .about__layout {
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 64px;
+    align-items: start;
   }
+
+  /* Photo plate — hairline-framed on mist ground */
   .about__photo-placeholder {
     aspect-ratio: 1;
-    border: 1px solid var(--color-hairline);
+    border: 1px solid var(--color-line-2);
     background: var(--color-bg);
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
-  .about__narrative h1 { margin-bottom: 32px; }
-  .about__narrative :global(p) { margin-bottom: 24px; font-size: 1.125rem; }
+
+  .about__caption {
+    margin: 0;
+  }
+
+  /* Narrative prose */
+  .about__narrative h1 {
+    margin-bottom: 40px;
+  }
+
+  .about__narrative :global(p) {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: var(--color-body);
+    max-width: 65ch;
+    margin-bottom: 1.5rem;
+  }
+
+  .about__narrative :global(a) {
+    position: relative;
+    display: inline;
+    font-family: var(--font-serif);
+    color: var(--color-ink);
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--color-line-2);
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+
+  .about__narrative :global(a:hover),
+  .about__narrative :global(a:focus-visible) {
+    border-color: var(--color-accent);
+  }
 
   @media (max-width: 768px) {
-    .about__layout { grid-template-columns: 1fr; }
-    .about__photo-placeholder { max-width: 240px; }
+    .about__layout {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .about__photo-placeholder {
+      max-width: 240px;
+    }
   }
 </style>
