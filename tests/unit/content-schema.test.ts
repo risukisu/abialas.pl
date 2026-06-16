@@ -4,9 +4,9 @@ import { writingSchema, workSchema } from "../../src/content/config";
 describe("writing schema", () => {
   it("accepts a published essay with date + topics", () => {
     const v = {
-      title: "Marketing Operating System", status: "published", anatomy: "outcome",
+      title: "How I run marketing", status: "published", anatomy: "outcome",
       date: "2024-03-01", topics: ["system"], order: 1, featured: true,
-      role: "Marketing Director", timeframe: "2022–2025", scope: "Doubled MQL volume",
+      role: "Marketing Director", timeframe: "2022–2025", scope: "Best pipeline year in company history",
       summary: "Run marketing as engineering.",
     };
     expect(() => writingSchema.parse(v)).not.toThrow();

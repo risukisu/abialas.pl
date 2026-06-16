@@ -2,14 +2,14 @@
 /**
  * PillarSchematic — the signature interaction of the /system product page.
  *
- * "The Drafting Table": a precise engineering diagram of the Marketing
- * Operating System. Three pillars wired to a central core. Ink-on-mist and
+ * "The Drafting Table": a precise engineering diagram of the three-pillar
+ * marketing model. Three pillars wired to a central core. Ink-on-mist and
  * fully readable at rest; on hover / keyboard-focus / tap a pillar lights and
  * vermilion connector lines *draw in* (SVG stroke-dashoffset) like a draftsman
  * connecting nodes.
  *
  * Ground truth: the three pillars and their lines are drawn from the essay
- * src/content/writing/marketing-operating-system.md — Brand (the fuel),
+ * src/content/writing/how-i-run-marketing.md — Brand (the fuel),
  * Market Sensing (the radar), Lead Generation (the engine). Not invented.
  *
  * Progressive enhancement:
@@ -54,10 +54,10 @@ const pillars: Pillar[] = [
 ];
 ---
 
-<figure class="schematic blueprint" aria-label="Schematic of the Marketing Operating System and its three pillars">
+<figure class="schematic blueprint" aria-label="Schematic of the three-pillar marketing model and its connections">
   <figcaption class="legend">
     <span class="measure legend-id">FIG. 01</span>
-    <span class="legend-title">The three-pillar operating system</span>
+    <span class="legend-title">The three-pillar model</span>
   </figcaption>
 
   <div class="board">
@@ -80,7 +80,7 @@ const pillars: Pillar[] = [
       <path class="wire wire-leadgen" />
     </svg>
 
-    {/* Central core node — the operating system itself. */}
+    {/* Central core node — the system itself. */}
     <div class="core" aria-hidden="true">
       <span class="core-mark measure">SYS</span>
       <span class="core-dot"></span>

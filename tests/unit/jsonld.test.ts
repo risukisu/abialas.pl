@@ -17,13 +17,13 @@ describe("jsonld helpers", () => {
 
   it("creativeWorkSchema returns valid CreativeWork JSON", () => {
     const w = creativeWorkSchema({
-      name: "Marketing Operating System",
-      url: "https://abialas.pl/writing/marketing-operating-system",
+      name: "How I run marketing",
+      url: "https://abialas.pl/writing/how-i-run-marketing",
       author: "Andrzej Białas",
       description: "A system for running marketing as engineering.",
     });
     expect(w["@type"]).toBe("CreativeWork");
-    expect(w.name).toBe("Marketing Operating System");
+    expect(w.name).toBe("How I run marketing");
     expect(w.author).toEqual({ "@type": "Person", name: "Andrzej Białas" });
   });
 });

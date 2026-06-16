@@ -4,7 +4,7 @@ test("writing archive lists the published essay", async ({ page }) => {
   await page.goto("/writing");
   await expect(page.locator("h1")).toBeVisible();
   await expect(
-    page.locator("a[href='/writing/marketing-operating-system']").first()
+    page.locator("a[href='/writing/how-i-run-marketing']").first()
   ).toBeVisible();
 });
 

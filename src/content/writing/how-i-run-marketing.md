@@ -1,5 +1,5 @@
 ---
-title: "Marketing Operating System"
+title: "How I run marketing"
 status: published
 anatomy: outcome
 date: 2024-03-01
@@ -8,7 +8,7 @@ order: 1
 featured: true
 role: "Marketing Director, Appsilon"
 timeframe: "2022–2025"
-scope: "Built a 12-person marketing system — doubled MQL volume"
+scope: "Rebuilt B2B marketing into a three-pillar system — best pipeline year in company history"
 summary: "How I rebuilt a B2B marketing function as a system with three measurable pillars."
 ---
 
@@ -92,12 +92,12 @@ I'd also invest earlier in making the model legible to non-marketers. The three 
 
 ## Where this is going
 
-Here's the thing that excites me now. The operating system I built at Appsilon was manual. Every campaign brief, every competitive analysis, every content plan — written by hand, coordinated through project management tools and Slack threads and Google Docs.
+Here's the thing that excites me now. The system I built at Appsilon was manual. Every campaign brief, every competitive analysis, every content plan — written by hand, coordinated through project management tools and Slack threads and Google Docs.
 
 But the model itself — context in, campaigns out — is begging to be automated.
 
-I've been building tools that do exactly that. A marketing OS that stores strategy, positioning, brand rules, and ICP data in a version-controlled repo — and uses AI to generate campaign briefs, draft copy, and assemble assets that are downstream of governed context. Not "AI writes your marketing." More like: the system remembers everything you've decided, and the AI operates within those guardrails.
+I've been building tools that do exactly that. A marketing system that stores strategy, positioning, brand rules, and ICP data in a version-controlled repo — and uses AI to generate campaign briefs, draft copy, and assemble assets that are downstream of governed context. Not "AI writes your marketing." More like: the system remembers everything you've decided, and the AI operates within those guardrails.
 
 The market sensing pillar is where it gets really interesting. Competitive intelligence that runs continuously — scraping competitor sites, tracking positioning changes, monitoring feature releases. Or querying search engines and communities to audit how your market actually talks about the problems you solve, and comparing that against your own positioning. That gap between how you describe yourself and how the market describes the problem? That's where the best marketing insights live. And now you can surface them programmatically instead of waiting for someone to stumble across them at a conference.
 
-I'm not building this because I think AI replaces marketers. I'm building it because I've lived the alternative — the manual operating system, the tribal knowledge, the "I know it's in a Google Doc somewhere." The three-pillar model works. It just works better when the system can remember, reason, and move faster than any team can on its own.
+I'm not building this because I think AI replaces marketers. I'm building it because I've lived the alternative — the manual system, the tribal knowledge, the "I know it's in a Google Doc somewhere." The three-pillar model works. It just works better when the system can remember, reason, and move faster than any team can on its own.

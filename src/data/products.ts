@@ -10,7 +10,7 @@ export type Product = {
 export const products: Product[] = [
   {
     slug: "system",
-    name: "The Marketing Operating System",
+    name: "How I run marketing",
     blurb: "How I run B2B marketing as a system you can actually steer.",
     tag: "system",
     order: 1,
