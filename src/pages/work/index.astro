@@ -1,0 +1,505 @@
+---
+/**
+ * /work — the hire-focused room.
+ *
+ * "The Drafting Table" applied to a portfolio: a plain header that says what
+ * I do and how to reach me, then "What I built" (the work entries as
+ * problem → approach → result), a short in-system résumé, what others say,
+ * and a closing contact line. Of-a-piece with the storefront + alleys:
+ * blueprint header, measure labels, hairline rules, scarce vermilion.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PrimaryCta from "../../components/cta/PrimaryCta.astro";
+import SecondaryCta from "../../components/cta/SecondaryCta.astro";
+import InkedLink from "../../components/cta/InkedLink.astro";
+import { getCollection } from "astro:content";
+
+const built = (await getCollection("work"))
+  .filter((w) => w.data.status === "published")
+  .sort((a, b) => a.data.order - b.data.order);
+
+// A published essay sharing a work item's slug earns a "read the write-up" link.
+const essaySlugs = new Set(
+  (await getCollection("writing"))
+    .filter((e) => e.data.status === "published")
+    .map((e) => e.slug),
+);
+
+const email = "hello@abialas.pl";
+
+const roles = [
+  { role: "Head of Marketing", org: "Appsilon", years: "2023–present" },
+  { role: "Data4Good Lead", org: "Appsilon", years: "2022–2023" },
+  { role: "Senior Customer Success Coordinator", org: "EcoVadis", years: "2021–2022" },
+  { role: "Senior Policy Advisor & Consultant", org: "Oceana", years: "2011–2019" },
+];
+
+const frameworks = [
+  "3-Pillar Marketing Model",
+  "Allbound Campaign Template",
+  "Result-Based AORs",
+  "Events Playbook",
+  "Career Paths",
+];
+
+const skills = [
+  {
+    group: "Marketing",
+    items: "B2B demand gen · content strategy · brand · GTM · sales enablement · ABM · marketing ops (HubSpot)",
+  },
+  {
+    group: "Leadership",
+    items: "team building · SCRUM for marketing · cross-functional alignment · mentorship",
+  },
+  {
+    group: "AI & automation",
+    items: "AI-augmented workflows · GitHub-based marketing ops · competitive-intelligence automation",
+  },
+];
+
+const testimonials = [
+  {
+    quote:
+      "Andrzej is an excellent B2B marketer who understands both online and offline channels. Very data-driven, results-oriented, high attention to detail — best suited to companies where a comprehensive, multi-touch strategy is needed to acquire customers.",
+    name: "Adam Komarnicki",
+    role: "Group Director CEE & Baltics, Everfield (former manager)",
+  },
+  {
+    quote:
+      "You succeeded in building a high-performing marketing team. You delivered the best marketing year in Appsilon history.",
+    name: "Paweł Przytuła",
+    role: "Co-Founder / former manager (CRO at Appsilon)",
+  },
+  {
+    quote:
+      "Andrzej removes blockers and creates a space where we can accomplish our work. He's great at building tools and frameworks for the team to operate within.",
+    name: "Natalia Chrzanowska",
+    role: "Senior Marketing Manager (direct report)",
+  },
+];
+
+const parts = [
+  { key: "problem", label: "Problem" },
+  { key: "approach", label: "Approach" },
+  { key: "result", label: "Result" },
+] as const;
+---
+<BaseLayout
+  title="Work — Andrzej Białas"
+  description="What I build, a short CV, and the fastest way to reach me."
+>
+  <!-- ── Header ───────────────────────────────────────────────────
+       Hire-focused. What I do, then how to engage. Blueprint sheet
+       behind this zone only, same as the storefront/alleys. -->
+  <header class="work-head">
+    <div class="work-head__grid blueprint" aria-hidden="true"></div>
+    <div class="container work-head__inner">
+      <span class="measure work-head__coord">Work</span>
+      <h1 class="work-head__title">What I do</h1>
+      <p class="work-head__standfirst">
+        I run marketing as a system and build the tooling behind it. Below: a
+        few things I've built, the short version of my CV, and the fastest way
+        to reach me.
+      </p>
+      <div class="work-head__ctas">
+        <PrimaryCta href={`mailto:${email}`} label="Get in touch" />
+        <SecondaryCta href="/resume.pdf" label="Download résumé" />
+      </div>
+    </div>
+  </header>
+
+  <!-- ── What I built ─────────────────────────────────────────────
+       The proof. Each entry reads problem → approach → result. The
+       featured entry links out to its full write-up. -->
+  <section class="built">
+    <div class="container">
+      <div class="section-head">
+        <span class="measure">What I built</span>
+        <span class="section-head__rule" aria-hidden="true"></span>
+      </div>
+
+      <div class="built__list">
+        {built.map((w, i) => (
+          <article class="built-item">
+            <span class="measure built-item__coord">{String(i + 1).padStart(2, "0")}</span>
+            <div class="built-item__body">
+              <h2 class="built-item__title">{w.data.title}</h2>
+              {w.data.summary && <p class="built-item__summary">{w.data.summary}</p>}
+              <dl class="par">
+                {parts.map((p) =>
+                  w.data[p.key] ? (
+                    <div class="par__block">
+                      <dt class="measure par__label">{p.label}</dt>
+                      <dd class="par__text">{w.data[p.key]}</dd>
+                    </div>
+                  ) : null,
+                )}
+              </dl>
+              {essaySlugs.has(w.slug) && (
+                <p class="built-item__more">
+                  <InkedLink href={`/writing/${w.slug}`}>Read the full write-up</InkedLink>
+                </p>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Résumé ───────────────────────────────────────────────────
+       The short, in-system CV. Full PDF on request. -->
+  <section class="resume">
+    <div class="container">
+      <div class="section-head">
+        <span class="measure">Résumé</span>
+        <span class="section-head__rule" aria-hidden="true"></span>
+      </div>
+
+      <p class="resume__lede">
+        Andrzej Białas — Head of Marketing · B2B growth · AI-augmented marketing.
+      </p>
+
+      <div class="resume__roles">
+        {roles.map((r) => (
+          <div class="resume-row">
+            <span class="resume-row__role">{r.role}</span>
+            <span class="resume-row__org">{r.org}</span>
+            <span class="measure resume-row__years">{r.years}</span>
+          </div>
+        ))}
+      </div>
+
+      <div class="resume__blocks">
+        <div class="resume-block">
+          <span class="measure resume-block__label">Frameworks</span>
+          <p class="resume-block__body">{frameworks.join(" · ")}</p>
+        </div>
+        {skills.map((s) => (
+          <div class="resume-block">
+            <span class="measure resume-block__label">{s.group}</span>
+            <p class="resume-block__body">{s.items}</p>
+          </div>
+        ))}
+        <div class="resume-block">
+          <span class="measure resume-block__label">Education</span>
+          <p class="resume-block__body">
+            Warsaw University of Life Sciences — MSc Eng., Environmental Conservation
+          </p>
+        </div>
+      </div>
+
+      <p class="resume__download">
+        <SecondaryCta href="/resume.pdf" label="Download résumé (PDF)" />
+      </p>
+    </div>
+  </section>
+
+  <!-- ── What others say ──────────────────────────────────────────
+       Public LinkedIn recommendations, attributed. -->
+  <section class="voices">
+    <div class="container">
+      <div class="section-head">
+        <span class="measure">What others say</span>
+        <span class="section-head__rule" aria-hidden="true"></span>
+      </div>
+
+      <div class="voices__list">
+        {testimonials.map((t) => (
+          <figure class="quote">
+            <blockquote class="quote__text">{t.quote}</blockquote>
+            <figcaption class="quote__attr">
+              <span class="quote__name">{t.name}</span>
+              <span class="measure quote__role">{t.role}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact ──────────────────────────────────────────────────
+       Closing nudge. The footer carries the full contact block. -->
+  <section class="contact">
+    <div class="container contact__inner">
+      <span class="measure">Get in touch</span>
+      <p class="contact__line">
+        Hiring, comparing notes, or just curious how a piece of this works —
+        <InkedLink href={`mailto:${email}`}>email me</InkedLink>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ════════════════════════════════════════════════════════════════
+     /WORK · the hire-focused room
+     Header → What I built (P/A/R) → Résumé → Voices → Contact.
+     Hairlines + measure marks carry the drafting-table feel; vermilion
+     stays scarce (CTAs + inked-link nodes only).
+     ════════════════════════════════════════════════════════════════ */
+
+  /* ── Header ───────────────────────────────────────────────────── */
+  .work-head {
+    position: relative;
+    padding-top: clamp(48px, 7vw, 88px);
+    padding-bottom: var(--section-padding);
+    overflow: hidden;
+  }
+  .work-head__grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.45;
+    -webkit-mask-image: radial-gradient(
+      115% 88% at 22% 30%, #000 0%, rgba(0, 0, 0, 0.5) 45%, transparent 77%
+    );
+    mask-image: radial-gradient(
+      115% 88% at 22% 30%, #000 0%, rgba(0, 0, 0, 0.5) 45%, transparent 77%
+    );
+  }
+  .work-head__inner {
+    position: relative;
+    z-index: 1;
+  }
+  .work-head__coord {
+    display: block;
+    margin-bottom: 22px;
+    color: var(--color-muted);
+  }
+  .work-head__title {
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    max-width: 16ch;
+    margin: 0 0 26px;
+  }
+  .work-head__standfirst {
+    font-family: var(--font-serif);
+    font-size: clamp(1.15rem, 2.1vw, 1.4rem);
+    line-height: 1.5;
+    color: var(--color-body);
+    max-width: 52ch;
+    margin: 0 0 40px;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  .work-head__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* ── What I built ─────────────────────────────────────────────── */
+  .built {
+    padding-top: var(--section-padding);
+  }
+  .built__list {
+    border-top: 1px solid var(--color-line);
+  }
+  .built-item {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: 8px 24px;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .built-item__coord {
+    color: var(--color-muted);
+    padding-top: 6px;
+  }
+  .built-item__title {
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .built-item__summary {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    line-height: 1.5;
+    color: var(--color-body);
+    max-width: 56ch;
+    margin: 14px 0 0;
+  }
+  .par {
+    margin: 26px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .par__block {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: 16px;
+    align-items: baseline;
+  }
+  .par__label {
+    color: var(--color-muted);
+    padding-top: 3px;
+  }
+  .par__text {
+    margin: 0;
+    max-width: 62ch;
+    line-height: 1.6;
+    color: var(--color-body);
+  }
+  .built-item__more {
+    margin: 24px 0 0;
+  }
+
+  /* ── Résumé ───────────────────────────────────────────────────── */
+  .resume {
+    padding-top: var(--section-padding);
+  }
+  .resume__lede {
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+    line-height: 1.45;
+    color: var(--color-ink);
+    max-width: 46ch;
+    margin: 0 0 36px;
+  }
+  .resume__roles {
+    border-top: 1px solid var(--color-line);
+    margin-bottom: 40px;
+  }
+  .resume-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "role years" "org years";
+    column-gap: 24px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .resume-row__role {
+    grid-area: role;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    color: var(--color-ink);
+    line-height: 1.3;
+  }
+  .resume-row__org {
+    grid-area: org;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    margin-top: 2px;
+  }
+  .resume-row__years {
+    grid-area: years;
+    align-self: center;
+    color: var(--color-muted);
+  }
+  .resume__blocks {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+  .resume-block {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: 16px;
+    align-items: baseline;
+  }
+  .resume-block__label {
+    color: var(--color-muted);
+  }
+  .resume-block__body {
+    margin: 0;
+    max-width: 62ch;
+    line-height: 1.55;
+    color: var(--color-body);
+  }
+  .resume__download {
+    margin: 0;
+  }
+
+  /* ── Voices ───────────────────────────────────────────────────── */
+  .voices {
+    padding-top: var(--section-padding);
+  }
+  .voices__list {
+    display: grid;
+    gap: 36px;
+    max-width: 70ch;
+  }
+  .quote {
+    margin: 0;
+    padding-left: 20px;
+    border-left: 2px solid var(--color-line-2);
+  }
+  .quote__text {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    line-height: 1.5;
+    color: var(--color-ink);
+  }
+  .quote__attr {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .quote__name {
+    color: var(--color-body);
+    font-weight: 500;
+  }
+  .quote__role {
+    color: var(--color-muted);
+  }
+
+  /* ── Contact ──────────────────────────────────────────────────── */
+  .contact {
+    padding-top: var(--section-padding);
+  }
+  .contact__inner {
+    max-width: 60ch;
+  }
+  .contact__line {
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+    line-height: 1.5;
+    color: var(--color-ink);
+    margin: 16px 0 0;
+    max-width: 40ch;
+    font-weight: 400;
+  }
+
+  /* ── Shared section heads ─────────────────────────────────────── */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 34px;
+  }
+  .section-head__rule {
+    flex: 1;
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  /* ── Responsive ───────────────────────────────────────────────── */
+  @media (max-width: 720px) {
+    .built-item {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .built-item__coord {
+      padding-top: 0;
+      margin-bottom: 10px;
+    }
+    .par__block {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .resume-block {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .section-head {
+      gap: 14px;
+    }
+  }
+</style>
