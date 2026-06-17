@@ -38,7 +38,7 @@ const all = await getCollection("writing");
 const tag = data.topics[0];
 const related = (tag ? byTopic(all, tag) : []).filter((p) => p.slug !== piece.slug).slice(0, 3);
 ---
-<BaseLayout title={`${data.title} — Andrzej Białas`} description={data.summary || data.title} ogImage={`/images/writing/${piece.slug}-og.png`}>
+<BaseLayout title={`${data.title} — Andrzej Białas`} description={data.summary || data.title} ogType="article">
   <JsonLd slot="head" data={articleLd} />
   <JsonLd slot="head" data={breadcrumbLd} />
   <ReadingProgress />
