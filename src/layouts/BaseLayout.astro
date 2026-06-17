@@ -23,6 +23,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://abialas.pl"
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="Andrzej Białas — Writing" href="/rss.xml" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
