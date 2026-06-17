@@ -14,3 +14,6 @@ playwright-report/
 # Throwaway verification screenshots / scratch scripts (root-level, "_"-prefixed)
 /_*.png
 /_*.mjs
+
+# memsearch local index (tooling, per-machine)
+.memsearch/
