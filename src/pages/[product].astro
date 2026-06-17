@@ -15,9 +15,11 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import EssayCard from "../components/EssayCard.astro";
 import PillarSchematic from "../components/PillarSchematic.astro";
+import JsonLd from "../components/JsonLd.astro";
 import { getCollection } from "astro:content";
 import { products } from "../data/products";
 import { byTopic } from "../lib/pieces";
+import { collectionPageSchema, breadcrumbListSchema } from "../lib/jsonld";
 
 export async function getStaticPaths() {
   return products.map((p) => ({ params: { product: p.slug }, props: { product: p } }));
@@ -29,8 +31,21 @@ const pieces = byTopic(all, product.tag);
 
 const index = String(product.order).padStart(2, "0");
 const coord = `${index} / ${product.tag.toUpperCase()}`;
+
+const productUrl = `https://abialas.pl/${product.slug}`;
+const collectionLd = collectionPageSchema({
+  name: product.name,
+  url: productUrl,
+  description: product.blurb,
+});
+const breadcrumbLd = breadcrumbListSchema([
+  { name: "Home", url: "https://abialas.pl/" },
+  { name: product.name, url: productUrl },
+]);
 ---
 <BaseLayout title={product.name} description={product.blurb}>
+  <JsonLd slot="head" data={collectionLd} />
+  <JsonLd slot="head" data={breadcrumbLd} />
   <!-- ── Alley header ─────────────────────────────────────────────
        The focal moment. A faint blueprint sheet sits behind this zone
        only — lighter than the homepage masthead so the alley reads as

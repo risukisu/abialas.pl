@@ -11,9 +11,13 @@ test("draft piece returns 404", async ({ page }) => {
   expect(response?.status()).toBe(404);
 });
 
-test("piece page has JSON-LD CreativeWork", async ({ page }) => {
+test("piece page has Article + BreadcrumbList JSON-LD", async ({ page }) => {
   await page.goto("/writing/how-i-run-marketing");
-  const ld = await page.locator("script[type='application/ld+json']").first().textContent();
-  expect(ld).toContain("\"@type\":\"CreativeWork\"");
-  expect(ld).toContain("How I run marketing");
+  const blocks = await page
+    .locator("script[type='application/ld+json']")
+    .allTextContents();
+  const joined = blocks.join("\n");
+  expect(joined).toContain("\"@type\":\"Article\"");
+  expect(joined).toContain("\"@type\":\"BreadcrumbList\"");
+  expect(joined).toContain("How I run marketing");
 });

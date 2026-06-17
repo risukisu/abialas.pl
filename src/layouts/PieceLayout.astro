@@ -5,7 +5,7 @@ import ReadingProgress from "../components/ReadingProgress.astro";
 import EssayCard from "../components/EssayCard.astro";
 import JsonLd from "../components/JsonLd.astro";
 import type { CollectionEntry } from "astro:content";
-import { creativeWorkSchema } from "../lib/jsonld";
+import { articleSchema, breadcrumbListSchema } from "../lib/jsonld";
 import { getCollection } from "astro:content";
 import { byTopic } from "../lib/pieces";
 
@@ -15,12 +15,19 @@ export interface Props {
 const { piece } = Astro.props;
 const { data } = piece;
 
-const workLd = creativeWorkSchema({
-  name: data.title,
-  url: `https://abialas.pl/writing/${piece.slug}`,
+const pieceUrl = `https://abialas.pl/writing/${piece.slug}`;
+const articleLd = articleSchema({
+  title: data.title,
+  url: pieceUrl,
   author: "Andrzej Białas",
+  datePublished: data.date.toISOString().slice(0, 10),
   description: data.summary,
 });
+const breadcrumbLd = breadcrumbListSchema([
+  { name: "Home", url: "https://abialas.pl/" },
+  { name: "Writing", url: "https://abialas.pl/writing" },
+  { name: data.title, url: pieceUrl },
+]);
 
 const dateLabel = data.date.toLocaleString("en-US", { month: "short", year: "numeric" });
 const topic = data.topics[0];
@@ -32,7 +39,8 @@ const tag = data.topics[0];
 const related = (tag ? byTopic(all, tag) : []).filter((p) => p.slug !== piece.slug).slice(0, 3);
 ---
 <BaseLayout title={`${data.title} — Andrzej Białas`} description={data.summary || data.title} ogImage={`/images/writing/${piece.slug}-og.png`}>
-  <JsonLd slot="head" data={workLd} />
+  <JsonLd slot="head" data={articleLd} />
+  <JsonLd slot="head" data={breadcrumbLd} />
   <ReadingProgress />
 
   <article class="piece container">
