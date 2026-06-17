@@ -32,7 +32,8 @@ const pieces = byTopic(all, product.tag);
 const index = String(product.order).padStart(2, "0");
 const coord = `${index} / ${product.tag.toUpperCase()}`;
 
-const productUrl = `https://abialas.pl/${product.slug}`;
+// Trailing slash to match the canonical (astro build.format: 'directory').
+const productUrl = `https://abialas.pl/${product.slug}/`;
 const collectionLd = collectionPageSchema({
   name: product.name,
   url: productUrl,

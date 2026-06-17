@@ -15,7 +15,8 @@ export interface Props {
 const { piece } = Astro.props;
 const { data } = piece;
 
-const pieceUrl = `https://abialas.pl/writing/${piece.slug}`;
+// Trailing slash to match the canonical (astro build.format: 'directory') + RSS links.
+const pieceUrl = `https://abialas.pl/writing/${piece.slug}/`;
 const articleLd = articleSchema({
   title: data.title,
   url: pieceUrl,
@@ -25,7 +26,7 @@ const articleLd = articleSchema({
 });
 const breadcrumbLd = breadcrumbListSchema([
   { name: "Home", url: "https://abialas.pl/" },
-  { name: "Writing", url: "https://abialas.pl/writing" },
+  { name: "Writing", url: "https://abialas.pl/writing/" },
   { name: data.title, url: pieceUrl },
 ]);
 
