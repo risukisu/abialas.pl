@@ -26,7 +26,9 @@ Before I touched tactics, I needed to understand what was actually broken. Not s
 
 At Appsilon — a global B2B consultancy serving pharma, biotech, and data-heavy industries — the core issue was structural. Marketing wasn't organized around outcomes. It was organized around activities. People had tasks, not functions. There were no clear levers to pull when something went wrong, and no way to tell which efforts actually moved the needle.
 
-So I stopped thinking about campaigns and started thinking about architecture.
+Underneath the mess I had a simple conviction about what good B2B marketing actually is. It rests on two things: a deep, current understanding of the market, and a clear, consistent brand — knowing what value you deliver and for whom, then putting that in front of the right people at the right time. Content is how you carry it; in this business content is king and queen. And marketing sits at the base of the growth stack: it builds the awareness and trust that sales converts into customers and account management grows. None of that was running here. Marketing was a pile of activities, not a function with a job.
+
+So I stopped optimizing individual activities and started designing the architecture underneath them.
 
 ## Three pillars
 
@@ -61,6 +63,8 @@ This is where it all converts. Lead gen is the function aimed at the 5% of your 
 The biggest shift I made was moving from pure inbound dependency to an allbound model. Inbound is great when it works. But when Google changes its algorithm (and it will), or when AI Overviews start eating your organic traffic (and they did), you need other channels that are not subject to a platform's whims.
 
 We built a prospecting engine where marketing-generated warm contacts fed into structured sales outreach lists. We implemented HubSpot end-to-end for pipeline visibility. We set up and managed agency partnerships for outbound, with clear expectations and accountability. We delivered the best marketing year in the company's history in terms of qualified lead generation — and for the first time, marketing could actually predict its output.
+
+Pulled apart on a page like this, the three can look like separate departments. They aren't. They behave like connected vessels — brand makes the lead-gen engine more effective, market sensing sharpens both the brand and the engine, and lead gen capitalizes on the foundation the other two lay down. Strengthen one and the others gain pressure; let one run dry and you feel it everywhere. That's why I measure them separately but never run them in isolation.
 
 ## Why three and not four, or seven
 
