@@ -8,10 +8,11 @@ export interface Props {
   description?: string;
   ogImage?: string;
   ogType?: string;
+  ogImageAlt?: string;
   noindex?: boolean;
 }
 
-const { title, description = "Andrzej Białas — marketing systems, plainly.", ogImage = "/og-default.png", ogType = "website", noindex = false } = Astro.props;
+const { title, description = "Andrzej Białas — marketing systems, plainly.", ogImage = "/og-default.png", ogType = "website", ogImageAlt = "Andrzej Białas — marketing systems, plainly.", noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://abialas.pl").toString();
 ---
 <!doctype html>
@@ -32,12 +33,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://abialas.pl"
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
+    <meta property="og:image:alt" content={ogImageAlt} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(ogImage, Astro.site).toString()} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <slot name="head" />
   </head>
