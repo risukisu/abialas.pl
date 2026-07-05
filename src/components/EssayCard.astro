@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import InkedLink from "./cta/InkedLink.astro";
+import { topicHue } from "../data/hues";
 
 export interface Props { piece: CollectionEntry<"writing">; }
 const { piece } = Astro.props;
@@ -8,8 +9,9 @@ const { title, date, topics, summary } = piece.data;
 
 const dateLabel = date.toLocaleString("en-US", { month: "short", year: "numeric" });
 const meta = topics.length ? `${dateLabel} · ${topics[0]}` : dateLabel;
+const hue = topicHue(topics[0]);
 ---
-<article class="essay-card">
+<article class="essay-card" style={`--tick: var(--hue-${hue}-text);`}>
   <span class="measure essay-card__meta">{meta}</span>
   <h3 class="essay-card__title"><InkedLink href={`/writing/${piece.slug}`}>{title}</InkedLink></h3>
   {summary && <p class="essay-card__summary">{summary}</p>}
@@ -27,6 +29,19 @@ const meta = topics.length ? `${dateLabel} · ${topics[0]}` : dateLabel;
   .essay-card__meta {
     display: block;
     margin-bottom: 6px;
+  }
+
+  .essay-card__meta::before {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 9px;
+    background: var(--tick);
+  }
+
+  .essay-card:hover :global(a) {
+    color: var(--tick);
   }
 
   .essay-card__title {
