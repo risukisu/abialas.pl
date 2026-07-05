@@ -47,7 +47,7 @@ const countFor = (tag: string) => byTopic(all, tag).length;
   <section class="display">
     <div class="container">
       <div class="section-head">
-        <span class="measure">On display</span>
+        <span class="measure measure--system">On display</span>
         <span class="measure section-head__rule" aria-hidden="true"></span>
       </div>
       <div class="display__grid">
@@ -65,7 +65,7 @@ const countFor = (tag: string) => byTopic(all, tag).length;
     <section class="latest">
       <div class="container">
         <div class="section-head section-head--split">
-          <span class="measure">Latest</span>
+          <span class="measure measure--writing">Latest</span>
           <InkedLink href="/writing">All writing</InkedLink>
         </div>
         <div class="latest__list">
@@ -81,7 +81,7 @@ const countFor = (tag: string) => byTopic(all, tag).length;
        One honest paragraph, first person. Plain. -->
   <section class="about">
     <div class="container about__inner">
-      <span class="measure">About</span>
+      <span class="measure measure--about">About</span>
       <p class="about__body">
         I spent a decade in environmental NGOs before I ended up running
         marketing for a tech company. Most of what I know I learned by doing
@@ -128,6 +128,18 @@ const countFor = (tag: string) => byTopic(all, tag).length;
     );
   }
 
+  /* Soft hue wash under the blueprint sheet — light on the drafting table. */
+  .masthead::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(60% 55% at 12% 18%, rgb(222 60 38 / 0.16), transparent 60%),
+      radial-gradient(55% 50% at 88% 10%, rgb(34 87 214 / 0.14), transparent 60%),
+      radial-gradient(60% 55% at 78% 85%, rgb(46 125 79 / 0.13), transparent 60%);
+  }
+
   .masthead__inner {
     position: relative;
     z-index: 1;
@@ -145,6 +157,15 @@ const countFor = (tag: string) => byTopic(all, tag).length;
     letter-spacing: -0.025em;
     max-width: 16ch;
     margin: 0 0 28px;
+  }
+
+  .masthead__name::after {
+    content: "";
+    display: block;
+    width: 130px;
+    height: 6px;
+    margin-top: 22px;
+    background: var(--gradient-spectrum);
   }
 
   .masthead__sub {
@@ -205,8 +226,12 @@ const countFor = (tag: string) => byTopic(all, tag).length;
 
   /* ── 4 · About teaser ─────────────────────────────────────────── */
   .about {
-    padding-top: var(--section-padding);
+    margin-top: var(--section-padding);
+    padding-top: 64px;
+    padding-bottom: 96px;
+    background: var(--color-ink);
   }
+  .about .measure--about { color: var(--color-paper); opacity: 0.75; }
 
   .about__inner {
     max-width: 60ch;
@@ -216,11 +241,13 @@ const countFor = (tag: string) => byTopic(all, tag).length;
     font-family: var(--font-serif);
     font-size: clamp(1.2rem, 2.4vw, 1.5rem);
     line-height: 1.55;
-    color: var(--color-ink);
+    color: var(--color-paper);
     margin: 18px 0 0;
     max-width: 46ch;
     font-weight: 400;
   }
+
+  .about__body :global(a) { color: var(--link-on-ink); }
 
   /* ── Shared section heads ─────────────────────────────────────── */
   .section-head {
@@ -233,13 +260,17 @@ const countFor = (tag: string) => byTopic(all, tag).length;
   /* A measure rule trailing the label — schematic callout. */
   .section-head__rule {
     flex: 1;
-    height: 1px;
-    background: var(--color-line);
+    height: 3px;
+    background: var(--gradient-spectrum);
   }
 
   .section-head--split {
     justify-content: space-between;
   }
+
+  .measure--system { color: var(--hue-system-text); }
+  .measure--writing { color: var(--hue-writing-text); }
+  .measure--about { color: var(--hue-about-text); }
 
   /* ── Page-load reveal ─────────────────────────────────────────────
      One orchestrated, staggered fade-rise in the masthead only.
