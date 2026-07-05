@@ -87,6 +87,7 @@ const parts = [
 <BaseLayout
   title="Work — Andrzej Białas"
   description="What I build, a short CV, and the fastest way to reach me."
+  room="work"
 >
   <!-- ── Header ───────────────────────────────────────────────────
        Hire-focused. What I do, then how to engage. Blueprint sheet
@@ -95,7 +96,7 @@ const parts = [
     <div class="work-head__grid blueprint" aria-hidden="true"></div>
     <div class="container work-head__inner">
       <span class="measure work-head__coord">Work</span>
-      <h1 class="work-head__title">What I do</h1>
+      <h1 class="work-head__title room-title">What I do</h1>
       <p class="work-head__standfirst">
         I run marketing as a system and build the tooling behind it. Below: a
         few things I've built, the short version of my CV, and the fastest way
@@ -265,7 +266,6 @@ const parts = [
   .work-head__coord {
     display: block;
     margin-bottom: 22px;
-    color: var(--color-muted);
   }
   .work-head__title {
     font-size: clamp(2.5rem, 6vw, 4.25rem);
@@ -476,8 +476,8 @@ const parts = [
   }
   .section-head__rule {
     flex: 1;
-    height: 1px;
-    background: var(--color-line);
+    height: 3px;
+    background: var(--gradient-spectrum);
   }
 
   /* ── Responsive ───────────────────────────────────────────────── */

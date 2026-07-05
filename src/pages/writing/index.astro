@@ -29,6 +29,7 @@ const groups = sortedProducts
 <BaseLayout
   title="Writing — Andrzej Białas"
   description="Essays on marketing systems, plainly."
+  room="writing"
 >
   <!-- ── Archive header ────────────────────────────────────────────
        Index coordinate (measure mono), H1 in Newsreader, one honest
@@ -37,7 +38,7 @@ const groups = sortedProducts
   <header class="archive-head">
     <div class="container">
       <span class="measure archive-head__coord">Archive / Writing</span>
-      <h1 class="archive-head__title">Writing</h1>
+      <h1 class="archive-head__title room-title">Writing</h1>
       <p class="archive-head__standfirst">
         Essays on the systems behind the work — plus shorter notes when
         there's something worth saying.
@@ -53,7 +54,7 @@ const groups = sortedProducts
     groups.map(({ product, pieces }) => (
       <section class="archive-group">
         <div class="container">
-          <div class="section-head">
+          <div class="section-head" style={`--room-text: var(--hue-${product.hue}-text);`}>
             <span class="measure">
               <InkedLink href={`/${product.slug}`}>{product.name}</InkedLink>
             </span>
@@ -92,7 +93,6 @@ const groups = sortedProducts
   .archive-head__coord {
     display: block;
     margin-bottom: 22px;
-    color: var(--color-muted);
   }
 
   .archive-head__title {
@@ -139,10 +139,16 @@ const groups = sortedProducts
     margin-bottom: 34px;
   }
 
+  /* The label links to another room, so it wears that room's hue —
+     .inked's own ink color would otherwise defeat the measure tint. */
+  .section-head .measure :global(.inked) {
+    color: var(--room-text);
+  }
+
   .section-head__rule {
     flex: 1;
-    height: 1px;
-    background: var(--color-line);
+    height: 3px;
+    background: var(--gradient-spectrum);
   }
 
   /* ── Empty state ──────────────────────────────────────────────── */

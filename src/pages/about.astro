@@ -17,7 +17,7 @@ const person = personSchema({
   ],
 });
 ---
-<BaseLayout title="About — Andrzej Białas" description="Marketing systems for technical companies.">
+<BaseLayout title="About — Andrzej Białas" description="Marketing systems for technical companies." room="about">
   <JsonLd slot="head" data={person} />
   <section class="container about">
     <div class="about__layout">
@@ -27,7 +27,7 @@ const person = personSchema({
         <p class="measure about__caption">Based in Warsaw</p>
       </aside>
       <div class="about__narrative">
-        <h1>About</h1>
+        <h1 class="room-title">About</h1>
         <Content />
       </div>
     </div>

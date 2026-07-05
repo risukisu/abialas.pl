@@ -44,7 +44,7 @@ const breadcrumbLd = breadcrumbListSchema([
   { name: product.name, url: productUrl },
 ]);
 ---
-<BaseLayout title={product.name} description={product.blurb}>
+<BaseLayout title={product.name} description={product.blurb} room={product.hue}>
   <JsonLd slot="head" data={collectionLd} />
   <JsonLd slot="head" data={breadcrumbLd} />
   <!-- ── Alley header ─────────────────────────────────────────────
@@ -57,7 +57,7 @@ const breadcrumbLd = breadcrumbListSchema([
     <div class="alley-head__grid blueprint" aria-hidden="true"></div>
     <div class="container alley-head__inner">
       <span class="measure alley-head__coord">{coord}</span>
-      <h1 class="alley-head__name">{product.name}</h1>
+      <h1 class="alley-head__name room-title">{product.name}</h1>
       <p class="alley-head__standfirst">{product.blurb}</p>
     </div>
   </header>
@@ -144,7 +144,6 @@ const breadcrumbLd = breadcrumbListSchema([
   .alley-head__coord {
     display: block;
     margin-bottom: 22px;
-    color: var(--color-muted);
   }
 
   .alley-head__name {
@@ -211,8 +210,8 @@ const breadcrumbLd = breadcrumbListSchema([
 
   .section-head__rule {
     flex: 1;
-    height: 1px;
-    background: var(--color-line);
+    height: 3px;
+    background: var(--gradient-spectrum);
   }
 
   /* ── Responsive ───────────────────────────────────────────────── */
