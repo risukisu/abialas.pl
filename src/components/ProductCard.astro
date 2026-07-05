@@ -11,8 +11,8 @@ const countLabel =
   count === 0 ? "In progress" : count === 1 ? "1 piece" : `${count} pieces`;
 ---
 
-<article class="card">
-  <div class="head">
+<article class="card" style={`--card-hue: var(--hue-${product.hue}); --card-hue-text: var(--hue-${product.hue}-text);`}>
+  <div class="head head--bar">
     <span class="measure idx">{index} / {tag}</span>
   </div>
 
@@ -43,7 +43,8 @@ const countLabel =
     border: 1px solid var(--color-line);
     /* inset hairline stays invisible at rest, sharpens on hover */
     box-shadow: inset 0 0 0 0 transparent;
-    transition: border-color 0.28s cubic-bezier(0.3, 0.8, 0.3, 1),
+    transition: transform 0.25s cubic-bezier(0.3, 0.8, 0.3, 1),
+      border-color 0.28s cubic-bezier(0.3, 0.8, 0.3, 1),
       box-shadow 0.28s cubic-bezier(0.3, 0.8, 0.3, 1);
   }
 
@@ -55,8 +56,8 @@ const countLabel =
     right: 14px;
     width: 12px;
     height: 12px;
-    border-top: 2px solid var(--color-accent);
-    border-right: 2px solid var(--color-accent);
+    border-top: 2px solid var(--card-hue);
+    border-right: 2px solid var(--card-hue);
     opacity: 0;
     transform: scale(0);
     transform-origin: top right;
@@ -68,6 +69,7 @@ const countLabel =
   .card:focus-within {
     border-color: var(--color-line-2);
     box-shadow: inset 0 0 0 1px var(--color-line-2);
+    transform: translateY(-3px);
   }
 
   .card:hover::after,
@@ -81,6 +83,14 @@ const countLabel =
     display: flex;
     align-items: center;
   }
+
+  /* Full-bleed hue bar; paper text on the text-variant fill (AA-checked). */
+  .head--bar {
+    margin: -34px -32px 0;
+    padding: 24px 32px 14px;
+    background: var(--card-hue-text);
+  }
+  .head--bar .idx { color: var(--color-paper); }
 
   .idx {
     position: relative;
@@ -96,7 +106,7 @@ const countLabel =
     left: calc(100% + 10px);
     width: 44px;
     height: 2px;
-    background: var(--color-accent);
+    background: rgb(234 240 246 / 0.85);
     transform: scaleX(0);
     transform-origin: left center;
     transition: transform 0.3s cubic-bezier(0.3, 0.8, 0.3, 1);
@@ -153,6 +163,7 @@ const countLabel =
      reduce rule also clamps transitions; here we make the marks
      legible at rest-of-hover without any positional motion. */
   @media (prefers-reduced-motion: reduce) {
+    .card, .card:hover, .card:focus-within { transform: none; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
     .card::after {
       transform: scale(1);
       transition: opacity 0.2s ease;
