@@ -8,6 +8,7 @@ import type { CollectionEntry } from "astro:content";
 import { articleSchema, breadcrumbListSchema } from "../lib/jsonld";
 import { getCollection } from "astro:content";
 import { byTopic } from "../lib/pieces";
+import { topicHue } from "../data/hues";
 
 export interface Props {
   piece: CollectionEntry<"writing">;
@@ -32,6 +33,7 @@ const breadcrumbLd = breadcrumbListSchema([
 
 const dateLabel = data.date.toLocaleString("en-US", { month: "short", year: "numeric" });
 const topic = data.topics[0];
+const room = topicHue(topic);
 const metaLine = topic ? `${dateLabel} · ${topic}` : dateLabel;
 
 // Related = published essays sharing this piece's first topic, minus this one, up to 3.
@@ -39,7 +41,7 @@ const all = await getCollection("writing");
 const tag = data.topics[0];
 const related = (tag ? byTopic(all, tag) : []).filter((p) => p.slug !== piece.slug).slice(0, 3);
 ---
-<BaseLayout title={`${data.title} — Andrzej Białas`} description={data.summary || data.title} ogType="article">
+<BaseLayout title={`${data.title} — Andrzej Białas`} description={data.summary || data.title} ogType="article" room={room}>
   <JsonLd slot="head" data={articleLd} />
   <JsonLd slot="head" data={breadcrumbLd} />
   <ReadingProgress />
@@ -177,6 +179,7 @@ const related = (tag ? byTopic(all, tag) : []).filter((p) => p.slug !== piece.sl
   .prose :global(a:focus-visible) {
     border-color: var(--color-accent);
   }
+  .prose :global(a:hover) { color: var(--room-text); }
 
   /* Pull-quote: larger serif, vermilion hanging rule, set apart. */
   .prose :global(blockquote) {
