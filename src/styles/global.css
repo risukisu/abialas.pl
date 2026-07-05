@@ -14,6 +14,15 @@
   --color-line:   rgb(21 50 78 / 0.20);
   --color-line-2: rgb(21 50 78 / 0.42);
 
+  /* Hue registry — mirrors src/data/hues.ts (enforced by tests/unit/hues.test.ts) */
+  --hue-system: #DE3C26;  --hue-system-text: #C22D18;
+  --hue-ai: #2257D6;      --hue-ai-text: #2257D6;
+  --hue-work: #A5700C;    --hue-work-text: #8A5D0B;
+  --hue-writing: #2E7D4F; --hue-writing-text: #297147;
+  --hue-about: #7A4A9E;   --hue-about-text: #7A4A9E;
+  --link-on-ink: #E8A13C;
+  --gradient-spectrum: linear-gradient(90deg, #DE3C26, #A5700C, #2E7D4F, #2257D6);
+
   /* Type */
   --font-serif: "Newsreader Variable", Newsreader, Georgia, serif;
   --font-sans:  "Geist Variable", Geist, ui-sans-serif, system-ui, sans-serif;
@@ -42,6 +51,22 @@
   --serif: var(--font-serif);
   --sans: var(--font-sans);
   --mono: var(--font-mono);
+}
+
+/* ── Room hues — color as wayfinding ─────────────────────────────
+   A page opts in via BaseLayout's `room` prop → data-room on <main>.
+   raw hue = decorative (top border, underline bar); text = readable tint. */
+[data-room="system"]  { --room: var(--hue-system);  --room-text: var(--hue-system-text); }
+[data-room="ai"]      { --room: var(--hue-ai);      --room-text: var(--hue-ai-text); }
+[data-room="work"]    { --room: var(--hue-work);    --room-text: var(--hue-work-text); }
+[data-room="writing"] { --room: var(--hue-writing); --room-text: var(--hue-writing-text); }
+[data-room="about"]   { --room: var(--hue-about);   --room-text: var(--hue-about-text); }
+
+main[data-room] { border-top: 6px solid var(--room); }
+[data-room] .measure { color: var(--room-text); }
+[data-room] .room-title::after {
+  content: ""; display: block; width: 96px; height: 10px;
+  margin-top: 20px; background: var(--room);
 }
 
 html {

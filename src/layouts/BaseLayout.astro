@@ -10,9 +10,11 @@ export interface Props {
   ogType?: string;
   ogImageAlt?: string;
   noindex?: boolean;
+  /** Room hue key (see src/data/hues.ts) — tints measures, draws the room bar. */
+  room?: string;
 }
 
-const { title, description = "Andrzej Białas — marketing systems, plainly.", ogImage = "/og-default.png", ogType = "website", ogImageAlt = "Andrzej Białas — marketing systems, plainly.", noindex = false } = Astro.props;
+const { title, description = "Andrzej Białas — marketing systems, plainly.", ogImage = "/og-default.png", ogType = "website", ogImageAlt = "Andrzej Białas — marketing systems, plainly.", noindex = false, room } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://abialas.pl").toString();
 ---
 <!doctype html>
@@ -46,7 +48,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://abialas.pl"
   </head>
   <body>
     <Nav />
-    <main>
+    <main data-room={room}>
       <slot />
     </main>
     <Footer />
