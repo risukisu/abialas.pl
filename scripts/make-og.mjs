@@ -37,7 +37,7 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
 
   <!-- wordmark -->
   <text x="88" y="345" font-family="Georgia, 'Times New Roman', serif"
-        font-size="92" font-weight="500" fill="${INK}">Andrzej Białas</text>
+        font-size="92" font-weight="500" fill="${INK}">Andrzej Białaś</text>
 
   <!-- one plain line -->
   <text x="90" y="410" font-family="'Segoe UI', Arial, sans-serif"

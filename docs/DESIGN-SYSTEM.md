@@ -93,6 +93,12 @@ Where color may appear (everything on this list is built):
 7. Essay-row ticks — 9px square before each meta in the essay's topic hue; title tints on row hover (EssayCard).
 8. Room hues — every room: 6px `--room` top border on `main[data-room]`, measures tinted `--room-text`, h1 `.room-title::after` underline bar (96×10px).
 9. Reading pages — progress bar, kicker, and prose link hover take the topic hue.
+10. Featured ink plate — `/writing` opens with one essay in full inversion (ink
+    ground, paper text, `--link-on-ink` ochre read-link — the About band's
+    vocabulary). Topic hue appears only as a paper-outlined 9px tick; hues read
+    muddy on ink, so nothing else on the plate is tinted. Selection:
+    `featured: true` frontmatter, else newest published; the essay stays in its
+    archive group below (the plate highlights, the catalog stays complete).
 
 Where color may **not** appear: body text (always `--color-body`/`--color-ink`),
 backgrounds outside the About band, the footer, and the nav — with one pre-existing
@@ -127,7 +133,7 @@ labels wear the *target* product's hue via a per-group inline
 | Component | One line |
 |---|---|
 | `Nav.astro` | Sticky mist bar; serif brand, sans links; active page in `--color-accent`. |
-| `Footer.astro` | Contact / elsewhere columns on mist; muted measures; outside `main`, so never room-tinted. |
+| `Footer.astro` | Title block on mist: identity row (name + tagline · social icon tiles), Substack embed framed by our hairline, Explore/Contact/Elsewhere columns, © strip. Outside `main`, never room-tinted; only accent-on-hover. |
 | `ProductCard.astro` | Exhibit card. Reads `product.hue` → inline `--card-hue`/`--card-hue-text`; full-bleed `head--bar` fill (text variant) with paper index; hue corner mark; 3px hover lift. |
 | `EssayCard.astro` | Archive row. `topicHue(topics[0])` → inline `--tick`; 9px square before the meta; title tints to `--tick` on row hover. |
 | `PieceMeta.astro` | Role · timeframe · scope marks in mono between hairlines (outcome essays). |
@@ -169,6 +175,10 @@ and read them against the `*-C.png` mockups (regenerable via `make-shots.mjs` th
 the mockups include injection hacks, so match *intent*; AA text variants are the
 sanctioned difference). Note: `animations: 'disabled'` freezes the scroll-driven
 progress bar — verify it via computed styles instead.
+
+The Astro dev toolbar is disabled (`astro.config.mjs` `devToolbar`) — its
+injected h1s ("Audit", "Settings"…) broke strict-mode `h1` assertions whenever
+playwright reused a running dev server on :4321 instead of spawning `preview`.
 
 ---
 

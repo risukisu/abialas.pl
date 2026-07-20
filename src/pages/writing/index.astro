@@ -15,8 +15,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import EssayCard from "../../components/EssayCard.astro";
 import InkedLink from "../../components/cta/InkedLink.astro";
 import { getCollection } from "astro:content";
-import { byTopic } from "../../lib/pieces";
+import { byTopic, featuredPieces, latest } from "../../lib/pieces";
 import { products } from "../../data/products";
+import { topicHue } from "../../data/hues";
 
 const all = await getCollection("writing");
 const sortedProducts = [...products].sort((a, b) => a.order - b.order);
@@ -25,6 +26,14 @@ const sortedProducts = [...products].sort((a, b) => a.order - b.order);
 const groups = sortedProducts
   .map((p) => ({ product: p, pieces: byTopic(all, p.tag) }))
   .filter((g) => g.pieces.length > 0);
+
+// The ink plate: first `featured: true` essay, else the newest published one.
+// The plate highlights; the groups below stay the complete catalog (the
+// featured essay is deliberately NOT removed from its group).
+const featured = featuredPieces(all, 1)[0] ?? latest(all, 1)[0];
+const featuredHue = featured ? topicHue(featured.data.topics[0]) : null;
+const featuredDate = featured?.data.date.toLocaleString("en-US", { month: "short", year: "numeric" });
+const featuredTopic = featured?.data.topics[0];
 ---
 <BaseLayout
   title="Writing — Andrzej Białaś"
@@ -45,6 +54,30 @@ const groups = sortedProducts
       </p>
     </div>
   </header>
+
+  <!-- ── Featured plate ────────────────────────────────────────────
+       The ink plate: one essay in full inversion — ink ground, paper
+       text, ochre read-link (the About-band vocabulary). Topic hue
+       appears only as the paper-outlined tick; hues read muddy on ink.
+       Whole plate is clickable via the stretched title link. -->
+  {featured && (
+    <section class="featured">
+      <div class="container">
+        <article class="featured__plate" style={`--tick: var(--hue-${featuredHue});`}>
+          <span class="measure featured__meta">
+            Featured{featuredTopic && ` · ${featuredTopic}`} · {featuredDate}
+          </span>
+          <h2 class="featured__title">
+            <a href={`/writing/${featured.slug}`}>{featured.data.title}</a>
+          </h2>
+          {featured.data.summary && (
+            <p class="featured__standfirst">{featured.data.summary}</p>
+          )}
+          <span class="featured__read" aria-hidden="true">Read the essay</span>
+        </article>
+      </div>
+    </section>
+  )}
 
   <!-- ── Grouped archive ───────────────────────────────────────────
        One section per product that has published pieces. Section head:
@@ -112,6 +145,99 @@ const groups = sortedProducts
     margin: 0;
     font-weight: 400;
     letter-spacing: -0.005em;
+  }
+
+  /* ── Featured plate ───────────────────────────────────────────────
+     Full inversion — the About band's vocabulary applied to one essay.
+     Paper on ink; the read-link wears --link-on-ink ochre (the gated
+     on-ink pair); the topic hue appears only as a paper-outlined tick. */
+  /* No own padding — the head's bottom padding spaces it above, the
+     first group's top padding below. Keeps the page's single-SP rhythm. */
+  .featured {
+    padding: 0;
+  }
+
+  .featured__plate {
+    position: relative;
+    background: var(--color-ink);
+    padding: clamp(36px, 5.5vw, 64px) clamp(28px, 5vw, 64px);
+    transition: transform 0.18s ease;
+  }
+
+  .featured__plate:hover,
+  .featured__plate:focus-within {
+    transform: translateY(-3px);
+  }
+
+  .featured__meta {
+    display: block;
+    color: var(--color-paper);
+    opacity: 0.72;
+    margin-bottom: 20px;
+  }
+
+  /* Topic tick — raw hue with a paper outline so any hue reads on ink. */
+  .featured__meta::before {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 9px;
+    background: var(--tick);
+    outline: 1px solid var(--color-paper);
+  }
+
+  .featured__title {
+    margin: 0 0 18px;
+    font-size: clamp(1.9rem, 4.5vw, 3.1rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    max-width: 22ch;
+  }
+
+  /* Stretched link — the whole plate is the click target. */
+  .featured__title a {
+    color: var(--color-paper);
+    text-decoration: none;
+    border: none;
+    transition: color 0.15s;
+  }
+  .featured__title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .featured__plate:hover .featured__title a,
+  .featured__title a:focus-visible {
+    color: var(--link-on-ink);
+  }
+
+  .featured__standfirst {
+    font-family: var(--font-serif);
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    line-height: 1.5;
+    color: var(--color-paper);
+    opacity: 0.85;
+    max-width: 54ch;
+    margin: 0 0 28px;
+    font-weight: 400;
+  }
+
+  .featured__read {
+    font: 500 15px var(--font-sans);
+    color: var(--link-on-ink);
+    border-bottom: 1px solid var(--link-on-ink);
+    padding-bottom: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .featured__plate {
+      transition: none;
+    }
+    .featured__plate:hover,
+    .featured__plate:focus-within {
+      transform: none;
+    }
   }
 
   /* ── Grouped sections ─────────────────────────────────────────── */
