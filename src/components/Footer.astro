@@ -67,11 +67,13 @@ const socials = [
       <p class="footer__pitch">
         The Grug-Brained Marketer — plain words about marketing, in your inbox.
       </p>
+      <!-- Eager on purpose: lazy-loading left a blank box / inert-looking
+           button for the beat between scroll-into-view and Substack's JS
+           booting, which read as broken. -->
       <iframe
         class="footer__embed"
         src="https://grugbrained.substack.com/embed"
         title="Subscribe to the Grug-Brained Marketer on Substack"
-        loading="lazy"
         scrolling="no"
       ></iframe>
     </div>
