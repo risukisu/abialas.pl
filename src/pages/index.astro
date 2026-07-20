@@ -13,6 +13,15 @@ const all = await getCollection("writing");
 const sortedProducts = [...products].sort((a, b) => a.order - b.order);
 const recent = latest(all, 3);
 const countFor = (tag: string) => byTopic(all, tag).length;
+
+// The legend: every room on one sheet — products first (their own blurbs),
+// then the three fixed rooms. Ticks + hover tints follow the wayfinding rules.
+const rooms = [
+  ...sortedProducts.map((p) => ({ href: `/${p.slug}`, name: p.name, line: p.blurb, hue: p.hue })),
+  { href: "/work", name: "Work", line: "What I built, the résumé, and what people say.", hue: "work" },
+  { href: "/writing", name: "Writing", line: "Every essay, grouped by topic.", hue: "writing" },
+  { href: "/about", name: "About", line: "Who I am and how I got here.", hue: "about" },
+];
 ---
 <BaseLayout
   title="Andrzej Białaś"
@@ -89,12 +98,39 @@ const countFor = (tag: string) => byTopic(all, tag).length;
       </p>
     </div>
   </section>
+
+  <!-- ── 5 · The rooms ─────────────────────────────────────────────
+       The sheet's key, closing the page: every room as a tile on the
+       gridded surface (echoes the exhibit grid). Hue tick + name +
+       one line + arrow; the complete index of where everything lives. -->
+  <section class="nav-grid">
+    <div class="container">
+      <div class="section-head">
+        <span class="measure">The rooms</span>
+        <span class="measure section-head__rule" aria-hidden="true"></span>
+      </div>
+      <nav aria-label="Rooms">
+        <div class="nav-grid__list">
+          {rooms.map((r) => (
+            <a href={r.href} class="nav-grid__item" style={`--tick: var(--hue-${r.hue}); --tint: var(--hue-${r.hue}-text);`}>
+              <span class="nav-grid__text">
+                <span class="nav-grid__label">{r.name}</span>
+                <span class="nav-grid__line">{r.line}</span>
+              </span>
+              <span class="nav-grid__arrow" aria-hidden="true">→</span>
+            </a>
+          ))}
+        </div>
+      </nav>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
   /* ════════════════════════════════════════════════════════════════
      HOME · The Digital Storefront
-     Business card → products on display → latest → about teaser.
+     Business card → products on display → latest → about teaser →
+     the rooms (closing directory).
      Catalog macrostructure, not hero→features→CTA. Restraint over
      density; hairlines and measure marks carry the schematic feel.
      ════════════════════════════════════════════════════════════════ */
@@ -272,6 +308,106 @@ const countFor = (tag: string) => byTopic(all, tag).length;
   .measure--writing { color: var(--hue-writing-text); }
   .measure--about { color: var(--hue-about-text); }
 
+  /* ── 5 · The rooms ────────────────────────────────────────────────
+     Tiles on the gridded surface — same hairline construction as the
+     exhibit grid. Each tile carries its room's tick; the name tints to
+     the room's text hue on hover (the essay-row idiom). ─────────────── */
+  .nav-grid {
+    padding-top: var(--section-padding);
+    padding-bottom: var(--section-padding);
+  }
+
+  .nav-grid__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--color-line);
+    border: 1px solid var(--color-line);
+  }
+
+  .nav-grid__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 32px;
+    background: var(--color-bg);
+    text-decoration: none;
+    border: none;
+    color: var(--color-ink);
+    transition: background-color 0.18s ease;
+  }
+
+  /* Five rooms, two columns — the odd tile closes the sheet full-width. */
+  .nav-grid__item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .nav-grid__item:hover,
+  .nav-grid__item:focus-visible {
+    background-color: var(--color-bg-hover, rgba(0, 0, 0, 0.02));
+    outline: none;
+  }
+
+  .nav-grid__text {
+    display: block;
+  }
+
+  .nav-grid__label {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.4;
+    transition: color 0.15s;
+  }
+
+  /* Room tick before the name — the wayfinding mark. */
+  .nav-grid__label::before {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 10px;
+    background: var(--tick);
+  }
+
+  .nav-grid__item:hover .nav-grid__label,
+  .nav-grid__item:focus-visible .nav-grid__label {
+    color: var(--tint);
+  }
+
+  .nav-grid__line {
+    display: block;
+    margin-top: 4px;
+    padding-left: 19px; /* aligns under the name, past the tick */
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--color-muted);
+  }
+
+  .nav-grid__arrow {
+    font-size: 1.2rem;
+    margin-left: 16px;
+    opacity: 0.5;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .nav-grid__item:hover .nav-grid__arrow,
+  .nav-grid__item:focus-visible .nav-grid__arrow {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-grid__arrow {
+      transition: opacity 0.18s ease;
+    }
+    .nav-grid__item:hover .nav-grid__arrow,
+    .nav-grid__item:focus-visible .nav-grid__arrow {
+      transform: none;
+    }
+  }
+
   /* ── Page-load reveal ─────────────────────────────────────────────
      One orchestrated, staggered fade-rise in the masthead only.
      Fully disabled under prefers-reduced-motion. ──────────────────── */
@@ -304,6 +440,15 @@ const countFor = (tag: string) => byTopic(all, tag).length;
     }
     .section-head {
       gap: 14px;
+    }
+    .nav-grid__list {
+      grid-template-columns: 1fr;
+    }
+    .nav-grid__item {
+      padding: 24px 28px;
+    }
+    .nav-grid__label {
+      font-size: 1.05rem;
     }
   }
 </style>
