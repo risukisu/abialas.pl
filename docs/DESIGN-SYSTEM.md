@@ -89,9 +89,10 @@ Where color may appear (everything on this list is built):
 3. Product-card hue bars — full-bleed `--card-hue-text` fill with paper text (see ProductCard, §7).
 4. Gradient section rules — 3px `--gradient-spectrum` after section labels.
 5. Tinted section labels — home: On display vermilion, Latest moss (`.measure--system/--writing`).
-6. Work/Writing display tiles — the home exhibit grid closes with two lighter
-   tiles: 9px hue tick before the name, name tints to `--hue-*-text` on hover
-   (`index.astro` `.card--section`). (The home ink About band was retired
+6. The home exhibit grid holds all four destinations as equal ProductCard
+   plates — Work and Writing are Product-shaped locally in `index.astro`
+   (never in `products.ts`: its slugs feed `[product].astro` routes and would
+   collide with the real pages). (The home ink About band was retired
    2026-07-20 — bio moved to the footer identity block; ink inversion lives
    on in the /writing featured plate, item 10.)
 7. Essay-row ticks — 9px square before each meta in the essay's topic hue; title tints on row hover (EssayCard).
@@ -138,7 +139,7 @@ labels wear the *target* product's hue via a per-group inline
 |---|---|
 | `Nav.astro` | Sticky mist bar; serif brand, sans links; active page in `--color-accent`. |
 | `Footer.astro` | Title block on mist: identity row (name + tagline + bio line · social icon tiles), Substack embed framed by our hairline, Explore/Contact/Elsewhere columns, © strip. Outside `main`, never room-tinted; only accent-on-hover. |
-| `ProductCard.astro` | Exhibit card. Reads `product.hue` → inline `--card-hue`/`--card-hue-text`; full-bleed `head--bar` fill (text variant) with paper index; hue corner mark; 3px hover lift. |
+| `ProductCard.astro` | Exhibit card — the whole plate is one `<a>`. Reads `product.hue` → inline `--card-hue`/`--card-hue-text`; full-bleed `head--bar` fill (text variant) with paper index; hue corner mark; 3px hover lift; foot arrow slides + tints on hover (replaced the Enter button 2026-07-20); optional `countLabel` override (Work: "N built · résumé"); `:focus-visible` hue outline. |
 | `EssayCard.astro` | Archive row. `topicHue(topics[0])` → inline `--tick`; 9px square before the meta; title tints to `--tick` on row hover. |
 | `PieceMeta.astro` | Role · timeframe · scope marks in mono between hairlines (outcome essays). |
 | `ReadingProgress.astro` | 2px scroll-progress bar in `var(--room, var(--color-accent))`. |
