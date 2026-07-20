@@ -40,11 +40,14 @@ const socials = [
 ];
 ---
 <footer id="contact" class="footer">
-  <!-- 1 · Identity row -->
+  <!-- 1 · Identity row with about narrative -->
   <div class="container footer__top">
     <div class="footer__id">
       <p class="footer__name">Andrzej Białaś</p>
       <p class="footer__tagline">Marketing as a System</p>
+      <p class="footer__about">
+        I spent a decade in environmental NGOs before I ended up running marketing for tech companies. Most of what I know I learned by doing it badly first. <a href="/about">More</a>
+      </p>
     </div>
     <ul class="footer__social" aria-label="Profiles elsewhere">
       {socials.map((s) => (
@@ -137,8 +140,30 @@ const socials = [
 
   .footer__tagline {
     color: var(--color-muted);
-    margin: 0;
+    margin: 0 0 12px;
     font-size: 0.95rem;
+  }
+
+  .footer__about {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--color-body);
+    margin: 0;
+    max-width: 45ch;
+    font-weight: 400;
+  }
+
+  .footer__about a {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-line-2);
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .footer__about a:hover {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-accent);
   }
 
   .footer__social {

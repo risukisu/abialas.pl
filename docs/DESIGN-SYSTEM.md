@@ -42,7 +42,7 @@ Hue registry — source of truth `src/data/hues.ts`, mirrored as tokens in `glob
 | writing | `#2E7D4F` | `#297147` |
 | about | `#7A4A9E` | `#7A4A9E` |
 
-Plus `--link-on-ink: #E8A13C` (ochre link on the ink About band) and
+Plus `--link-on-ink: #E8A13C` (ochre link on ink panels — the /writing featured plate) and
 `--gradient-spectrum: linear-gradient(90deg, #DE3C26, #A5700C, #2E7D4F, #2257D6)`.
 
 **The usage rule:** `raw` = decorative marks, washes, underline bars, borders;
@@ -88,8 +88,12 @@ Where color may appear (everything on this list is built):
 2. Gradient sliver under the home h1 — 130×6px `--gradient-spectrum` bar (`.masthead__name::after`).
 3. Product-card hue bars — full-bleed `--card-hue-text` fill with paper text (see ProductCard, §7).
 4. Gradient section rules — 3px `--gradient-spectrum` after section labels.
-5. Tinted section labels — home: On display vermilion, Latest moss, About plum (`.measure--system/--writing/--about`).
-6. Ink About band — full-width `--color-ink` panel, paper text, `--link-on-ink` ochre link (`index.astro` `.about`).
+5. Tinted section labels — home: On display vermilion, Latest moss (`.measure--system/--writing`).
+6. Work/Writing display tiles — the home exhibit grid closes with two lighter
+   tiles: 9px hue tick before the name, name tints to `--hue-*-text` on hover
+   (`index.astro` `.card--section`). (The home ink About band was retired
+   2026-07-20 — bio moved to the footer identity block; ink inversion lives
+   on in the /writing featured plate, item 10.)
 7. Essay-row ticks — 9px square before each meta in the essay's topic hue; title tints on row hover (EssayCard).
 8. Room hues — every room: 6px `--room` top border on `main[data-room]`, measures tinted `--room-text`, h1 `.room-title::after` underline bar (96×10px).
 9. Reading pages — progress bar, kicker, and prose link hover take the topic hue.
@@ -101,9 +105,9 @@ Where color may appear (everything on this list is built):
     archive group below (the plate highlights, the catalog stays complete).
 
 Where color may **not** appear: body text (always `--color-body`/`--color-ink`),
-backgrounds outside the About band, the footer, and the nav — with one pre-existing
-exception: the nav's active-page link uses `--color-accent` (`Nav.astro`
-`a[aria-current="page"]`).
+backgrounds outside ink panels (the /writing featured plate), the footer, and
+the nav — with one pre-existing exception: the nav's active-page link uses
+`--color-accent` (`Nav.astro` `a[aria-current="page"]`).
 
 **Room mechanics:** a page opts in by passing `room` (a `HueKey`) to `BaseLayout`,
 which stamps `data-room` on `<main>`. Global rules in `global.css` map
@@ -133,7 +137,7 @@ labels wear the *target* product's hue via a per-group inline
 | Component | One line |
 |---|---|
 | `Nav.astro` | Sticky mist bar; serif brand, sans links; active page in `--color-accent`. |
-| `Footer.astro` | Title block on mist: identity row (name + tagline · social icon tiles), Substack embed framed by our hairline, Explore/Contact/Elsewhere columns, © strip. Outside `main`, never room-tinted; only accent-on-hover. |
+| `Footer.astro` | Title block on mist: identity row (name + tagline + bio line · social icon tiles), Substack embed framed by our hairline, Explore/Contact/Elsewhere columns, © strip. Outside `main`, never room-tinted; only accent-on-hover. |
 | `ProductCard.astro` | Exhibit card. Reads `product.hue` → inline `--card-hue`/`--card-hue-text`; full-bleed `head--bar` fill (text variant) with paper index; hue corner mark; 3px hover lift. |
 | `EssayCard.astro` | Archive row. `topicHue(topics[0])` → inline `--tick`; 9px square before the meta; title tints to `--tick` on row hover. |
 | `PieceMeta.astro` | Role · timeframe · scope marks in mono between hairlines (outcome essays). |
