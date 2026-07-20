@@ -14,7 +14,7 @@ export interface Props {
   room?: string;
 }
 
-const { title, description = "Andrzej Białas — marketing systems, plainly.", ogImage = "/og-default.png", ogType = "website", ogImageAlt = "Andrzej Białas — marketing systems, plainly.", noindex = false, room } = Astro.props;
+const { title, description = "Andrzej Białaś — marketing systems, plainly.", ogImage = "/og-default.png", ogType = "website", ogImageAlt = "Andrzej Białaś — marketing systems, plainly.", noindex = false, room } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://abialas.pl").toString();
 ---
 <!doctype html>
@@ -27,7 +27,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://abialas.pl"
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate" type="application/rss+xml" title="Andrzej Białas — Writing" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Andrzej Białaś — Writing" href="/rss.xml" />
 
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />

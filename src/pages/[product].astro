@@ -29,8 +29,7 @@ const { product } = Astro.props;
 const all = await getCollection("writing");
 const pieces = byTopic(all, product.tag);
 
-const index = String(product.order).padStart(2, "0");
-const coord = `${index} / ${product.tag.toUpperCase()}`;
+const coord = product.tag.toUpperCase();
 
 // Trailing slash to match the canonical (astro build.format: 'directory').
 const productUrl = `https://abialas.pl/${product.slug}/`;
@@ -50,7 +49,7 @@ const breadcrumbLd = breadcrumbListSchema([
   <!-- ── Alley header ─────────────────────────────────────────────
        The focal moment. A faint blueprint sheet sits behind this zone
        only — lighter than the homepage masthead so the alley reads as
-       the quieter, downstream room. Index coordinate → name (Newsreader,
+       the quieter, downstream room. Tag coordinate → name (Newsreader,
        large) → blurb as a standfirst sentence. No breadcrumb element;
        the nav already carries the way back. -->
   <header class="alley-head">

@@ -8,7 +8,7 @@ const narrative = await getEntry("about", "narrative");
 const { Content } = await narrative.render();
 
 const person = personSchema({
-  name: "Andrzej Białas",
+  name: "Andrzej Białaś",
   url: "https://abialas.pl",
   jobTitle: "Marketing Director",
   sameAs: [
@@ -17,7 +17,7 @@ const person = personSchema({
   ],
 });
 ---
-<BaseLayout title="About — Andrzej Białas" description="Marketing systems for technical companies." room="about">
+<BaseLayout title="About — Andrzej Białaś" description="Marketing systems for technical companies." room="about">
   <JsonLd slot="head" data={person} />
   <section class="container about">
     <div class="about__layout">

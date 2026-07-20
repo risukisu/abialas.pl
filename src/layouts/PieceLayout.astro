@@ -21,7 +21,7 @@ const pieceUrl = `https://abialas.pl/writing/${piece.slug}/`;
 const articleLd = articleSchema({
   title: data.title,
   url: pieceUrl,
-  author: "Andrzej Białas",
+  author: "Andrzej Białaś",
   datePublished: data.date.toISOString().slice(0, 10),
   description: data.summary,
 });
@@ -41,7 +41,7 @@ const all = await getCollection("writing");
 const tag = data.topics[0];
 const related = (tag ? byTopic(all, tag) : []).filter((p) => p.slug !== piece.slug).slice(0, 3);
 ---
-<BaseLayout title={`${data.title} — Andrzej Białas`} description={data.summary || data.title} ogType="article" room={room}>
+<BaseLayout title={`${data.title} — Andrzej Białaś`} description={data.summary || data.title} ogType="article" room={room}>
   <JsonLd slot="head" data={articleLd} />
   <JsonLd slot="head" data={breadcrumbLd} />
   <ReadingProgress />

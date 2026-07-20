@@ -7,7 +7,7 @@ export async function GET(context: APIContext) {
   const all = await getCollection("writing");
   const items = sortByDate(publishedOnly(all));
   return rss({
-    title: "Andrzej Białas — Writing",
+    title: "Andrzej Białaś — Writing",
     description: "Essays on marketing systems, plainly.",
     site: context.site ?? "https://abialas.pl",
     items: items.map((p) => ({
