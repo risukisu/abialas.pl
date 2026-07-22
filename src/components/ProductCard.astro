@@ -4,16 +4,23 @@ import type { Product } from "../data/products";
 export interface Props { product: Product; count: number; countLabel?: string; }
 const { product, count, countLabel: labelOverride } = Astro.props;
 
-const index = String(product.order).padStart(2, "0");
 const tag = product.tag.toUpperCase();
 const countLabel =
   labelOverride ??
   (count === 0 ? "In progress" : count === 1 ? "1 piece" : `${count} pieces`);
+
+// Title-bar favicon — user-supplied Streamline "Sharp Pop" PNGs at
+// public/icons/<slug>.png (48×48, navy outline + hue-family pop).
+// A new product needs its icon dropped there under the same name.
+const iconSrc = `/icons/${product.slug}.png`;
 ---
 
 <a href={`/${product.slug}`} class="card" style={`--card-hue: var(--hue-${product.hue}); --card-hue-text: var(--hue-${product.hue}-text);`}>
   <div class="head head--bar">
-    <span class="measure idx">{index} / {tag}</span>
+    <span class="glyph" aria-hidden="true">
+      <img src={iconSrc} alt="" width="22" height="22" />
+    </span>
+    <span class="measure idx">{tag}</span>
   </div>
 
   <h3 class="name">{product.name}</h3>
@@ -26,106 +33,73 @@ const countLabel =
 </a>
 
 <style>
-  /* ── The exhibit plate ───────────────────────────────────────
-     The whole plate is one link. Rest: ink-on-mist, hairline frame,
-     generous padding. Hover / keyboard focus "lights" the plate: the
-     frame sharpens and hue connective marks draw in — a leader rule
-     off the index label, a registration tick in the corner, and the
-     foot arrow slides. */
+  /* ── The window plate (Happy-Hues look test, 2026-07-21) ─────
+     Flat-illustration "browser window": thick ink outline, rounded
+     corners, hue title bar with three paper dots, hard offset shadow
+     in ink. The whole window is one link; hover nudges it up-left and
+     deepens the shadow — like lifting a card off the table.
+     EXPERIMENTAL: white panel is variant-only, not a palette token. */
 
   .card {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 14px;
-    padding: 34px 32px 26px;
-    background: var(--color-bg);
-    border: 1px solid var(--color-line);
+    padding: 30px 32px 24px;
+    background: #fff;
+    border: 2px solid var(--color-ink);
+    /* rectangular — hard corners per the flat-window language */
+    box-shadow: 6px 6px 0 var(--color-ink);
     text-decoration: none;
     color: var(--color-ink);
-    /* inset hairline stays invisible at rest, sharpens on hover */
-    box-shadow: inset 0 0 0 0 transparent;
-    transition: transform 0.25s cubic-bezier(0.3, 0.8, 0.3, 1),
-      border-color 0.28s cubic-bezier(0.3, 0.8, 0.3, 1),
-      box-shadow 0.28s cubic-bezier(0.3, 0.8, 0.3, 1);
-  }
-
-  /* Registration tick — top-right corner. Drawn (scaled in) on hover. */
-  .card::after {
-    content: "";
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    width: 12px;
-    height: 12px;
-    border-top: 2px solid var(--card-hue);
-    border-right: 2px solid var(--card-hue);
-    opacity: 0;
-    transform: scale(0);
-    transform-origin: top right;
-    transition: transform 0.26s cubic-bezier(0.3, 0.8, 0.3, 1),
-      opacity 0.26s ease;
+    overflow: hidden; /* keeps the full-bleed title bar inside the frame */
+    transition: transform 0.22s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.22s cubic-bezier(0.3, 0.8, 0.3, 1);
   }
 
   .card:hover,
   .card:focus-visible,
   .card:focus-within {
-    border-color: var(--color-line-2);
-    box-shadow: inset 0 0 0 1px var(--color-line-2);
-    transform: translateY(-3px);
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0 var(--color-ink);
   }
 
   /* Root anchor keyboard focus — visible ring in the card's hue. */
   .card:focus-visible {
     outline: 2px solid var(--card-hue-text);
-    outline-offset: 2px;
+    outline-offset: 3px;
   }
 
-  .card:hover::after,
-  .card:focus-visible::after,
-  .card:focus-within::after {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  /* ── Index label + its leader rule ──────────────────────────── */
+  /* ── Title bar: three dots + index label ─────────────────────── */
   .head {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 16px;
   }
 
-  /* Full-bleed hue bar; paper text on the text-variant fill (AA-checked). */
+  /* Full-bleed hue bar; paper text on the text-variant fill (AA-checked).
+     Bottom border draws the window-chrome divider. */
   .head--bar {
-    margin: -34px -32px 0;
-    padding: 24px 32px 14px;
+    margin: -30px -32px 0;
+    padding: 14px 24px;
     background: var(--card-hue-text);
+    border-bottom: 2px solid var(--color-ink);
   }
   .head--bar .idx { color: var(--color-paper); }
 
-  .idx {
-    position: relative;
-    /* room for the leader rule to draw into without shifting text */
-    padding-right: 0;
+  /* Title-bar favicon chip — the browser-tab metaphor: a small paper
+     plate on the hue bar so the multicolor icon reads cleanly. */
+  .glyph {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    border: 2px solid var(--color-ink);
   }
-
-  /* Horizontal callout leader extending from the index label. */
-  .idx::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: calc(100% + 10px);
-    width: 44px;
-    height: 2px;
-    background: rgb(234 240 246 / 0.85);
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 0.3s cubic-bezier(0.3, 0.8, 0.3, 1);
-  }
-
-  .card:hover .idx::after,
-  .card:focus-visible .idx::after,
-  .card:focus-within .idx::after {
-    transform: scaleX(1);
+  .glyph img {
+    display: block;
   }
 
   /* ── Type ────────────────────────────────────────────────────── */
@@ -180,25 +154,16 @@ const countLabel =
   }
 
 
-  /* ── Reduced motion: marks still appear, but no draw/scale ─────
-     Color/opacity only — no transform-based animation. The global
-     reduce rule also clamps transitions; here we make the marks
-     legible at rest-of-hover without any positional motion. */
+  /* ── Reduced motion: no positional animation ─────────────────
+     The shadow still deepens (color/size only), the window doesn't
+     move, the arrow doesn't slide. */
   @media (prefers-reduced-motion: reduce) {
-    .card, .card:hover, .card:focus-within { transform: none; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
-    .card::after {
-      transform: scale(1);
-      transition: opacity 0.2s ease;
-    }
-    .idx::after {
-      transform: scaleX(1);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-    .card:hover .idx::after,
-    .card:focus-within .idx::after {
-      transform: scaleX(1);
-      opacity: 1;
+    .card,
+    .card:hover,
+    .card:focus-visible,
+    .card:focus-within {
+      transform: none;
+      transition: box-shadow 0.2s ease;
     }
     .go {
       transition: opacity 0.18s ease, color 0.18s ease;

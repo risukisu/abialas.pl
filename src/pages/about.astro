@@ -22,8 +22,13 @@ const person = personSchema({
   <section class="container about">
     <div class="about__layout">
       <aside class="about__aside">
-        <!-- Photo slot — add src/images/portrait.jpg later -->
-        <div class="about__photo-placeholder"></div>
+        <img
+          class="about__photo"
+          src="/portrait.webp"
+          alt="Illustrated portrait of Andrzej Białaś — glasses, dark hoodie, neon signs behind"
+          width="702"
+          height="702"
+        />
         <p class="measure about__caption">Based in Warsaw</p>
       </aside>
       <div class="about__narrative">
@@ -47,12 +52,15 @@ const person = personSchema({
     align-items: start;
   }
 
-  /* Photo plate — hairline-framed on mist ground */
-  .about__photo-placeholder {
-    aspect-ratio: 1;
-    border: 1px solid var(--color-line-2);
-    background: var(--color-bg);
-    margin-bottom: 12px;
+  /* Photo plate — the window language: rectangular, ink frame,
+     hard offset shadow. */
+  .about__photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 2px solid var(--color-ink);
+    box-shadow: 6px 6px 0 var(--color-ink);
+    margin-bottom: 18px;
   }
 
   .about__caption {
@@ -94,8 +102,8 @@ const person = personSchema({
       grid-template-columns: 1fr;
       gap: 40px;
     }
-    .about__photo-placeholder {
-      max-width: 240px;
+    .about__photo {
+      max-width: 260px;
     }
   }
 </style>

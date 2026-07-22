@@ -2,33 +2,46 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProductCard from "../components/ProductCard.astro";
 import EssayCard from "../components/EssayCard.astro";
-import PrimaryCta from "../components/cta/PrimaryCta.astro";
-import SecondaryCta from "../components/cta/SecondaryCta.astro";
 import InkedLink from "../components/cta/InkedLink.astro";
 import { getCollection } from "astro:content";
 import { byTopic, latest, publishedOnly } from "../lib/pieces";
 import { products, type Product } from "../data/products";
 
 const all = await getCollection("writing");
-const sortedProducts = [...products].sort((a, b) => a.order - b.order);
 const recent = latest(all, 3);
 const countFor = (tag: string) => byTopic(all, tag).length;
 
-// On display: all four destinations as equal exhibit plates. Work and
-// Writing are Product-shaped LOCALLY only — they must never enter
-// products.ts, whose slugs feed [product].astro's static paths and
-// would collide with the real /work and /writing pages.
+// On display: all four destinations as equal exhibit plates, in an
+// EXPLICIT order (AI · System · Writing · Work) — deliberately not
+// products.ts order, which still drives the /writing archive groups.
+// Work and Writing are Product-shaped LOCALLY only — they must never
+// enter products.ts, whose slugs feed [product].astro's static paths
+// and would collide with the real /work and /writing pages.
 const workBuilt = publishedOnly(await getCollection("work")).length;
+
+// Elsewhere: the mini-windows row — external destinations, so no room
+// hues (hues are wayfinding for THIS site's rooms only).
+const elsewhere = [
+  { href: "https://github.com/risukisu", name: "Projects", where: "github.com/risukisu" },
+  { href: "https://risu.pl", name: "Blog", where: "risu.pl" },
+  { href: "https://skillcraft.cloud", name: "SkillCraft", where: "skillcraft.cloud" },
+  // The newsletter box wears the Grug-Brained Marketer brand kit — a
+  // guest sticker, not part of this site's palette (see .mini--grug).
+  { href: "https://grugbrained.substack.com", name: "Newsletter", where: "Grug-Brained Marketer", variant: "grug" },
+];
+const ai = products.find((p) => p.slug === "ai")!;
+const system = products.find((p) => p.slug === "system")!;
 const display: { product: Product; count: number; countLabel?: string }[] = [
-  ...sortedProducts.map((p) => ({ product: p, count: countFor(p.tag) })),
+  { product: ai, count: countFor(ai.tag) },
+  { product: system, count: countFor(system.tag) },
+  {
+    product: { slug: "writing", name: "Writing", blurb: "Every essay, grouped by topic.", tag: "writing", order: 4, hue: "writing" },
+    count: publishedOnly(all).length,
+  },
   {
     product: { slug: "work", name: "Work", blurb: "What I built, the résumé, and what people say.", tag: "work", order: 3, hue: "work" },
     count: workBuilt,
     countLabel: `${workBuilt} built · résumé`,
-  },
-  {
-    product: { slug: "writing", name: "Writing", blurb: "Every essay, grouped by topic.", tag: "writing", order: 4, hue: "writing" },
-    count: publishedOnly(all).length,
   },
 ];
 ---
@@ -45,17 +58,12 @@ const display: { product: Product; count: number; countLabel?: string }[] = [
     <div class="masthead__grid blueprint" aria-hidden="true"></div>
     <div class="container masthead__inner">
       <span class="measure masthead__coord reveal" style="--i:0">index</span>
-      <h1 class="masthead__name reveal" style="--i:1">Marketing as a System</h1>
+      <h1 class="masthead__name reveal" style="--i:1">Hi, I'm Andrzej. I do marketing.</h1>
       <p class="masthead__sub reveal" style="--i:2">
-        I'm Andrzej Białaś. I run marketing as a system instead of a string of
-        campaigns. This is where I write down how that actually works — what
-        compounds, what breaks, and the parts that don't make it into the case
-        studies.
+        I run marketing as a system instead of a string of campaigns. This is
+        where I write down how that actually works — what compounds, what
+        breaks, and the parts that don't make it into the case studies.
       </p>
-      <div class="masthead__ctas reveal" style="--i:3">
-        <PrimaryCta href="/system" label="Read the model" />
-        <SecondaryCta href="/work" label="See the work" />
-      </div>
     </div>
   </header>
 
@@ -76,7 +84,32 @@ const display: { product: Product; count: number; countLabel?: string }[] = [
     </div>
   </section>
 
-  <!-- ── 3 · Latest ───────────────────────────────────────────────
+  <!-- ── 3 · Elsewhere ─────────────────────────────────────────────
+       Mini-windows: same plate language, smaller and hueless — these
+       exit the site (projects, blog, SkillCraft, newsletter). -->
+  <section class="elsewhere">
+    <div class="container">
+      <div class="section-head">
+        <span class="measure">Elsewhere</span>
+        <span class="measure section-head__rule" aria-hidden="true"></span>
+      </div>
+      <nav aria-label="Elsewhere">
+        <div class="elsewhere__grid">
+          {elsewhere.map((e) => (
+            <a href={e.href} class:list={["mini", e.variant === "grug" && "mini--grug"]} rel="me">
+              <span class="mini__row">
+                <span class="mini__name">{e.name}</span>
+                <span class="mini__out" aria-hidden="true">↗</span>
+              </span>
+              <span class="mini__where">{e.where}</span>
+            </a>
+          ))}
+        </div>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ── 4 · Latest ───────────────────────────────────────────────
        A quieter strip. One published essay today → one row, which must
        read as intentional. Section omitted entirely if nothing is live. -->
   {recent.length > 0 && (
@@ -100,18 +133,18 @@ const display: { product: Product; count: number; countLabel?: string }[] = [
 <style>
   /* ════════════════════════════════════════════════════════════════
      HOME · The Digital Storefront
-     Business card → on display (products + Work/Writing tiles) → latest.
-     Short and complete: About lives in the nav + footer only; the
-     footer's identity block carries the bio line.
-     Catalog macrostructure, not hero→features→CTA. Restraint over
-     density; hairlines and measure marks carry the schematic feel.
+     Nameplate hero (no CTAs) → on display (four window plates) →
+     elsewhere (mini-windows: external exits) → latest.
+     About lives in the nav + footer only; the footer's identity block
+     carries the bio line. Catalog macrostructure, not hero→features→CTA.
      ════════════════════════════════════════════════════════════════ */
 
   /* ── 1 · Masthead ─────────────────────────────────────────────── */
   .masthead {
     position: relative;
-    padding-top: clamp(56px, 8vw, 104px);
-    padding-bottom: var(--section-padding);
+    padding-top: clamp(48px, 7vw, 88px);
+    /* tight — no CTAs anymore; On display is the hero's counterpart */
+    padding-bottom: clamp(28px, 3.5vw, 48px);
     overflow: hidden;
   }
 
@@ -182,45 +215,159 @@ const display: { product: Product; count: number; countLabel?: string }[] = [
     line-height: 1.5;
     color: var(--color-body);
     max-width: 54ch;
-    margin: 0 0 40px;
+    margin: 0; /* last masthead element — the section padding is the gap */
     font-weight: 400;
     /* normalise the .measure mono styling we don't want here */
     letter-spacing: -0.005em;
     text-transform: none;
   }
 
-  .masthead__ctas {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 20px;
-  }
-
   /* ── 2 · Products on display ──────────────────────────────────── */
   .display {
-    padding-top: var(--section-padding);
+    /* no own top padding — the masthead's bottom padding is the gap */
+    padding-top: 0;
   }
 
+  /* Happy-Hues look test (2026-07-21): open grid — the window plates
+     float free so their hard offset shadows have room to sit. */
   .display__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1px; /* hairline gutter — cards meet on the gridded surface */
-    background: var(--color-line);
-    border: 1px solid var(--color-line);
+    gap: 28px;
+    padding-right: 9px; /* room for the deepened hover shadow */
   }
 
-  /* Each card already paints --color-bg; the 1px gap + frame let the
-     grid read as a ruled modular surface the exhibits sit within. */
-  .display__grid > :global(.card) {
-    border: none;
-  }
-  .display__grid > :global(.card:hover),
-  .display__grid > :global(.card:focus-within) {
-    /* keep the lit inset hairline from the card's own hover state */
-    box-shadow: inset 0 0 0 1px var(--color-line-2);
+  /* ── 3 · Elsewhere: mini-windows ──────────────────────────────────
+     Same flat-window language as the plates, scaled down and hueless:
+     white chip, ink outline, small hard shadow, ↗ marks the exit. */
+  .elsewhere {
+    padding-top: clamp(48px, 6vw, 88px);
   }
 
-  /* ── 3 · Latest ───────────────────────────────────────────────── */
+  .elsewhere__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding-right: 6px; /* room for the hover shadow */
+  }
+
+  .mini {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 14px 18px;
+    background: #fff;
+    border: 2px solid var(--color-ink);
+    /* rectangular — hard corners, kit-style */
+    box-shadow: 4px 4px 0 var(--color-ink);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  .mini:hover,
+  .mini:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-ink);
+  }
+
+  .mini:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .mini__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .mini__name {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+
+  .mini__out {
+    font-size: 0.95rem;
+    opacity: 0.45;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .mini:hover .mini__out,
+  .mini:focus-visible .mini__out {
+    opacity: 1;
+    transform: translate(2px, -2px);
+    color: var(--color-accent);
+  }
+
+  .mini__where {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--color-muted);
+  }
+
+  /* ── The Grug guest sticker ───────────────────────────────────────
+     The Newsletter box wears the Grug-Brained Marketer brand kit
+     (brand/brand-kit-v1.html): Deep teal ground, Bone text, Matrix
+     mono, warm-black 3px border + shadow, Mug-pink arrow warming to
+     Spark on hover. These hexes are the KIT's, not this site's palette
+     — a deliberate one-off, like a sticker from another brand. */
+  .mini--grug {
+    background: #0C2A20; /* kit Deep */
+    border: 3px solid #141110; /* kit Ink */
+    box-shadow: 4px 4px 0 #141110;
+    color: #F4EFE3; /* kit Bone */
+  }
+
+  .mini--grug:hover,
+  .mini--grug:focus-visible {
+    box-shadow: 6px 6px 0 #141110;
+  }
+
+  .mini--grug:focus-visible {
+    outline: 2px solid #26D06A;
+  }
+
+  .mini--grug .mini__name {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 1rem;
+  }
+
+  .mini--grug .mini__where {
+    color: #26D06A; /* kit Matrix bright */
+  }
+
+  .mini--grug .mini__out {
+    color: #EA8BA6; /* kit Heart Mug */
+    opacity: 0.85;
+  }
+
+  .mini--grug:hover .mini__out,
+  .mini--grug:focus-visible .mini__out {
+    color: #F07A2D; /* kit Spark — one pop per surface */
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mini,
+    .mini:hover,
+    .mini:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .mini:hover .mini__out,
+    .mini:focus-visible .mini__out {
+      transform: none;
+    }
+  }
+
+  /* ── 4 · Latest ───────────────────────────────────────────────── */
   .latest {
     padding-top: var(--section-padding);
   }
@@ -281,12 +428,24 @@ const display: { product: Product; count: number; countLabel?: string }[] = [
   }
 
   /* ── Responsive ───────────────────────────────────────────────── */
+  @media (max-width: 960px) {
+    .elsewhere__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (max-width: 720px) {
     .display__grid {
       grid-template-columns: 1fr;
     }
     .section-head {
       gap: 14px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .elsewhere__grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

@@ -3,6 +3,15 @@
 The living reference for abialas.pl. Documents what is **built**, not what was planned —
 every value below is verified against the code. If you change the code, change this doc.
 
+> **⚠ 2026-07-22 — look test in flight.** The homepage now runs a flat-window
+> ("Happy Hues") dialect: rectangular white plates with 2px ink outlines and
+> hard offset shadows, hue title bars with icon chips, an Elsewhere mini-window
+> row (incl. a Grug-brand guest sticker), hero CTAs removed, About band gone.
+> §§4–7 below predate this and describe the original hairline dialect where
+> they conflict. Full doc rewrite is deferred until the site direction settles
+> (owner is rethinking the /system + /ai IA toward a plain professional
+> portfolio — see memory `portfolio-project`).
+
 Specs this system grew from:
 - `docs/superpowers/specs/2026-06-14-abialas-pl-redesign-design.md` — the Drafting Table concept
 - `docs/superpowers/specs/2026-07-05-drafting-table-color-system.md` — the Variant C color system (added 2026-07)
