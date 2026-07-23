@@ -1,0 +1,193 @@
+---
+/**
+ * LAB COMPONENT — the nexus mini/medium box with per-destination brand
+ * "stickers" (grug kit, LinkedIn, GitHub, terminal, SkillCraft, X).
+ * Prototype-grade: sticker treatments are representative, not final.
+ */
+import type { NexusBox } from "../../data/lab-nexus";
+
+export interface Props extends NexusBox {
+  size?: "sm" | "md";
+}
+const { href, name, where, desc, variant, size = "sm" } = Astro.props;
+const external = href.startsWith("http");
+---
+<a href={href} class:list={["box", `box--${size}`, variant && `box--${variant}`]} rel={external ? "me" : undefined}>
+  <span class="box__row">
+    <span class="box__name">{variant === "skillcraft" && <img class="box__squirrel" src="/squirrel.png" alt="" width="16" height="16" />}{name}</span>
+    <span class="box__out" aria-hidden="true">{external ? "↗" : "→"}</span>
+  </span>
+  {size === "md" && desc && <span class="box__desc">{desc}</span>}
+  {where && <span class="box__where">{where}</span>}
+</a>
+
+<style>
+  .box {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 14px 18px;
+    background: #fff;
+    border: 2px solid var(--color-ink);
+    box-shadow: 4px 4px 0 var(--color-ink);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  .box--md {
+    padding: 20px 22px;
+    gap: 6px;
+  }
+
+  .box:hover,
+  .box:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-ink);
+  }
+
+  .box:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .box__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .box__name {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .box--md .box__name {
+    font-size: 1.3rem;
+  }
+
+  .box__squirrel {
+    image-rendering: pixelated;
+  }
+
+  .box__out {
+    font-size: 0.95rem;
+    opacity: 0.45;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .box:hover .box__out,
+  .box:focus-visible .box__out {
+    opacity: 1;
+    transform: translate(2px, -2px);
+    color: var(--color-accent);
+  }
+
+  .box__desc {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--color-body);
+  }
+
+  .box__where {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--color-muted);
+  }
+
+  /* ── Stickers ─────────────────────────────────────────────────── */
+
+  /* Grug kit — deep/bone/matrix/mug (guest hexes, scoped) */
+  .box--grug {
+    background: #0c2a20;
+    border: 3px solid #141110;
+    box-shadow: 4px 4px 0 #141110;
+    color: #f4efe3;
+  }
+  .box--grug:hover,
+  .box--grug:focus-visible {
+    box-shadow: 6px 6px 0 #141110;
+  }
+  .box--grug .box__name {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 1rem;
+  }
+  .box--md.box--grug .box__name { font-size: 1.15rem; }
+  .box--grug .box__desc { color: #cfe0d3; }
+  .box--grug .box__where { color: #26d06a; }
+  .box--grug .box__out { color: #ea8ba6; opacity: 0.85; }
+  .box--grug:hover .box__out,
+  .box--grug:focus-visible .box__out { color: #f07a2d; opacity: 1; }
+
+  /* LinkedIn — brand blue field */
+  .box--linkedin {
+    background: #0a66c2;
+    color: #fff;
+  }
+  .box--linkedin .box__desc { color: #d8e9fa; }
+  .box--linkedin .box__where { color: #bcd9f5; }
+  .box--linkedin .box__out { color: #fff; }
+  .box--linkedin:hover .box__out,
+  .box--linkedin:focus-visible .box__out { color: #fff; }
+
+  /* GitHub — dark canvas */
+  .box--github {
+    background: #0d1117;
+    color: #f0f6fc;
+  }
+  .box--github .box__where { color: #7ee787; }
+  .box--github .box__out { color: #f0f6fc; }
+  .box--github:hover .box__out,
+  .box--github:focus-visible .box__out { color: #7ee787; }
+
+  /* Terminal — near-black + phosphor green (statusline, risu.pl blog) */
+  .box--terminal {
+    background: #0b0e0c;
+    color: #d7e3da;
+  }
+  .box--terminal .box__name { font-family: var(--font-mono); font-weight: 700; font-size: 1rem; }
+  .box--md.box--terminal .box__name { font-size: 1.1rem; }
+  .box--terminal .box__desc { color: #9fb3a6; }
+  .box--terminal .box__where { color: #35d07f; }
+  .box--terminal .box__out { color: #35d07f; }
+
+  /* SkillCraft — mono wordmark + squirrel on white */
+  .box--skillcraft .box__name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+  }
+  .box--md.box--skillcraft .box__name { font-size: 1.05rem; }
+
+  /* X — black on black */
+  .box--x {
+    background: #000;
+    color: #fff;
+  }
+  .box--x .box__where { color: #9aa0a6; }
+  .box--x .box__out { color: #fff; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .box,
+    .box:hover,
+    .box:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .box:hover .box__out,
+    .box:focus-visible .box__out {
+      transform: none;
+    }
+  }
+</style>

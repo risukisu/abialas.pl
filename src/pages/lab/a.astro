@@ -1,0 +1,70 @@
+---
+/**
+ * LAB A — "The Directory". Everything at one glance, tiered rows:
+ * Follow (md) → Built (sm) → Read (sm) → More (sm). The most literal
+ * "at a glance" — no section dominates, order carries the priority.
+ */
+import LabShell from "../../components/lab/LabShell.astro";
+import NexusBox from "../../components/lab/NexusBox.astro";
+import { follow, built, read, more } from "../../data/lab-nexus";
+---
+<LabShell variant="A" title="The Directory">
+  <section class="lab-sec">
+    <div class="container">
+      <div class="lab-sec__head">
+        <span class="measure">Follow</span>
+        <span class="lab-sec__rule" aria-hidden="true"></span>
+      </div>
+      <div class="lab-grid lab-grid--2">
+        {follow.map((b) => <NexusBox {...b} size="md" />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="lab-sec">
+    <div class="container">
+      <div class="lab-sec__head">
+        <span class="measure">Built</span>
+        <span class="lab-sec__rule" aria-hidden="true"></span>
+        <a class="measure lab-all" href="https://github.com/risukisu">all projects ↗</a>
+      </div>
+      <div class="lab-grid lab-grid--4">
+        {built.map((b) => <NexusBox {...b} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="lab-sec">
+    <div class="container">
+      <div class="lab-sec__head">
+        <span class="measure">Read</span>
+        <span class="lab-sec__rule" aria-hidden="true"></span>
+      </div>
+      <div class="lab-grid lab-grid--2">
+        {read.map((b) => <NexusBox {...b} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="lab-sec">
+    <div class="container">
+      <div class="lab-sec__head">
+        <span class="measure">More</span>
+        <span class="lab-sec__rule" aria-hidden="true"></span>
+      </div>
+      <div class="lab-grid lab-grid--3">
+        {more.map((b) => <NexusBox {...b} />)}
+      </div>
+    </div>
+  </section>
+</LabShell>
+
+<style>
+  .lab-all {
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+  .lab-all:hover {
+    color: var(--color-accent);
+  }
+</style>
