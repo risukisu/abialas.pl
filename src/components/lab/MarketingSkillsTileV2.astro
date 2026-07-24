@@ -1,0 +1,295 @@
+---
+/**
+ * LAB D-2 — the marketing-skills tile per its CANONICAL brand kit
+ * ("constellation", brand/brand-kit-v1.html in the repo).
+ *
+ * Kit rules honored:
+ * - no fake nodes: hubs + member counts mirror the kit's live data
+ *   (seo 21 · studio 10 · research 6 · workspace 5 · content 5 ·
+ *   campaigns 2 · reporting 0) + abm/strategy as dashed ghost rings
+ * - hub = glowing ring'd node sized by members; edge = membership
+ *   (solid, low alpha); cross-link = dashed; dust is flavor only
+ * - the node-and-edge lockup (exact glyph) + stacked lowercase
+ *   wordmark, "skills" in interface violet
+ * - ground #050508, kit hues scoped here; 8px kit radius kept
+ * - kit fonts are Unbounded/IBM Plex Mono — approximated with the
+ *   site's Geist 900 / Geist Mono (self-hosting Unbounded is a
+ *   go-live decision, not a lab one)
+ */
+function mulberry32(seed: number) {
+  let t = seed;
+  return () => {
+    t |= 0;
+    t = (t + 0x6d2b79f5) | 0;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const rand = mulberry32(1337);
+
+// Real library shape (kit data block, 2026-07-24): count = members,
+// big = daily drivers (r 4.5 vs 3).
+const HUBS = [
+  { id: "seo",       c: "#3986e4", x: 480, y: 100, count: 21, big: 2, spread: 58 },
+  { id: "studio",    c: "#ad9000", x: 640, y: 58,  count: 10, big: 1, spread: 40 },
+  { id: "research",  c: "#8557c8", x: 352, y: 52,  count: 6,  big: 1, spread: 34 },
+  { id: "workspace", c: "#2e9e52", x: 618, y: 152, count: 5,  big: 2, spread: 32 },
+  { id: "content",   c: "#cd4686", x: 302, y: 148, count: 5,  big: 2, spread: 32 },
+  { id: "campaigns", c: "#cc6c13", x: 548, y: 26,  count: 2,  big: 2, spread: 26 },
+  { id: "reporting", c: "#00a7be", x: 415, y: 172, count: 0,  big: 0, spread: 0 },
+];
+const GHOSTS = [
+  { id: "abm",      x: 692, y: 108 },
+  { id: "strategy", x: 268, y: 96 },
+];
+
+type N = { x: number; y: number; r: number; c: string };
+const nodes: N[] = [];
+const edges: { x1: number; y1: number; x2: number; y2: number; c: string; dash?: boolean }[] = [];
+const hubById: Record<string, { x: number; y: number; c: string; r: number }> = {};
+
+for (const h of HUBS) {
+  const r = 6 + h.count * 0.32; // sized by members, tile scale
+  hubById[h.id] = { x: h.x, y: h.y, c: h.c, r };
+  const members: N[] = [];
+  for (let i = 0; i < h.count; i++) {
+    const a = rand() * Math.PI * 2;
+    const d = h.r ?? 0; // noop, keeps TS quiet
+    const dist = 16 + (rand() + rand()) * 0.5 * h.spread;
+    const n = {
+      x: h.x + Math.cos(a) * dist,
+      y: h.y + Math.sin(a) * dist * 0.68,
+      r: i < h.big ? 4.4 : 2.9,
+      c: h.c,
+    };
+    members.push(n);
+    nodes.push(n);
+    edges.push({ x1: n.x, y1: n.y, x2: h.x, y2: h.y, c: h.c }); // membership
+  }
+}
+
+// Cross-links — category-level mirror of the kit's XLINKS (dashed;
+// dashed-to-ghost included: seo-plan→strategy, linkedin-ads→abm).
+const XL: [string, string][] = [
+  ["seo", "reporting"],
+  ["seo", "strategy"],
+  ["campaigns", "abm"],
+  ["content", "content"], // copy-longform→copy-deslop: intra, skip below
+  ["studio", "studio"],
+  ["workspace", "workspace"],
+  ["research", "strategy"],
+];
+for (const [a, b] of XL) {
+  if (a === b) continue;
+  const A = hubById[a];
+  const B = hubById[b] ?? GHOSTS.find((g) => g.id === b);
+  if (!A || !B) continue;
+  edges.push({ x1: A.x, y1: A.y, x2: B.x, y2: B.y, c: "#6e6a80", dash: true });
+}
+
+// Dust — flavor, never data (kit motif rule), faint and few.
+const dust: N[] = [];
+for (let i = 0; i < 44; i++) {
+  dust.push({
+    x: 240 + rand() * 480,
+    y: rand() * 200,
+    r: 0.5 + rand() * 0.8,
+    c: HUBS[Math.floor(rand() * HUBS.length)].c,
+  });
+}
+---
+<a href="https://github.com/risukisu/marketing-skills" class="msk2" rel="me">
+  <svg class="msk2__graph" viewBox="0 0 720 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    {dust.map((n) => (
+      <circle cx={n.x} cy={n.y} r={n.r} fill={n.c} opacity="0.3" />
+    ))}
+    {edges.map((e) => (
+      <line
+        x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
+        stroke={e.c}
+        stroke-width={e.dash ? 1.1 : 0.8}
+        stroke-dasharray={e.dash ? "3 5" : undefined}
+        opacity={e.dash ? 0.5 : 0.38}
+      />
+    ))}
+    {nodes.map((n) => (
+      <circle cx={n.x} cy={n.y} r={n.r} fill={n.c} opacity="0.95" />
+    ))}
+    {HUBS.map((h) => (
+      <>
+        <circle cx={h.x} cy={h.y} r={hubById[h.id].r + 7} fill={h.c} opacity="0.14" />
+        <circle cx={h.x} cy={h.y} r={hubById[h.id].r + 4} fill="none" stroke={h.c} stroke-width="2.4" opacity="0.35" />
+        <circle cx={h.x} cy={h.y} r={hubById[h.id].r} fill={h.c} />
+        <text x={h.x + hubById[h.id].r + 7} y={h.y} class="msk2__lbl">{h.id}</text>
+      </>
+    ))}
+    {GHOSTS.map((g) => (
+      <>
+        <circle cx={g.x} cy={g.y} r="8" fill="none" stroke="#6e6a80" stroke-width="1.6" stroke-dasharray="4 4" />
+        <text x={g.x + 14} y={g.y} class="msk2__lbl msk2__lbl--ghost">{g.id}</text>
+      </>
+    ))}
+  </svg>
+  <span class="msk2__scrim" aria-hidden="true"></span>
+
+  <span class="msk2__body">
+    <span class="msk2__lockup">
+      <!-- the node-and-edge lockup — exact kit glyph -->
+      <svg width="58" height="49" viewBox="0 0 86 72" aria-hidden="true">
+        <line x1="14" y1="52" x2="34" y2="14" stroke="#1e1e2c" stroke-width="1.5" />
+        <line x1="34" y1="14" x2="62" y2="30" stroke="#1e1e2c" stroke-width="1.5" />
+        <line x1="62" y1="30" x2="46" y2="56" stroke="#1e1e2c" stroke-width="1.5" />
+        <line x1="46" y1="56" x2="14" y2="52" stroke="#1e1e2c" stroke-width="1.5" />
+        <line x1="62" y1="30" x2="78" y2="58" stroke="#1e1e2c" stroke-width="1.5" stroke-dasharray="3 4" />
+        <circle cx="14" cy="52" r="5" fill="#8557c8" />
+        <circle cx="34" cy="14" r="7" fill="#3986e4" />
+        <circle cx="62" cy="30" r="9" fill="#cd4686" />
+        <circle cx="46" cy="56" r="4" fill="#2e9e52" />
+        <circle cx="78" cy="58" r="4" fill="none" stroke="#6e6a80" stroke-width="1.5" stroke-dasharray="2 3" />
+      </svg>
+      <span class="msk2__wm">marketing<br /><em>skills</em></span>
+      <span class="msk2__out" aria-hidden="true">↗</span>
+    </span>
+    <span class="msk2__tagline">the library, mapped. every node runs real work.</span>
+    <span class="msk2__where">github.com/risukisu/marketing-skills</span>
+  </span>
+</a>
+
+<style>
+  .msk2 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 184px;
+    padding: 24px 26px;
+    background: #050508; /* kit ground */
+    border: 2px solid var(--color-ink);
+    border-radius: 8px; /* kit radius — guest trait */
+    box-shadow: 6px 6px 0 var(--color-ink);
+    color: #b8b4c8; /* kit ink2 */
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  .msk2:hover,
+  .msk2:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--color-ink);
+  }
+
+  .msk2:focus-visible {
+    outline: 2px solid #9b7df0;
+    outline-offset: 3px;
+  }
+
+  .msk2__graph {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transition: filter 0.25s ease;
+  }
+
+  .msk2:hover .msk2__graph,
+  .msk2:focus-visible .msk2__graph {
+    filter: brightness(1.2) saturate(1.1);
+  }
+
+  /* hub / ghost labels — lowercase mono, kit style */
+  .msk2__lbl {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: #eceaf6;
+    dominant-baseline: middle;
+    paint-order: stroke;
+    stroke: #050508;
+    stroke-width: 3px;
+  }
+  .msk2__lbl--ghost {
+    fill: #6e6a80;
+  }
+
+  .msk2__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgb(5 5 8 / 0.95) 0%,
+      rgb(5 5 8 / 0.78) 30%,
+      rgb(5 5 8 / 0.22) 52%,
+      transparent 72%
+    );
+  }
+
+  .msk2__body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .msk2__lockup {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  /* stacked lowercase wordmark — kit: Unbounded 900, "skills" violet.
+     Approximated with Geist 900 until Unbounded is self-hosted. */
+  .msk2__wm {
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: 1.3rem;
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    color: #eceaf6;
+    text-transform: lowercase;
+  }
+  .msk2__wm em {
+    font-style: normal;
+    color: #9b7df0; /* interface violet */
+  }
+
+  .msk2__out {
+    align-self: flex-start;
+    color: #9b7df0;
+    opacity: 0.85;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .msk2:hover .msk2__out,
+  .msk2:focus-visible .msk2__out {
+    opacity: 1;
+    transform: translate(2px, -2px);
+  }
+
+  .msk2__tagline {
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: #b8b4c8;
+    max-width: 40ch;
+  }
+
+  .msk2__where {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: #6e6a80;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .msk2,
+    .msk2:hover,
+    .msk2:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .msk2:hover .msk2__out,
+    .msk2:focus-visible .msk2__out {
+      transform: none;
+    }
+  }
+</style>

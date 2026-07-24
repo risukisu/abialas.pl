@@ -1,0 +1,115 @@
+---
+/**
+ * LAB D — iteration on B (the verdict). Top row: Grug newsletter hero
+ * tile + LinkedIn (logo) + Blog (squirrel). Then Built · Building —
+ * live contribution heatmap (light) + project tiles incl. the
+ * marketing-skills mock (open-sourcing soon). Essays tile removed —
+ * nav + footer carry /writing now.
+ */
+import LabShell from "../../components/lab/LabShell.astro";
+import NexusBox from "../../components/lab/NexusBox.astro";
+import GrugTile from "../../components/lab/GrugTile.astro";
+import SkillCraftTile from "../../components/lab/SkillCraftTile.astro";
+import MarketingSkillsTile from "../../components/lab/MarketingSkillsTileV2.astro";
+import ContributionGraph from "../../components/lab/ContributionGraph.astro";
+import { followD, builtD, more } from "../../data/lab-nexus";
+
+// SkillCraft + marketing-skills get dedicated brand tiles; the rest
+// render generic.
+const builtRest = builtD.filter(
+  (b) => b.variant !== "skillcraft" && b.name !== "Marketing Skills",
+);
+---
+<LabShell variant="D2" title="Follow-first · kit constellation">
+  <section class="lab-sec">
+    <div class="container">
+      <div class="lab-sec__head">
+        <span class="measure">Follow</span>
+        <span class="lab-sec__rule" aria-hidden="true"></span>
+      </div>
+      <div class="follow-row">
+        <GrugTile />
+        {followD.map((b) => <NexusBox {...b} size="md" />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="lab-sec">
+    <div class="container">
+      <div class="lab-sec__head">
+        <span class="measure">Building</span>
+        <span class="lab-sec__rule" aria-hidden="true"></span>
+        <a class="measure lab-all" href="https://github.com/risukisu">all projects ↗</a>
+      </div>
+      <!-- Graph leads wide; SkillCraft hugs the right of the row. -->
+      <div class="build-row">
+        <ContributionGraph />
+        <SkillCraftTile />
+      </div>
+      <!-- marketing-skills: the full-width constellation banner. -->
+      <div class="msk-slot">
+        <MarketingSkillsTile />
+      </div>
+      <div class="lab-grid lab-grid--3">
+        {builtRest.map((b) => <NexusBox {...b} size="md" />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="lab-sec">
+    <div class="container">
+      <div class="lab-grid lab-grid--3">
+        {more.map((b) => <NexusBox {...b} />)}
+      </div>
+    </div>
+  </section>
+</LabShell>
+
+<style>
+  .follow-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 18px;
+    padding-right: 6px;
+    align-items: stretch;
+  }
+
+  /* GitHub graph is the wide one (owner call); SkillCraft hugs. */
+  .build-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+    align-items: stretch;
+    margin-bottom: 18px;
+    padding-right: 6px;
+  }
+
+  .build-row > :global(.graph) {
+    width: 100%;
+  }
+
+  .msk-slot {
+    margin-bottom: 18px;
+    padding-right: 6px;
+  }
+
+  @media (max-width: 960px) {
+    .build-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .lab-all {
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+  .lab-all:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 960px) {
+    .follow-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
