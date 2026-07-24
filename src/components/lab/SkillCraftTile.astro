@@ -1,0 +1,114 @@
+---
+/**
+ * LAB — the SkillCraft tile, wearing its brand kit
+ * (skills-trader/brand/brand-kit-v1.html): Canvas poster paper, the
+ * gold ANSI wordmark inside its dark Screen tile (the tile is part of
+ * the lockup — never gold straight on cream), pixel fox as the accent,
+ * Deep Green mono details, 10px rounding (the kit's own trait — this
+ * guest sticker keeps its corners). Kit hexes scoped here.
+ */
+---
+<a href="https://skillcraft.cloud" class="skc" rel="me" aria-label="SkillCraft — marketplace for Claude skills">
+  <span class="skc__row">
+    <span class="skc__screen">
+      <img src="/skillcraft-wordmark.png" alt="SkillCraft" width="150" height="85" />
+    </span>
+    <img class="skc__fox" src="/skillcraft-fox.png" alt="" width="30" height="38" />
+    <span class="skc__out" aria-hidden="true">↗</span>
+  </span>
+  <span class="skc__desc">Real marketing skills, hand-picked for Claude Code.</span>
+  <span class="skc__where">skillcraft.cloud</span>
+</a>
+
+<style>
+  .skc {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 22px;
+    background: #f5efe1; /* kit Canvas */
+    border: 2px solid #15130f; /* kit Ink */
+    border-radius: 10px; /* the kit's own rounding — guest trait */
+    box-shadow: 4px 4px 0 #15130f;
+    color: #15130f;
+    text-decoration: none;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  .skc:hover,
+  .skc:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #15130f;
+  }
+
+  .skc:focus-visible {
+    outline: 2px solid #0f7a38;
+    outline-offset: 3px;
+  }
+
+  .skc__row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* The mark's native tile — gold never sits straight on cream. */
+  .skc__screen {
+    display: inline-flex;
+    align-items: center;
+    background: #0b1a11; /* kit Screen */
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+
+  .skc__screen img {
+    display: block;
+    image-rendering: pixelated;
+  }
+
+  .skc__fox {
+    image-rendering: pixelated;
+    align-self: flex-end;
+  }
+
+  .skc__out {
+    margin-left: auto;
+    color: #0f7a38; /* kit Deep Green */
+    opacity: 0.85;
+    transition: opacity 0.18s ease, transform 0.18s ease, color 0.18s ease;
+  }
+
+  .skc:hover .skc__out,
+  .skc:focus-visible .skc__out {
+    color: #e9b44c; /* kit Marquee Gold */
+    opacity: 1;
+    transform: translate(2px, -2px);
+  }
+
+  .skc__desc {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    font-weight: 600;
+    color: #463f33;
+  }
+
+  .skc__where {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: #0f7a38;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skc,
+    .skc:hover,
+    .skc:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .skc:hover .skc__out,
+    .skc:focus-visible .skc__out {
+      transform: none;
+    }
+  }
+</style>

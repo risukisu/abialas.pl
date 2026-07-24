@@ -9,8 +9,12 @@
 import LabShell from "../../components/lab/LabShell.astro";
 import NexusBox from "../../components/lab/NexusBox.astro";
 import GrugTile from "../../components/lab/GrugTile.astro";
+import SkillCraftTile from "../../components/lab/SkillCraftTile.astro";
 import ContributionGraph from "../../components/lab/ContributionGraph.astro";
 import { followD, builtD, more } from "../../data/lab-nexus";
+
+// SkillCraft gets its dedicated brand tile; the rest render generic.
+const builtRest = builtD.filter((b) => b.variant !== "skillcraft");
 ---
 <LabShell variant="D" title="Follow-first, iterated">
   <section class="lab-sec">
@@ -29,7 +33,7 @@ import { followD, builtD, more } from "../../data/lab-nexus";
   <section class="lab-sec">
     <div class="container">
       <div class="lab-sec__head">
-        <span class="measure">Built · Building</span>
+        <span class="measure">Building</span>
         <span class="lab-sec__rule" aria-hidden="true"></span>
         <a class="measure lab-all" href="https://github.com/risukisu">all projects ↗</a>
       </div>
@@ -37,7 +41,8 @@ import { followD, builtD, more } from "../../data/lab-nexus";
         <ContributionGraph />
       </div>
       <div class="lab-grid lab-grid--3">
-        {builtD.map((b) => <NexusBox {...b} size="md" />)}
+        <SkillCraftTile />
+        {builtRest.map((b) => <NexusBox {...b} size="md" />)}
       </div>
     </div>
   </section>

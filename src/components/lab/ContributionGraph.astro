@@ -13,12 +13,17 @@ let days: Day[] = [];
 let total = 0;
 let failed = false;
 
+// Calendar-year view (owner call): Jan 2026 → today, not a rolling
+// 12 months. The API returns the full year with zero-count future
+// days — trim to today so the graph ends at "now" (build time).
+const YEAR = "2026";
 try {
-  const res = await fetch("https://github-contributions-api.jogruber.de/v4/risukisu?y=last");
+  const res = await fetch(`https://github-contributions-api.jogruber.de/v4/risukisu?y=${YEAR}`);
   if (!res.ok) throw new Error(String(res.status));
   const data = await res.json();
-  days = data.contributions;
-  total = data.total?.lastYear ?? days.reduce((s: number, d: Day) => s + d.count, 0);
+  const today = new Date().toISOString().slice(0, 10);
+  days = data.contributions.filter((d: Day) => d.date <= today);
+  total = data.total?.[YEAR] ?? days.reduce((s: number, d: Day) => s + d.count, 0);
 } catch {
   failed = true;
 }
@@ -50,14 +55,14 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
   return prev && new Date(prev.date).getMonth() !== m ? MONTHS[m] : null;
 });
 ---
-<div class="graph">
+<a class="graph" href="https://github.com/risukisu" rel="me">
   {failed ? (
     <p class="graph__fail measure">contribution graph unavailable right now — see github.com/risukisu</p>
   ) : (
     <>
       <div class="graph__head">
-        <span class="graph__total">{total.toLocaleString("en-US")} contributions in the last year</span>
-        <a class="measure graph__gh" href="https://github.com/risukisu">github ↗</a>
+        <span class="graph__total">{total.toLocaleString("en-US")} contributions in {YEAR}</span>
+        <span class="measure graph__gh">github ↗</span>
       </div>
       <div class="graph__scroll">
         <div class="graph__months" aria-hidden="true">
@@ -87,14 +92,45 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
       </div>
     </>
   )}
-</div>
+</a>
 
 <style>
+  /* Whole plate is one link to the GitHub profile. fit-content: a
+     calendar-year view is part-empty until December — hug the weeks
+     instead of dragging a half-blank plate across the container. */
   .graph {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    min-width: min(560px, 100%);
     background: #fff;
     border: 2px solid var(--color-ink);
     box-shadow: 6px 6px 0 var(--color-ink);
     padding: 20px 22px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  .graph:hover,
+  .graph:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--color-ink);
+  }
+
+  .graph:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .graph,
+    .graph:hover,
+    .graph:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
   }
 
   .graph__head {
@@ -114,9 +150,9 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
 
   .graph__gh {
     color: var(--color-muted);
-    text-decoration: none;
   }
-  .graph__gh:hover {
+  .graph:hover .graph__gh,
+  .graph:focus-visible .graph__gh {
     color: var(--color-accent);
   }
 
