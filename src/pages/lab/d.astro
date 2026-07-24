@@ -10,11 +10,15 @@ import LabShell from "../../components/lab/LabShell.astro";
 import NexusBox from "../../components/lab/NexusBox.astro";
 import GrugTile from "../../components/lab/GrugTile.astro";
 import SkillCraftTile from "../../components/lab/SkillCraftTile.astro";
+import MarketingSkillsTile from "../../components/lab/MarketingSkillsTile.astro";
 import ContributionGraph from "../../components/lab/ContributionGraph.astro";
 import { followD, builtD, more } from "../../data/lab-nexus";
 
-// SkillCraft gets its dedicated brand tile; the rest render generic.
-const builtRest = builtD.filter((b) => b.variant !== "skillcraft");
+// SkillCraft + marketing-skills get dedicated brand tiles; the rest
+// render generic.
+const builtRest = builtD.filter(
+  (b) => b.variant !== "skillcraft" && b.name !== "Marketing Skills",
+);
 ---
 <LabShell variant="D" title="Follow-first, iterated">
   <section class="lab-sec">
@@ -37,12 +41,16 @@ const builtRest = builtD.filter((b) => b.variant !== "skillcraft");
         <span class="lab-sec__rule" aria-hidden="true"></span>
         <a class="measure lab-all" href="https://github.com/risukisu">all projects ↗</a>
       </div>
-      <!-- Graph hugs its weeks; SkillCraft fills the rest of the row. -->
+      <!-- Graph leads wide; SkillCraft hugs the right of the row. -->
       <div class="build-row">
         <ContributionGraph />
         <SkillCraftTile />
       </div>
-      <div class="lab-grid lab-grid--2">
+      <!-- marketing-skills: the full-width constellation banner. -->
+      <div class="msk-slot">
+        <MarketingSkillsTile />
+      </div>
+      <div class="lab-grid lab-grid--3">
         {builtRest.map((b) => <NexusBox {...b} size="md" />)}
       </div>
     </div>
@@ -78,6 +86,11 @@ const builtRest = builtD.filter((b) => b.variant !== "skillcraft");
 
   .build-row > :global(.graph) {
     width: 100%;
+  }
+
+  .msk-slot {
+    margin-bottom: 18px;
+    padding-right: 6px;
   }
 
   @media (max-width: 960px) {
