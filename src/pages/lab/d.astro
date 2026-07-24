@@ -66,13 +66,18 @@ const builtRest = builtD.filter((b) => b.variant !== "skillcraft");
     align-items: stretch;
   }
 
+  /* GitHub graph is the wide one (owner call); SkillCraft hugs. */
   .build-row {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr auto;
     gap: 18px;
     align-items: stretch;
     margin-bottom: 18px;
     padding-right: 6px;
+  }
+
+  .build-row > :global(.graph) {
+    width: 100%;
   }
 
   @media (max-width: 960px) {

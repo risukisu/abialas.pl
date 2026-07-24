@@ -6,12 +6,29 @@
  * the lockup — never gold straight on cream), pixel fox as the accent,
  * Deep Green mono details, 10px rounding (the kit's own trait — this
  * guest sticker keeps its corners). Kit hexes scoped here.
+ *
+ * The mark is LIVE TEXT (patorjk.com ANSI Shadow), not an image — per
+ * the kit: "rendered from the ANSI-Shadow text, so it stays sharp at
+ * any size". The PNG export was visibly lossy at tile size.
  */
+const MARK = `███████╗██╗  ██╗██╗██╗     ██╗
+██╔════╝██║ ██╔╝██║██║     ██║
+███████╗█████╔╝ ██║██║     ██║
+╚════██║██╔═██╗ ██║██║     ██║
+███████║██║  ██╗██║███████╗███████╗
+╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝
+
+ ██████╗██████╗  █████╗ ███████╗████████╗
+██╔════╝██╔══██╗██╔══██╗██╔════╝╚══██╔══╝
+██║     ██████╔╝███████║█████╗     ██║
+██║     ██╔══██╗██╔══██║██╔══╝     ██║
+╚██████╗██║  ██║██║  ██║██║        ██║
+ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝        ╚═╝`;
 ---
 <a href="https://skillcraft.cloud" class="skc" rel="me" aria-label="SkillCraft — marketplace for Claude skills">
   <span class="skc__row">
     <span class="skc__screen">
-      <img src="/skillcraft-wordmark.png" alt="SkillCraft" width="150" height="85" />
+      <pre class="skc__mark" aria-hidden="true">{MARK}</pre>
     </span>
     <img class="skc__fox" src="/skillcraft-fox.png" alt="" width="60" height="76" />
     <span class="skc__out" aria-hidden="true">↗</span>
@@ -63,9 +80,14 @@
     padding: 8px 12px;
   }
 
-  .skc__screen img {
-    display: block;
-    image-rendering: pixelated;
+  /* The mark as live text — crisp at any size, gold on Screen. */
+  .skc__mark {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 7.5px;
+    line-height: 1.08;
+    font-weight: 700;
+    color: #e9b44c; /* kit Marquee Gold */
   }
 
   .skc__fox {
