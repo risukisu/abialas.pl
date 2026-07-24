@@ -37,11 +37,12 @@ const builtRest = builtD.filter((b) => b.variant !== "skillcraft");
         <span class="lab-sec__rule" aria-hidden="true"></span>
         <a class="measure lab-all" href="https://github.com/risukisu">all projects ↗</a>
       </div>
-      <div class="graph-slot">
+      <!-- Graph hugs its weeks; SkillCraft fills the rest of the row. -->
+      <div class="build-row">
         <ContributionGraph />
-      </div>
-      <div class="lab-grid lab-grid--3">
         <SkillCraftTile />
+      </div>
+      <div class="lab-grid lab-grid--2">
         {builtRest.map((b) => <NexusBox {...b} size="md" />)}
       </div>
     </div>
@@ -65,9 +66,19 @@ const builtRest = builtD.filter((b) => b.variant !== "skillcraft");
     align-items: stretch;
   }
 
-  .graph-slot {
+  .build-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 18px;
+    align-items: stretch;
     margin-bottom: 18px;
     padding-right: 6px;
+  }
+
+  @media (max-width: 960px) {
+    .build-row {
+      grid-template-columns: 1fr;
+    }
   }
 
   .lab-all {
