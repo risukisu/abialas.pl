@@ -19,7 +19,8 @@ const is = (p: string) => path === p || path.startsWith(p + "/");
          background:var(--color-bg); border-bottom:1px solid transparent; }
   .nav__brand { display:flex; align-items:center; gap:10px; font-family:var(--font-serif); font-size:1.15rem; color:var(--color-ink); border:none; text-decoration:none; }
   .nav__squirrel { image-rendering:pixelated; }
-  .nav__links { display:flex; gap:28px; list-style:none; margin:0; padding:0; }
-  .nav__links a { font:500 15px var(--font-sans); color:var(--color-ink); text-decoration:none; border:none; }
+  .nav__links { display:flex; gap:34px; list-style:none; margin:0; padding:0; }
+  /* bumped from 15px — sections should be easy to find (owner call, lab D round) */
+  .nav__links a { font:500 17px var(--font-sans); color:var(--color-ink); text-decoration:none; border:none; }
   .nav__links a[aria-current="page"] { color:var(--color-accent); }
 </style>

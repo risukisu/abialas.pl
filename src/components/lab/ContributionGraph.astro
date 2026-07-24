@@ -1,0 +1,179 @@
+---
+/**
+ * LAB — GitHub contribution heatmap, light-themed to the site.
+ *
+ * Data: fetched at render time (build = "updates every deploy") from
+ * the public jogruber contributions API; graceful note on failure so a
+ * dead API can never break the build. Level ramp ends at the site's
+ * moss (#2E7D4F) — GitHub-recognizable, palette-native.
+ */
+type Day = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 };
+
+let days: Day[] = [];
+let total = 0;
+let failed = false;
+
+try {
+  const res = await fetch("https://github-contributions-api.jogruber.de/v4/risukisu?y=last");
+  if (!res.ok) throw new Error(String(res.status));
+  const data = await res.json();
+  days = data.contributions;
+  total = data.total?.lastYear ?? days.reduce((s: number, d: Day) => s + d.count, 0);
+} catch {
+  failed = true;
+}
+
+// Group into GitHub-style week columns (Sunday-first), padding the
+// first partial week so weekday rows line up.
+type Week = (Day | null)[];
+const weeks: Week[] = [];
+if (!failed && days.length) {
+  let week: Week = new Array(new Date(days[0].date).getDay()).fill(null);
+  for (const d of days) {
+    week.push(d);
+    if (week.length === 7) {
+      weeks.push(week);
+      week = [];
+    }
+  }
+  if (week.length) weeks.push([...week, ...new Array(7 - week.length).fill(null)]);
+}
+
+// Month label per week column — labelled where the month changes.
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const monthLabels: (string | null)[] = weeks.map((w, i) => {
+  const first = w.find(Boolean) as Day | undefined;
+  if (!first) return null;
+  const m = new Date(first.date).getMonth();
+  if (i === 0) return MONTHS[m];
+  const prev = weeks[i - 1].find(Boolean) as Day | undefined;
+  return prev && new Date(prev.date).getMonth() !== m ? MONTHS[m] : null;
+});
+---
+<div class="graph">
+  {failed ? (
+    <p class="graph__fail measure">contribution graph unavailable right now — see github.com/risukisu</p>
+  ) : (
+    <>
+      <div class="graph__head">
+        <span class="graph__total">{total.toLocaleString("en-US")} contributions in the last year</span>
+        <a class="measure graph__gh" href="https://github.com/risukisu">github ↗</a>
+      </div>
+      <div class="graph__scroll">
+        <div class="graph__months" aria-hidden="true">
+          {monthLabels.map((m) => <span class="graph__month">{m ?? ""}</span>)}
+        </div>
+        <div class="graph__grid" role="img" aria-label={`GitHub contribution heatmap: ${total} contributions in the last year`}>
+          {weeks.map((w) => (
+            <div class="graph__week">
+              {w.map((d) => (
+                <span
+                  class:list={["graph__cell", d && `l${d.level}`]}
+                  title={d ? `${d.date}: ${d.count}` : undefined}
+                ></span>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div class="graph__legend measure" aria-hidden="true">
+          Less
+          <span class="graph__cell"></span>
+          <span class="graph__cell l1"></span>
+          <span class="graph__cell l2"></span>
+          <span class="graph__cell l3"></span>
+          <span class="graph__cell l4"></span>
+          More
+        </div>
+      </div>
+    </>
+  )}
+</div>
+
+<style>
+  .graph {
+    background: #fff;
+    border: 2px solid var(--color-ink);
+    box-shadow: 6px 6px 0 var(--color-ink);
+    padding: 20px 22px;
+  }
+
+  .graph__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .graph__total {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 1.15rem;
+    color: var(--color-ink);
+  }
+
+  .graph__gh {
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+  .graph__gh:hover {
+    color: var(--color-accent);
+  }
+
+  .graph__scroll {
+    overflow-x: auto;
+  }
+
+  .graph__months {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 4px;
+  }
+
+  .graph__month {
+    width: 11px;
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-muted);
+    overflow: visible;
+    white-space: nowrap;
+  }
+
+  .graph__grid {
+    display: flex;
+    gap: 3px;
+  }
+
+  .graph__week {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .graph__cell {
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+    background: rgb(21 50 78 / 0.07);
+  }
+
+  .graph__cell.l1 { background: #bfdccb; }
+  .graph__cell.l2 { background: #8cc3a4; }
+  .graph__cell.l3 { background: #55a47b; }
+  .graph__cell.l4 { background: #2e7d4f; }
+
+  .graph__legend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: flex-end;
+    margin-top: 10px;
+    color: var(--color-muted);
+  }
+
+  .graph__fail {
+    margin: 0;
+    color: var(--color-muted);
+  }
+</style>

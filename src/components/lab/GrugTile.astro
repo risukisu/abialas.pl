@@ -1,0 +1,142 @@
+---
+/**
+ * LAB — the Newsletter hero tile, wearing the full Grug-Brained
+ * Marketer kit (brand/brand-kit-v1.html): Deep ground with a faint
+ * binary-rain hint, bone-framed logo sticker (slight rotate), shout
+ * name, matrix mono destination, mug→spark arrow. Kit hexes stay
+ * scoped here — guest brand, not site palette.
+ */
+const RAIN =
+  "01000111 01110010 01110101 01100111 00100000 01110011 01101101 01100001 01110011 01101000 00100000 01100011 01101111 01101101 01110000 01101100 01100101 01111000 01101001 01110100 01111001 00100000 01110011 01101001 01101101 01110000 01101100 01100101 00100000 01100010 01100101 01100001 01110100 01110011 00100000 01100011 01101111 01101101 01110000 01101100 01100101 01111000";
+---
+<a href="https://grugbrained.substack.com" class="grug" rel="me">
+  <span class="grug__rain" aria-hidden="true">{RAIN}</span>
+  <img class="grug__logo" src="/grug-logo.webp" alt="" width="72" height="72" />
+  <span class="grug__body">
+    <span class="grug__row">
+      <span class="grug__name">Newsletter</span>
+      <span class="grug__out" aria-hidden="true">↗</span>
+    </span>
+    <span class="grug__desc">Plain words about marketing, in your inbox.</span>
+    <span class="grug__where">Grug-Brained Marketer</span>
+  </span>
+</a>
+
+<style>
+  .grug {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 22px;
+    background: #0c2a20; /* kit Deep */
+    border: 3px solid #141110; /* kit Ink */
+    box-shadow: 4px 4px 0 #141110;
+    color: #f4efe3; /* kit Bone */
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  .grug:hover,
+  .grug:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #141110;
+  }
+
+  .grug:focus-visible {
+    outline: 2px solid #26d06a;
+    outline-offset: 3px;
+  }
+
+  /* Faint binary rain — the kit's tech pulse, whispered. */
+  .grug__rain {
+    position: absolute;
+    inset: -4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+    color: #129c46;
+    opacity: 0.18;
+    word-break: break-all;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Logo sticker — bone frame, hard shadow, the kit's 3° tilt. */
+  .grug__logo {
+    position: relative;
+    flex-shrink: 0;
+    border: 3px solid #f4efe3;
+    box-shadow: 4px 4px 0 rgb(0 0 0 / 0.4);
+    transform: rotate(-3deg);
+    background: #f4efe3;
+  }
+
+  .grug__body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .grug__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  /* The shout — kit display register (Anton approximated by Geist 800). */
+  .grug__name {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 1.35rem;
+    line-height: 1;
+  }
+
+  .grug__out {
+    color: #ea8ba6; /* kit Heart Mug */
+    opacity: 0.9;
+    transition: opacity 0.18s ease, transform 0.18s ease, color 0.18s ease;
+  }
+
+  .grug:hover .grug__out,
+  .grug:focus-visible .grug__out {
+    color: #f07a2d; /* kit Spark */
+    opacity: 1;
+    transform: translate(2px, -2px);
+  }
+
+  .grug__desc {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: #cfe0d3;
+  }
+
+  .grug__where {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: #26d06a; /* kit Matrix bright */
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .grug,
+    .grug:hover,
+    .grug:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .grug__logo {
+      transform: rotate(-3deg); /* static tilt is fine — it's not motion */
+    }
+    .grug:hover .grug__out,
+    .grug:focus-visible .grug__out {
+      transform: none;
+    }
+  }
+</style>

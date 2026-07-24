@@ -6,11 +6,11 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export interface Props {
-  variant: "A" | "B" | "C";
+  variant: "A" | "B" | "C" | "D";
   title: string;
 }
 const { variant, title } = Astro.props;
-const variants = ["A", "B", "C"] as const;
+const variants = ["A", "B", "C", "D"] as const;
 ---
 <BaseLayout title={`Lab ${variant} — ${title}`} noindex={true}>
   <div class="lab-switch" aria-label="Prototype switcher">
