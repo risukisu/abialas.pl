@@ -1,6 +1,6 @@
 ---
 title: How I run marketing
-status: published
+status: draft
 anatomy: outcome
 date: 2024-03-01
 topics:
