@@ -1,0 +1,292 @@
+---
+/**
+ * LAB — /writing rework prototype (nexus direction, 2026-08-12).
+ * Flat chronological list + featured ink plate + series chip rail that
+ * FILTERS client-side. Drafts are deliberately included (the whole
+ * catalog is draft right now) so the layout is judgeable. Throwaway:
+ * the real /writing absorbs the verdict, this route dies with /lab.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LabEssayCard from "../../components/lab/LabEssayCard.astro";
+import { getCollection } from "astro:content";
+import { topicHue } from "../../data/hues";
+import { series } from "../../data/series";
+
+// LAB ONLY: no status filter — everything is draft while the finalize
+// round is pending. The real page keeps publishedOnly().
+const all = (await getCollection("writing")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const chips = series
+  .map((s) => ({ ...s, count: all.filter((p) => p.data.topics[0] === s.tag).length }))
+  .filter((s) => s.count > 0);
+
+// Featured: first `featured: true`, else the newest.
+const featured = all.find((p) => p.data.featured) ?? all[0];
+const featuredHue = featured ? topicHue(featured.data.topics[0]) : null;
+const featuredDate = featured?.data.date.toLocaleString("en-US", { month: "short", year: "numeric" });
+const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.name;
+---
+<BaseLayout title="Lab — Writing rework" noindex={true}>
+  <!-- Lab badge — same idiom as the old lab switcher. -->
+  <div class="lab-badge">
+    <span class="measure">LAB</span>
+    <span class="lab-badge__note">/writing rework · drafts shown</span>
+    <a href="/writing" class="lab-badge__link">real page</a>
+  </div>
+
+  <!-- ── Archive header — unchanged from the real page. ─────────── -->
+  <header class="archive-head">
+    <div class="container">
+      <span class="measure archive-head__coord">Archive / Writing</span>
+      <h1 class="archive-head__title room-title">Writing</h1>
+      <p class="archive-head__standfirst">
+        Essays on the systems behind the work — plus shorter notes when
+        there's something worth saying.
+      </p>
+    </div>
+  </header>
+
+  <!-- ── Featured plate — stays visible regardless of filter. ───── -->
+  {featured && (
+    <section class="featured">
+      <div class="container">
+        <article class="featured__plate" style={`--tick: var(--hue-${featuredHue});`}>
+          <span class="measure featured__meta">
+            Featured{featuredSeries && ` · ${featuredSeries}`} · {featuredDate}
+          </span>
+          <h2 class="featured__title">
+            <a href={`/writing/${featured.slug}`}>{featured.data.title}</a>
+          </h2>
+          {featured.data.summary && (
+            <p class="featured__standfirst">{featured.data.summary}</p>
+          )}
+          <span class="featured__read" aria-hidden="true">Read the essay</span>
+        </article>
+      </div>
+    </section>
+  )}
+
+  <!-- ── Chip rail — All + one chip per series with a count. ────── -->
+  <section class="rail">
+    <div class="container">
+      <div class="chips" role="group" aria-label="Filter essays by series">
+        <button class="chip is-active" data-filter="all">
+          All <span class="chip__count">{all.length}</span>
+        </button>
+        {chips.map((s) => (
+          <button class="chip" data-filter={s.tag} style={`--tick: var(--hue-${topicHue(s.tag)}-text);`}>
+            {s.name} <span class="chip__count">{s.count}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Flat list — newest first, every series mixed. ──────────── -->
+  <section class="archive-flat">
+    <div class="container">
+      <div class="archive-flat__list">
+        {all.map((piece) => <LabEssayCard piece={piece} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Chip filter — progressive enhancement: no JS, full list, inert chips.
+  const rail = document.querySelector(".chips");
+  rail?.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-filter]");
+    if (!btn) return;
+    rail.querySelectorAll(".chip").forEach((c) => c.classList.toggle("is-active", c === btn));
+    const tag = btn.dataset.filter;
+    document.querySelectorAll<HTMLElement>("[data-series]").forEach((card) => {
+      card.toggleAttribute("hidden", tag !== "all" && card.dataset.series !== tag);
+    });
+  });
+</script>
+
+<style>
+  /* ── Lab badge ────────────────────────────────────────────────── */
+  .lab-badge {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    background: #fff;
+    border: 2px solid var(--color-ink);
+    box-shadow: 4px 4px 0 var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+  }
+  .lab-badge__note {
+    color: var(--color-muted);
+  }
+  .lab-badge__link {
+    color: var(--color-accent);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  /* ── Archive header — copied from the real page. ─────────────── */
+  .archive-head {
+    padding-top: clamp(48px, 7vw, 88px);
+    padding-bottom: clamp(18px, 2.5vw, 36px);
+  }
+  .archive-head__coord {
+    display: block;
+    margin-bottom: 22px;
+  }
+  .archive-head__title {
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    max-width: 18ch;
+    margin: 0 0 26px;
+  }
+  .archive-head__standfirst {
+    font-family: var(--font-serif);
+    font-size: clamp(1.15rem, 2.1vw, 1.4rem);
+    line-height: 1.5;
+    color: var(--color-body);
+    max-width: 52ch;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+
+  /* ── Featured plate — copied from the real page. ─────────────── */
+  .featured {
+    padding: 0;
+  }
+  .featured__plate {
+    position: relative;
+    background: var(--color-ink);
+    padding: clamp(22px, 3.3vw, 38px) clamp(28px, 5vw, 64px);
+    transition: transform 0.18s ease;
+  }
+  .featured__plate:hover,
+  .featured__plate:focus-within {
+    transform: translateY(-3px);
+  }
+  .featured__meta {
+    display: block;
+    color: var(--color-paper);
+    opacity: 0.72;
+    margin-bottom: 12px;
+  }
+  .featured__meta::before {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 9px;
+    background: var(--tick);
+    outline: 1px solid var(--color-paper);
+  }
+  .featured__title {
+    margin: 0 0 12px;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    max-width: 26ch;
+  }
+  .featured__title a {
+    color: var(--color-paper);
+    text-decoration: none;
+    border: none;
+    transition: color 0.15s;
+  }
+  .featured__title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .featured__plate:hover .featured__title a,
+  .featured__title a:focus-visible {
+    color: var(--link-on-ink);
+  }
+  .featured__standfirst {
+    font-family: var(--font-serif);
+    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+    line-height: 1.45;
+    color: var(--color-paper);
+    opacity: 0.85;
+    max-width: 54ch;
+    margin: 0 0 16px;
+    font-weight: 400;
+  }
+  .featured__read {
+    font: 500 15px var(--font-sans);
+    color: var(--link-on-ink);
+    border-bottom: 1px solid var(--link-on-ink);
+    padding-bottom: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .featured__plate {
+      transition: none;
+    }
+    .featured__plate:hover,
+    .featured__plate:focus-within {
+      transform: none;
+    }
+  }
+
+  /* ── Chip rail — measure register, hue tick per series. ──────── */
+  .rail {
+    padding-top: clamp(18px, 2.5vw, 36px);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    background: transparent;
+    border: 1px solid var(--color-line);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .chip[data-filter]:not([data-filter="all"])::before {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    background: var(--tick);
+  }
+  .chip:hover {
+    color: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+  .chip.is-active {
+    color: var(--tick, var(--color-ink));
+    border-color: var(--tick, var(--color-ink));
+  }
+  .chip__count {
+    opacity: 0.6;
+  }
+
+  /* ── Flat list ────────────────────────────────────────────────── */
+  .archive-flat {
+    padding-top: 26px;
+    padding-bottom: var(--section-padding);
+  }
+  .archive-flat__list {
+    border-bottom: 1px solid var(--color-line);
+  }
+</style>

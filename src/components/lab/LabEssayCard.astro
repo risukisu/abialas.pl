@@ -1,0 +1,79 @@
+---
+/**
+ * LAB — EssayCard variant for the /writing rework: the meta line wears
+ * the series display name (not the raw tag) and the article carries
+ * data-series for the chip-rail filter. Folds back into EssayCard.astro
+ * at promotion; throwaway with the /lab routes.
+ */
+import type { CollectionEntry } from "astro:content";
+import InkedLink from "../cta/InkedLink.astro";
+import { topicHue } from "../../data/hues";
+import { seriesName } from "../../data/series";
+
+export interface Props {
+  piece: CollectionEntry<"writing">;
+}
+const { piece } = Astro.props;
+const { title, date, topics, summary } = piece.data;
+
+const dateLabel = date.toLocaleString("en-US", { month: "short", year: "numeric" });
+const series = seriesName(topics[0]);
+const meta = series ? `${dateLabel} · ${series}` : dateLabel;
+const hue = topicHue(topics[0]);
+---
+<article class="essay-card" data-series={topics[0] ?? "none"} style={`--tick: var(--hue-${hue}-text);`}>
+  <span class="measure essay-card__meta">{meta}</span>
+  <h3 class="essay-card__title"><InkedLink href={`/writing/${piece.slug}`}>{title}</InkedLink></h3>
+  {summary && <p class="essay-card__summary">{summary}</p>}
+</article>
+
+<style>
+  .essay-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 18px 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  /* The UA's [hidden] loses to display:flex — filter needs this explicit. */
+  .essay-card[hidden] {
+    display: none;
+  }
+
+  .essay-card__meta {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .essay-card__meta::before {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 9px;
+    background: var(--tick);
+  }
+
+  .essay-card:hover :global(a) {
+    color: var(--tick);
+  }
+
+  .essay-card__title {
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  .essay-card__summary {
+    margin: 8px 0 0;
+    max-width: 60ch;
+    color: var(--color-muted);
+    font-size: 1rem;
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
