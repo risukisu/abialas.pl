@@ -1,8 +1,13 @@
 import { test, expect } from "@playwright/test";
 
-test("/writing/how-i-run-marketing renders outcome variant", async ({ page }) => {
-  await page.goto("/writing/how-i-run-marketing");
-  await expect(page.locator("h1")).toContainText("How I run marketing");
+test("piece page renders outcome variant", async ({ page }) => {
+  await page.goto("/writing");
+  const cardCount = await page.locator(".essay-card a").count();
+  test.skip(cardCount === 0, "no published essays yet — re-arms on first publish");
+
+  const firstCardHref = await page.locator(".essay-card a").first().getAttribute("href");
+  await page.goto(firstCardHref!);
+  await expect(page.locator("h1")).toBeVisible();
   await expect(page.locator(".piece-meta")).toBeVisible();
 });
 
@@ -12,12 +17,16 @@ test("draft piece returns 404", async ({ page }) => {
 });
 
 test("piece page has Article + BreadcrumbList JSON-LD", async ({ page }) => {
-  await page.goto("/writing/how-i-run-marketing");
+  await page.goto("/writing");
+  const cardCount = await page.locator(".essay-card a").count();
+  test.skip(cardCount === 0, "no published essays yet — re-arms on first publish");
+
+  const firstCardHref = await page.locator(".essay-card a").first().getAttribute("href");
+  await page.goto(firstCardHref!);
   const blocks = await page
     .locator("script[type='application/ld+json']")
     .allTextContents();
   const joined = blocks.join("\n");
   expect(joined).toContain("\"@type\":\"Article\"");
   expect(joined).toContain("\"@type\":\"BreadcrumbList\"");
-  expect(joined).toContain("How I run marketing");
 });
