@@ -17,8 +17,17 @@ let failed = false;
 // 12 months. The API returns the full year with zero-count future
 // days — trim to today so the graph ends at "now" (build time).
 const YEAR = "2026";
+// AbortController + a bounded timeout, cleared in `finally` regardless of
+// outcome — forces the underlying request handle to a definite closed
+// state instead of lingering half-open into build-process teardown (the
+// libuv assertion this guards against: "Assertion failed:
+// !(handle->flags & UV_HANDLE_CLOSING)" on Windows, src\win\async.c:76).
+const controller = new AbortController();
+const timeout = setTimeout(() => controller.abort(), 8000);
 try {
-  const res = await fetch(`https://github-contributions-api.jogruber.de/v4/risukisu?y=${YEAR}`);
+  const res = await fetch(`https://github-contributions-api.jogruber.de/v4/risukisu?y=${YEAR}`, {
+    signal: controller.signal,
+  });
   if (!res.ok) throw new Error(String(res.status));
   const data = await res.json();
   const today = new Date().toISOString().slice(0, 10);
@@ -26,6 +35,9 @@ try {
   total = data.total?.[YEAR] ?? days.reduce((s: number, d: Day) => s + d.count, 0);
 } catch {
   failed = true;
+} finally {
+  clearTimeout(timeout);
+  controller.abort();
 }
 
 // Group into GitHub-style week columns (Sunday-first), padding the
