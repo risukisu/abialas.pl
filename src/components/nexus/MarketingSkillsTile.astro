@@ -12,10 +12,9 @@
  * - the node-and-edge lockup (exact glyph) + stacked lowercase
  *   wordmark, "skills" in interface violet
  * - ground #050508, kit hues scoped here; 8px kit radius kept
- * - kit fonts are Unbounded/IBM Plex Mono — approximated with the
- *   site's Geist 900 / Geist Mono (self-hosting Unbounded is a
- *   go-live decision)
+ * - wordmark = self-hosted Unbounded 900; mono stays Geist Mono in place of IBM Plex Mono (deliberate — invisible at tile sizes)
  */
+import "@fontsource/unbounded/900.css";
 function mulberry32(seed: number) {
   let t = seed;
   return () => {
@@ -237,10 +236,9 @@ for (let i = 0; i < 44; i++) {
     gap: 14px;
   }
 
-  /* stacked lowercase wordmark — kit: Unbounded 900, "skills" violet.
-     Approximated with Geist 900 until Unbounded is self-hosted. */
+  /* stacked lowercase wordmark — kit: Unbounded 900, "skills" violet. */
   .msk2__wm {
-    font-family: var(--font-sans);
+    font-family: "Unbounded", var(--font-sans);
     font-weight: 900;
     font-size: 1.3rem;
     line-height: 1.04;
