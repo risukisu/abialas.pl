@@ -1,49 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ProductCard from "../components/ProductCard.astro";
-import EssayCard from "../components/EssayCard.astro";
-import InkedLink from "../components/cta/InkedLink.astro";
-import { getCollection } from "astro:content";
-import { byTopic, latest, publishedOnly } from "../lib/pieces";
-import { products, type Product } from "../data/products";
-
-const all = await getCollection("writing");
-const recent = latest(all, 3);
-const countFor = (tag: string) => byTopic(all, tag).length;
-
-// On display: all four destinations as equal exhibit plates, in an
-// EXPLICIT order (AI · System · Writing · Work) — deliberately not
-// products.ts order, which still drives the /writing archive groups.
-// Work and Writing are Product-shaped LOCALLY only — they must never
-// enter products.ts, whose slugs feed [product].astro's static paths
-// and would collide with the real /work and /writing pages.
-const workBuilt = publishedOnly(await getCollection("work")).length;
-
-// Elsewhere: the mini-windows row — external destinations, so no room
-// hues (hues are wayfinding for THIS site's rooms only).
-const elsewhere = [
-  { href: "https://github.com/risukisu", name: "Projects", where: "github.com/risukisu" },
-  { href: "https://risu.pl", name: "Blog", where: "risu.pl" },
-  { href: "https://skillcraft.cloud", name: "SkillCraft", where: "skillcraft.cloud" },
-  // The newsletter box wears the Grug-Brained Marketer brand kit — a
-  // guest sticker, not part of this site's palette (see .mini--grug).
-  { href: "https://grugbrained.substack.com", name: "Newsletter", where: "Grug-Brained Marketer", variant: "grug" },
-];
-const ai = products.find((p) => p.slug === "ai")!;
-const system = products.find((p) => p.slug === "system")!;
-const display: { product: Product; count: number; countLabel?: string }[] = [
-  { product: ai, count: countFor(ai.tag) },
-  { product: system, count: countFor(system.tag) },
-  {
-    product: { slug: "writing", name: "Writing", blurb: "Every essay, grouped by topic.", tag: "writing", order: 4, hue: "writing" },
-    count: publishedOnly(all).length,
-  },
-  {
-    product: { slug: "work", name: "Work", blurb: "What I built, the résumé, and what people say.", tag: "work", order: 3, hue: "work" },
-    count: workBuilt,
-    countLabel: `${workBuilt} built · résumé`,
-  },
-];
+import NexusBox from "../components/nexus/NexusBox.astro";
+import GrugTile from "../components/nexus/GrugTile.astro";
+import SkillCraftTile from "../components/nexus/SkillCraftTile.astro";
+import MarketingSkillsTile from "../components/nexus/MarketingSkillsTile.astro";
+import ContributionGraph from "../components/nexus/ContributionGraph.astro";
+import { follow, more } from "../data/nexus";
 ---
 <BaseLayout
   title="Andrzej Białaś"
@@ -67,76 +29,57 @@ const display: { product: Product; count: number; countLabel?: string }[] = [
     </div>
   </header>
 
-  <!-- ── 2 · Items on display ──────────────────────────────────
-       The storefront's heart. Products, work, and writing on a gridded surface:
-       2-up on desktop, 1-up on mobile. -->
-  <section class="display">
+  <!-- ── Follow ─────────────────────────────────────────────────────
+       Newsletter hero tile + LinkedIn + Blog. Guest-sticker rule:
+       each tile wears its OWN brand kit, hexes scoped per component. -->
+  <section class="nexus-sec">
     <div class="container">
-      <div class="section-head">
-        <span class="measure measure--system">On display</span>
-        <span class="measure section-head__rule" aria-hidden="true"></span>
+      <div class="nexus-sec__head">
+        <span class="measure">Follow</span>
+        <span class="nexus-sec__rule" aria-hidden="true"></span>
       </div>
-      <div class="display__grid">
-        {display.map((d) => (
-          <ProductCard product={d.product} count={d.count} countLabel={d.countLabel} />
-        ))}
+      <div class="follow-row">
+        <GrugTile />
+        {follow.map((b) => <NexusBox {...b} size="md" />)}
       </div>
     </div>
   </section>
 
-  <!-- ── 3 · Elsewhere ─────────────────────────────────────────────
-       Mini-windows: same plate language, smaller and hueless — these
-       exit the site (projects, blog, SkillCraft, newsletter). -->
-  <section class="elsewhere">
+  <!-- ── Building ───────────────────────────────────────────────────
+       Proof-of-work: live contribution graph + the two kit tiles. -->
+  <section class="nexus-sec">
     <div class="container">
-      <div class="section-head">
-        <span class="measure">Elsewhere</span>
-        <span class="measure section-head__rule" aria-hidden="true"></span>
+      <div class="nexus-sec__head">
+        <span class="measure">Building</span>
+        <span class="nexus-sec__rule" aria-hidden="true"></span>
+        <a class="measure nexus-all" href="https://github.com/risukisu">all projects ↗</a>
       </div>
-      <nav aria-label="Elsewhere">
-        <div class="elsewhere__grid">
-          {elsewhere.map((e) => (
-            <a href={e.href} class:list={["mini", e.variant === "grug" && "mini--grug"]} rel="me">
-              <span class="mini__row">
-                <span class="mini__name">{e.name}</span>
-                <span class="mini__out" aria-hidden="true">↗</span>
-              </span>
-              <span class="mini__where">{e.where}</span>
-            </a>
-          ))}
-        </div>
-      </nav>
+      <div class="build-row">
+        <ContributionGraph />
+        <SkillCraftTile />
+      </div>
+      <div class="msk-slot">
+        <MarketingSkillsTile />
+      </div>
     </div>
   </section>
 
-  <!-- ── 4 · Latest ───────────────────────────────────────────────
-       A quieter strip. One published essay today → one row, which must
-       read as intentional. Section omitted entirely if nothing is live. -->
-  {recent.length > 0 && (
-    <section class="latest">
-      <div class="container">
-        <div class="section-head section-head--split">
-          <span class="measure measure--writing">Latest</span>
-          <InkedLink href="/writing">All writing</InkedLink>
-        </div>
-        <div class="latest__list">
-          {recent.map((piece) => (
-            <EssayCard piece={piece} />
-          ))}
-        </div>
+  <!-- ── More ──────────────────────────────────────────────────────── -->
+  <section class="nexus-sec nexus-sec--last">
+    <div class="container">
+      <div class="nexus-grid">
+        {more.map((b) => <NexusBox {...b} />)}
       </div>
-    </section>
-  )}
+    </div>
+  </section>
 
 </BaseLayout>
 
 <style>
   /* ════════════════════════════════════════════════════════════════
-     HOME · The Digital Storefront
-     Nameplate hero (no CTAs) → on display (four window plates) →
-     elsewhere (mini-windows: external exits) → latest.
-     About lives in the nav + footer only; the footer's identity block
-     carries the bio line. Catalog macrostructure, not hero→features→CTA.
+     HOME · The Nexus
+     masthead → Follow → Building → More; guest-sticker tiles carry
+     their own kits.
      ════════════════════════════════════════════════════════════════ */
 
   /* ── 1 · Masthead ─────────────────────────────────────────────── */
@@ -222,185 +165,8 @@ const display: { product: Product; count: number; countLabel?: string }[] = [
     text-transform: none;
   }
 
-  /* ── 2 · Products on display ──────────────────────────────────── */
-  .display {
-    /* no own top padding — the masthead's bottom padding is the gap */
-    padding-top: 0;
-  }
-
-  /* Happy-Hues look test (2026-07-21): open grid — the window plates
-     float free so their hard offset shadows have room to sit. */
-  .display__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
-    padding-right: 9px; /* room for the deepened hover shadow */
-  }
-
-  /* ── 3 · Elsewhere: mini-windows ──────────────────────────────────
-     Same flat-window language as the plates, scaled down and hueless:
-     white chip, ink outline, small hard shadow, ↗ marks the exit. */
-  .elsewhere {
-    padding-top: clamp(48px, 6vw, 88px);
-  }
-
-  .elsewhere__grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    padding-right: 6px; /* room for the hover shadow */
-  }
-
-  .mini {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 14px 18px;
-    background: #fff;
-    border: 2px solid var(--color-ink);
-    /* rectangular — hard corners, kit-style */
-    box-shadow: 4px 4px 0 var(--color-ink);
-    text-decoration: none;
-    color: var(--color-ink);
-    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
-      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
-  }
-
-  .mini:hover,
-  .mini:focus-visible {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--color-ink);
-  }
-
-  .mini:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 3px;
-  }
-
-  .mini__row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 10px;
-  }
-
-  .mini__name {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    font-size: 1.1rem;
-  }
-
-  .mini__out {
-    font-size: 0.95rem;
-    opacity: 0.45;
-    transition: opacity 0.18s ease, transform 0.18s ease;
-  }
-
-  .mini:hover .mini__out,
-  .mini:focus-visible .mini__out {
-    opacity: 1;
-    transform: translate(2px, -2px);
-    color: var(--color-accent);
-  }
-
-  .mini__where {
-    font-family: var(--font-mono);
-    font-size: var(--text-meta);
-    color: var(--color-muted);
-  }
-
-  /* ── The Grug guest sticker ───────────────────────────────────────
-     The Newsletter box wears the Grug-Brained Marketer brand kit
-     (brand/brand-kit-v1.html): Deep teal ground, Bone text, Matrix
-     mono, warm-black 3px border + shadow, Mug-pink arrow warming to
-     Spark on hover. These hexes are the KIT's, not this site's palette
-     — a deliberate one-off, like a sticker from another brand. */
-  .mini--grug {
-    background: #0C2A20; /* kit Deep */
-    border: 3px solid #141110; /* kit Ink */
-    box-shadow: 4px 4px 0 #141110;
-    color: #F4EFE3; /* kit Bone */
-  }
-
-  .mini--grug:hover,
-  .mini--grug:focus-visible {
-    box-shadow: 6px 6px 0 #141110;
-  }
-
-  .mini--grug:focus-visible {
-    outline: 2px solid #26D06A;
-  }
-
-  .mini--grug .mini__name {
-    font-family: var(--font-sans);
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    font-size: 1rem;
-  }
-
-  .mini--grug .mini__where {
-    color: #26D06A; /* kit Matrix bright */
-  }
-
-  .mini--grug .mini__out {
-    color: #EA8BA6; /* kit Heart Mug */
-    opacity: 0.85;
-  }
-
-  .mini--grug:hover .mini__out,
-  .mini--grug:focus-visible .mini__out {
-    color: #F07A2D; /* kit Spark — one pop per surface */
-    opacity: 1;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .mini,
-    .mini:hover,
-    .mini:focus-visible {
-      transform: none;
-      transition: box-shadow 0.2s ease;
-    }
-    .mini:hover .mini__out,
-    .mini:focus-visible .mini__out {
-      transform: none;
-    }
-  }
-
-  /* ── 4 · Latest ───────────────────────────────────────────────── */
-  .latest {
-    padding-top: var(--section-padding);
-  }
-
-  /* The list's first essay-card draws its own top hairline; combined
-     with the section head's rule it frames a single row cleanly, so one
-     published piece reads as a deliberate entry, not a broken grid. */
-  .latest__list {
-    border-bottom: 1px solid var(--color-line);
-  }
-
-  /* ── Shared section heads ─────────────────────────────────────── */
-  .section-head {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    margin-bottom: 34px;
-  }
-
-  /* A measure rule trailing the label — schematic callout. */
-  .section-head__rule {
-    flex: 1;
-    height: 3px;
-    background: var(--gradient-spectrum);
-  }
-
-  .section-head--split {
-    justify-content: space-between;
-  }
-
   .measure--system { color: var(--hue-system-text); }
   .measure--writing { color: var(--hue-writing-text); }
-
 
   /* ── Page-load reveal ─────────────────────────────────────────────
      One orchestrated, staggered fade-rise in the masthead only.
@@ -427,24 +193,76 @@ const display: { product: Product; count: number; countLabel?: string }[] = [
     }
   }
 
-  /* ── Responsive ───────────────────────────────────────────────── */
+  /* ── Nexus sections — graduated from LabShell's lab-sec idioms. ── */
+  .nexus-sec {
+    padding-top: clamp(36px, 5vw, 60px);
+  }
+  .nexus-sec--last {
+    padding-bottom: var(--section-padding);
+  }
+  .nexus-sec__head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+  .nexus-sec__rule {
+    flex: 1;
+    height: 3px;
+    background: var(--gradient-spectrum);
+  }
+  .nexus-all {
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+  .nexus-all:hover {
+    color: var(--color-accent);
+  }
+
+  .follow-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 18px;
+    padding-right: 6px; /* hover-shadow room */
+    align-items: stretch;
+  }
+
+  /* GitHub graph is the wide one (owner call); SkillCraft hugs right. */
+  .build-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+    align-items: stretch;
+    margin-bottom: 18px;
+    padding-right: 6px;
+  }
+  .build-row > :global(.graph) {
+    width: 100%;
+  }
+  .msk-slot {
+    padding-right: 6px;
+  }
+
+  .nexus-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    padding-right: 6px;
+  }
+
   @media (max-width: 960px) {
-    .elsewhere__grid {
+    .follow-row,
+    .build-row {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 900px) {
+    .nexus-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
-
-  @media (max-width: 720px) {
-    .display__grid {
-      grid-template-columns: 1fr;
-    }
-    .section-head {
-      gap: 14px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .elsewhere__grid {
+  @media (max-width: 540px) {
+    .nexus-grid {
       grid-template-columns: 1fr;
     }
   }
