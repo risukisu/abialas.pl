@@ -15,3 +15,9 @@ test("home nav → work", async ({ page }) => {
   await page.click("nav a[href='/work']");
   await expect(page).toHaveURL(/\/work$/);
 });
+
+test("no links to the dead concept pages remain", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("a[href='/system']")).toHaveCount(0);
+  await expect(page.locator("a[href='/ai']")).toHaveCount(0);
+});
