@@ -1,15 +1,19 @@
 ---
 /**
- * LAB — the SkillCraft tile, wearing its brand kit
- * (skills-trader/brand/brand-kit-v1.html): Canvas poster paper, the
- * gold ANSI wordmark inside its dark Screen tile (the tile is part of
- * the lockup — never gold straight on cream), pixel fox as the accent,
- * Deep Green mono details, 10px rounding (the kit's own trait — this
- * guest sticker keeps its corners). Kit hexes scoped here.
+ * The SkillCraft tile, wearing the brand's "Clean" design (canonical
+ * draft: sandbox/skillcraft-ui-refresh/draft.html, 2026-08-18 — ships
+ * to skillcraft.cloud next): warm paper surface, hairline border,
+ * monochrome ANSI wordmark, ANIMATED Elthen pixel fox — 5-frame idle
+ * from the sprite sheet, steps() over background-position, static
+ * first frame under reduced-motion (elthen.itch.io fox sprites, free
+ * for commercial use; sheet frames wear no grad cap — owner-supplied
+ * pack). Owner deltas from the draft: hard offset shadow like the
+ * sibling tiles, no blinking cursor. Kit hexes scoped here; 10px
+ * radius stays the brand's own trait.
  *
- * The mark is LIVE TEXT (patorjk.com ANSI Shadow), not an image — per
- * the kit: "rendered from the ANSI-Shadow text, so it stays sharp at
- * any size". The PNG export was visibly lossy at tile size.
+ * The mark is LIVE TEXT (patorjk.com ANSI Shadow), not an image — it
+ * stays sharp at any size. Site mono stands in for JetBrains Mono
+ * (invisible at block-glyph sizes, same ruling as the old kit).
  */
 const MARK = `███████╗██╗  ██╗██╗██╗     ██╗
 ██╔════╝██║ ██╔╝██║██║     ██║
@@ -25,30 +29,31 @@ const MARK = `███████╗██╗  ██╗██╗██╗    
 ╚██████╗██║  ██║██║  ██║██║        ██║
  ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝        ╚═╝`;
 ---
-<a href="https://skillcraft.cloud" class="skc" rel="me" aria-label="SkillCraft — marketplace for Claude skills">
+<a href="https://skillcraft.cloud" class="skc" rel="me" aria-label="SkillCraft — community-ranked skill library for AI operators">
   <span class="skc__row">
-    <span class="skc__screen">
-      <pre class="skc__mark" aria-hidden="true">{MARK}</pre>
-    </span>
-    <img class="skc__fox" src="/skillcraft-fox.png" alt="" width="60" height="76" />
+    <pre class="skc__mark" aria-hidden="true">{MARK}</pre>
+    <span class="skc__fox" aria-hidden="true"></span>
     <span class="skc__out" aria-hidden="true">↗</span>
   </span>
-  <span class="skc__desc">Real marketing skills, hand-picked for Claude Code.</span>
+  <span class="skc__desc">Skills for high-performing AI operators.</span>
   <span class="skc__where">skillcraft.cloud</span>
 </a>
 
 <style>
+  /* "Clean" draft vocabulary: paper ground, hairline line, single
+     scarce green accent, no shadows — hover strengthens the line. */
   .skc {
     display: flex;
     flex-direction: column;
     justify-content: center; /* centers when stretched beside the graph */
     gap: 6px;
     padding: 20px 22px;
-    background: #f5efe1; /* kit Canvas */
-    border: 2px solid #15130f; /* kit Ink */
+    background: #fbfaf6; /* kit bg */
+    border: 1px solid rgba(23, 21, 15, 0.13); /* kit hairline */
     border-radius: 10px; /* the kit's own rounding — guest trait */
-    box-shadow: 4px 4px 0 #15130f;
-    color: #15130f;
+    /* owner call: shadow like the sibling tiles, kit ink */
+    box-shadow: 4px 4px 0 #17150f;
+    color: #17150f; /* kit ink */
     text-decoration: none;
     transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
       box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
@@ -57,69 +62,72 @@ const MARK = `███████╗██╗  ██╗██╗██╗    
   .skc:hover,
   .skc:focus-visible {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #15130f;
+    box-shadow: 6px 6px 0 #17150f;
   }
 
   .skc:focus-visible {
-    outline: 2px solid #0f7a38;
+    outline: 2px solid #0e9f5b; /* kit accent */
     outline-offset: 3px;
   }
 
   .skc__row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
   }
 
-  /* The mark's native tile — gold never sits straight on cream. */
-  .skc__screen {
-    display: inline-flex;
-    align-items: center;
-    background: #0b1a11; /* kit Screen */
-    border-radius: 8px;
-    padding: 8px 12px;
-  }
-
-  /* The mark as live text — crisp at any size, gold on Screen. */
+  /* The mark as live text — monochrome ink, per the Clean lockup. */
   .skc__mark {
     margin: 0;
     font-family: var(--font-mono);
     font-size: 7.5px;
     line-height: 1.08;
     font-weight: 700;
-    color: #e9b44c; /* kit Marquee Gold */
+    color: #17150f;
   }
 
+  /* The fox, alive: 5-frame idle (sheet row 1, 32px frames shown at
+     2x via background-size), stepped background-position. */
   .skc__fox {
-    image-rendering: pixelated;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
     align-self: flex-end;
+    background: url("/skillcraft-fox-sheet.png") 0 0 no-repeat;
+    background-size: 896px 448px; /* 2x the 448x224 sheet */
+    image-rendering: pixelated;
+    animation: skc-fox-idle 1.2s steps(5) infinite;
+  }
+
+  @keyframes skc-fox-idle {
+    to {
+      background-position: -320px 0; /* 5 frames x 64px */
+    }
   }
 
   .skc__out {
     margin-left: auto;
-    color: #0f7a38; /* kit Deep Green */
-    opacity: 0.85;
-    transition: opacity 0.18s ease, transform 0.18s ease, color 0.18s ease;
+    color: rgba(23, 21, 15, 0.38); /* kit faint */
+    transition: color 0.18s ease, transform 0.18s ease;
   }
 
   .skc:hover .skc__out,
   .skc:focus-visible .skc__out {
-    color: #e9b44c; /* kit Marquee Gold */
-    opacity: 1;
+    color: #0e9f5b; /* kit accent */
     transform: translate(2px, -2px);
   }
 
   .skc__desc {
     font-size: 0.95rem;
     line-height: 1.45;
-    font-weight: 600;
-    color: #463f33;
+    font-weight: 500;
+    color: rgba(23, 21, 15, 0.6); /* kit soft */
   }
 
   .skc__where {
     font-family: var(--font-mono);
     font-size: var(--text-meta);
-    color: #0f7a38;
+    color: #0e9f5b; /* kit accent */
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -132,6 +140,10 @@ const MARK = `███████╗██╗  ██╗██╗██╗    
     .skc:hover .skc__out,
     .skc:focus-visible .skc__out {
       transform: none;
+    }
+    /* static first frame — the fox just sits */
+    .skc__fox {
+      animation: none;
     }
   }
 </style>
