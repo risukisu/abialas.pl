@@ -2,16 +2,18 @@
 import type { CollectionEntry } from "astro:content";
 import InkedLink from "./cta/InkedLink.astro";
 import { topicHue } from "../data/hues";
+import { seriesName } from "../data/series";
 
 export interface Props { piece: CollectionEntry<"writing">; }
 const { piece } = Astro.props;
 const { title, date, topics, summary } = piece.data;
 
 const dateLabel = date.toLocaleString("en-US", { month: "short", year: "numeric" });
-const meta = topics.length ? `${dateLabel} · ${topics[0]}` : dateLabel;
+const series = seriesName(topics[0]);
+const meta = series ? `${dateLabel} · ${series}` : dateLabel;
 const hue = topicHue(topics[0]);
 ---
-<article class="essay-card" style={`--tick: var(--hue-${hue}-text);`}>
+<article class="essay-card" data-series={topics[0] ?? "none"} style={`--tick: var(--hue-${hue}-text);`}>
   <span class="measure essay-card__meta">{meta}</span>
   <h3 class="essay-card__title"><InkedLink href={`/writing/${piece.slug}`}>{title}</InkedLink></h3>
   {summary && <p class="essay-card__summary">{summary}</p>}
@@ -24,6 +26,11 @@ const hue = topicHue(topics[0]);
     gap: 0;
     padding: 18px 0;
     border-top: 1px solid var(--color-line);
+  }
+
+  /* The UA's [hidden] loses to display:flex — the /writing filter needs this explicit. */
+  .essay-card[hidden] {
+    display: none;
   }
 
   .essay-card__meta {
