@@ -1,49 +1,36 @@
 ---
 /**
- * Writing archive — "The Drafting Table"
- *
- * The complete archive of essays, grouped by product/topic. Reachable from
- * the storefront ("All writing") and the footer. Designed to scale: add a
- * product, its group appears automatically; remove all pieces from a product
- * and its group disappears. With one published piece the page reads as a
- * deliberate entry, not a broken grid.
- *
- * Section heads match the storefront and alley pages exactly — same
- * `.section-head` + `.section-head__rule` idiom for coherence across the site.
+ * Writing archive — flat chronological list + featured ink plate +
+ * series chip rail that filters client-side (nexus direction,
+ * spec 2026-08-17). Series live in src/data/series.ts; essays carry
+ * them via topics[0]. With zero published pieces the page renders
+ * the single empty-state line, nothing else.
  */
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import EssayCard from "../../components/EssayCard.astro";
-import InkedLink from "../../components/cta/InkedLink.astro";
 import { getCollection } from "astro:content";
-import { byTopic, featuredPieces, latest } from "../../lib/pieces";
-import { products } from "../../data/products";
+import { publishedOnly, sortByDate, featuredPieces, latest } from "../../lib/pieces";
 import { topicHue } from "../../data/hues";
+import { series } from "../../data/series";
 
+const published = sortByDate(publishedOnly(await getCollection("writing")));
+
+const chips = series
+  .map((s) => ({ ...s, count: published.filter((p) => p.data.topics[0] === s.tag).length }))
+  .filter((s) => s.count > 0);
+
+// The ink plate: first `featured: true` published essay, else the newest.
 const all = await getCollection("writing");
-const sortedProducts = [...products].sort((a, b) => a.order - b.order);
-
-// Each group = a product and its published essays (newest-first). Omit empty groups.
-const groups = sortedProducts
-  .map((p) => ({ product: p, pieces: byTopic(all, p.tag) }))
-  .filter((g) => g.pieces.length > 0);
-
-// The ink plate: first `featured: true` essay, else the newest published one.
-// The plate highlights; the groups below stay the complete catalog (the
-// featured essay is deliberately NOT removed from its group).
 const featured = featuredPieces(all, 1)[0] ?? latest(all, 1)[0];
 const featuredHue = featured ? topicHue(featured.data.topics[0]) : null;
 const featuredDate = featured?.data.date.toLocaleString("en-US", { month: "short", year: "numeric" });
-const featuredTopic = featured?.data.topics[0];
+const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.name;
 ---
 <BaseLayout
   title="Writing — Andrzej Białaś"
   description="Essays on marketing systems, plainly."
   room="writing"
 >
-  <!-- ── Archive header ────────────────────────────────────────────
-       Index coordinate (measure mono), H1 in Newsreader, one honest
-       standfirst. No blueprint grid here — this is a downstream room,
-       quieter than the storefront masthead. -->
   <header class="archive-head">
     <div class="container">
       <span class="measure archive-head__coord">Archive / Writing</span>
@@ -55,17 +42,13 @@ const featuredTopic = featured?.data.topics[0];
     </div>
   </header>
 
-  <!-- ── Featured plate ────────────────────────────────────────────
-       The ink plate: one essay in full inversion — ink ground, paper
-       text, ochre read-link (the About-band vocabulary). Topic hue
-       appears only as the paper-outlined tick; hues read muddy on ink.
-       Whole plate is clickable via the stretched title link. -->
+  <!-- Featured plate — a highlight, not a list member: ignores filtering. -->
   {featured && (
     <section class="featured">
       <div class="container">
         <article class="featured__plate" style={`--tick: var(--hue-${featuredHue});`}>
           <span class="measure featured__meta">
-            Featured{featuredTopic && ` · ${featuredTopic}`} · {featuredDate}
+            Featured{featuredSeries && ` · ${featuredSeries}`} · {featuredDate}
           </span>
           <h2 class="featured__title">
             <a href={`/writing/${featured.slug}`}>{featured.data.title}</a>
@@ -79,26 +62,31 @@ const featuredTopic = featured?.data.topics[0];
     </section>
   )}
 
-  <!-- ── Grouped archive ───────────────────────────────────────────
-       One section per product that has published pieces. Section head:
-       measure label (links to the product alley) + trailing hairline rule.
-       Essays in a single-column list. Omits empty groups entirely. -->
-  {groups.length > 0 ? (
-    groups.map(({ product, pieces }) => (
-      <section class="archive-group">
+  {published.length > 0 ? (
+    <>
+      <section class="rail">
         <div class="container">
-          <div class="section-head" style={`--room-text: var(--hue-${product.hue}-text);`}>
-            <span class="measure">
-              <InkedLink href={`/${product.slug}`}>{product.name}</InkedLink>
-            </span>
-            <span class="section-head__rule" aria-hidden="true"></span>
-          </div>
-          <div class="archive-group__list">
-            {pieces.map((piece) => <EssayCard piece={piece} />)}
+          <div class="chips" role="group" aria-label="Filter essays by series">
+            <button class="chip is-active" data-filter="all">
+              All <span class="chip__count">{published.length}</span>
+            </button>
+            {chips.map((s) => (
+              <button class="chip" data-filter={s.tag} style={`--tick: var(--hue-${topicHue(s.tag)}-text);`}>
+                {s.name} <span class="chip__count">{s.count}</span>
+              </button>
+            ))}
           </div>
         </div>
       </section>
-    ))
+
+      <section class="archive-flat">
+        <div class="container">
+          <div class="archive-flat__list">
+            {published.map((piece) => <EssayCard piece={piece} />)}
+          </div>
+        </div>
+      </section>
+    </>
   ) : (
     <section class="archive-empty">
       <div class="container">
@@ -108,26 +96,30 @@ const featuredTopic = featured?.data.topics[0];
   )}
 </BaseLayout>
 
-<style>
-  /* ════════════════════════════════════════════════════════════════
-     WRITING ARCHIVE · The Drafting Table
-     Matte, precise, editorial. Grouped by product so the structure
-     scales gracefully. One published piece renders a single deliberate
-     row — not a broken grid, not an error state.
-     Of-a-piece with the storefront and the product alleys.
-     ════════════════════════════════════════════════════════════════ */
+<script>
+  // Chip filter — progressive enhancement: no JS, full list, inert chips.
+  const rail = document.querySelector(".chips");
+  rail?.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-filter]");
+    if (!btn) return;
+    rail.querySelectorAll(".chip").forEach((c) => c.classList.toggle("is-active", c === btn));
+    const tag = btn.dataset.filter;
+    document.querySelectorAll<HTMLElement>(".essay-card[data-series]").forEach((card) => {
+      card.toggleAttribute("hidden", tag !== "all" && card.dataset.series !== tag);
+    });
+  });
+</script>
 
+<style>
   /* ── Archive header ───────────────────────────────────────────── */
   .archive-head {
     padding-top: clamp(48px, 7vw, 88px);
-    padding-bottom: var(--section-padding);
+    padding-bottom: clamp(18px, 2.5vw, 36px);
   }
-
   .archive-head__coord {
     display: block;
     margin-bottom: 22px;
   }
-
   .archive-head__title {
     font-size: clamp(2.5rem, 6vw, 4.25rem);
     line-height: 1.04;
@@ -135,7 +127,6 @@ const featuredTopic = featured?.data.topics[0];
     max-width: 18ch;
     margin: 0 0 26px;
   }
-
   .archive-head__standfirst {
     font-family: var(--font-serif);
     font-size: clamp(1.15rem, 2.1vw, 1.4rem);
@@ -147,36 +138,26 @@ const featuredTopic = featured?.data.topics[0];
     letter-spacing: -0.005em;
   }
 
-  /* ── Featured plate ───────────────────────────────────────────────
-     Full inversion — the About band's vocabulary applied to one essay.
-     Paper on ink; the read-link wears --link-on-ink ochre (the gated
-     on-ink pair); the topic hue appears only as a paper-outlined tick. */
-  /* No own padding — the head's bottom padding spaces it above, the
-     first group's top padding below. Keeps the page's single-SP rhythm. */
+  /* ── Featured plate — copied from the real page. ─────────────── */
   .featured {
     padding: 0;
   }
-
   .featured__plate {
     position: relative;
     background: var(--color-ink);
-    padding: clamp(36px, 5.5vw, 64px) clamp(28px, 5vw, 64px);
+    padding: clamp(22px, 3.3vw, 38px) clamp(28px, 5vw, 64px);
     transition: transform 0.18s ease;
   }
-
   .featured__plate:hover,
   .featured__plate:focus-within {
     transform: translateY(-3px);
   }
-
   .featured__meta {
     display: block;
     color: var(--color-paper);
     opacity: 0.72;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
   }
-
-  /* Topic tick — raw hue with a paper outline so any hue reads on ink. */
   .featured__meta::before {
     content: "";
     display: inline-block;
@@ -186,16 +167,13 @@ const featuredTopic = featured?.data.topics[0];
     background: var(--tick);
     outline: 1px solid var(--color-paper);
   }
-
   .featured__title {
-    margin: 0 0 18px;
-    font-size: clamp(1.9rem, 4.5vw, 3.1rem);
+    margin: 0 0 12px;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
     line-height: 1.08;
     letter-spacing: -0.02em;
-    max-width: 22ch;
+    max-width: 26ch;
   }
-
-  /* Stretched link — the whole plate is the click target. */
   .featured__title a {
     color: var(--color-paper);
     text-decoration: none;
@@ -211,25 +189,22 @@ const featuredTopic = featured?.data.topics[0];
   .featured__title a:focus-visible {
     color: var(--link-on-ink);
   }
-
   .featured__standfirst {
     font-family: var(--font-serif);
-    font-size: clamp(1.1rem, 2vw, 1.3rem);
-    line-height: 1.5;
+    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+    line-height: 1.45;
     color: var(--color-paper);
     opacity: 0.85;
     max-width: 54ch;
-    margin: 0 0 28px;
+    margin: 0 0 16px;
     font-weight: 400;
   }
-
   .featured__read {
     font: 500 15px var(--font-sans);
     color: var(--link-on-ink);
     border-bottom: 1px solid var(--link-on-ink);
     padding-bottom: 2px;
   }
-
   @media (prefers-reduced-motion: reduce) {
     .featured__plate {
       transition: none;
@@ -240,41 +215,56 @@ const featuredTopic = featured?.data.topics[0];
     }
   }
 
-  /* ── Grouped sections ─────────────────────────────────────────── */
-  .archive-group {
-    padding-top: var(--section-padding);
+  /* ── Chip rail — measure register, hue tick per series. ──────── */
+  .rail {
+    padding-top: clamp(18px, 2.5vw, 36px);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    background: transparent;
+    border: 1px solid var(--color-line);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .chip[data-filter]:not([data-filter="all"])::before {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    background: var(--tick);
+  }
+  .chip:hover {
+    color: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+  .chip.is-active {
+    color: var(--tick, var(--color-ink));
+    border-color: var(--tick, var(--color-ink));
+  }
+  .chip__count {
+    opacity: 0.6;
+  }
+
+  /* ── Flat list ────────────────────────────────────────────────── */
+  .archive-flat {
+    padding-top: 26px;
     padding-bottom: var(--section-padding);
   }
-
-  /* The list's first essay-card draws its own top hairline via
-     .essay-card { border-top }; combined with the section-head rule
-     above and this bottom hairline, a single card frames as a
-     deliberate entry rather than a broken list. */
-  .archive-group__list {
+  .archive-flat__list {
     border-bottom: 1px solid var(--color-line);
-  }
-
-  /* ── Section head ─────────────────────────────────────────────────
-     Measure label + trailing hairline rule — the same schematic
-     callout used on the storefront and product alleys, kept identical
-     for coherence. The label links to the product alley. */
-  .section-head {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    margin-bottom: 34px;
-  }
-
-  /* The label links to another room, so it wears that room's hue —
-     .inked's own ink color would otherwise defeat the measure tint. */
-  .section-head .measure :global(.inked) {
-    color: var(--room-text);
-  }
-
-  .section-head__rule {
-    flex: 1;
-    height: 3px;
-    background: var(--gradient-spectrum);
   }
 
   /* ── Empty state ──────────────────────────────────────────────── */
@@ -282,7 +272,6 @@ const featuredTopic = featured?.data.topics[0];
     padding-top: var(--section-padding);
     padding-bottom: var(--section-padding);
   }
-
   .archive-empty__line {
     font-family: var(--font-serif);
     font-size: clamp(1.15rem, 2.2vw, 1.4rem);
@@ -292,12 +281,5 @@ const featuredTopic = featured?.data.topics[0];
     max-width: 46ch;
     font-weight: 400;
     letter-spacing: -0.005em;
-  }
-
-  /* ── Responsive ───────────────────────────────────────────────── */
-  @media (max-width: 720px) {
-    .section-head {
-      gap: 14px;
-    }
   }
 </style>
