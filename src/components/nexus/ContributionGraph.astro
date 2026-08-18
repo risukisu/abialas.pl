@@ -1,4 +1,6 @@
 ---
+import https from "node:https";
+
 /**
  * LAB — GitHub contribution heatmap, light-themed to the site.
  *
@@ -6,8 +8,42 @@
  * the public jogruber contributions API; graceful note on failure so a
  * dead API can never break the build. Level ramp ends at the site's
  * moss (#2E7D4F) — GitHub-recognizable, palette-native.
+ *
+ * Fetched via a bare `node:https` GET, not the global `fetch` — Node's
+ * bundled undici keeps its socket in a keep-alive pool that, on Windows,
+ * can still be half-open when the build process tries to exit, tripping
+ * a libuv assertion ("Assertion failed: !(handle->flags &
+ * UV_HANDLE_CLOSING)", src\win\async.c:76) once this component became
+ * the last page astro builds (so the socket's teardown races the
+ * process's own). `https.get` + explicit `req.destroy()`/response `end`
+ * leaves no lingering async handle at exit.
  */
 type Day = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 };
+
+function getJson(url: string, timeoutMs: number): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const req = https.get(url, { headers: { accept: "application/json" } }, (res) => {
+      const status = res.statusCode ?? 0;
+      if (status < 200 || status >= 300) {
+        res.resume(); // drain so the socket closes instead of dangling
+        reject(new Error(String(status)));
+        return;
+      }
+      const chunks: Buffer[] = [];
+      res.on("data", (chunk) => chunks.push(chunk));
+      res.on("end", () => {
+        try {
+          resolve(JSON.parse(Buffer.concat(chunks).toString("utf-8")));
+        } catch (err) {
+          reject(err);
+        }
+      });
+      res.on("error", reject);
+    });
+    req.setTimeout(timeoutMs, () => req.destroy(new Error("timeout")));
+    req.on("error", reject);
+  });
+}
 
 let days: Day[] = [];
 let total = 0;
@@ -17,27 +53,13 @@ let failed = false;
 // 12 months. The API returns the full year with zero-count future
 // days — trim to today so the graph ends at "now" (build time).
 const YEAR = "2026";
-// AbortController + a bounded timeout, cleared in `finally` regardless of
-// outcome — forces the underlying request handle to a definite closed
-// state instead of lingering half-open into build-process teardown (the
-// libuv assertion this guards against: "Assertion failed:
-// !(handle->flags & UV_HANDLE_CLOSING)" on Windows, src\win\async.c:76).
-const controller = new AbortController();
-const timeout = setTimeout(() => controller.abort(), 8000);
 try {
-  const res = await fetch(`https://github-contributions-api.jogruber.de/v4/risukisu?y=${YEAR}`, {
-    signal: controller.signal,
-  });
-  if (!res.ok) throw new Error(String(res.status));
-  const data = await res.json();
+  const data = await getJson(`https://github-contributions-api.jogruber.de/v4/risukisu?y=${YEAR}`, 8000);
   const today = new Date().toISOString().slice(0, 10);
   days = data.contributions.filter((d: Day) => d.date <= today);
   total = data.total?.[YEAR] ?? days.reduce((s: number, d: Day) => s + d.count, 0);
 } catch {
   failed = true;
-} finally {
-  clearTimeout(timeout);
-  controller.abort();
 }
 
 // Group into GitHub-style week columns (Sunday-first), padding the
