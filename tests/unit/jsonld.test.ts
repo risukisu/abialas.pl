@@ -4,7 +4,6 @@ import {
   creativeWorkSchema,
   articleSchema,
   breadcrumbListSchema,
-  collectionPageSchema,
 } from "../../src/lib/jsonld";
 
 describe("jsonld helpers", () => {
@@ -54,13 +53,5 @@ describe("jsonld helpers — article / breadcrumb / collection", () => {
     ]);
     expect(b.itemListElement[0].position).toBe(1);
     expect(b.itemListElement[1].name).toBe("System");
-  });
-  it("collectionPageSchema sets name + url", () => {
-    const c = collectionPageSchema({
-      name: "The Marketing Operating System",
-      url: "https://abialas.pl/system",
-      description: "x",
-    });
-    expect(c["@type"]).toBe("CollectionPage");
   });
 });

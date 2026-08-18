@@ -68,19 +68,3 @@ export function breadcrumbListSchema(items: { name: string; url: string }[]) {
     })),
   };
 }
-
-type CollectionInput = {
-  name: string;
-  url: string;
-  description?: string;
-};
-
-export function collectionPageSchema(input: CollectionInput) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: input.name,
-    url: input.url,
-    ...(input.description && { description: input.description }),
-  };
-}

@@ -13,15 +13,15 @@ import { publishedOnly, sortByDate, featuredPieces, latest } from "../../lib/pie
 import { topicHue } from "../../data/hues";
 import { series } from "../../data/series";
 
-const published = sortByDate(publishedOnly(await getCollection("writing")));
+const catalog = await getCollection("writing");
+const published = sortByDate(publishedOnly(catalog));
 
 const chips = series
   .map((s) => ({ ...s, count: published.filter((p) => p.data.topics[0] === s.tag).length }))
   .filter((s) => s.count > 0);
 
 // The ink plate: first `featured: true` published essay, else the newest.
-const all = await getCollection("writing");
-const featured = featuredPieces(all, 1)[0] ?? latest(all, 1)[0];
+const featured = featuredPieces(catalog, 1)[0] ?? latest(catalog, 1)[0];
 const featuredHue = featured ? topicHue(featured.data.topics[0]) : null;
 const featuredDate = featured?.data.date.toLocaleString("en-US", { month: "short", year: "numeric" });
 const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.name;
@@ -67,11 +67,11 @@ const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.n
       <section class="rail">
         <div class="container">
           <div class="chips" role="group" aria-label="Filter essays by series">
-            <button class="chip is-active" data-filter="all">
+            <button class="chip is-active" data-filter="all" aria-pressed="true">
               All <span class="chip__count">{published.length}</span>
             </button>
             {chips.map((s) => (
-              <button class="chip" data-filter={s.tag} style={`--tick: var(--hue-${topicHue(s.tag)}-text);`}>
+              <button class="chip" data-filter={s.tag} aria-pressed="false" style={`--tick: var(--hue-${topicHue(s.tag)}-text);`}>
                 {s.name} <span class="chip__count">{s.count}</span>
               </button>
             ))}
@@ -102,7 +102,10 @@ const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.n
   rail?.addEventListener("click", (e) => {
     const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-filter]");
     if (!btn) return;
-    rail.querySelectorAll(".chip").forEach((c) => c.classList.toggle("is-active", c === btn));
+    rail.querySelectorAll(".chip").forEach((c) => {
+      c.classList.toggle("is-active", c === btn);
+      c.setAttribute("aria-pressed", String(c === btn));
+    });
     const tag = btn.dataset.filter;
     document.querySelectorAll<HTMLElement>(".essay-card[data-series]").forEach((card) => {
       card.toggleAttribute("hidden", tag !== "all" && card.dataset.series !== tag);

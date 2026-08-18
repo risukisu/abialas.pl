@@ -20,7 +20,7 @@ export const HUES: Record<HueKey, { raw: string; text: string }> = {
 export const SURFACES = { mist: "#E9EDF2", ink: "#15324E", paper: "#EAF0F6" };
 export const LINK_ON_INK = "#E8A13C";
 
-/** Essay topic → hue. Product tags map to their room; everything else reads as writing. */
+/** Essay topic → hue. Series tags (system, ai) keep their legacy room hues; everything else reads as writing. */
 export function topicHue(topic?: string): HueKey {
   if (topic === "system" || topic === "ai") return topic;
   return "writing";

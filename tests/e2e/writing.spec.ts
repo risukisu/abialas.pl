@@ -1,14 +1,26 @@
+import fs from "node:fs";
+import path from "node:path";
 import { test, expect } from "@playwright/test";
+
+const publishedCount = fs
+  .readdirSync("src/content/writing")
+  .filter((f) => f.endsWith(".md"))
+  .filter((f) =>
+    /^status:\s*published\s*$/m.test(
+      fs.readFileSync(path.join("src/content/writing", f), "utf-8"),
+    ),
+  ).length;
 
 test("writing archive: empty state or flat list with chip rail", async ({ page }) => {
   await page.goto("/writing");
   await expect(page.locator("h1")).toBeVisible();
-  const cardCount = await page.locator(".essay-card").count();
-  if (cardCount === 0) {
+  if (publishedCount === 0) {
     await expect(page.getByText("Nothing published yet — pieces in progress.")).toBeVisible();
     await expect(page.locator(".chips")).toHaveCount(0);
+    await expect(page.locator(".essay-card")).toHaveCount(0);
   } else {
     await expect(page.locator(".chips .chip[data-filter='all']")).toBeVisible();
+    await expect(page.locator(".essay-card")).toHaveCount(publishedCount);
   }
 });
 

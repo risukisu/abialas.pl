@@ -1,8 +1,6 @@
 ---
-import https from "node:https";
-
 /**
- * LAB — GitHub contribution heatmap, light-themed to the site.
+ * GitHub contribution heatmap, light-themed to the site.
  *
  * Data: fetched at render time (build = "updates every deploy") from
  * the public jogruber contributions API; graceful note on failure so a
@@ -15,14 +13,17 @@ import https from "node:https";
  * a libuv assertion ("Assertion failed: !(handle->flags &
  * UV_HANDLE_CLOSING)", src\win\async.c:76) once this component became
  * the last page astro builds (so the socket's teardown races the
- * process's own). `https.get` + explicit `req.destroy()`/response `end`
- * leaves no lingering async handle at exit.
+ * process's own). `agent: false` forces a one-off socket that's closed
+ * at response end, instead of being handed back to a keep-alive pool —
+ * deterministic teardown before the build process tries to exit.
  */
+import https from "node:https";
+
 type Day = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 };
 
 function getJson(url: string, timeoutMs: number): Promise<any> {
   return new Promise((resolve, reject) => {
-    const req = https.get(url, { headers: { accept: "application/json" } }, (res) => {
+    const req = https.get(url, { agent: false, headers: { accept: "application/json" } }, (res) => {
       const status = res.statusCode ?? 0;
       if (status < 200 || status >= 300) {
         res.resume(); // drain so the socket closes instead of dangling
@@ -52,7 +53,7 @@ let failed = false;
 // Calendar-year view (owner call): Jan 2026 → today, not a rolling
 // 12 months. The API returns the full year with zero-count future
 // days — trim to today so the graph ends at "now" (build time).
-const YEAR = "2026";
+const YEAR = String(new Date().getFullYear());
 try {
   const data = await getJson(`https://github-contributions-api.jogruber.de/v4/risukisu?y=${YEAR}`, 8000);
   const today = new Date().toISOString().slice(0, 10);
@@ -102,7 +103,7 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
         <div class="graph__months" aria-hidden="true">
           {monthLabels.map((m) => <span class="graph__month">{m ?? ""}</span>)}
         </div>
-        <div class="graph__grid" role="img" aria-label={`GitHub contribution heatmap: ${total} contributions in the last year`}>
+        <div class="graph__grid" role="img" aria-label={`GitHub contribution heatmap: ${total} contributions in ${YEAR}`}>
           {weeks.map((w) => (
             <div class="graph__week">
               {w.map((d) => (
