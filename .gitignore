@@ -17,3 +17,6 @@ playwright-report/
 
 # memsearch local index (tooling, per-machine)
 .memsearch/
+
+# internal working docs — never tracked (Appsilon-era figures; scrubbed from history 2026-08-19)
+docs/superpowers/
