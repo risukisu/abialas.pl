@@ -1,11 +1,11 @@
 ---
-title: "Welcome to the Campfire"
+title: "Marketing Made Simple"
 status: published
 anatomy: concept
 date: 2026-07-22
 topics: []
 order: 10
-summary: "Why this newsletter exists — simple thinking, first principles, and plain language for marketers tired of jargon and growth hacks."
+summary: "Marketing is simple. Not easy, but simple — simple thinking, first principles, and helping people find things that help them."
 ---
 
 You probably know the feeling. You open LinkedIn (or Twitter, or Substack) with your morning coffee and there it is: another 47-step growth playbook in its assumed glory. Another GTM Engineering Founder guru, ex-Something Extraordinaire, posting a thread about the funnel that prints money while you sleep. And tops it off with a "comment GROWTH and I'll send you my guide." You either vomit on the spot or keep scrolling.
