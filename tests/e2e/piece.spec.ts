@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("piece page renders outcome variant", async ({ page }) => {
+test("piece page renders its anatomy variant", async ({ page }) => {
   await page.goto("/writing");
   const cardCount = await page.locator(".essay-card a").count();
   test.skip(cardCount === 0, "no published essays yet — re-arms on first publish");
@@ -8,7 +8,8 @@ test("piece page renders outcome variant", async ({ page }) => {
   const firstCardHref = await page.locator(".essay-card a").first().getAttribute("href");
   await page.goto(firstCardHref!);
   await expect(page.locator("h1")).toBeVisible();
-  await expect(page.locator(".piece-meta")).toBeVisible();
+  // outcome pieces render .piece-meta; concept pieces render the standfirst
+  await expect(page.locator(".piece-meta, .piece__standfirst").first()).toBeVisible();
 });
 
 test("draft piece returns 404", async ({ page }) => {
