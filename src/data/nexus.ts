@@ -18,17 +18,17 @@ export type NexusBox = {
 
 export const follow: NexusBox[] = [
   {
-    href: "https://www.linkedin.com/in/andrzejbialas/",
+    href: "https://www.linkedin.com/in/andrzej-bialas/",
     name: "LinkedIn",
-    where: "in/andrzejbialas",
-    desc: "Where I show up between essays.",
+    where: "in/andrzej-bialas",
+    desc: "My LinkedIn profile, let's connect ✧˖°.",
     variant: "linkedin",
   },
   {
     href: "https://risu.pl",
     name: "Blog",
     where: "risu.pl",
-    desc: "The personal blog — random memories.",
+    desc: "My personal blog, a collection of my memory fragments.",
     variant: "terminal",
     icon: "/squirrel.png",
   },

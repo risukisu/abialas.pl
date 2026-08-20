@@ -12,7 +12,7 @@ const person = personSchema({
   url: "https://abialas.pl",
   jobTitle: "Marketing Director",
   sameAs: [
-    "https://www.linkedin.com/in/andrzejbialas/",
+    "https://www.linkedin.com/in/andrzej-bialas/",
     "https://github.com/risukisu",
   ],
 });
@@ -41,7 +41,9 @@ const person = personSchema({
 <style>
   .about {
     padding-top: 48px;
-    padding-bottom: var(--section-padding);
+    /* Compact close — the narrative's last line shouldn't float far
+       above the footer (owner call 2026-08-20). */
+    padding-bottom: clamp(40px, 5vw, 72px);
   }
 
   .about__layout {
