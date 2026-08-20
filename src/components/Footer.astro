@@ -75,9 +75,20 @@ const tiles = [
       ))}
     </ul>
 
-    <p class="footer__news">
-      Newsletter: <a href="https://grugbrained.substack.com">the Grug-Brained Marketer ↗</a>
-    </p>
+    <div class="footer__news">
+      <p class="footer__pitch">
+        The Grug-Brained Marketer — plain words about marketing, in your inbox.
+      </p>
+      <!-- Eager on purpose: lazy-loading left a blank box / inert-looking
+           button for the beat between scroll-into-view and Substack's JS
+           booting, which read as broken. -->
+      <iframe
+        class="footer__embed"
+        src="https://grugbrained.substack.com/embed"
+        title="Subscribe to the Grug-Brained Marketer on Substack"
+        scrolling="no"
+      ></iframe>
+    </div>
 
     <p class="footer__colophon">
       Built with Astro · No cookies, no tracking · © {year} · made with 🩵 by
@@ -170,23 +181,26 @@ const tiles = [
   }
 
   .footer__news {
-    font-family: var(--font-serif);
-    font-size: 0.98rem;
-    color: var(--color-body);
     margin: 0 0 30px;
   }
 
-  .footer__news a {
-    color: var(--color-ink);
-    text-decoration: none;
-    border-bottom: 1.5px solid var(--color-line-2);
-    padding-bottom: 1px;
-    transition: border-color 0.2s;
+  .footer__pitch {
+    font-family: var(--font-serif);
+    font-size: 0.98rem;
+    color: var(--color-body);
+    margin: 0 0 14px;
   }
 
-  .footer__news a:hover,
-  .footer__news a:focus-visible {
-    border-color: var(--color-accent);
+  /* Subscribe box — our hairline frames Substack's iframe, centered
+     to keep the colophon's axis. */
+  .footer__embed {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    height: 150px;
+    margin-inline: auto;
+    border: 1px solid var(--color-line-2);
+    background: transparent;
   }
 
   .footer__colophon {
