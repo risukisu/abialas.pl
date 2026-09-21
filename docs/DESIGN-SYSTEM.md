@@ -150,6 +150,14 @@ labels wear the *target* product's hue via a per-group inline
 | `Footer.astro` | Title block on mist: identity row (name + tagline + bio line · social icon tiles), Substack embed framed by our hairline, Explore/Contact/Elsewhere columns, © strip. Outside `main`, never room-tinted; only accent-on-hover. |
 | `ProductCard.astro` | Exhibit card — the whole plate is one `<a>`. Reads `product.hue` → inline `--card-hue`/`--card-hue-text`; full-bleed `head--bar` fill (text variant) with paper index; hue corner mark; 3px hover lift; foot arrow slides + tints on hover (replaced the Enter button 2026-07-20); optional `countLabel` override (Work: "N built · résumé"); `:focus-visible` hue outline. |
 | `EssayCard.astro` | Archive row. `topicHue(topics[0])` → inline `--tick`; 9px square before the meta; title tints to `--tick` on row hover. |
+| `nexus/NexusBox.astro` | Home link sticker (sm/md). Every plate: 2px ink frame, hard offset shadow in a per-tile `--shadow` hue (toned contrast from the tile's own kit, 2026-09-21), hover lifts 2px. Variants: grug, linkedin, github, terminal, skillcraft, x. |
+| `nexus/GrugTile.astro` · `SkillCraftTile.astro` | Guest stickers wearing their own kits (Grug: Anton shout + binary rain; SkillCraft: ANSI mark + animated pixel fox). SkillCraft squared to the site frame 2026-09-21. |
+| `nexus/ContributionGraph.astro` | Build-time GitHub heatmap, calendar year to build date; the deploy workflow rebuilds daily so it tracks today. |
+| `nexus/MarketingSkillsTile.astro` | Big tile → skills.abialas.pl in the library's os-schematic world: dot grid, square markers, constellation with flowing dashed current, "you say → it runs" readout (prompt fades, command types in 14 steps, each command its own hue). Pauses offscreen; reduced-motion shows the first pair static. |
+| `nexus/MarketingSkillsRepoTile.astro` | Companion → the repo: kit Panel surface, the README's two install lines, MIT line. No motion. |
+| `nexus/ResumeTile.astro` | White plate → /work. Real page-1 sheet of the PDF (`public/resume-p1.webp`, recipe in `src/data/resume.ts`) at −3°, squares up on hover; meta read off the file. |
+| `nexus/GitHubTile.astro` | GitHub canvas → profile. The GitHub avatar fills the right half (own black ground masked into the plate, scrim under the words); lead line from the library README; live public-repo count at build, dropped on API failure. |
+| Masthead portrait (`index.astro`) | `public/portrait-risu.webp` (+`@2x`) as a framed print beside the name: 2px ink, violet shadow, 2° tilt; stacks above the name ≤720px. INDEX kicker retired 2026-09-21. |
 | `PieceMeta.astro` | Role · timeframe · scope marks in mono between hairlines (outcome essays). |
 | `ReadingProgress.astro` | 2px scroll-progress bar in `var(--room, var(--color-accent))`. |
 | `PillarSchematic.astro` | The /system three-pillar schematic; its vermilion accents are already the room hue. |
