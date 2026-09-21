@@ -1,6 +1,7 @@
 /**
- * Nexus rosters — the homepage's link tiles (spec 2026-08-17).
- * GrugTile / SkillCraftTile / MarketingSkillsTile are component-owned
+ * Nexus rosters — the homepage's link tiles (spec 2026-08-17, rows
+ * reshuffled 2026-09-21). GrugTile / SkillCraftTile / MarketingSkillsTile /
+ * MarketingSkillsRepoTile / ResumeTile / GitHubTile are component-owned
  * and do NOT appear here. Statusline / Marketing OS / Grug Manifesto
  * were removed for launch (post-launch revisit; Marketing OS likely
  * deprecated). URLs verified against `gh repo list risukisu` during
@@ -16,14 +17,8 @@ export type NexusBox = {
   soon?: boolean; // not-yet-public badge
 };
 
+/** Follow row, medium tile beside the Newsletter hero. */
 export const follow: NexusBox[] = [
-  {
-    href: "https://www.linkedin.com/in/andrzej-bialas/",
-    name: "LinkedIn",
-    where: "in/andrzej-bialas",
-    desc: "My LinkedIn profile, let's connect ✧˖°.",
-    variant: "linkedin",
-  },
   {
     href: "https://risu.pl",
     name: "Blog",
@@ -34,8 +29,13 @@ export const follow: NexusBox[] = [
   },
 ];
 
-export const more: NexusBox[] = [
-  { href: "/work", name: "Résumé", where: "career + PDF" },
-  { href: "https://github.com/risukisu", name: "GitHub", where: "github.com/risukisu", variant: "github" },
+/** Follow row, the narrow stacked column: LinkedIn over X. */
+export const followStack: NexusBox[] = [
+  {
+    href: "https://www.linkedin.com/in/andrzej-bialas/",
+    name: "LinkedIn",
+    where: "in/andrzej-bialas",
+    variant: "linkedin",
+  },
   { href: "https://x.com/risu_kisu", name: "X", where: "@risu_kisu", variant: "x" },
 ];

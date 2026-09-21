@@ -1,0 +1,160 @@
+---
+/**
+ * ResumeTile — the résumé as a sheet on the drafting table.
+ *
+ * A real thumbnail of page 1 (public/resume-p1.webp, rendered from the
+ * PDF — see src/data/resume.ts for the recipe) lies at a slight tilt on
+ * the white plate; hover squares it up and slides it out from under the
+ * text, the way you'd pull a sheet toward you. Meta is read off the file
+ * (pages, date of the current PDF), not invented. Whole plate → /work,
+ * the career page that carries the download.
+ */
+import { resume } from "../../data/resume";
+
+const updated = new Date(resume.updated).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+---
+<a href={resume.href} class="cv">
+  <span class="cv__sheet" aria-hidden="true">
+    <img src={resume.sheet} alt="" width="560" height="792" decoding="async" />
+  </span>
+  <span class="cv__body">
+    <span class="cv__row">
+      <span class="cv__name">Résumé</span>
+      <span class="cv__out" aria-hidden="true">→</span>
+    </span>
+    <span class="cv__desc">Career in one page — the roles, the systems, what others say.</span>
+    <span class="cv__meta">{resume.pages} pages · PDF · updated {updated}</span>
+    <span class="cv__where">/work · career + download</span>
+  </span>
+</a>
+
+<style>
+  .cv {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+    padding: 18px 20px 18px 18px;
+    background: #fff;
+    border: 2px solid var(--color-ink);
+    box-shadow: 4px 4px 0 var(--color-ink);
+    color: var(--color-ink);
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  .cv:hover,
+  .cv:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-ink);
+  }
+
+  .cv:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  /* The sheet: A4 ratio, hairline edge, laid down at -3° (the kit tilt the
+     Grug logo sticker also wears). Hover squares it and pulls it forward. */
+  .cv__sheet {
+    flex: none;
+    width: 92px;
+    aspect-ratio: 210 / 297;
+    align-self: flex-start;
+    border: 1px solid var(--color-line-2);
+    background: #fff;
+    box-shadow: 3px 3px 0 rgb(21 50 78 / 0.18);
+    transform: rotate(-3deg);
+    transform-origin: 50% 90%;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+  }
+  .cv__sheet img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .cv:hover .cv__sheet,
+  .cv:focus-visible .cv__sheet {
+    transform: rotate(0deg) translate(2px, -4px);
+    box-shadow: 4px 4px 0 rgb(21 50 78 / 0.28);
+  }
+
+  .cv__body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .cv__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .cv__name {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 1.3rem;
+  }
+
+  .cv__out {
+    font-size: 0.95rem;
+    opacity: 0.45;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  .cv:hover .cv__out,
+  .cv:focus-visible .cv__out {
+    opacity: 1;
+    transform: translateX(3px);
+    color: var(--color-accent);
+  }
+
+  .cv__desc {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--color-body);
+  }
+
+  .cv__meta {
+    margin-top: 4px;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cv__where {
+    margin-top: auto;
+    padding-top: 6px;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--color-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cv,
+    .cv:hover,
+    .cv:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .cv__sheet,
+    .cv:hover .cv__sheet,
+    .cv:focus-visible .cv__sheet {
+      transform: rotate(-3deg); /* the static tilt is fine — it's not motion */
+      transition: box-shadow 0.2s ease;
+    }
+    .cv:hover .cv__out,
+    .cv:focus-visible .cv__out {
+      transform: none;
+    }
+  }
+</style>

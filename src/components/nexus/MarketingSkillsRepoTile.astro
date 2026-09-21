@@ -1,0 +1,149 @@
+---
+/**
+ * MarketingSkillsRepoTile — the small companion to MarketingSkillsTile,
+ * straight to the repository. Same os-schematic world, on the kit's
+ * Panel surface (#151813, "the few filled areas: terminal blocks").
+ *
+ * The content IS the install: the two lines the README ships (verbatim,
+ * README.md "Install" — clone + install.ps1), plus the kit's own licence
+ * line ("MIT · no API keys needed to start", brand/source/hero.html).
+ * Nothing animates here; the big tile owns the motion.
+ */
+---
+<a href="https://github.com/risukisu/marketing-skills" class="mskr" rel="me">
+  <span class="mskr__head">
+    <span class="mskr__sq" aria-hidden="true"></span>
+    <span class="mskr__name">the repo</span>
+    <span class="mskr__out" aria-hidden="true">↗</span>
+  </span>
+
+  <span class="mskr__term" aria-label="Install: git clone the repository, then run install.ps1">
+    <span class="mskr__ln"><span class="mskr__p">$</span> git clone …/marketing-skills</span>
+    <span class="mskr__ln"><span class="mskr__p">$</span> .\install.ps1</span>
+  </span>
+
+  <span class="mskr__lic">MIT · no API keys needed to start</span>
+  <span class="mskr__where">github.com/risukisu/marketing-skills</span>
+</a>
+
+<style>
+  .mskr {
+    --panel: #151813;
+    --line: #262b23;
+    --ink: #e9ebe3;
+    --muted: #b4bab0;
+    --dim-text: #7d8478;
+    --green: #3fd68c;
+    --amber: #e8a13d;
+    --blue: #7c8cf0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 22px;
+    background: var(--panel);
+    border: 2px solid var(--color-ink);
+    box-shadow: 4px 4px 0 var(--color-ink);
+    color: var(--muted);
+    text-decoration: none;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  .mskr:hover,
+  .mskr:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-ink);
+  }
+
+  .mskr:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+  }
+
+  .mskr__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mskr__sq {
+    width: 9px;
+    height: 9px;
+    background: var(--amber); /* category 02 hue — marks this as the other door */
+    flex: none;
+  }
+
+  .mskr__name {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .mskr__out {
+    margin-left: auto;
+    color: var(--dim-text);
+    transition: color 0.18s ease, transform 0.18s ease;
+  }
+  .mskr:hover .mskr__out,
+  .mskr:focus-visible .mskr__out {
+    color: var(--amber);
+    transform: translate(2px, -2px);
+  }
+
+  /* the terminal block — hairline-ruled, not a card */
+  .mskr__term {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .mskr__ln {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mskr__p {
+    color: var(--blue); /* kit: shell prompts are blue */
+    margin-right: 2px;
+  }
+
+  .mskr__lic {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .mskr__where {
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--dim-text);
+    transition: color 0.18s ease;
+  }
+  .mskr:hover .mskr__where,
+  .mskr:focus-visible .mskr__where {
+    color: var(--amber);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mskr,
+    .mskr:hover,
+    .mskr:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .mskr:hover .mskr__out,
+    .mskr:focus-visible .mskr__out {
+      transform: none;
+    }
+  }
+</style>

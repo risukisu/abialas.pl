@@ -1,0 +1,206 @@
+---
+/**
+ * GitHubTile — the dark GitHub sticker, now a live readout instead of a
+ * label: the three most recently pushed public repos with their push
+ * dates, and the headline of the newest commit. Fetched at build time
+ * (the deploy workflow rebuilds daily, so "latest" is at most a day old),
+ * two public-API calls, GITHUB_TOKEN used when the workflow provides it.
+ * Any failure falls back to the plain sticker — a dead API can never
+ * break the build or show invented activity.
+ *
+ * Dates are absolute (day + month), never "3h ago": a static page can't
+ * promise relative time.
+ */
+import { fetchJson } from "../../lib/fetchJson";
+
+type Repo = { name: string; pushed_at: string; language: string | null };
+type Commit = { sha: string; commit: { message: string; author: { date: string } } };
+
+const USER = "risukisu";
+const token = process.env.GITHUB_TOKEN;
+const auth = token ? { authorization: `Bearer ${token}` } : {};
+
+let repos: Repo[] = [];
+let head: { repo: string; sha: string; message: string } | null = null;
+let publicRepos: number | null = null;
+
+try {
+  const [list, profile] = await Promise.all([
+    fetchJson<Repo[]>(`https://api.github.com/users/${USER}/repos?sort=pushed&direction=desc&per_page=3`, 8000, auth),
+    fetchJson<{ public_repos: number }>(`https://api.github.com/users/${USER}`, 8000, auth),
+  ]);
+  repos = list.slice(0, 3);
+  publicRepos = profile.public_repos ?? null;
+  if (repos[0]) {
+    const [c] = await fetchJson<Commit[]>(`https://api.github.com/repos/${USER}/${repos[0].name}/commits?per_page=1`, 8000, auth);
+    if (c) head = { repo: repos[0].name, sha: c.sha.slice(0, 7), message: c.commit.message.split("\n")[0] };
+  }
+} catch {
+  repos = [];
+  head = null;
+}
+
+// "18 Sep" — same three-letter months the contribution graph prints.
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const day = (iso: string) => {
+  const d = new Date(iso);
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
+};
+---
+<a href={`https://github.com/${USER}`} class="gh" rel="me">
+  <span class="gh__row">
+    <span class="gh__name">GitHub</span>
+    <span class="gh__out" aria-hidden="true">↗</span>
+  </span>
+
+  {repos.length ? (
+    <span class="gh__log" role="list" aria-label="Most recently pushed repositories">
+      {repos.map((r) => (
+        <span class="gh__ln" role="listitem">
+          <span class="gh__repo">{r.name}</span>
+          <span class="gh__dots" aria-hidden="true"></span>
+          <span class="gh__date">{day(r.pushed_at)}</span>
+        </span>
+      ))}
+      {head && (
+        <span class="gh__head">
+          <span class="gh__sha">{head.sha}</span> {head.message}
+        </span>
+      )}
+    </span>
+  ) : (
+    <span class="gh__desc">Everything I build in public, one profile.</span>
+  )}
+
+  <span class="gh__where">
+    github.com/{USER}{publicRepos !== null && <span class="gh__count"> · {publicRepos} public repos</span>}
+  </span>
+</a>
+
+<style>
+  .gh {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px 20px;
+    background: #0d1117; /* GitHub canvas */
+    border: 2px solid var(--color-ink);
+    box-shadow: 4px 4px 0 var(--color-ink);
+    color: #f0f6fc;
+    text-decoration: none;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  .gh:hover,
+  .gh:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-ink);
+  }
+
+  .gh:focus-visible {
+    outline: 2px solid #7ee787;
+    outline-offset: 3px;
+  }
+
+  .gh__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .gh__name {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 1.3rem;
+  }
+
+  .gh__out {
+    color: #f0f6fc;
+    opacity: 0.6;
+    transition: opacity 0.18s ease, transform 0.18s ease, color 0.18s ease;
+  }
+  .gh:hover .gh__out,
+  .gh:focus-visible .gh__out {
+    opacity: 1;
+    color: #7ee787;
+    transform: translate(2px, -2px);
+  }
+
+  /* the log — repo ··· date rows, GitHub's own greens */
+  .gh__log {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px 0;
+    border-top: 1px solid #30363d;
+    border-bottom: 1px solid #30363d;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  .gh__ln {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-width: 0;
+  }
+  .gh__repo {
+    color: #f0f6fc;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .gh__dots {
+    flex: 1;
+    border-bottom: 1px dotted #484f58;
+    transform: translateY(-0.3em);
+  }
+  .gh__date {
+    color: #8b949e;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .gh__head {
+    margin-top: 4px;
+    color: #7ee787;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .gh__sha {
+    color: #8b949e;
+  }
+
+  .gh__desc {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: #c9d1d9;
+  }
+
+  .gh__where {
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: #7ee787;
+  }
+  .gh__count {
+    color: #8b949e;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gh,
+    .gh:hover,
+    .gh:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .gh:hover .gh__out,
+    .gh:focus-visible .gh__out {
+      transform: none;
+    }
+  }
+</style>
