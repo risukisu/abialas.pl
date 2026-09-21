@@ -48,11 +48,13 @@ const MARK = `███████╗██╗  ██╗██╗██╗    
     justify-content: center; /* centers when stretched beside the graph */
     gap: 6px;
     padding: 20px 22px;
+    --shadow: #c2652b; /* the fox's orange, toned — owner's shadow-hue pass 2026-09-21 */
     background: #fbfaf6; /* kit bg */
-    border: 1px solid rgba(23, 21, 15, 0.13); /* kit hairline */
-    border-radius: 10px; /* the kit's own rounding — guest trait */
-    /* owner call: shadow like the sibling tiles, kit ink */
-    box-shadow: 4px 4px 0 #17150f;
+    /* owner call 2026-09-21: square corners + 2px ink frame like every
+       sibling plate — the kit's own 10px radius / hairline stay on
+       skillcraft.cloud, not here */
+    border: 2px solid var(--color-ink);
+    box-shadow: 4px 4px 0 var(--shadow);
     color: #17150f; /* kit ink */
     text-decoration: none;
     transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
@@ -62,7 +64,7 @@ const MARK = `███████╗██╗  ██╗██╗██╗    
   .skc:hover,
   .skc:focus-visible {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #17150f;
+    box-shadow: 6px 6px 0 var(--shadow);
   }
 
   .skc:focus-visible {

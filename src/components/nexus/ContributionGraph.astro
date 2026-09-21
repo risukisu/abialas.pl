@@ -138,9 +138,10 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
     width: fit-content;
     max-width: 100%;
     min-width: min(560px, 100%);
+    --shadow: #2e7d4f; /* moss — the graph's own top level (owner's shadow-hue pass 2026-09-21) */
     background: #fff;
     border: 2px solid var(--color-ink);
-    box-shadow: 6px 6px 0 var(--color-ink);
+    box-shadow: 6px 6px 0 var(--shadow);
     padding: 20px 22px;
     text-decoration: none;
     color: inherit;
@@ -151,7 +152,7 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
   .graph:hover,
   .graph:focus-visible {
     transform: translate(-2px, -2px);
-    box-shadow: 8px 8px 0 var(--color-ink);
+    box-shadow: 8px 8px 0 var(--shadow);
   }
 
   .graph:focus-visible {

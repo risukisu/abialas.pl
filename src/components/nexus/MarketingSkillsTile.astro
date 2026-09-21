@@ -23,12 +23,15 @@
  * guest sticker. Site mono/sans stand in for the kit's system faces
  * (deliberate, same ruling as the SkillCraft tile).
  */
-const PAIRS: [string, string][] = [
-  ["“audit the whole site”", "/seo-audit"],
-  ["“this page isn’t converting”", "/cro"],
-  ["“sounds like AI wrote it”", "/copy-deslop"],
-  ["“the blog brings no leads”", "/content-strategy"],
-  ["“what would Ogilvy say?”", "/marketing-council"],
+// [you say, it runs, hue]. Owner call 2026-09-21: every command in its own
+// colour — the kit's three category hues (green / amber / blue) plus two
+// toned companions (coral, violet) so all five read as distinct.
+const PAIRS: [string, string, string][] = [
+  ["“audit the whole site”", "/seo-audit", "#3fd68c"],
+  ["“this page isn’t converting”", "/cro", "#e8a13d"],
+  ["“sounds like AI wrote it”", "/copy-deslop", "#7c8cf0"],
+  ["“the blog brings no leads”", "/content-strategy", "#f08a6b"],
+  ["“what would Ogilvy say?”", "/marketing-council", "#b58cf5"],
 ];
 const HOLD = 2.6; // s each pair stays
 const LOOP = PAIRS.length * HOLD;
@@ -77,8 +80,8 @@ const f = (n: number) => n.toFixed(1);
       </span>
       <span class="msk__k">it runs</span>
       <span class="msk__cycle msk__cycle--run">
-        {PAIRS.map(([, run], i) => (
-          <span class="msk__line msk__line--cmd" style={`--i:${i}`}>
+        {PAIRS.map(([, run, c], i) => (
+          <span class="msk__line msk__line--cmd" style={`--i:${i}; --c:${c}`}>
             <span class="msk__prompt">›</span> {run}<span class="msk__cursor"></span>
           </span>
         ))}
@@ -140,9 +143,10 @@ const f = (n: number) => n.toFixed(1);
     align-items: stretch;
     min-height: 220px;
     padding: 22px 24px;
+    --shadow: #2b9d68; /* kit green, toned — owner's shadow-hue pass 2026-09-21 */
     background: var(--ground);
     border: 2px solid var(--color-ink);
-    box-shadow: 6px 6px 0 var(--color-ink);
+    box-shadow: 6px 6px 0 var(--shadow);
     color: var(--muted);
     text-decoration: none;
     overflow: hidden;
@@ -153,7 +157,7 @@ const f = (n: number) => n.toFixed(1);
   .msk:hover,
   .msk:focus-visible {
     transform: translate(-2px, -2px);
-    box-shadow: 8px 8px 0 var(--color-ink);
+    box-shadow: 8px 8px 0 var(--shadow);
   }
 
   .msk:focus-visible {
@@ -242,6 +246,7 @@ const f = (n: number) => n.toFixed(1);
   .msk__cycle {
     position: relative;
     display: grid; /* stack every line on one cell, show one at a time */
+    justify-items: start;
     min-width: 0;
   }
   .msk__line {
@@ -249,23 +254,40 @@ const f = (n: number) => n.toFixed(1);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 100%;
     color: var(--ink);
     opacity: 0;
-    animation: msk-cycle var(--loop) steps(1, end) infinite;
+    animation: msk-say var(--loop) ease-out infinite;
     animation-delay: calc(var(--i) * var(--hold));
   }
+  /* the command hugs its own text so the typewriter clip runs at the
+     same pace whatever the length */
   .msk__line--cmd {
-    color: var(--green);
+    width: max-content;
+    color: var(--c, var(--green));
+    animation-name: msk-type;
   }
   .msk__prompt {
     color: var(--blue); /* kit: shell prompts are blue */
   }
 
-  /* each line is visible for exactly one hold out of the loop */
-  @keyframes msk-cycle {
-    0% { opacity: 1; }
-    20% { opacity: 0; } /* 1/n of the loop — n = 5 */
+  /* One pair owns 20% of the loop (n = 5). The prompt fades in over
+     ~0.25s, holds, and drops out; the command arrives 0.4s later and
+     types itself in 14 steps (~0.65s), then holds with the cursor. */
+  @keyframes msk-say {
+    0% { opacity: 0; }
+    2% { opacity: 1; }
+    18.6% { opacity: 1; }
+    20% { opacity: 0; }
     100% { opacity: 0; }
+  }
+  @keyframes msk-type {
+    0% { opacity: 0; clip-path: inset(0 100% 0 0); }
+    3% { opacity: 1; clip-path: inset(0 100% 0 0); animation-timing-function: steps(14, end); }
+    8% { clip-path: inset(0 -2px 0 0); }
+    18.6% { opacity: 1; clip-path: inset(0 -2px 0 0); }
+    20% { opacity: 0; clip-path: inset(0 -2px 0 0); }
+    100% { opacity: 0; clip-path: inset(0 -2px 0 0); }
   }
 
   .msk__cursor {
@@ -274,7 +296,7 @@ const f = (n: number) => n.toFixed(1);
     height: 0.95em;
     margin-left: 5px;
     vertical-align: -0.12em;
-    background: var(--green);
+    background: currentColor; /* takes the command's hue */
     animation: msk-blink 1s steps(2, end) infinite;
   }
   @keyframes msk-blink {
@@ -363,8 +385,9 @@ const f = (n: number) => n.toFixed(1);
     .msk__wire {
       animation: none;
     }
-    .msk__line[style="--i:0"] {
+    .msk__line[style^="--i:0"] {
       opacity: 1;
+      clip-path: none;
     }
   }
 </style>

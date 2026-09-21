@@ -41,9 +41,10 @@
     flex-direction: column;
     gap: 10px;
     padding: 20px 22px;
+    --shadow: #b37b26; /* kit amber, toned — owner's shadow-hue pass 2026-09-21 */
     background: var(--panel);
     border: 2px solid var(--color-ink);
-    box-shadow: 4px 4px 0 var(--color-ink);
+    box-shadow: 4px 4px 0 var(--shadow);
     color: var(--muted);
     text-decoration: none;
     transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
@@ -53,7 +54,7 @@
   .mskr:hover,
   .mskr:focus-visible {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--color-ink);
+    box-shadow: 6px 6px 0 var(--shadow);
   }
 
   .mskr:focus-visible {

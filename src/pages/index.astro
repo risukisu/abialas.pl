@@ -22,13 +22,28 @@ import { follow, followStack } from "../data/nexus";
   <header class="masthead">
     <div class="masthead__grid blueprint" aria-hidden="true"></div>
     <div class="container masthead__inner">
-      <span class="measure masthead__coord reveal" style="--i:0">index</span>
-      <h1 class="masthead__name reveal" style="--i:1">Hi, I'm Andrzej. I do marketing.</h1>
-      <p class="masthead__sub reveal" style="--i:2">
-        I run marketing as a system instead of a string of campaigns. This is
-        where I write down how that actually works — what compounds, what
-        breaks, and the parts that don't make it into the case studies.
-      </p>
+      <div class="masthead__text">
+        <h1 class="masthead__name reveal" style="--i:0">Hi, I'm Andrzej. I do marketing.</h1>
+        <p class="masthead__sub reveal" style="--i:1">
+          I run marketing as a system instead of a string of campaigns. This is
+          where I write down how that actually works — what compounds, what
+          breaks, and the parts that don't make it into the case studies.
+        </p>
+      </div>
+      <!-- The photo, laid on the sheet like a print: ink frame, toned
+           shadow, a 2° tilt against the -3° the paper stickers wear. -->
+      <figure class="masthead__photo reveal" style="--i:2">
+        <img
+          src="/portrait-risu.webp"
+          srcset="/portrait-risu.webp 720w, /portrait-risu@2x.webp 1280w"
+          sizes="(max-width: 720px) 180px, (max-width: 1100px) 26vw, 320px"
+          width="720"
+          height="720"
+          alt="Andrzej Białaś, with risu the squirrel on his shoulder"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </figure>
     </div>
   </header>
 
@@ -138,12 +153,43 @@ import { follow, followStack } from "../data/nexus";
   .masthead__inner {
     position: relative;
     z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(200px, 26vw, 320px);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: center;
   }
 
-  .masthead__coord {
+  .masthead__text {
+    min-width: 0;
+  }
+
+  .masthead__photo {
+    margin: 0;
+    justify-self: end;
+    width: 100%;
+    transform: rotate(2deg);
+  }
+  .masthead__photo img {
     display: block;
-    margin-bottom: 22px;
-    color: var(--color-muted);
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 2px solid var(--color-ink);
+    box-shadow: 6px 6px 0 #7a4a9e; /* about violet — the photo's own sky */
+    background: var(--color-ink);
+  }
+
+  @media (max-width: 720px) {
+    .masthead__inner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 28px;
+    }
+    .masthead__photo {
+      order: -1; /* the print first, then the name */
+      justify-self: start;
+      width: 180px;
+    }
   }
 
   .masthead__name {

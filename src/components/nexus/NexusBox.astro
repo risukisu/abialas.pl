@@ -33,13 +33,17 @@ const LINKEDIN_D =
 
 <style>
   .box {
+    /* Shadow hue per sticker (owner's pass 2026-09-21): each plate throws
+       a toned shadow in a contrasting colour from its own kit, so the row
+       pops without any plate turning bright. Default = site ink. */
+    --shadow: var(--color-ink);
     display: flex;
     flex-direction: column;
     gap: 2px;
     padding: 14px 18px;
     background: #fff;
     border: 2px solid var(--color-ink);
-    box-shadow: 4px 4px 0 var(--color-ink);
+    box-shadow: 4px 4px 0 var(--shadow);
     text-decoration: none;
     color: var(--color-ink);
     transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
@@ -54,7 +58,7 @@ const LINKEDIN_D =
   .box:hover,
   .box:focus-visible {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--color-ink);
+    box-shadow: 6px 6px 0 var(--shadow);
   }
 
   .box:focus-visible {
@@ -128,14 +132,10 @@ const LINKEDIN_D =
 
   /* Grug kit — deep/bone/matrix/mug (guest hexes, scoped) */
   .box--grug {
+    --shadow: #b85a1f; /* kit Spark, toned */
     background: #0c2a20;
     border: 3px solid #141110;
-    box-shadow: 4px 4px 0 #141110;
     color: #f4efe3;
-  }
-  .box--grug:hover,
-  .box--grug:focus-visible {
-    box-shadow: 6px 6px 0 #141110;
   }
   .box--grug .box__name {
     font-family: var(--font-sans);
@@ -153,6 +153,7 @@ const LINKEDIN_D =
 
   /* LinkedIn — brand blue field */
   .box--linkedin {
+    --shadow: #a5700c; /* site ochre (work hue) against the brand blue */
     background: #0a66c2;
     color: #fff;
   }
@@ -164,6 +165,7 @@ const LINKEDIN_D =
 
   /* GitHub — dark canvas */
   .box--github {
+    --shadow: #2ea043; /* GitHub's own success green */
     background: #0d1117;
     color: #f0f6fc;
   }
@@ -174,6 +176,7 @@ const LINKEDIN_D =
 
   /* Terminal — near-black + phosphor green (statusline, risu.pl blog) */
   .box--terminal {
+    --shadow: #23915a; /* phosphor, toned */
     background: #0b0e0c;
     color: #d7e3da;
   }
@@ -195,6 +198,7 @@ const LINKEDIN_D =
 
   /* X — black on black */
   .box--x {
+    --shadow: #2a52b3; /* site cobalt (ai hue), toned */
     background: #000;
     color: #fff;
   }

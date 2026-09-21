@@ -30,9 +30,10 @@ const RAIN =
     align-items: center;
     gap: 18px;
     padding: 20px 22px;
+    --shadow: #b85a1f; /* kit Spark, toned — owner's shadow-hue pass 2026-09-21 */
     background: #0c2a20; /* kit Deep */
     border: 3px solid #141110; /* kit Ink */
-    box-shadow: 4px 4px 0 #141110;
+    box-shadow: 4px 4px 0 var(--shadow);
     color: #f4efe3; /* kit Bone */
     text-decoration: none;
     overflow: hidden;
@@ -43,7 +44,7 @@ const RAIN =
   .grug:hover,
   .grug:focus-visible {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #141110;
+    box-shadow: 6px 6px 0 var(--shadow);
   }
 
   .grug:focus-visible {
