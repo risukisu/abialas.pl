@@ -2,8 +2,10 @@
 /**
  * GitHubTile — the dark GitHub sticker with a point of view instead of a
  * repo list (owner feedback 2026-09-21: "a list of projects is not
- * helpful"). The pixel squirrel that signs risu.pl and the marketing-skills
- * assets sits large in the corner at low opacity, text runs over it.
+ * helpful"). The GitHub avatar itself — the steampunk squirrel from
+ * github.com/risukisu (public/gh-avatar.webp, 460px) — fills the right
+ * half; its near-black ground is masked off into the plate so only the
+ * squirrel and his glow remain, and a scrim keeps the text readable.
  *
  * Copy: the lead line is the library README's own
  * ("every marketer has a GitHub in 2026", README.md, /beautify-github-readme
@@ -26,7 +28,8 @@ try {
 }
 ---
 <a href={`https://github.com/${USER}`} class="gh" rel="me">
-  <img class="gh__risu" src="/risu-squirrel-70.png" alt="" width="70" height="70" aria-hidden="true" />
+  <img class="gh__risu" src="/gh-avatar.webp" alt="" width="460" height="460" aria-hidden="true" decoding="async" />
+  <span class="gh__scrim" aria-hidden="true"></span>
 
   <span class="gh__row">
     <span class="gh__name">GitHub</span>
@@ -73,25 +76,43 @@ try {
     outline-offset: 3px;
   }
 
-  /* The squirrel — 70px pixel art at 3×, crisp, tucked into the corner
-     and cropped by the plate edge. Low opacity keeps the text over it
-     readable; hover brings it up a step, as feedback, not a bounce. */
+  /* The avatar — full plate height, anchored right. The picture's own
+     near-black ground disappears into the canvas; the mask only feathers
+     its left/top/bottom edges so the frame never shows. Hover lifts the
+     opacity a step: feedback, not a bounce. */
   .gh__risu {
     position: absolute;
-    right: 12px;
-    bottom: 6px;
-    width: 182px;
-    height: 182px;
-    image-rendering: pixelated;
-    opacity: 0.3;
-    transform: scaleX(-1); /* faces the words, not the edge */
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    opacity: 0.72;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 34%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 34%, #000 100%);
     pointer-events: none;
     user-select: none;
     transition: opacity 0.25s ease;
   }
   .gh:hover .gh__risu,
   .gh:focus-visible .gh__risu {
-    opacity: 0.44;
+    opacity: 0.9;
+  }
+
+  /* Left-to-right scrim under the words — same idiom the old
+     constellation tile used. */
+  .gh__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgb(13 17 23 / 0.92) 0%,
+      rgb(13 17 23 / 0.8) 42%,
+      rgb(13 17 23 / 0.35) 62%,
+      transparent 80%
+    );
+    pointer-events: none;
   }
 
   .gh__row,
@@ -150,6 +171,29 @@ try {
   }
   .gh__count {
     color: #8b949e;
+  }
+
+  /* Phones: the words span the whole plate, so the squirrel steps back
+     into the lower-right corner and the scrim runs edge to edge. */
+  @media (max-width: 720px) {
+    .gh__risu {
+      top: auto;
+      bottom: 0;
+      height: 72%;
+      opacity: 0.5;
+    }
+    .gh:hover .gh__risu,
+    .gh:focus-visible .gh__risu {
+      opacity: 0.62;
+    }
+    .gh__scrim {
+      background: linear-gradient(
+        90deg,
+        rgb(13 17 23 / 0.94) 0%,
+        rgb(13 17 23 / 0.82) 55%,
+        rgb(13 17 23 / 0.45) 100%
+      );
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
