@@ -232,7 +232,7 @@ import { follow, followStack } from "../data/nexus";
      LinkedIn over X, share one slot. */
   .follow-row {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 0.8fr;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 0.8fr);
     gap: 18px;
     padding-right: 6px; /* hover-shadow room */
     align-items: stretch;
@@ -269,10 +269,11 @@ import { follow, followStack } from "../data/nexus";
     padding-right: 6px;
   }
 
-  /* Résumé | GitHub */
+  /* Résumé | GitHub. minmax(0, …) so the GitHub readout's nowrap lines
+     can't inflate the track past the viewport — they ellipsize instead. */
   .nexus-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 18px;
     padding-right: 6px;
     align-items: stretch;
@@ -281,7 +282,7 @@ import { follow, followStack } from "../data/nexus";
   @media (max-width: 960px) {
     .follow-row,
     .build-row {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
     /* the stack lies flat: LinkedIn | X side by side */
     .follow-stack {
@@ -296,7 +297,7 @@ import { follow, followStack } from "../data/nexus";
   }
   @media (max-width: 720px) {
     .nexus-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
   @media (max-width: 540px) {
