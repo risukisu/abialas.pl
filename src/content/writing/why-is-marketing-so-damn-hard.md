@@ -3,7 +3,7 @@ title: "Why Is Marketing So Damn Hard Right Now?"
 status: published
 anatomy: concept
 date: 2026-09-25
-topics: ["marketing"]
+topics: ["campfire"]
 order: 11
 summary: "Marketing got too easy, so it got hard. If it's cheap, it will not work."
 ---
@@ -48,7 +48,7 @@ At least for a while, things that AI can't easily replicate do work. So what wor
 
 These are the things that still require effort and have a chance to stand out in the sea of sludge that the internet's become.
 
-Remember, if it's cheap, it will not work. So invest your time and resources in the hard things. Start a podcast, build and contribute to open source, publish original research, share unique points of view, have real thought leadership, write books and other long-form content (and don't use AI for anything that's not proofreading), record videos that give REAL value to customers, that nobody can replicate with a prompt. Oh, and invest in distribution, and a lot. Yes, that means paid channels too.
+Remember, if it's cheap, it will not work. So invest your time and resources in the hard things. Start a podcast, build and contribute to open source, publish original research, share unique points of view, have real thought leadership, write books and other long-form content (and [don't use AI for anything that's not proofreading](https://risu.pl/blog/i-love-ai-i-hate-ai/)), record videos that give REAL value to customers, that nobody can replicate with a prompt. Oh, and invest in distribution, and a lot. Yes, that means paid channels too.
 
 I know it sucks. It's slow, it's tedious, it's boring, it's taking forever, your teams won't want to do this, the leadership will get dizzy just hearing about this and then get angry when they hear getting it shipped will take weeks and may not even work.
 

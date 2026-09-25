@@ -13,7 +13,7 @@ export const series: Series[] = [
   // `system` parked (owner call 2026-08-17): the old system essays stay
   // seriesless until their fate is decided — re-add a row to revive.
   { name: "AI at work", tag: "ai" },
-  { name: "Marketing, plainly", tag: "marketing" },
+  { name: "Campfire", tag: "campfire" },
 ];
 
 export function seriesName(tag?: string): string | undefined {
