@@ -9,6 +9,7 @@ import ResumeTile from "../components/nexus/ResumeTile.astro";
 import GitHubTile from "../components/nexus/GitHubTile.astro";
 import ContributionGraph from "../components/nexus/ContributionGraph.astro";
 import { follow, followStack } from "../data/nexus";
+import { resume } from "../data/resume";
 ---
 <BaseLayout
   title="Andrzej Białaś"
@@ -92,8 +93,8 @@ import { follow, followStack } from "../data/nexus";
        Résumé (the sheet) + GitHub (last-push readout). -->
   <section class="nexus-sec nexus-sec--last">
     <div class="container">
-      <div class="nexus-grid">
-        <ResumeTile />
+      <div class:list={["nexus-grid", { "nexus-grid--solo": resume.draft }]}>
+        {!resume.draft && <ResumeTile />}
         <GitHubTile />
       </div>
     </div>
@@ -323,6 +324,10 @@ import { follow, followStack } from "../data/nexus";
     gap: 18px;
     padding-right: 6px;
     align-items: stretch;
+  }
+  /* Résumé parked (resume.draft) — GitHub takes the row alone. */
+  .nexus-grid--solo {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   @media (max-width: 960px) {

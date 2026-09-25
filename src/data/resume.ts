@@ -8,6 +8,9 @@
  *   node -e "require('sharp')('resume-p1.png').resize({width:560}).webp({quality:82}).toFile('public/resume-p1.webp')"
  */
 export const resume = {
+  // Draft (owner call 2026-09-25): hides the home ResumeTile and the footer
+  // PDF link. Flip to false once public/resume.pdf is refreshed.
+  draft: true,
   href: "/work",
   pdf: "/resume.pdf",
   sheet: "/resume-p1.webp", // page 1, 560×792

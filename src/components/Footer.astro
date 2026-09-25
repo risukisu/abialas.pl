@@ -10,6 +10,8 @@
  * Color rule (DESIGN-SYSTEM §5) unchanged: the footer is a no-hue
  * zone — ink, mist, muted, hairlines; accent only on hover.
  */
+import { resume } from "../data/resume";
+
 const year = new Date().getFullYear();
 
 // Icon paths: simple-icons 24×24 (Medium from v16.28), drawn with
@@ -61,8 +63,9 @@ const tiles = [
     <nav class="footer__nav" aria-label="Footer">
       <a href="/work">Work</a><span aria-hidden="true">·</span>
       <a href="/writing">Writing</a><span aria-hidden="true">·</span>
-      <a href="/about">About</a><span aria-hidden="true">·</span>
-      <a href="/resume.pdf" download>Résumé (PDF)</a>
+      <a href="/about">About</a>
+      {!resume.draft && (<><span aria-hidden="true">·</span>
+      <a href={resume.pdf} download>Résumé (PDF)</a></>)}
     </nav>
 
     <ul class="footer__tiles" aria-label="Contact and profiles">
