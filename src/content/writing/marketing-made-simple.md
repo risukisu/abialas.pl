@@ -3,7 +3,7 @@ title: "Marketing Made Simple"
 status: published
 anatomy: concept
 date: 2026-07-22
-topics: []
+topics: ["marketing"]
 order: 10
 summary: "Marketing is simple. Not easy, but simple — simple thinking, first principles, and helping people find things that help them."
 ---
