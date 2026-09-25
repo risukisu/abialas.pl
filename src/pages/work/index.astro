@@ -27,6 +27,11 @@ const essaySlugs = new Set(
 
 const email = "kontakt@abialas.pl";
 
+// Parked while the room is rebuilt (owner call 2026-09-25): the page shows a
+// work-in-progress note. Everything below stays wired — flip to false to bring
+// the full room back.
+const wip = true;
+
 const roles = [
   { role: "Head of Marketing", org: "Appsilon", years: "2023–present" },
   { role: "Data4Good Lead", org: "Appsilon", years: "2022–2023" },
@@ -86,9 +91,27 @@ const parts = [
 ---
 <BaseLayout
   title="Work — Andrzej Białaś"
-  description="What I build, a short CV, and the fastest way to reach me."
+  description={wip ? "Work in progress." : "What I build, a short CV, and the fastest way to reach me."}
   room="work"
 >
+  {wip && (
+    <header class="work-head">
+      <div class="work-head__grid blueprint" aria-hidden="true"></div>
+      <div class="container work-head__inner">
+        <span class="measure work-head__coord">Work</span>
+        <h1 class="work-head__title room-title">Work in progress</h1>
+        <p class="work-head__standfirst">
+          This page is being rebuilt. Until it's back, the fastest way to reach
+          me is email.
+        </p>
+        <div class="work-head__ctas">
+          <PrimaryCta href={`mailto:${email}`} label="Get in touch" />
+        </div>
+      </div>
+    </header>
+  )}
+
+  {!wip && (<>
   <!-- ── Header ───────────────────────────────────────────────────
        Hire-focused. What I do, then how to engage. Blueprint sheet
        behind this zone only, same as the storefront/alleys. -->
@@ -230,6 +253,7 @@ const parts = [
       </p>
     </div>
   </section>
+  </>)}
 </BaseLayout>
 
 <style>

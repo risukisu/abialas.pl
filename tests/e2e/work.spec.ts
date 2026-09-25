@@ -4,6 +4,14 @@ test("work room renders what-I-built, résumé download, and testimonials", asyn
   await page.goto("/work");
   await expect(page.locator("h1")).toBeVisible();
 
+  // WIP-aware: while the room is parked (`wip` in src/pages/work/index.astro),
+  // assert the note + contact CTA; the full checks re-arm when it flips back.
+  if ((await page.locator("h1").textContent())?.trim() === "Work in progress") {
+    await expect(page.locator("main a[href^='mailto:']").first()).toBeVisible();
+    await expect(page.getByText("Paweł Przytuła")).toHaveCount(0);
+    return;
+  }
+
   // The three built entries render (flagship is the first).
   await expect(page.getByRole("heading", { name: "How I run marketing" })).toBeVisible();
   await expect(page.getByText("Marketing owns the website")).toBeVisible();
