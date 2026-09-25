@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { resume } from "../../src/data/resume";
 
 test("nexus home: masthead, follow row + stack, building section, skills pair, more row, footer mailto", async ({ page }) => {
   await page.goto("/");
@@ -13,8 +14,13 @@ test("nexus home: masthead, follow row + stack, building section, skills pair, m
   await expect(page.locator(".build-row a[href='https://skillcraft.cloud']")).toBeVisible();
   await expect(page.locator(".msk-row a[href='https://skills.abialas.pl']")).toBeVisible();
   await expect(page.locator(".msk-row a[href='https://github.com/risukisu/marketing-skills']")).toBeVisible();
-  // More: Résumé | GitHub
-  await expect(page.locator(".nexus-grid a[href='/work']")).toBeVisible();
+  // More: Résumé | GitHub (résumé parked while `resume.draft`; footer PDF link too)
+  if (resume.draft) {
+    await expect(page.locator(".nexus-grid a[href='/work']")).toHaveCount(0);
+    await expect(page.locator("a[href='/resume.pdf']")).toHaveCount(0);
+  } else {
+    await expect(page.locator(".nexus-grid a[href='/work']")).toBeVisible();
+  }
   await expect(page.locator(".nexus-grid a[href='https://github.com/risukisu']")).toBeVisible();
   await expect(page.locator("a[href^='mailto:']").first()).toBeVisible();
 });
