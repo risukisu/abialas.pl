@@ -1,8 +1,19 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import InkedLink from "../components/cta/InkedLink.astro";
+import { resume } from "../data/resume";
 ---
 <BaseLayout title="Lost? — Andrzej Białaś" noindex={true}>
+  {resume.draft && (
+    <Fragment slot="head">
+      <!-- The placeholder résumé PDF is pulled (owner call 2026-09-27), so
+           GitHub Pages 404s it; old links land on the under-construction
+           note instead of this page. -->
+      <script define:vars={{ from: resume.pdf, to: resume.href }}>
+        if (location.pathname === from) location.replace(to);
+      </script>
+    </Fragment>
+  )}
   <section class="container four04">
     <p class="measure four04__coord">404</p>
     <h1>Lost?</h1>

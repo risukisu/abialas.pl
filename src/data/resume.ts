@@ -8,10 +8,13 @@
  *   node -e "require('sharp')('resume-p1.png').resize({width:560}).webp({quality:82}).toFile('public/resume-p1.webp')"
  */
 export const resume = {
-  // Draft (owner call 2026-09-25): hides the home ResumeTile and the footer
-  // PDF link. Flip to false once public/resume.pdf is refreshed.
+  // Draft (owner call 2026-09-25): the placeholder PDF is pulled (off the
+  // site 2026-09-27; 404.astro forwards /resume.pdf to /resume), so the
+  // footer PDF link hides. The home ResumeTile stays and links to /resume,
+  // an under-construction note. Flip to false once a real public/resume.pdf
+  // lands and /resume carries the real thing.
   draft: true,
-  href: "/work",
+  href: "/resume",
   pdf: "/resume.pdf",
   sheet: "/resume-p1.webp", // page 1, 560×792
   pages: 2,

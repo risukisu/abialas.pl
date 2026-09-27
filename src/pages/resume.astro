@@ -1,0 +1,87 @@
+---
+/**
+ * /resume — where the home ResumeTile lands.
+ *
+ * The placeholder PDF is pulled (owner call 2026-09-25), so while
+ * `resume.draft` this room is an under-construction note, noindexed and
+ * kept out of the sitemap (astro.config.mjs). Same blueprint header as the
+ * parked /work room.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import InkedLink from "../components/cta/InkedLink.astro";
+import { resume } from "../data/resume";
+---
+<BaseLayout
+  title="Résumé — Andrzej Białaś"
+  description="Under construction."
+  noindex={resume.draft}
+  room="work"
+>
+  <header class="cv-head">
+    <div class="cv-head__grid blueprint" aria-hidden="true"></div>
+    <div class="container cv-head__inner">
+      <span class="measure cv-head__coord">Résumé</span>
+      <h1 class="cv-head__title room-title">Under construction</h1>
+      <p class="cv-head__standfirst">
+        I'm rewriting my résumé. Come back later.
+      </p>
+      <div class="cv-head__links">
+        <InkedLink href="/">Back home</InkedLink>
+        <InkedLink href="/writing">Writing</InkedLink>
+      </div>
+    </div>
+  </header>
+</BaseLayout>
+
+<style>
+  /* Mirrors .work-head in src/pages/work/index.astro. */
+  .cv-head {
+    position: relative;
+    padding-top: clamp(48px, 7vw, 88px);
+    padding-bottom: var(--section-padding);
+    overflow: hidden;
+  }
+  .cv-head__grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.45;
+    -webkit-mask-image: radial-gradient(
+      115% 88% at 22% 30%, #000 0%, rgba(0, 0, 0, 0.5) 45%, transparent 77%
+    );
+    mask-image: radial-gradient(
+      115% 88% at 22% 30%, #000 0%, rgba(0, 0, 0, 0.5) 45%, transparent 77%
+    );
+  }
+  .cv-head__inner {
+    position: relative;
+    z-index: 1;
+  }
+  .cv-head__coord {
+    display: block;
+    margin-bottom: 22px;
+  }
+  .cv-head__title {
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    max-width: 16ch;
+    margin: 0 0 26px;
+  }
+  .cv-head__standfirst {
+    font-family: var(--font-serif);
+    font-size: clamp(1.15rem, 2.1vw, 1.4rem);
+    line-height: 1.5;
+    color: var(--color-body);
+    max-width: 52ch;
+    margin: 0 0 40px;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  .cv-head__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 32px;
+  }
+</style>

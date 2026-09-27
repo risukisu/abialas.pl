@@ -8,7 +8,9 @@ export default defineConfig({
   // Off: its injected h1s ("Audit", "Settings"…) break e2e strict-mode h1
   // assertions whenever playwright reuses a running dev server on :4321.
   devToolbar: { enabled: false },
-  integrations: [mdx(), sitemap()],
+  // /resume is an under-construction note while resume.draft (noindexed);
+  // drop the filter when the real résumé lands there.
+  integrations: [mdx(), sitemap({ filter: (page) => !page.endsWith('/resume/') })],
   vite: {
     plugins: [tailwindcss()],
   },

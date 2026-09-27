@@ -6,12 +6,17 @@
  * PDF — see src/data/resume.ts for the recipe) lies at a slight tilt on
  * the white plate; hover squares it up and slides it out from under the
  * text, the way you'd pull a sheet toward you. Meta is read off the file
- * (pages, date of the current PDF), not invented. Whole plate → /work,
- * the career page that carries the download.
+ * (pages, date of the current PDF), not invented. Whole plate → /resume.
+ * While `resume.draft`, the meta says so instead of describing a PDF
+ * nobody can download.
  */
 import { resume } from "../../data/resume";
 
 const updated = new Date(resume.updated).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+const meta = resume.draft
+  ? "Under construction · check back later"
+  : `${resume.pages} pages · PDF · updated ${updated}`;
+const where = resume.draft ? resume.href : `${resume.href} · career + download`;
 ---
 <a href={resume.href} class="cv">
   <span class="cv__sheet" aria-hidden="true">
@@ -23,8 +28,8 @@ const updated = new Date(resume.updated).toLocaleDateString("en-GB", { month: "s
       <span class="cv__out" aria-hidden="true">→</span>
     </span>
     <span class="cv__desc">Career in one page — the roles, the systems, what others say.</span>
-    <span class="cv__meta">{resume.pages} pages · PDF · updated {updated}</span>
-    <span class="cv__where">/work · career + download</span>
+    <span class="cv__meta">{meta}</span>
+    <span class="cv__where">{where}</span>
   </span>
 </a>
 
