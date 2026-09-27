@@ -94,8 +94,11 @@ const tiles = [
     </div>
 
     <p class="footer__colophon">
-      Built with Astro · No cookies, no tracking · © {year} · made with 🩵 by
-      <a href="https://risu.pl">risu</a>
+      © {year} · made with 🩵 by <a href="https://risu.pl">risu</a>
+      <!-- Guest sticker (2026-09-27): Grug's coffee emoji → the emoji page. -->
+      <a class="footer__grug" href="/grug/" aria-label="Grug Brained Marketer Slack emojis" title="Grug emojis for Slack">
+        <img src="/grug/grug-coffee-64.webp" alt="" width="28" height="28" decoding="async" loading="lazy" />
+      </a>
     </p>
   </div>
 </footer>
@@ -220,10 +223,35 @@ const tiles = [
     color: var(--color-muted);
   }
 
+  /* Grug sits at the end of the line like a sticker on the spine:
+     slight tilt, and a little lift toward you on hover. */
+  .footer__grug {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 8px;
+    line-height: 0;
+    transform: rotate(-8deg);
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+  .footer__grug img {
+    display: block;
+    width: 28px;
+    height: 28px;
+  }
+  .footer__grug:hover,
+  .footer__grug:focus-visible {
+    transform: rotate(6deg) translateY(-3px) scale(1.12);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .footer__tiles a:hover,
     .footer__tiles a:focus-visible {
       transform: none;
+    }
+    .footer__grug,
+    .footer__grug:hover,
+    .footer__grug:focus-visible {
+      transform: rotate(-8deg);
     }
   }
 </style>

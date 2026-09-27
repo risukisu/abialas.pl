@@ -1,6 +1,8 @@
 ---
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import Analytics from "../components/Analytics.astro";
+import CookieConsent from "../components/CookieConsent.astro";
 import "../styles/global.css";
 
 export interface Props {
@@ -22,6 +24,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://abialas.pl"
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <Analytics />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -52,5 +55,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://abialas.pl"
       <slot />
     </main>
     <Footer />
+    <CookieConsent />
   </body>
 </html>

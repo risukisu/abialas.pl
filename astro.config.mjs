@@ -10,7 +10,15 @@ export default defineConfig({
   devToolbar: { enabled: false },
   // /resume is an under-construction note while resume.draft (noindexed);
   // drop the filter when the real résumé lands there.
-  integrations: [mdx(), sitemap({ filter: (page) => !page.endsWith('/resume/') })],
+  // /grug/ is a static page in public/ (scripts/build-grug-emojis.py), so
+  // the sitemap only knows it through customPages.
+  integrations: [
+    mdx(),
+    sitemap({
+      filter: (page) => !page.endsWith('/resume/'),
+      customPages: ['https://abialas.pl/grug/'],
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },
