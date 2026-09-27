@@ -3,9 +3,11 @@
  * GitHub contribution heatmap on the GitHub canvas (dark since
  * 2026-09-27, when it absorbed the retired GitHubTile): the GitHub
  * avatar — the steampunk squirrel, public/gh-avatar.webp — glows behind
- * the right of the grid, its black ground masked into the plate. Empty
- * cells are translucent so he shows through them; filled cells wear
- * GitHub's own dark-mode green ramp, opaque, so the data always wins.
+ * the right of the grid, its black ground masked into the plate. The
+ * grid sits on a frosted-glass panel (owner feedback 2026-09-27: cells
+ * blended into him), so he reads as a soft glow through it and in the
+ * margins while every cell stays crisp: solid empty cells, and a green
+ * ramp with clear steps between levels.
  *
  * Data: fetched at render time (build = "updates every deploy") from
  * the public jogruber contributions API; graceful note on failure so a
@@ -158,6 +160,14 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
   )}
 </a>
 
+<script>
+  // Narrow screens scroll the year sideways: open on the latest weeks,
+  // not on January.
+  document.querySelectorAll<HTMLElement>(".graph__scroll").forEach((el) => {
+    el.scrollLeft = el.scrollWidth;
+  });
+</script>
+
 <style>
   /* Whole plate is one link to the GitHub profile. fit-content: a
      calendar-year view is part-empty until December — hug the weeks
@@ -258,7 +268,7 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
     align-items: baseline;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .graph__total {
@@ -281,8 +291,29 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
     transform: translate(2px, -2px);
   }
 
+  /* The glass: blur + a dark tint between him and the data. */
   .graph__scroll {
     overflow-x: auto;
+    padding: 10px 0 12px 12px; /* right edge lives on the rows, see below */
+    /* thinner toward him, so he glows through; the cells are solid */
+    background: linear-gradient(90deg, rgb(13 17 23 / 0.86) 45%, rgb(13 17 23 / 0.55));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgb(240 246 252 / 0.12);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .graph__scroll {
+      background: rgb(13 17 23 / 0.94);
+    }
+  }
+
+  /* max-content + right padding on the rows themselves: a scroll
+     container drops its own end padding, so this keeps the last week
+     off the glass edge when scrolled all the way right. */
+  .graph__months,
+  .graph__grid {
+    width: max-content;
+    padding-right: 12px;
   }
 
   .graph__months {
@@ -296,8 +327,7 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
     flex-shrink: 0;
     font-family: var(--font-mono);
     font-size: 10px;
-    color: var(--muted);
-    text-shadow: 0 0 4px var(--canvas), 0 0 2px var(--canvas);
+    color: #9da7b3;
     overflow: visible;
     white-space: nowrap;
   }
@@ -313,20 +343,21 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
     gap: 4px;
   }
 
-  /* GitHub's dark-mode ramp. Empty cells are smoked glass, so the
-     squirrel reads through them; filled cells are opaque. */
+  /* Solid cells. GitHub's dark ramp, lifted so each level is a clear
+     step (its first two sit too close to the canvas); empty cells a
+     visible slate with a hairline edge. */
   .graph__cell {
     width: 13px;
     height: 13px;
     flex-shrink: 0;
-    background: rgb(22 27 34 / 0.62);
-    box-shadow: inset 0 0 0 1px rgb(240 246 252 / 0.07);
+    background: #232a33;
+    box-shadow: inset 0 0 0 1px rgb(240 246 252 / 0.05);
   }
 
-  .graph__cell.l1 { background: #0e4429; box-shadow: none; }
-  .graph__cell.l2 { background: #006d32; box-shadow: none; }
-  .graph__cell.l3 { background: #26a641; box-shadow: none; }
-  .graph__cell.l4 { background: #39d353; box-shadow: none; }
+  .graph__cell.l1 { background: #1a6334; box-shadow: none; }
+  .graph__cell.l2 { background: #23974a; box-shadow: none; }
+  .graph__cell.l3 { background: #36c95c; box-shadow: none; }
+  .graph__cell.l4 { background: #7ef29a; box-shadow: none; }
 
   .graph__foot {
     display: flex;
@@ -334,7 +365,7 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 8px 16px;
-    margin-top: 12px;
+    margin-top: 10px;
   }
 
   .graph__where {

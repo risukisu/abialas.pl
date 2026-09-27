@@ -7,8 +7,10 @@ path with GRUG_KIT) and writes public/grug/index.html: the kit's own page
 (shell, template, runtime, script) minus the brand kit — no logos, colors,
 type, or usage-rules sections, no brand-kit download. The sticker lid, the
 emoji cards, the Slack preview, and the upload steps stay as the kit ships
-them. Assets are embedded, same as the kit page; the coffee badge stays
-only as the Slack-preview avatar.
+them. The footer is cut to the sign-off and the newsletter link (owner
+call 2026-09-27); the SerenityOS licence notice stays in the page source.
+Assets are embedded, same as the kit page; the coffee badge stays only as
+the Slack-preview avatar.
 
 Every cut is an exact, single match, so a kit change that moves one of
 them stops this script instead of shipping a half-cut page. Re-run after
@@ -72,10 +74,19 @@ def main():
     template = cut(template, '<section class="wrap" aria-labelledby="v3-brand">', '<section class="wrap" aria-labelledby="v3-slack">')
     if 'data-pack="brand"' in template:
         raise SystemExit("a brand-kit button survived the cut")
+    # Footer: only the sign-off and the newsletter.
+    template = cut(template, '<footer class="foot"><div class="wrap"><p>Grug Brained Marketer · by Andrzej Białaś', "</div></footer>")
+    template = one(
+        template,
+        "</div></footer>",
+        '<footer class="foot"><div class="wrap"><p>made with 🩵 by <a href="https://risu.pl">risu</a></p>'
+        '<a class="sign" href="https://grugbrained.substack.com">Grug Brained Marketer newsletter ↗</a></div></footer>',
+    )
 
     # Script: no lockup, no brand pack, no logo/color rendering.
     kit_js = read(PAGE, "kit.js")
     kit_js = one(kit_js, "  $('v3-lock').src = Kit.url('logo-badge');\n", "")
+    kit_js = cut(kit_js, "  $('v3-mini').innerHTML", "\n  const tape = (list) =>")
     kit_js = cut(kit_js, "    brand: () => zipUp([", "    stickers: async () => {")
     kit_js = cut(kit_js, "  /* brand */\n", "  Promise.all(E.map((e) => dieCut(e.name)))")
     for gone in ("KIT.logos", "KIT.colors", "T.tokens", "T.license"):

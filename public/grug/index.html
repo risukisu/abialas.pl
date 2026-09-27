@@ -248,7 +248,7 @@ h2{font:400 clamp(44px,6vw,78px)/.9 var(--display);text-transform:uppercase;lett
 </section>
 </main>
 
-<footer class="foot"><div class="wrap"><p>Grug Brained Marketer · by Andrzej Białaś<br>A homage to <a href="https://grugbrain.dev/" target="_blank" rel="noopener">grugbrain.dev</a>. Emoji-gallery inspiration: <a href="https://meatproxy.me/slack-emojis" target="_blank" rel="noopener">Meat Proxy</a>. Squirrel motif adapted from <a href="https://github.com/SerenityOS/serenity/blob/master/Base/res/emoji/U%2B1F43F.png" target="_blank" rel="noopener">SerenityOS</a>.</p><div class="mini" id="v3-mini"></div><span class="sign">grug keep it simple.</span></div></footer>
+<footer class="foot"><div class="wrap"><p>made with 🩵 by <a href="https://risu.pl">risu</a></p><a class="sign" href="https://grugbrained.substack.com">Grug Brained Marketer newsletter ↗</a></div></footer>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 </div>
 
@@ -416,7 +416,6 @@ function mountKit(root) {
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
   $('v3-avatar').src = Kit.url('logo-badge');
-  $('v3-mini').innerHTML = E.map((e) => `<img src="${Kit.url(e.name + '-128')}" alt="" width="32" height="32">`).join('');
 
   const tape = (list) => {
     const one = list.map((e) => `<span><img src="${Kit.url(e.name + '-128')}" alt="">${Kit.esc(e.caption)}<i>✱</i></span>`).join('');
