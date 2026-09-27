@@ -3,6 +3,13 @@
  * The GitHub tile — a scoreboard on the GitHub canvas (redesigned
  * 2026-09-27; the squirrel backdrop came off on the owner's call).
  *
+ * Type follows the sibling tiles: serif name and hero figure, sans for
+ * words and axis ticks, mono only for the where-line. Colour (2026-09-28,
+ * owner: "a bit bland"): a dark ink-navy canvas with a faint drafting
+ * grid and one green glow, the green ramp for the data (validated: every
+ * adjacent level ≥ 15 ΔE, CVD ≥ 12), and the site's ochre as the single
+ * warm accent for "now" — this month's bar and today's ring.
+ *
  * Left: the year's contribution total as the one hero number, with a
  * twelve-month strip under it: past months in a quiet green, this month
  * in the accent, months still to come as bare stubs. Right: the last six
@@ -148,9 +155,9 @@ const GH_MARK =
 ---
 <a class="graph" href={`https://github.com/${USER}`} rel="me">
   <div class="graph__head">
-    <span class="measure graph__kicker">
-      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="currentColor"><path d={GH_MARK} /></svg>
-      GitHub · {YEAR}
+    <span class="graph__name">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d={GH_MARK} /></svg>
+      GitHub
     </span>
     <span class="graph__out" aria-hidden="true">↗</span>
   </div>
@@ -162,7 +169,7 @@ const GH_MARK =
       <div class="graph__year">
         <p class="graph__hero">
           <span class="graph__total">{fmt(yearTotal)}</span>
-          <span class="graph__label">contributions this year</span>
+          <span class="graph__label">contributions in&nbsp;{YEAR}</span>
         </p>
         <div class="graph__trend">
           <div class="graph__bars" role="img" aria-label={`Contributions per month in ${YEAR}: ${monthsLabel}`}>
@@ -184,8 +191,8 @@ const GH_MARK =
 
       <div class="graph__recent">
         <div class="graph__caption">
-          <p class="graph__caption-t"><span class="measure">Last 6 months</span> <span class="graph__caption-n">{fmt(windowTotal)}</span></p>
-          <div class="graph__legend measure" aria-hidden="true">
+          <p class="graph__caption-t">Last 6 months <span class="graph__caption-n">{fmt(windowTotal)}</span></p>
+          <div class="graph__legend" aria-hidden="true">
             Less
             <span class="graph__cell"></span>
             <span class="graph__cell l1"></span>
@@ -232,20 +239,22 @@ const GH_MARK =
   /* Whole plate is one link to the GitHub profile. A size container, so
      the two columns stack by the tile's own width, not the viewport's. */
   .graph {
-    --canvas: #0d1117; /* GitHub canvas */
-    --line: #30363d; /* GitHub border */
-    --fg: #f0f6fc;
-    --muted: #8b949e;
-    --faint: #484f58;
+    --canvas: #0c1a29; /* the site's ink, taken down to night */
+    --line: #22364a;
+    --fg: #eef3f8;
+    --muted: #8fa3b6;
+    --faint: #4a5f73;
     --green: #7ee787;
+    --now: var(--link-on-ink); /* ochre: the one warm accent, for "now" */
     --shadow: #2ea043; /* GitHub's success green */
-    /* heatmap ramp: GitHub's dark ramp, lifted so every level is a clear step */
-    --l0: #232a33;
-    --l1: #1a6334;
-    --l2: #23974a;
-    --l3: #36c95c;
-    --l4: #7ef29a;
-    --bar: #2b7a47; /* past months: the quiet green */
+    /* heatmap ramp: one green, warming to lime at the top so every adjacent
+       level clears 15 ΔE (dataviz validator, dark, on --canvas) */
+    --l0: #1a2c3e;
+    --l1: #145c3b;
+    --l2: #1f9152;
+    --l3: #4fd17a;
+    --l4: #c2f5a0;
+    --bar: #1f7a4d; /* past months: the quiet green */
 
     container-type: inline-size;
     display: flex;
@@ -254,7 +263,12 @@ const GH_MARK =
     width: 100%;
     min-width: 0;
     padding: 18px 22px 16px;
-    background: var(--canvas);
+    /* one green glow behind the figure + a faint drafting grid */
+    background:
+      radial-gradient(110% 95% at 0% 0%, rgb(79 209 122 / 0.12), transparent 55%),
+      linear-gradient(rgb(143 163 182 / 0.055) 1px, transparent 1px) 0 0 / 24px 24px,
+      linear-gradient(90deg, rgb(143 163 182 / 0.055) 1px, transparent 1px) 0 0 / 24px 24px,
+      var(--canvas);
     border: 2px solid var(--color-ink);
     box-shadow: 6px 6px 0 var(--shadow);
     color: var(--fg);
@@ -281,14 +295,18 @@ const GH_MARK =
     justify-content: space-between;
     gap: 16px;
   }
-  .graph__kicker {
+  .graph__name {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: var(--muted);
-  }
-  .graph__kicker svg {
+    gap: 9px;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 1.3rem;
     color: var(--fg);
+  }
+  .graph__name svg {
+    position: relative;
+    top: -2px; /* sit on the serif's x-height, not its descenders */
   }
   .graph__out {
     color: var(--fg);
@@ -331,13 +349,16 @@ const GH_MARK =
     margin: 0;
     max-width: none;
   }
-  /* The one hero figure: site sans, proportional figures. */
+  /* The one hero figure, in the site's display serif (the masthead and
+     every tile name speak Newsreader here, so sans read off-brand):
+     lining, proportional figures. */
   .graph__total {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: clamp(2.75rem, 7cqi, 3.4rem);
-    line-height: 0.95;
-    letter-spacing: -0.03em;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(2.9rem, 8cqi, 3.9rem);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    font-variant-numeric: lining-nums proportional-nums;
     color: var(--fg);
   }
   .graph__label {
@@ -364,7 +385,7 @@ const GH_MARK =
     background: var(--bar);
   }
   .graph__bar.is-now {
-    background: var(--green);
+    background: var(--now);
   }
   .graph__bar.is-future {
     height: 2px;
@@ -375,8 +396,8 @@ const GH_MARK =
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 3px;
     margin-top: 5px;
-    font-family: var(--font-mono);
-    font-size: 10px;
+    font-family: var(--font-sans);
+    font-size: 11px;
     text-align: center;
     color: var(--muted);
   }
@@ -403,14 +424,12 @@ const GH_MARK =
   .graph__caption-t {
     margin: 0;
     max-width: none;
-  }
-  .graph__caption-t .measure {
+    font-size: 0.9rem;
     color: var(--muted);
   }
   .graph__caption-n {
     margin-left: 6px;
-    font-family: var(--font-mono);
-    font-size: var(--text-meta);
+    font-weight: 600;
     color: var(--fg);
   }
 
@@ -430,8 +449,8 @@ const GH_MARK =
   .graph__month {
     width: var(--cell);
     flex-shrink: 0;
-    font-family: var(--font-mono);
-    font-size: 10px;
+    font-family: var(--font-sans);
+    font-size: 11px;
     color: var(--muted);
     overflow: visible;
     white-space: nowrap;
@@ -461,18 +480,19 @@ const GH_MARK =
 
   /* Today, ringed — the build's "you are here". */
   .graph__cell.is-today {
-    outline: 2px solid var(--fg);
+    outline: 2px solid var(--now);
     outline-offset: 1px;
     animation: graph-today 2.4s ease-in-out infinite;
   }
   @keyframes graph-today {
-    50% { outline-color: rgb(240 246 252 / 0.35); }
+    50% { outline-color: rgb(232 161 60 / 0.35); }
   }
 
   .graph__legend {
     display: flex;
     align-items: center;
     gap: 4px;
+    font-size: 11px;
     color: var(--muted);
   }
   .graph__legend .graph__cell {
