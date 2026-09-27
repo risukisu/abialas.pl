@@ -1,0 +1,326 @@
+---
+/**
+ * ComingSoonTile — the More row's second slot, drawn as a tile that isn't
+ * cut out yet (owner call 2026-09-27; it replaced the GitHubTile, whose
+ * squirrel moved onto the contribution graph).
+ *
+ * Drafting-table language, blueprint edition: blue grid paper, a dashed
+ * cut line for a frame, a pencil sketch of a nexus tile (name row, ↗,
+ * two lines of copy, a mono where-line) with its dimensions still "?".
+ * The sketch draws itself the first time the tile scrolls into view; a
+ * mono status line cycles sketching → measuring twice → cutting once;
+ * hover sends the scissors along the top cut. Shadow in blueprint blue
+ * (the ai hue), vermilion only on the scissor handles.
+ *
+ * Not a link: there's nowhere to go yet, so no lift on hover either.
+ */
+---
+<div class="soon" data-soon>
+  <span class="soon__cut" aria-hidden="true"></span>
+  <svg class="soon__scissors" viewBox="0 0 26 16" width="34" height="21" aria-hidden="true">
+    <g class="soon__blade soon__blade--a">
+      <circle cx="5" cy="4" r="3.2" />
+      <path d="M7.6 5.4 L24 10.4" />
+    </g>
+    <g class="soon__blade soon__blade--b">
+      <circle cx="5" cy="12" r="3.2" />
+      <path d="M7.6 10.6 L24 5.6" />
+    </g>
+    <circle class="soon__pivot" cx="15.8" cy="8" r="0.9" />
+  </svg>
+
+  <div class="soon__body">
+    <span class="soon__title">More coming soon.</span>
+    <span class="soon__desc">The next tile is still on the drafting table.</span>
+    <span class="soon__status" aria-hidden="true">
+      <span class="soon__caret">▸</span>
+      <span class="soon__words">
+        <span>sketching…</span>
+        <span>measuring twice</span>
+        <span>cutting once</span>
+      </span>
+    </span>
+  </div>
+
+  <svg class="soon__sketch" viewBox="0 0 224 164" aria-hidden="true">
+    <!-- the plate + its hard shadow -->
+    <path class="s s--plate" style="--d:0" pathLength="1" d="M20 32 H194 V136 H20 Z" />
+    <path class="s s--ghost" style="--d:2" pathLength="1" d="M26 136 V142 H200 V38 H194" />
+    <!-- name row: icon chip, name, ↗ -->
+    <path class="s" style="--d:3" pathLength="1" d="M34 46 H48 V60 H34 Z" />
+    <path class="s s--head" style="--d:4" pathLength="1" d="M56 53 H124" />
+    <path class="s" style="--d:5" pathLength="1" d="M168 60 L180 48 M171 48 H180 V57" />
+    <!-- copy + where-line -->
+    <path class="s" style="--d:6" pathLength="1" d="M34 80 H176" />
+    <path class="s" style="--d:7" pathLength="1" d="M34 92 H150" />
+    <path class="s s--faint" style="--d:8" pathLength="1" d="M34 118 H100" />
+    <!-- dimensions, still unknown -->
+    <path class="s s--dim" style="--d:9" pathLength="1" d="M20 14 H194 M20 8 V20 M194 8 V20" />
+    <path class="s s--dim" style="--d:10" pathLength="1" d="M212 32 V136 M206 32 H218 M206 136 H218" />
+    <g class="soon__lbl" style="--d:11">
+      <rect x="85" y="6" width="44" height="16" />
+      <text x="107" y="17.5">w = ?</text>
+    </g>
+    <g class="soon__lbl" style="--d:12" transform="rotate(-90 212 84)">
+      <rect x="190" y="76" width="44" height="16" />
+      <text x="212" y="87.5">h = ?</text>
+    </g>
+  </svg>
+</div>
+
+<script>
+  // Arm the sketch (hide the strokes) only when we can also reveal it, so
+  // no-JS and reduced-motion visitors get the finished drawing. The status
+  // loop pauses offscreen or in a hidden tab.
+  const tiles = document.querySelectorAll<HTMLElement>("[data-soon]");
+  const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!calm && "IntersectionObserver" in window) {
+    tiles.forEach((tile) => {
+      tile.setAttribute("data-armed", "");
+      const io = new IntersectionObserver(
+        ([e]) => {
+          tile.toggleAttribute("data-idle", !e.isIntersecting);
+          if (e.isIntersecting) tile.setAttribute("data-drawn", "");
+        },
+        { threshold: 0.35 },
+      );
+      io.observe(tile);
+    });
+    document.addEventListener("visibilitychange", () =>
+      tiles.forEach((t) => t.toggleAttribute("data-idle", document.hidden)),
+    );
+  }
+</script>
+
+<style>
+  .soon {
+    --blue: #2257d6; /* ai hue — blueprint blue, AA on the paper */
+    --paper: #f6f9fd;
+    --shadow: #2257d6;
+    --cut-ease: cubic-bezier(0.45, 0.05, 0.25, 1);
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(150px, 46%);
+    gap: 18px;
+    align-items: center;
+    padding: 22px 22px 18px;
+    /* Blueprint paper: major lines every 56px over a 14px minor grid. */
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(rgb(34 87 214 / 0.14) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(34 87 214 / 0.14) 1px, transparent 1px),
+      linear-gradient(rgb(34 87 214 / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(34 87 214 / 0.06) 1px, transparent 1px);
+    background-size: 56px 56px, 56px 56px, 14px 14px, 14px 14px;
+    background-position: -1px -1px;
+    /* The cut line: this sticker hasn't been cut out yet. */
+    border: 2px dashed var(--color-ink);
+    box-shadow: 4px 4px 0 var(--shadow);
+    color: var(--color-ink);
+    cursor: crosshair;
+  }
+
+  /* ── The cut ──────────────────────────────────────────────────────
+     A solid stretch of edge behind the scissors (already cut); hover
+     runs both along the top together. */
+  .soon__cut {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 45px; /* up to the blade tips */
+    height: 2px;
+    background: var(--color-ink);
+    transition: width 1.1s var(--cut-ease);
+  }
+  .soon__scissors {
+    position: absolute;
+    top: -11.5px; /* centred on the 2px border */
+    left: 14px;
+    overflow: visible;
+    transition: left 1.1s var(--cut-ease);
+  }
+  .soon:hover .soon__cut {
+    width: calc(100% - 14px);
+  }
+  .soon:hover .soon__scissors {
+    left: calc(100% - 46px);
+  }
+
+  .soon__blade circle {
+    fill: var(--paper);
+    stroke: var(--color-accent);
+    stroke-width: 1.8;
+  }
+  .soon__blade path {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+  }
+  .soon__pivot {
+    fill: var(--color-ink);
+  }
+  .soon__blade {
+    transform-box: view-box;
+    transform-origin: 15.8px 8px;
+  }
+  .soon:hover .soon__blade--a {
+    animation: soon-snip-a 0.28s ease-in-out infinite alternate;
+  }
+  .soon:hover .soon__blade--b {
+    animation: soon-snip-b 0.28s ease-in-out infinite alternate;
+  }
+  @keyframes soon-snip-a {
+    to { transform: rotate(-11deg); }
+  }
+  @keyframes soon-snip-b {
+    to { transform: rotate(11deg); }
+  }
+
+  /* ── Words ────────────────────────────────────────────────────── */
+  .soon__body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .soon__title {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(1.35rem, 2.2vw, 1.6rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .soon__desc {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--color-body);
+    max-width: 30ch;
+  }
+
+  .soon__status {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--blue);
+  }
+
+  /* Three words share one cell and take turns, 3s each. */
+  .soon__words {
+    display: grid;
+  }
+  .soon__words > span {
+    grid-area: 1 / 1;
+    opacity: 0;
+    animation: soon-word 9s linear infinite;
+  }
+  .soon__words > span:nth-child(2) { animation-delay: 3s; }
+  .soon__words > span:nth-child(3) { animation-delay: 6s; }
+  .soon[data-idle] .soon__words > span {
+    animation-play-state: paused;
+  }
+  @keyframes soon-word {
+    0% { opacity: 0; transform: translateY(4px); }
+    4% { opacity: 1; transform: translateY(0); }
+    30% { opacity: 1; transform: translateY(0); }
+    34% { opacity: 0; transform: translateY(-4px); }
+    100% { opacity: 0; transform: translateY(-4px); }
+  }
+
+  /* ── The sketch ───────────────────────────────────────────────── */
+  .soon__sketch {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .s {
+    fill: none;
+    stroke: var(--blue);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .s--plate { stroke-width: 1.8; }
+  .s--ghost { stroke-width: 1.2; opacity: 0.55; }
+  .s--head { stroke-width: 3.2; }
+  .s--faint { opacity: 0.5; }
+  .s--dim { stroke-width: 1; opacity: 0.8; }
+
+  .soon__lbl rect {
+    fill: var(--paper);
+  }
+  .soon__lbl text {
+    fill: var(--blue);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-anchor: middle;
+  }
+
+  /* Armed by the script: strokes hidden until the tile is in view, then
+     drawn one after another; the "?" labels land last. */
+  .soon[data-armed] .s {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  .soon[data-armed] .soon__lbl {
+    opacity: 0;
+  }
+  .soon[data-drawn] .s {
+    animation: soon-draw 0.6s cubic-bezier(0.3, 0.7, 0.3, 1) forwards;
+    animation-delay: calc(var(--d) * 0.13s + 0.1s);
+  }
+  .soon[data-drawn] .soon__lbl {
+    animation: soon-fade 0.4s ease forwards;
+    animation-delay: calc(var(--d) * 0.13s + 0.1s);
+  }
+  @keyframes soon-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes soon-fade {
+    to { opacity: 1; }
+  }
+
+  /* Narrow phones: the sketch drops under the words. */
+  @media (max-width: 440px) {
+    .soon {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .soon__sketch {
+      max-width: 240px;
+    }
+  }
+
+  /* Reduced motion: the finished drawing (the script never arms it), one
+     word at rest, scissors parked. Explicit because the global 0.01ms
+     clamp would turn the infinite word loop into flicker. */
+  @media (prefers-reduced-motion: reduce) {
+    .soon__words > span {
+      animation: none;
+      opacity: 0;
+      transform: none;
+    }
+    .soon__words > span:nth-child(2) {
+      opacity: 1;
+    }
+    .soon__cut,
+    .soon__scissors {
+      transition: none;
+    }
+    .soon:hover .soon__cut {
+      width: 45px;
+    }
+    .soon:hover .soon__scissors {
+      left: 14px;
+    }
+    .soon:hover .soon__blade--a,
+    .soon:hover .soon__blade--b {
+      animation: none;
+    }
+  }
+</style>

@@ -9,17 +9,17 @@ test("nexus home: masthead, follow row + stack, building section, skills pair, m
   await expect(page.locator(".follow-row a[href='https://risu.pl']")).toBeVisible();
   await expect(page.locator(".follow-stack a[href='https://www.linkedin.com/in/andrzej-bialas/']")).toBeVisible();
   await expect(page.locator(".follow-stack a[href='https://x.com/risu_kisu']")).toBeVisible();
-  // Building: graph | SkillCraft, then the skills pair
-  await expect(page.locator(".graph").first()).toBeVisible();
+  // Building: graph (the GitHub tile) | SkillCraft, then the skills pair
+  await expect(page.locator(".build-row a.graph[href='https://github.com/risukisu']")).toBeVisible();
   await expect(page.locator(".build-row a[href='https://skillcraft.cloud']")).toBeVisible();
   await expect(page.locator(".msk-row a[href='https://skills.abialas.pl']")).toBeVisible();
   await expect(page.locator(".msk-row a[href='https://github.com/risukisu/marketing-skills']")).toBeVisible();
-  // More: Résumé | GitHub (footer PDF link hidden while `resume.draft`)
+  // More: Résumé | coming soon (footer PDF link hidden while `resume.draft`)
   await expect(page.locator(`.nexus-grid a[href='${resume.href}']`)).toBeVisible();
   if (resume.draft) {
     await expect(page.locator("a[href='/resume.pdf']")).toHaveCount(0);
   }
-  await expect(page.locator(".nexus-grid a[href='https://github.com/risukisu']")).toBeVisible();
+  await expect(page.locator(".nexus-grid [data-soon]")).toContainText("More coming soon.");
   await expect(page.locator("a[href^='mailto:']").first()).toBeVisible();
 });
 

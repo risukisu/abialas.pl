@@ -6,7 +6,7 @@ import SkillCraftTile from "../components/nexus/SkillCraftTile.astro";
 import MarketingSkillsTile from "../components/nexus/MarketingSkillsTile.astro";
 import MarketingSkillsRepoTile from "../components/nexus/MarketingSkillsRepoTile.astro";
 import ResumeTile from "../components/nexus/ResumeTile.astro";
-import GitHubTile from "../components/nexus/GitHubTile.astro";
+import ComingSoonTile from "../components/nexus/ComingSoonTile.astro";
 import ContributionGraph from "../components/nexus/ContributionGraph.astro";
 import { follow, followStack } from "../data/nexus";
 ---
@@ -68,7 +68,7 @@ import { follow, followStack } from "../data/nexus";
   </section>
 
   <!-- ── Building ───────────────────────────────────────────────────
-       Proof-of-work: live contribution graph + SkillCraft, then the
+       Proof-of-work: live contribution graph (the GitHub tile) + SkillCraft, then the
        marketing-skills pair — the site (big, animated) and the repo. -->
   <section class="nexus-sec">
     <div class="container">
@@ -89,12 +89,12 @@ import { follow, followStack } from "../data/nexus";
   </section>
 
   <!-- ── More ───────────────────────────────────────────────────────
-       Résumé (the sheet) + GitHub (last-push readout). -->
+       Résumé (the sheet) + the next tile, still a blueprint. -->
   <section class="nexus-sec nexus-sec--last">
     <div class="container">
       <div class="nexus-grid">
         <ResumeTile />
-        <GitHubTile />
+        <ComingSoonTile />
       </div>
     </div>
   </section>
@@ -315,8 +315,8 @@ import { follow, followStack } from "../data/nexus";
     padding-right: 6px;
   }
 
-  /* Résumé | GitHub. minmax(0, …) so the GitHub readout's nowrap lines
-     can't inflate the track past the viewport — they ellipsize instead. */
+  /* Résumé | coming soon. minmax(0, …) so neither tile's content can
+     inflate its track past the viewport. */
   .nexus-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
