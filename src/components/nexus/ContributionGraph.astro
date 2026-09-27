@@ -2,12 +2,12 @@
 /**
  * GitHub contribution heatmap on the GitHub canvas (dark since
  * 2026-09-27, when it absorbed the retired GitHubTile): the GitHub
- * avatar — the steampunk squirrel, public/gh-avatar.webp — glows behind
- * the right of the grid, its black ground masked into the plate. The
- * grid sits on a frosted-glass panel (owner feedback 2026-09-27: cells
- * blended into him), so he reads as a soft glow through it and in the
- * margins while every cell stays crisp: solid empty cells, and a green
- * ramp with clear steps between levels.
+ * avatar — the steampunk squirrel, public/gh-avatar.webp — holds the
+ * right of the plate, his black ground masked into it. The grid shows
+ * the last six months (owner call 2026-09-27: a full year buried him),
+ * sits left on a frosted-glass panel with solid cells and a stepped
+ * green ramp, and its foot line (repos · legend) ends where it ends, so
+ * nothing crosses him.
  *
  * Data: fetched at render time (build = "updates every deploy") from
  * the public jogruber contributions API; graceful note on failure so a
@@ -60,15 +60,18 @@ let days: Day[] = [];
 let total = 0;
 let failed = false;
 
-// Calendar-year view (owner call): Jan 2026 → today, not a rolling
-// 12 months. The API returns the full year with zero-count future
-// days — trim to today so the graph ends at "now" (build time).
-const YEAR = String(new Date().getFullYear());
+// Last six months (owner call 2026-09-27): the 1st of the month five
+// months back → today (build time), so the labels read as six whole
+// months ending in this one. `y=last` is the API's rolling 365 days, so
+// the window can cross a new year.
+const now = new Date();
+const today = now.toISOString().slice(0, 10);
+const since = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 5, 1)).toISOString().slice(0, 10);
 try {
-  const data = await getJson(`https://github-contributions-api.jogruber.de/v4/${USER}?y=${YEAR}`, 8000);
-  const today = new Date().toISOString().slice(0, 10);
-  days = data.contributions.filter((d: Day) => d.date <= today);
-  total = data.total?.[YEAR] ?? days.reduce((s: number, d: Day) => s + d.count, 0);
+  const data = await getJson(`https://github-contributions-api.jogruber.de/v4/${USER}?y=last`, 8000);
+  days = data.contributions.filter((d: Day) => d.date >= since && d.date <= today);
+  total = days.reduce((s: number, d: Day) => s + d.count, 0);
+  if (!days.length) failed = true;
 } catch {
   failed = true;
 }
@@ -122,14 +125,15 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
   ) : (
     <>
       <div class="graph__head">
-        <span class="graph__total">{total.toLocaleString("en-US")} contributions in {YEAR}</span>
+        <span class="graph__total">{total.toLocaleString("en-US")} contributions in the last 6 months</span>
         <span class="graph__out" aria-hidden="true">↗</span>
       </div>
+      <div class="graph__col">
       <div class="graph__scroll">
         <div class="graph__months" aria-hidden="true">
           {monthLabels.map((m) => <span class="graph__month">{m ?? ""}</span>)}
         </div>
-        <div class="graph__grid" role="img" aria-label={`GitHub contribution heatmap: ${total} contributions in ${YEAR}`}>
+        <div class="graph__grid" role="img" aria-label={`GitHub contribution heatmap: ${total} contributions in the last 6 months`}>
           {weeks.map((w) => (
             <div class="graph__week">
               {w.map((d) => (
@@ -156,22 +160,20 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
           More
         </span>
       </div>
+      </div>
     </>
   )}
 </a>
 
 <script>
-  // Narrow screens scroll the year sideways: open on the latest weeks,
-  // not on January.
+  // Narrow screens scroll the weeks sideways: open on the latest ones.
   document.querySelectorAll<HTMLElement>(".graph__scroll").forEach((el) => {
     el.scrollLeft = el.scrollWidth;
   });
 </script>
 
 <style>
-  /* Whole plate is one link to the GitHub profile. fit-content: a
-     calendar-year view is part-empty until December — hug the weeks
-     instead of dragging a half-blank plate across the container. */
+  /* Whole plate is one link to the GitHub profile. */
   .graph {
     --canvas: #0d1117; /* GitHub canvas */
     --fg: #f0f6fc;
@@ -230,16 +232,16 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
     width: auto;
     aspect-ratio: 1;
     object-fit: cover;
-    opacity: 0.62;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 42%, #000 100%);
-    mask-image: linear-gradient(90deg, transparent 0%, #000 42%, #000 100%);
+    opacity: 0.9;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 30%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 30%, #000 100%);
     pointer-events: none;
     user-select: none;
     transition: opacity 0.25s ease;
   }
   .graph:hover .graph__risu,
   .graph:focus-visible .graph__risu {
-    opacity: 0.85;
+    opacity: 1;
   }
 
   /* Scrim: clean canvas under the older months, thinning toward him. */
@@ -249,16 +251,14 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
     background: linear-gradient(
       90deg,
       rgb(13 17 23 / 0.9) 0%,
-      rgb(13 17 23 / 0.7) 45%,
-      rgb(13 17 23 / 0.3) 72%,
-      rgb(13 17 23 / 0.15) 100%
+      rgb(13 17 23 / 0.75) 40%,
+      transparent 68%
     );
     pointer-events: none;
   }
 
   .graph__head,
-  .graph__scroll,
-  .graph__foot,
+  .graph__col,
   .graph__fail {
     position: relative; /* above the squirrel */
   }
@@ -291,12 +291,18 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
     transform: translate(2px, -2px);
   }
 
+  /* The grid's column: as wide as six months of weeks, so the foot line
+     (repos · legend) ends where the grid ends and he keeps the right. */
+  .graph__col {
+    width: fit-content;
+    max-width: 100%;
+  }
+
   /* The glass: blur + a dark tint between him and the data. */
   .graph__scroll {
     overflow-x: auto;
     padding: 10px 0 12px 12px; /* right edge lives on the rows, see below */
-    /* thinner toward him, so he glows through; the cells are solid */
-    background: linear-gradient(90deg, rgb(13 17 23 / 0.86) 45%, rgb(13 17 23 / 0.55));
+    background: rgb(13 17 23 / 0.82);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: 1px solid rgb(240 246 252 / 0.12);
