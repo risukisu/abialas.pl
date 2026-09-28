@@ -1,5 +1,5 @@
 ---
-title: "Why Is Marketing So Damn Hard Right Now?"
+title: "Why is Marketing so Damn Hard Right Now?"
 status: published
 anatomy: concept
 date: 2026-09-25
@@ -48,12 +48,14 @@ At least for a while, things that AI can't easily replicate do work. So what wor
 
 These are the things that still require effort and have a chance to stand out in the sea of sludge that the internet's become.
 
-Remember, if it's cheap, it will not work. So invest your time and resources in the hard things. Start a podcast, build and contribute to open source, publish original research, share unique points of view, have real thought leadership, write books and other long-form content (and [don't use AI for anything that's not proofreading](https://risu.pl/blog/i-love-ai-i-hate-ai/)), record videos that give REAL value to customers, that nobody can replicate with a prompt. Oh, and invest in distribution, and a lot. Yes, that means paid channels too.
+Remember, if it's cheap, it will not work. So invest your time and resources in the hard things. Talk to your audience, invest in community building, build and contribute to open source, publish original research, share unique points of view, have real thought leadership, write books and other long-form content (and [don't use AI for anything that's not proofreading](https://risu.pl/blog/i-love-ai-i-hate-ai/)), record videos that give REAL value to customers, that nobody can replicate with a prompt. Oh, and invest in distribution, and a lot. Yes, that means paid channels too.
 
 I know it sucks. It's slow, it's tedious, it's boring, it's taking forever, your teams won't want to do this, the leadership will get dizzy just hearing about this and then get angry when they hear getting it shipped will take weeks and may not even work.
 
 But it's what you must do.
 
-If you can't make sure your newsletter or articles are so valuable, interesting, insightful, {insert more stuff here} that they displace something for your customers (another newsletter they read), they are most likely not worth doing, and they are certainly not going to be your growth levers. Because everyone is doing this and plenty of it!
+If you can't make sure your newsletter or articles are so valuable, interesting, insightful that they displace something for your customers (another newsletter they read), they are most likely not worth doing, and they are certainly not going to be your growth levers. Because everyone is doing this and plenty of it!
 
-Invest in the boring and slow stuff and have patience. Play long games and accept that most things won't work. If one out of five things hits, you are doing great. The failed ones become data, so the next experiments have a higher chance of being successful.
+Invest in networking and genuine human to human relations, interview your customers and center your marketing around their needs, the language they use and helping them. Do more of the boring and slow stuff and - most importantly - **have patience**. Play long games and **accept that most things won't work**. If one out of five things hits, you are doing great. The failed ones become data, so the next experiments have a higher chance of being successful.
+
+Oh, and don't give up. You're amazing :)
