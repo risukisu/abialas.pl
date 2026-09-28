@@ -8,6 +8,16 @@ test("/dev lists the shared pages and is noindexed", async ({ page }) => {
   await expect(page.locator("h1")).toHaveText("Work in progress");
   await expect(page.locator("meta[name='robots']")).toHaveAttribute("content", "noindex");
   await expect(page.locator("main a[href='/dev/skills-tile/']")).toBeVisible();
+  await expect(page.locator("main a[href='/dev/foil-cards/']")).toBeVisible();
+});
+
+test("/dev/foil-cards shows the pixel quest foil, noindexed", async ({ page }) => {
+  await page.goto("/dev/foil-cards/");
+  await expect(page.locator("h1")).toHaveText("Foil cards");
+  await expect(page.locator("meta[name='robots']")).toHaveAttribute("content", "noindex");
+  await expect(page.locator("#pixel-quest [data-foil-card]")).toBeVisible();
+  const art = await page.request.get("/dev/foil-cards/pixel-quest-squirrel.svg");
+  expect(art.status()).toBe(200);
 });
 
 test("/dev/skills-tile shows both options, noindexed", async ({ page }) => {
