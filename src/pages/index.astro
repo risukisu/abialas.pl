@@ -306,10 +306,11 @@ import { follow, followStack } from "../data/nexus";
     width: 100%;
   }
   /* Skills pair — uneven on purpose: the site tile leads, the repo
-     tile is the side door. */
+     tile is the side door. 1.9 : 1.1 = the site tile 5% shorter than the
+     old 2 : 1, the repo tile longer by the same width (owner, 2026-09-28). */
   .msk-row {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.9fr) minmax(0, 1.1fr);
     gap: 18px;
     align-items: stretch;
     padding-right: 6px;

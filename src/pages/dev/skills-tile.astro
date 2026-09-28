@@ -1,9 +1,11 @@
 ---
-// /dev/skills-tile/ — two art-panel options for the marketing-skills tile,
-// shared by link with friends for feedback (2026-09-28). Noindexed, out of
-// the sitemap, linked only from /dev/.
+// /dev/skills-tile/ — the art-panel options for the marketing-skills tile,
+// shared by link with friends for feedback (2026-09-28), plus the star
+// chart they replaced, kept to look back at. The keyboard went live the
+// same day. Noindexed, out of the sitemap, linked only from /dev/.
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SkillsArtTile from "../../components/dev/SkillsArtTile.astro";
+import StarChartTile from "../../components/dev/StarChartTile.astro";
 import { PAIRS, HOLD, LOOP } from "../../components/dev/skillsData";
 
 // What "the work" draws for each readout pair, in PAIRS order.
@@ -28,7 +30,8 @@ const WORK = [
       <p class="dv-intro">
         My site has a tile for marketing-skills, my library of Claude Code skills for marketers. On
         the left, a line types what you might say and the command that answers it. The right side is
-        new, and I have two versions. Which would you keep?
+        new. I tried two versions and put the keyboard live on 28 September 2026. Which would you
+        have kept?
       </p>
       <p class="dv-meta">Five phrases, {HOLD} seconds each, a {LOOP}-second loop.</p>
     </div>
@@ -50,10 +53,17 @@ const WORK = [
   </section>
 
   <section class="container dv-opt" id="keyboard">
-    <p class="measure">Option 2</p>
+    <p class="measure">Option 2 · live</p>
     <h2 class="dv-h2">Keyboard</h2>
-    <p class="dv-text">The keys light up as the command types. Enter flashes when it runs, and the keys it used stay lit until the next one.</p>
+    <p class="dv-text">The keys light up as the command types. Enter flashes when it runs, and the keys it used stay lit until the next one. Live on abialas.pl since 28 September 2026.</p>
     <div class="dv-exhibit"><SkillsArtTile art="keys" /></div>
+  </section>
+
+  <section class="container dv-opt" id="star-chart">
+    <p class="measure">Before · archive</p>
+    <h2 class="dv-h2">The star chart</h2>
+    <p class="dv-text">What the tile showed on 28 September 2026 until the keyboard replaced it: one small constellation per skill, drawn after what it does, lit in the command's colour.</p>
+    <div class="dv-exhibit"><StarChartTile /></div>
   </section>
 
   <div class="container dv-close">

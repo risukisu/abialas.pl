@@ -16,6 +16,7 @@ test("/dev/skills-tile shows both options, noindexed", async ({ page }) => {
   await expect(page.locator("meta[name='robots']")).toHaveAttribute("content", "noindex");
   await expect(page.locator("svg.art[data-art='work']")).toBeVisible();
   await expect(page.locator("svg.art[data-art='keys']")).toBeVisible();
+  await expect(page.locator("a[data-msk-chart] svg.msk__cst")).toBeVisible(); // the star chart, archived
 });
 
 test("no /dev page is in the sitemap or linked from home", async ({ page, request }) => {

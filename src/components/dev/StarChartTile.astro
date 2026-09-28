@@ -1,32 +1,18 @@
 ---
 /**
- * MarketingSkillsTile — the big tile to skills.abialas.pl, wearing the
- * library's CANONICAL visual system (os-schematic, brand/README.md in
- * risukisu/marketing-skills, adopted 2026-09-06; the violet constellation
- * kit this tile used to wear was retired the same day).
+ * ARCHIVE — the marketing-skills tile as it was live on 2026-09-28 (commit
+ * b7c6808) with the star chart, kept on /dev/skills-tile/ to look back
+ * at. The keyboard replaced it the same day. A frozen copy of
+ * nexus/MarketingSkillsTile.astro at that commit; only the data attribute
+ * its pause script looks for is renamed, so it can share a page with the
+ * live tile.
  *
- * Kit rules honored:
- * - warm near-black ground #0e100d, hairline rules, square markers, no
- *   glow, no gradients, no pills, no counts in graphics
- * - the square motif: category head, cursor, connector, dot grid (1.4px)
- * - three category hues used only to mark a category (green / amber / blue)
- * - copy is the library's own: "you say → it runs" prompt/command pairs
- *   lifted verbatim from brand/source/hero.html; tagline = the site's h1
- *
- * The art is a keyboard (owner's pick 2026-09-28, after the star chart;
- * both earlier arts are archived on /dev/skills-tile/): kit Panel keys on
- * hairlines with mono legends, no glow.
- *
- * Motion (the one authored moment): the readout cycles the five pairs,
- * and the keyboard types along — each key lights in the command's hue as
- * the typing clip reaches its character, Enter flashes when the command
- * runs, and the keys it typed stay faintly lit until the pair leaves.
- * Reduced-motion: first pair static, cursor solid, no keys moving. The
- * loop pauses offscreen (IntersectionObserver → data-idle).
- *
- * Site frame stays: 2px ink border + hard offset shadow, like every other
- * guest sticker. Site mono/sans stand in for the kit's system faces
- * (deliberate, same ruling as the SkillCraft tile).
+ * The art: five small constellations, one per skill in the readout, each
+ * drawn after what the skill does — a magnifier, a funnel, a speech
+ * bubble, steps going up, three at a table. The skill on stage lights its
+ * constellation in the command's hue, with the kit's dashed current along
+ * its lines and a ring on its brightest star, in the same 20% window of
+ * the loop as its readout pair.
  */
 // [you say, it runs, hue]. Owner call 2026-09-21: every command in its own
 // colour — the kit's three category hues (green / amber / blue) plus two
@@ -41,33 +27,43 @@ const PAIRS: [string, string, string][] = [
 const HOLD = 2.6; // s each pair stays
 const LOOP = PAIRS.length * HOLD;
 
-// Keyboard — keys as {x, y, w, label} in the 300x210 art space. The
-// readout's command types in steps(14) from 3% to 8% of the loop, so a key
-// lights when the typing clip reaches its character (the clip also covers
-// the "› " prompt and the cursor, hence the 3 and 3.3); Enter lights just
-// after the command lands.
+// Star chart — each figure's stars as [x, y, r] in its own box, the lines
+// as index pairs, and its brightest star (the ring goes there). Order
+// follows PAIRS. Deterministic, so the SVG is identical on every build.
 const W = 300, H = 210;
-const K = 22; // key size
-const P = 26; // pitch
-const ROWS = ["qwertyuiop-", "asdfghjkl", "zxcvbnm/"];
-const OFFS = [9, 16, 29];
-type Key = { x: number; y: number; w: number; label: string };
-const at = new Map<string, Key>();
-ROWS.forEach((row, r) => [...row].forEach((ch, c) => at.set(ch, { x: OFFS[r] + c * P, y: 55 + r * P, w: K, label: ch })));
-const enter: Key = { x: 16 + 9 * P, y: 55 + P, w: 44, label: "⏎" };
-const space: Key = { x: 90, y: 55 + 3 * P, w: 120, label: "" };
-const keys = [...at.values(), enter, space];
-const hits = PAIRS.flatMap(([, run, c], i) => [
-  ...[...run].flatMap((ch, j) => {
-    const k = at.get(ch);
-    if (!k) return [];
-    const step = Math.ceil(14 * ((3 + j) / (3.3 + run.length)));
-    return [{ ...k, i, c, d: LOOP * (0.03 + (step * 0.05) / 14) }];
-  }),
-  { ...enter, i, c, d: LOOP * 0.088 },
-]);
+const S = 1.3; // figure scale
+type Fig = { at: [number, number]; stars: [number, number, number][]; lines: [number, number][]; alpha: number };
+const FIGS: Fig[] = [
+  // /seo-audit — a magnifier: a ring of five stars and a handle
+  { at: [12, 8], stars: [[18, 5, 2.1], [30.4, 14, 1.6], [25.6, 28.5, 1.9], [10.4, 28.5, 1.5], [5.6, 14, 1.7], [35, 38, 1.5], [43, 46, 2.4]], lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 0], [2, 5], [5, 6]], alpha: 6 },
+  // /cro — a funnel
+  { at: [206, 12], stars: [[0, 4, 2], [46, 2, 2.3], [29, 23, 1.6], [18, 24, 1.6], [23, 42, 2.4]], lines: [[0, 1], [0, 3], [1, 2], [3, 4], [2, 4]], alpha: 4 },
+  // /copy-deslop — a speech bubble
+  { at: [112, 72], stars: [[0, 3, 1.8], [44, 0, 2.2], [46, 25, 1.6], [18, 27, 1.5], [7, 39, 2.3], [8, 26, 1.4]], lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0]], alpha: 4 },
+  // /content-strategy — steps going up
+  { at: [16, 124], stars: [[0, 40, 1.6], [16, 40, 1.5], [16, 26, 1.7], [32, 26, 1.5], [32, 12, 1.8], [48, 11, 2.4]], lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]], alpha: 5 },
+  // /marketing-council — three at a table, one in the middle
+  { at: [198, 132], stars: [[0, 34, 2], [25, 2, 2.3], [50, 32, 1.9], [25, 22, 1.6]], lines: [[0, 3], [1, 3], [2, 3], [0, 1], [1, 2]], alpha: 1 },
+];
+const figs = FIGS.map((g) => {
+  const stars = g.stars.map(([x, y, r]) => ({ x: g.at[0] + x * S, y: g.at[1] + y * S, r }));
+  const d = g.lines.map(([a, b]) => `M${stars[a].x.toFixed(1)},${stars[a].y.toFixed(1)} L${stars[b].x.toFixed(1)},${stars[b].y.toFixed(1)}`).join(" ");
+  return { stars, d, alpha: stars[g.alpha] };
+});
+// Faint field stars for depth (seeded LCG, like the hero), kept clear of
+// the figures and of each other.
+let seed = 3;
+const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+const boxes = FIGS.map((g) => ({ x0: g.at[0] - 8, y0: g.at[1] - 8, x1: g.at[0] + 70, y1: g.at[1] + 66 }));
+const field: { x: number; y: number }[] = [];
+for (let t = 0; t < 400 && field.length < 16; t++) {
+  const p = { x: 8 + rnd() * (W - 16), y: 8 + rnd() * (H - 16) };
+  if (boxes.some((b) => p.x > b.x0 && p.x < b.x1 && p.y > b.y0 && p.y < b.y1)) continue;
+  if (field.every((q) => Math.hypot(p.x - q.x, p.y - q.y) > 22)) field.push(p);
+}
+const f = (n: number) => n.toFixed(1);
 ---
-<a href="https://skills.abialas.pl" class="msk" rel="me" data-msk>
+<a href="https://skills.abialas.pl" class="msk" rel="me" data-msk-chart>
   <span class="msk__grid" aria-hidden="true"></span>
 
   <span class="msk__body">
@@ -97,27 +93,22 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
   </span>
 
   <svg class="msk__cst" viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
-    {keys.map((k) => (
+    {field.map((p) => <circle class="msk__star" cx={f(p.x)} cy={f(p.y)} r="0.8" opacity="0.35" />)}
+    {figs.map((g) => <path class="msk__fig" d={g.d} />)}
+    {figs.map((g, i) => <path class="msk__wire" d={g.d} style={`--i:${i}; --c:${PAIRS[i][2]}`} />)}
+    {figs.map((g, i) => (
       <>
-        <rect class="msk__key" x={k.x} y={k.y} width={k.w} height={K} />
-        {k.label && <text class="msk__lbl" x={k.x + k.w / 2} y={k.y + K / 2 + 3.8}>{k.label}</text>}
+        {g.stars.map((st) => <circle class="msk__star" cx={f(st.x)} cy={f(st.y)} r={f(st.r)} opacity="0.6" />)}
+        {g.stars.map((st) => <circle class="msk__lit" cx={f(st.x)} cy={f(st.y)} r={f(st.r + 0.3)} fill={PAIRS[i][2]} style={`--i:${i}`} />)}
+        <circle class="msk__lit msk__ring" cx={f(g.alpha.x)} cy={f(g.alpha.y)} r="6.5" style={`--i:${i}; --c:${PAIRS[i][2]}`} />
       </>
-    ))}
-    {hits.map((k) => (
-      <rect class="msk__trail" x={k.x} y={k.y} width={k.w} height={K} style={`--i:${k.i}; --d:${k.d.toFixed(3)}s; --c:${k.c}`} />
-    ))}
-    {hits.map((k) => (
-      <g class="msk__press" style={`--i:${k.i}; --d:${k.d.toFixed(3)}s; --c:${k.c}`}>
-        <rect x={k.x} y={k.y} width={k.w} height={K} />
-        <text class="msk__lbl msk__lbl--on" x={k.x + k.w / 2} y={k.y + K / 2 + 3.8}>{k.label}</text>
-      </g>
     ))}
   </svg>
 </a>
 
 <script>
   // Nonessential loop: pause when the tile is offscreen or the tab hides.
-  const tile = document.querySelector<HTMLElement>("[data-msk]");
+  const tile = document.querySelector<HTMLElement>("[data-msk-chart]");
   if (tile && "IntersectionObserver" in window) {
     const io = new IntersectionObserver(
       ([e]) => tile.toggleAttribute("data-idle", !e.isIntersecting),
@@ -331,56 +322,57 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
     box-sizing: border-box;
   }
 
-  /* the keyboard: kit Panel keys on hairlines, mono legends */
-  .msk__key {
-    fill: var(--panel);
-    stroke: var(--line);
+  .msk__fig {
+    fill: none;
+    stroke: #2a2f27;
     stroke-width: 0.9;
   }
-  .msk__lbl {
-    fill: var(--dim-text);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    text-anchor: middle;
+  .msk__star {
+    fill: #6f766a;
   }
-  /* a key lights as the readout types its character... */
-  .msk__press {
+
+  /* On stage: the skill's constellation lights only in its window of the
+     loop — the same 20% window its readout pair owns. */
+  .msk__lit {
     opacity: 0;
-    animation: msk-press var(--loop) linear infinite;
-    animation-delay: calc(var(--i) * var(--hold) + var(--d));
+    animation: msk-on var(--loop) ease-out infinite backwards;
+    animation-delay: calc(var(--i) * var(--hold));
   }
-  .msk__press rect {
-    fill: var(--c);
+  .msk__ring {
+    fill: none;
+    stroke: var(--c);
+    stroke-width: 0.9;
   }
-  .msk__lbl--on {
-    fill: var(--ground);
-    font-weight: 600;
-  }
-  @keyframes msk-press {
-    0% { opacity: 1; transform: translateY(1px); }
-    1.6% { opacity: 0; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(0); }
-  }
-  /* ...and stays faintly lit until its pair leaves */
-  .msk__trail {
-    fill: var(--c);
+  /* the current: dashed, flowing, kit DASH 7 / GAP 12 */
+  .msk__wire {
+    fill: none;
+    stroke: var(--c);
+    stroke-width: 1.3;
+    stroke-dasharray: 7 12;
     opacity: 0;
-    animation: msk-trail var(--loop) linear infinite;
-    animation-delay: calc(var(--i) * var(--hold) + var(--d));
+    animation-name: msk-flow, msk-on;
+    animation-duration: 1.6s, var(--loop);
+    animation-timing-function: linear, ease-out;
+    animation-iteration-count: infinite;
+    animation-delay: 0s, calc(var(--i) * var(--hold));
+    animation-fill-mode: none, backwards;
   }
-  @keyframes msk-trail {
+  @keyframes msk-on {
     0% { opacity: 0; }
-    0.2% { opacity: 0.3; }
-    11.6% { opacity: 0.3; }
-    12.6% { opacity: 0; }
+    2% { opacity: 1; }
+    18.6% { opacity: 1; }
+    20% { opacity: 0; }
     100% { opacity: 0; }
+  }
+  @keyframes msk-flow {
+    to { stroke-dashoffset: -19; }
   }
 
   /* offscreen / hidden tab: hold the loop */
   .msk[data-idle] .msk__line,
   .msk[data-idle] .msk__cursor,
-  .msk[data-idle] .msk__press,
-  .msk[data-idle] .msk__trail {
+  .msk[data-idle] .msk__lit,
+  .msk[data-idle] .msk__wire {
     animation-play-state: paused;
   }
 
@@ -409,14 +401,16 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
     .msk:focus-visible .msk__out {
       transform: none;
     }
-    /* first pair stays, cursor solid, no keys moving */
+    /* first pair stays, lit; cursor solid, the current stands still */
     .msk__line,
     .msk__cursor,
-    .msk__press,
-    .msk__trail {
+    .msk__lit,
+    .msk__wire {
       animation: none;
     }
-    .msk__line[style^="--i:0"] {
+    .msk__line[style^="--i:0"],
+    .msk__lit[style^="--i:0"],
+    .msk__wire[style^="--i:0"] {
       opacity: 1;
       clip-path: none;
     }
