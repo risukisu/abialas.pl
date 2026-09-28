@@ -12,7 +12,7 @@ test("nexus home: masthead, follow row + stack, building section, skills pair, m
   // Building: graph (the GitHub tile) | SkillCraft, then the skills pair
   await expect(page.locator(".build-row a.graph[href='https://github.com/risukisu']")).toBeVisible();
   await expect(page.locator(".build-row a[href='https://skillcraft.cloud']")).toBeVisible();
-  await expect(page.locator(".msk-row a[href='https://skills.abialas.pl']")).toBeVisible();
+  await expect(page.locator(".msk-row a[href='https://skillcraft.cloud/marketing-skills']")).toBeVisible();
   await expect(page.locator(".msk-row a[href='https://github.com/risukisu/marketing-skills']")).toBeVisible();
   // More: Résumé | coming soon (footer PDF link hidden while `resume.draft`)
   await expect(page.locator(`.nexus-grid a[href='${resume.href}']`)).toBeVisible();
