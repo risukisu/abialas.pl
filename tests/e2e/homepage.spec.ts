@@ -13,12 +13,7 @@ test("nexus home: masthead, follow row + stack, building section, skills pair, m
   await expect(page.locator(".build-row a.graph[href='https://github.com/risukisu']")).toBeVisible();
   await expect(page.locator(".build-row a[href='https://skillcraft.cloud']")).toBeVisible();
   await expect(page.locator(".msk-row a[href='https://skillcraft.cloud/marketing-skills']")).toBeVisible();
-  const statusline = page.locator(".msk-row a[href='https://github.com/risukisu/claude-code-statusline']");
-  await expect(statusline).toBeVisible();
-  // the tile's art is the animated SVG and it actually loads
-  const art = statusline.locator("img.sl__art");
-  await expect(art).toBeVisible();
-  expect(await art.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
+  await expect(page.locator(".msk-row a[href='https://github.com/risukisu/marketing-skills']")).toBeVisible();
   // More: Résumé | coming soon (footer PDF link hidden while `resume.draft`)
   await expect(page.locator(`.nexus-grid a[href='${resume.href}']`)).toBeVisible();
   if (resume.draft) {

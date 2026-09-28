@@ -1,22 +1,17 @@
 import { test, expect } from "@playwright/test";
 
-// The skills pair: marketing-skills | claude-code-statusline at 1.9 : 1.1 (owner, 2026-09-28).
-// The statusline art is a 52-column render sized for the side slot, so it shows near its own
-// size instead of squeezed (the half-width and stacked versions before it came out too tall).
-const SL = ".msk-row a[href='https://github.com/risukisu/claude-code-statusline']";
-
+// The skills pair: marketing-skills | its repo tile at 1.9 : 1.1 (owner, 2026-09-28; the
+// statusline tiles tried in its slot the same day went back to the drawing board).
 test.describe("skills pair on desktop", () => {
   test.use({ viewport: { width: 1440, height: 1000 } });
 
-  test("marketing-skills leads at 1.9 : 1.1, both one height", async ({ page }) => {
+  test("marketing-skills leads at 1.9 : 1.1", async ({ page }) => {
     await page.goto("/");
     const msk = await page.locator(".msk-row > .msk").boundingBox();
-    const sl = await page.locator(SL).boundingBox();
-    expect(msk && sl).toBeTruthy();
-    expect(msk!.width / (msk!.width + sl!.width)).toBeCloseTo(1.9 / 3, 2);
-    expect(Math.abs(msk!.y - sl!.y)).toBeLessThanOrEqual(1);
-    expect(Math.abs(msk!.height - sl!.height)).toBeLessThanOrEqual(1);
-    expect(msk!.height).toBeLessThanOrEqual(230);
+    const repo = await page.locator(".msk-row a[href='https://github.com/risukisu/marketing-skills']").boundingBox();
+    expect(msk && repo).toBeTruthy();
+    expect(msk!.width / (msk!.width + repo!.width)).toBeCloseTo(1.9 / 3, 2);
+    expect(Math.abs(msk!.y - repo!.y)).toBeLessThanOrEqual(1);
   });
 
   test("the keyboard keeps its size", async ({ page }) => {
@@ -31,20 +26,5 @@ test.describe("skills pair on desktop", () => {
       els.filter((e) => e.scrollWidth > e.clientWidth + 1).length,
     );
     expect(clipped).toBe(0);
-  });
-
-  test("the statusline art is the narrow strip, near its own size, under a one-line head", async ({ page }) => {
-    await page.goto("/");
-    const art = page.locator(`${SL} img.sl__art`);
-    await art.scrollIntoViewIfNeeded();
-    const loaded = await art.evaluate(async (img: HTMLImageElement) => {
-      if (!img.complete) await new Promise((r) => img.addEventListener("load", r, { once: true }));
-      return { src: new URL(img.currentSrc).pathname, ok: img.naturalWidth > 0, scale: img.getBoundingClientRect().width / img.naturalWidth };
-    });
-    expect(loaded.src).toBe("/tiles/statusline-narrow.svg");
-    expect(loaded.ok).toBe(true);
-    expect(loaded.scale).toBeGreaterThanOrEqual(0.9);
-    const head = await page.locator(`${SL} .sl__head`).boundingBox();
-    expect(head!.height).toBeLessThanOrEqual(34); // the wordmark doesn't wrap
   });
 });
