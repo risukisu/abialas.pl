@@ -1,0 +1,203 @@
+---
+// /dev/skills-tile/ — two art-panel options for the marketing-skills tile,
+// shared by link with friends for feedback (2026-09-28). Noindexed, out of
+// the sitemap, linked only from /dev/.
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SkillsArtTile from "../../components/dev/SkillsArtTile.astro";
+import { PAIRS, HOLD, LOOP } from "../../components/dev/skillsData";
+
+// What "the work" draws for each readout pair, in PAIRS order.
+const WORK = [
+  "a scan runs down a page and flags three problems",
+  "the cursor finds the button and presses it",
+  "AI-sounding phrases get struck out and rewritten",
+  "a content hub grows its spokes",
+  "five seats each speak, then a verdict",
+];
+---
+<BaseLayout
+  title="The work, or the keyboard?"
+  description="Two new animations for the marketing-skills tile on abialas.pl."
+  noindex={true}
+>
+  <header class="dv-head">
+    <div class="dv-head__grid blueprint" aria-hidden="true"></div>
+    <div class="container dv-head__inner">
+      <p class="measure">abialas.pl · the marketing-skills tile</p>
+      <h1 class="dv-title">The work, or the keyboard?</h1>
+      <p class="dv-intro">
+        My site has a tile for marketing-skills, my library of Claude Code skills for marketers. On
+        the left, a line types what you might say and the command that answers it. The right side is
+        new, and I have two versions. Which would you keep?
+      </p>
+      <p class="dv-meta">Five phrases, {HOLD} seconds each, a {LOOP}-second loop.</p>
+    </div>
+  </header>
+
+  <section class="container dv-opt" id="the-work">
+    <p class="measure">Option 1</p>
+    <h2 class="dv-h2">The work</h2>
+    <p class="dv-text">The right side shows what the skill hands back, drawn as a small wireframe that builds itself.</p>
+    <div class="dv-exhibit"><SkillsArtTile art="work" /></div>
+    <ul class="dv-steps">
+      {PAIRS.map(([, run, c], i) => (
+        <li>
+          <span class="dv-cmd"><span class="dv-sq" style={`--c:${c}`}></span>{run}</span>
+          <span>{WORK[i]}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="container dv-opt" id="keyboard">
+    <p class="measure">Option 2</p>
+    <h2 class="dv-h2">Keyboard</h2>
+    <p class="dv-text">The keys light up as the command types. Enter flashes when it runs, and the keys it used stay lit until the next one.</p>
+    <div class="dv-exhibit"><SkillsArtTile art="keys" /></div>
+  </section>
+
+  <div class="container dv-close">
+    <p>
+      Tell me which one you'd pick and why. Reply wherever I sent you this link, or email
+      <a href="mailto:kontakt@abialas.pl">kontakt@abialas.pl</a>.
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  /* The drafting table: a blueprint sheet behind the header only. */
+  .dv-head {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(40px, 6vw, 72px) 36px;
+  }
+  .dv-head__grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+    -webkit-mask-image: radial-gradient(110% 90% at 20% 30%, #000 0%, transparent 75%);
+    mask-image: radial-gradient(110% 90% at 20% 30%, #000 0%, transparent 75%);
+  }
+  .dv-head__inner {
+    position: relative;
+  }
+  .dv-title {
+    margin: 14px 0 22px;
+    max-width: 16ch;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(2.5rem, 7vw, 4rem);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+  .dv-title::after {
+    content: "";
+    display: block;
+    width: 120px;
+    height: 6px;
+    margin-top: 20px;
+    background: var(--gradient-spectrum);
+  }
+  .dv-intro {
+    max-width: 58ch;
+    margin: 0 0 14px;
+    font-family: var(--font-serif);
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    line-height: 1.5;
+    color: var(--color-body);
+  }
+  .dv-meta {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--color-muted);
+  }
+
+  .dv-opt {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 40px;
+    margin-top: 24px;
+    border-top: 1px solid var(--color-line);
+  }
+  .dv-h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 1.1;
+    color: var(--color-ink);
+  }
+  .dv-text {
+    max-width: 62ch;
+    margin: 0;
+    color: var(--color-body);
+  }
+  /* The tile at its home-page width, with room for its offset shadow. */
+  .dv-exhibit {
+    max-width: 790px;
+    padding: 6px 8px 14px 0;
+  }
+  .dv-steps {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--color-body);
+  }
+  .dv-steps li {
+    display: grid;
+    grid-template-columns: 11.5rem minmax(0, 1fr);
+    gap: 12px;
+    align-items: baseline;
+  }
+  .dv-cmd {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+  .dv-sq {
+    width: 9px;
+    height: 9px;
+    flex: none;
+    background: var(--c);
+  }
+
+  .dv-close {
+    margin-top: 64px;
+    padding-top: 28px;
+    padding-bottom: var(--section-padding);
+    border-top: 1px solid var(--color-line);
+  }
+  .dv-close p {
+    max-width: 58ch;
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--color-ink);
+  }
+  .dv-close a {
+    color: var(--color-ink);
+    text-decoration-color: var(--color-accent);
+    text-underline-offset: 3px;
+  }
+  .dv-close a:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 560px) {
+    .dv-steps li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+  }
+</style>

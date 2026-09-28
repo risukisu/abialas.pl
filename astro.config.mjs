@@ -12,10 +12,12 @@ export default defineConfig({
   // drop the filter when the real résumé lands there.
   // /grug/ is a static page in public/ (scripts/build-grug-emojis.py), so
   // the sitemap only knows it through customPages.
+  // /dev/ is work in progress shared by direct link: noindexed, never in
+  // the sitemap, never linked from the site.
   integrations: [
     mdx(),
     sitemap({
-      filter: (page) => !page.endsWith('/resume/'),
+      filter: (page) => !page.endsWith('/resume/') && !page.includes('/dev/'),
       customPages: ['https://abialas.pl/grug/'],
     }),
   ],

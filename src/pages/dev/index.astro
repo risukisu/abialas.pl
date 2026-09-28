@@ -1,0 +1,87 @@
+---
+// /dev/ — work in progress, shared by direct link only. Noindexed, out of
+// the sitemap (astro.config.mjs filter), and nothing on the site links
+// here. Add a row per shared page.
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const pages = [
+  {
+    href: "/dev/skills-tile/",
+    title: "The work, or the keyboard?",
+    note: "two new animations for the marketing-skills tile",
+    date: "2026-09-28",
+  },
+];
+---
+<BaseLayout title="Work in progress" description="Things being tested before they go on abialas.pl." noindex={true}>
+  <section class="container dv-index">
+    <p class="measure">abialas.pl/dev</p>
+    <h1 class="dv-index__title">Work in progress</h1>
+    <p class="dv-index__lead">
+      Things I'm testing before they go on the site. You're here because someone sent you the link;
+      search engines are asked to skip these pages.
+    </p>
+    <ul class="dv-index__list">
+      {pages.map((p) => (
+        <li>
+          <a href={p.href}>{p.title}</a>
+          <span class="dv-index__note">{p.note}</span>
+          <span class="dv-index__date">{p.date}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .dv-index {
+    padding-block: clamp(40px, 6vw, 72px) var(--section-padding);
+  }
+  .dv-index__title {
+    margin: 14px 0 18px;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    line-height: 1.05;
+    color: var(--color-ink);
+  }
+  .dv-index__lead {
+    max-width: 58ch;
+    margin: 0 0 32px;
+    color: var(--color-body);
+  }
+  .dv-index__list {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-line);
+  }
+  .dv-index__list li {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .dv-index__list a {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    color: var(--color-ink);
+    text-decoration-color: var(--color-accent);
+    text-underline-offset: 3px;
+  }
+  .dv-index__list a:hover {
+    color: var(--color-accent);
+  }
+  .dv-index__note {
+    color: var(--color-body);
+  }
+  .dv-index__date {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--color-muted);
+  }
+</style>
