@@ -305,15 +305,21 @@ import { follow, followStack } from "../data/nexus";
   .build-row > :global(.graph) {
     width: 100%;
   }
-  /* Skills pair — two equal tiles, marketing-skills | claude-code-statusline
-     (owner, 2026-09-28: the statusline tile took the repo tile's slot). The
-     marketing-skills keyboard keeps its size; its text wraps around it. */
+  /* Skills stack — marketing-skills over claude-code-statusline, each the
+     full row and short (owner, 2026-09-28: side by side, both came out too
+     tall and cramped). */
   .msk-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     gap: 18px;
-    align-items: stretch;
     padding-right: 6px;
+  }
+  /* while both lay text beside art (the statusline tile stacks below 1024px),
+     they share one height and read as a set */
+  @media (min-width: 1024px) {
+    .msk-row {
+      grid-auto-rows: 1fr;
+    }
   }
 
   /* Résumé | coming soon. minmax(0, …) so neither tile's content can
@@ -335,12 +341,6 @@ import { follow, followStack } from "../data/nexus";
     .follow-stack {
       grid-template-rows: none;
       grid-template-columns: 1fr 1fr;
-    }
-  }
-  /* below this, half a row is too narrow for either tile's art */
-  @media (max-width: 960px) {
-    .msk-row {
-      grid-template-columns: 1fr;
     }
   }
   @media (max-width: 720px) {

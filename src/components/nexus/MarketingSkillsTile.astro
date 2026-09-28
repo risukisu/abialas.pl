@@ -46,7 +46,7 @@ const LOOP = PAIRS.length * HOLD;
 // lights when the typing clip reaches its character (the clip also covers
 // the "› " prompt and the cursor, hence the 3 and 3.3); Enter lights just
 // after the command lands.
-const W = 300, H = 210;
+const W = 300;
 const K = 22; // key size
 const P = 26; // pitch
 const ROWS = ["qwertyuiop-", "asdfghjkl", "zxcvbnm/"];
@@ -54,6 +54,9 @@ const OFFS = [9, 16, 29];
 type Key = { x: number; y: number; w: number; label: string };
 const at = new Map<string, Key>();
 ROWS.forEach((row, r) => [...row].forEach((ch, c) => at.set(ch, { x: OFFS[r] + c * P, y: 55 + r * P, w: K, label: ch })));
+// the keys span y 55–155: the view crops the empty bands above and below, so
+// the keys fill a short tile instead of floating in it
+const VIEW = `0 45 ${W} 120`;
 const enter: Key = { x: 16 + 9 * P, y: 55 + P, w: 44, label: "⏎" };
 const space: Key = { x: 90, y: 55 + 3 * P, w: 120, label: "" };
 const keys = [...at.values(), enter, space];
@@ -96,7 +99,7 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
     <span class="msk__sr">You say “audit the whole site”, it runs /seo-audit — and four more pairs like it.</span>
   </span>
 
-  <svg class="msk__cst" viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
+  <svg class="msk__cst" viewBox={VIEW} aria-hidden="true">
     {keys.map((k) => (
       <>
         <rect class="msk__key" x={k.x} y={k.y} width={k.w} height={K} />
@@ -145,13 +148,12 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
 
     position: relative;
     display: grid;
-    /* the keyboard column keeps the size it had when this tile was 1.9/3 of the
-       row: 44% of the half-row tile is the old 34% of the wider one (225px at
-       1440). The text column narrows and wraps instead. */
-    grid-template-columns: minmax(0, 1fr) clamp(180px, 44%, 300px);
+    /* a full row: the keyboard takes its old share, capped at 300px, so it
+       never comes out smaller than the 225px it had in the 1.9 : 1.1 pair */
+    grid-template-columns: minmax(0, 1fr) clamp(180px, 34%, 300px);
     gap: 18px;
     align-items: stretch;
-    min-height: 220px;
+    min-height: 200px;
     padding: 22px 24px;
     --shadow: #2b9d68; /* kit green, toned — owner's shadow-hue pass 2026-09-21 */
     background: var(--ground);
@@ -261,8 +263,9 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
     justify-items: start;
     min-width: 0;
   }
-  /* the phrase wraps in the narrower text column; the stacked cell keeps the
-     height of the longest one, so the readout never jumps */
+  /* one line wherever it fits; on a phone the phrase wraps instead of being
+     cut, and the stacked cell keeps the longest one's height, so the readout
+     never jumps */
   .msk__line {
     grid-area: 1 / 1;
     max-width: 100%;
@@ -332,6 +335,10 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
     border-left: 1px solid var(--line);
     padding-left: 14px;
     box-sizing: border-box;
+    /* its viewBox ratio doesn't set the tile's height: at 300px wide it would
+       make the tile 250px tall. It fills the row the text sets and fits the
+       keys inside. */
+    contain: size;
   }
 
   /* the keyboard: kit Panel keys on hairlines, mono legends */
@@ -387,18 +394,12 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
     animation-play-state: paused;
   }
 
-  /* full-row again (the pair stacks at 960px): the keyboard's old share */
-  @media (max-width: 960px) {
-    .msk {
-      grid-template-columns: minmax(0, 1fr) clamp(180px, 34%, 300px);
-    }
-  }
-
   @media (max-width: 720px) {
     .msk {
       grid-template-columns: 1fr;
     }
     .msk__cst {
+      contain: none;
       min-height: 120px;
       max-height: 150px;
       border-left: 0;

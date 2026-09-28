@@ -16,7 +16,7 @@ test("nexus home: masthead, follow row + stack, building section, skills pair, m
   const statusline = page.locator(".msk-row a[href='https://github.com/risukisu/claude-code-statusline']");
   await expect(statusline).toBeVisible();
   // the tile's art is the animated SVG and it actually loads
-  const art = statusline.locator("img[src='/tiles/statusline.svg']");
+  const art = statusline.locator("img.sl__art");
   await expect(art).toBeVisible();
   expect(await art.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
   // More: Résumé | coming soon (footer PDF link hidden while `resume.draft`)

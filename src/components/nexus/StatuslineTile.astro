@@ -1,43 +1,53 @@
 ---
 /**
  * StatuslineTile — claude-code-statusline, the four-line dashboard under the
- * Claude Code prompt. It took the repo tile's slot beside marketing-skills
- * (owner, 2026-09-28): the pair is now two equal tiles.
+ * Claude Code prompt. It took the repo tile's slot under marketing-skills
+ * (owner, 2026-09-28); since the same day the two stack, each the full row:
+ * text on the left, the art on the right.
  *
  * The art is the status line itself acting out its four lines in 3-second
  * beats (context fills and turns red with /compact, the limit notch and its
  * overspend, git counts and a clicked repo link, the fox typing its line).
- * It is a REAL render, generated in the statusline repo:
+ * It is a REAL render, generated in the statusline repo: 96 columns for the
+ * page, and the 72-column strip for phones, where 96 would be too small to read:
  *
- *   node <claude-code-statusline>/assets/readme/source/tile.js --art public/tiles/statusline.svg
+ *   node <claude-code-statusline>/assets/readme/source/tile.js \
+ *     --layout wide public/tiles/statusline-wide.svg --art public/tiles/statusline.svg
  *
  * A CSS-animated SVG in an <img>: no script, it honours reduced motion on
- * its own (every beat's result, still), and it only costs its 20 KB.
+ * its own (every beat's result, still), and it only costs its 20–25 KB.
  *
  * Site frame stays: 2px ink border + hard offset shadow, like every other
  * guest sticker; the shadow is the statusline's own cyan, toned. The head's
  * mark is the dashboard's gutter: four cells, cyan to mint.
  */
+const ART = { w: 654, h: 152 }; // the wide strip's own size; shown at most 1:1 beside the text
+const PHONE = { w: 538, h: 152 }; // the 72-column strip
 ---
 <a href="https://github.com/risukisu/claude-code-statusline" class="sl" rel="me">
-  <span class="sl__head">
-    <span class="sl__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-    <span class="sl__wm">claude-code-statusline</span>
-    <span class="sl__out" aria-hidden="true">↗</span>
+  <span class="sl__body">
+    <span class="sl__head">
+      <span class="sl__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span class="sl__wm">claude-code-statusline</span>
+      <span class="sl__out" aria-hidden="true">↗</span>
+    </span>
+    <span class="sl__tag">Four lines under the Claude&nbsp;Code prompt: context, limits, git, and a&nbsp;companion.</span>
   </span>
-  <span class="sl__tag">Four lines under the Claude&nbsp;Code prompt: context, limits, git, and a&nbsp;companion.</span>
-  <img
-    class="sl__art"
-    src="/tiles/statusline.svg"
-    width="538"
-    height="152"
-    loading="lazy"
-    decoding="async"
-    alt="The status line acting out its four lines: the context bar fills and turns red with a /compact hint, a rate-limit bar shows overspend past the clock notch, git counts tick up and the repo link is clicked, and a fox types its line."
-  />
+  <picture class="sl__pic">
+    <source media="(max-width: 720px)" srcset="/tiles/statusline.svg" width={PHONE.w} height={PHONE.h} />
+    <img
+      class="sl__art"
+      src="/tiles/statusline-wide.svg"
+      width={ART.w}
+      height={ART.h}
+      loading="lazy"
+      decoding="async"
+      alt="The status line acting out its four lines: the context bar fills and turns red with a /compact hint, a rate-limit bar shows overspend past the clock notch, git counts tick up and the repo link is clicked, and a fox types its line."
+    />
+  </picture>
 </a>
 
-<style>
+<style define:vars={{ artw: `${ART.w}px` }}>
   .sl {
     --ground: #0b0e14;
     --line: #222a35;
@@ -48,10 +58,14 @@
     --shadow: #0e8fa6; /* the statusline cyan, toned like the kit green next door */
 
     position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    /* the art never scales past its own size; the text keeps room for the
+       tagline on two lines */
+    grid-template-columns: minmax(340px, 1fr) minmax(0, var(--artw));
+    gap: 28px;
+    align-items: center;
     min-width: 0;
+    min-height: 200px;
     padding: 22px 24px;
     background: var(--ground);
     border: 2px solid var(--color-ink);
@@ -72,6 +86,14 @@
   .sl:focus-visible {
     outline: 2px solid var(--cyan);
     outline-offset: 3px;
+  }
+
+  .sl__body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    align-self: stretch;
   }
 
   .sl__head {
@@ -126,12 +148,35 @@
     max-width: 46ch;
   }
 
-  /* the art sits on the tile's floor, full width */
+  .sl__pic {
+    display: block;
+    min-width: 0;
+  }
   .sl__art {
     display: block;
     width: 100%;
     height: auto;
-    margin-top: auto;
-    padding-top: 4px;
+  }
+
+  /* below this the art would shrink past legible beside the text: it goes
+     under the text, full width */
+  @media (max-width: 1023px) {
+    .sl {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sl,
+    .sl:hover,
+    .sl:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .sl:hover .sl__out,
+    .sl:focus-visible .sl__out {
+      transform: none;
+    }
   }
 </style>
