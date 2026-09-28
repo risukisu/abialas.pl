@@ -4,7 +4,7 @@ import NexusBox from "../components/nexus/NexusBox.astro";
 import GrugTile from "../components/nexus/GrugTile.astro";
 import SkillCraftTile from "../components/nexus/SkillCraftTile.astro";
 import MarketingSkillsTile from "../components/nexus/MarketingSkillsTile.astro";
-import StatuslineTile from "../components/nexus/StatuslineTile.astro";
+import MarketingSkillsRepoTile from "../components/nexus/MarketingSkillsRepoTile.astro";
 import ResumeTile from "../components/nexus/ResumeTile.astro";
 import ComingSoonTile from "../components/nexus/ComingSoonTile.astro";
 import ContributionGraph from "../components/nexus/ContributionGraph.astro";
@@ -83,7 +83,7 @@ import { follow, followStack } from "../data/nexus";
       </div>
       <div class="msk-row">
         <MarketingSkillsTile />
-        <StatuslineTile />
+        <MarketingSkillsRepoTile />
       </div>
     </div>
   </section>
@@ -305,21 +305,15 @@ import { follow, followStack } from "../data/nexus";
   .build-row > :global(.graph) {
     width: 100%;
   }
-  /* Skills stack — marketing-skills over claude-code-statusline, each the
-     full row and short (owner, 2026-09-28: side by side, both came out too
-     tall and cramped). */
+  /* Skills pair — uneven on purpose: the site tile leads, the repo
+     tile is the side door. 1.9 : 1.1 = the site tile 5% shorter than the
+     old 2 : 1, the repo tile longer by the same width (owner, 2026-09-28). */
   .msk-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.9fr) minmax(0, 1.1fr);
     gap: 18px;
+    align-items: stretch;
     padding-right: 6px;
-  }
-  /* while both lay text beside art (the statusline tile stacks below 1024px),
-     they share one height and read as a set */
-  @media (min-width: 1024px) {
-    .msk-row {
-      grid-auto-rows: 1fr;
-    }
   }
 
   /* Résumé | coming soon. minmax(0, …) so neither tile's content can
@@ -341,6 +335,11 @@ import { follow, followStack } from "../data/nexus";
     .follow-stack {
       grid-template-rows: none;
       grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 820px) {
+    .msk-row {
+      grid-template-columns: 1fr;
     }
   }
   @media (max-width: 720px) {
