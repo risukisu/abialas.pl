@@ -1,27 +1,19 @@
 ---
 /**
- * The GitHub tile — a scoreboard on the GitHub canvas (redesigned
- * 2026-09-27; the squirrel backdrop came off on the owner's call).
+ * The GitHub tile — the year sheet (owner's pick 2026-09-28, out of four
+ * options compared side by side on a local page).
  *
- * Type follows the sibling tiles: serif name and hero figure, sans for
- * words and axis ticks, mono only for the where-line. Colour (2026-09-28,
- * owner: "a bit bland"): a dark ink-navy canvas with a faint drafting
- * grid and one green glow, the green ramp for the data (validated: every
- * adjacent level ≥ 15 ΔE, CVD ≥ 12), and the site's ochre as the single
- * warm accent for "now" — this month's bar and today's ring.
+ * The whole calendar year as one heatmap, Jan → Dec, on the white
+ * drafting-paper plate. Days already lived are inked on a stepped green
+ * ramp (validated on white: every adjacent level ≥ 15 ΔE, CVD ≥ 13); the
+ * days still to come are empty pencil squares. Today is ringed in the
+ * site's work gold. The year's total is a sentence in the head row, not a
+ * hero figure (owner: "too flashy"). Two half-year strips sit edge to
+ * edge and stack on phones. Every figure is read off the API at build
+ * time (daily rebuild); nothing is typed in.
  *
- * Left: the year's contribution total as the one hero number, with a
- * twelve-month strip under it: past months in a quiet green, this month
- * in the accent, months still to come as bare stubs. Right: the last six
- * months as the familiar heatmap (1st of the month five back → build
- * date), solid cells on a stepped green ramp, today ringed. Foot: the
- * profile and its live public-repo count. Every figure is read off the
- * API at build time (daily rebuild); nothing is typed in.
- *
- * Data: the public jogruber contributions API, one call per calendar year
- * the view touches (two when the six months cross a new year); a graceful
- * note on failure so a dead API can never break the build. The repo count
- * (GitHub API) drops silently if unavailable.
+ * Data: the public jogruber contributions API, one call for the calendar
+ * year; a graceful note on failure so a dead API can never break the build.
  *
  * Fetched via a bare `node:https` GET, not the global `fetch` — Node's
  * bundled undici keeps its socket in a keep-alive pool that, on Windows,
@@ -34,11 +26,10 @@
  * deterministic teardown before the build process tries to exit.
  */
 import https from "node:https";
-import { fetchJson } from "../../lib/fetchJson";
 
 const USER = "risukisu";
 
-type Day = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 };
+type Day = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4; future?: boolean };
 
 function getJson(url: string, timeoutMs: number): Promise<any> {
   return new Promise((resolve, reject) => {
@@ -66,68 +57,43 @@ function getJson(url: string, timeoutMs: number): Promise<any> {
 }
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const now = new Date();
-const today = now.toISOString().slice(0, 10);
+const iso = (t: number) => new Date(t).toISOString().slice(0, 10);
+const today = iso(Date.now());
 const YEAR = today.slice(0, 4);
-const thisMonth = now.getUTCMonth();
-// Six whole months ending in this one: the 1st of the month five back.
-const since = new Date(Date.UTC(now.getUTCFullYear(), thisMonth - 5, 1)).toISOString().slice(0, 10);
 
 let failed = false;
 let yearTotal = 0;
-let windowTotal = 0;
-let windowDays: Day[] = [];
-const monthTotals: (number | null)[] = MONTHS.map((_, m) => (m <= thisMonth ? 0 : null));
-
+const byDate = new Map<string, Day>();
 try {
-  const years = [...new Set([since.slice(0, 4), YEAR])];
-  const all: Day[] = [];
-  for (const y of years) {
-    const data = await getJson(`https://github-contributions-api.jogruber.de/v4/${USER}?y=${y}`, 8000);
-    all.push(...data.contributions);
-    if (y === YEAR && typeof data.total?.[YEAR] === "number") yearTotal = data.total[YEAR];
-  }
-  const past = all.filter((d) => d.date <= today);
-  for (const d of past) {
-    if (d.date.startsWith(YEAR)) monthTotals[Number(d.date.slice(5, 7)) - 1]! += d.count;
-  }
-  if (!yearTotal) yearTotal = monthTotals.reduce<number>((s, v) => s + (v ?? 0), 0);
-  windowDays = past.filter((d) => d.date >= since).sort((a, b) => a.date.localeCompare(b.date));
-  windowTotal = windowDays.reduce((s, d) => s + d.count, 0);
-  if (!windowDays.length) failed = true;
+  const data = await getJson(`https://github-contributions-api.jogruber.de/v4/${USER}?y=${YEAR}`, 8000);
+  for (const d of data.contributions as Day[]) byDate.set(d.date, d);
+  if (typeof data.total?.[YEAR] === "number") yearTotal = data.total[YEAR];
 } catch {
   failed = true;
 }
+if (!byDate.size) failed = true;
 
-// GITHUB_TOKEN (set in the deploy workflow) lifts the API from 60 to 1000 req/h.
-const token = process.env.GITHUB_TOKEN;
-let publicRepos: number | null = null;
-try {
-  const profile = await fetchJson<{ public_repos: number }>(
-    `https://api.github.com/users/${USER}`,
-    8000,
-    token ? { authorization: `Bearer ${token}` } : {},
-  );
-  publicRepos = typeof profile.public_repos === "number" ? profile.public_repos : null;
-} catch {
-  publicRepos = null;
+// The whole calendar year, Jan 1 → Dec 31; days after today are "future".
+const days: Day[] = [];
+for (let t = Date.UTC(Number(YEAR), 0, 1); iso(t).startsWith(YEAR); t += 86_400_000) {
+  const date = iso(t);
+  days.push(date > today ? { date, count: 0, level: 0, future: true } : byDate.get(date) ?? { date, count: 0, level: 0 });
 }
+if (!yearTotal) yearTotal = days.reduce((s, d) => s + d.count, 0);
 
-// Week columns (Sunday-first), padding the first partial week so the
-// weekday rows line up.
+// Week columns (Sunday-first), padding the first and last partial weeks
+// so the weekday rows line up.
 type Week = (Day | null)[];
 const weeks: Week[] = [];
-if (!failed) {
-  let week: Week = new Array(new Date(windowDays[0].date).getUTCDay()).fill(null);
-  for (const d of windowDays) {
-    week.push(d);
-    if (week.length === 7) {
-      weeks.push(week);
-      week = [];
-    }
+let week: Week = new Array(new Date(days[0].date).getUTCDay()).fill(null);
+for (const d of days) {
+  week.push(d);
+  if (week.length === 7) {
+    weeks.push(week);
+    week = [];
   }
-  if (week.length) weeks.push([...week, ...new Array(7 - week.length).fill(null)]);
 }
+if (week.length) weeks.push([...week, ...new Array(7 - week.length).fill(null)]);
 
 // Month label per week column — where the month changes.
 const monthLabels: (string | null)[] = weeks.map((w, i) => {
@@ -139,12 +105,14 @@ const monthLabels: (string | null)[] = weeks.map((w, i) => {
   return prev && Number(prev.date.slice(5, 7)) - 1 !== m ? MONTHS[m] : null;
 });
 
-const maxMonth = Math.max(1, ...monthTotals.map((v) => v ?? 0));
+// Two half-year strips, split where July's label starts.
+const split = Math.max(1, monthLabels.indexOf(MONTHS[6]));
+const halves = [
+  { weeks: weeks.slice(0, split), labels: monthLabels.slice(0, split) },
+  { weeks: weeks.slice(split), labels: monthLabels.slice(split) },
+];
+
 const fmt = (n: number) => n.toLocaleString("en-US");
-const monthsLabel = monthTotals
-  .map((v, m) => (v === null ? null : `${MONTHS[m]} ${v}`))
-  .filter(Boolean)
-  .join(", ");
 const dayLabel = (d: Day) => {
   const [, mm, dd] = d.date.split("-");
   return `${Number(dd)} ${MONTHS[Number(mm) - 1]}: ${fmt(d.count)} contribution${d.count === 1 ? "" : "s"}`;
@@ -159,116 +127,81 @@ const GH_MARK =
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d={GH_MARK} /></svg>
       GitHub
     </span>
+    {!failed && <p class="graph__sum"><span class="graph__total">{fmt(yearTotal)}</span> contributions so far in {YEAR}</p>}
     <span class="graph__out" aria-hidden="true">↗</span>
   </div>
 
   {failed ? (
     <p class="graph__fail measure">contribution graph unavailable right now — see github.com/{USER}</p>
   ) : (
-    <div class="graph__body">
-      <div class="graph__year">
-        <p class="graph__hero">
-          <span class="graph__total">{fmt(yearTotal)}</span>
-          <span class="graph__label">contributions in&nbsp;{YEAR}</span>
-        </p>
-        <div class="graph__trend">
-          <div class="graph__bars" role="img" aria-label={`Contributions per month in ${YEAR}: ${monthsLabel}`}>
-            {monthTotals.map((v, m) => (
-              <span
-                class:list={["graph__bar", { "is-now": m === thisMonth, "is-future": v === null }]}
-                style={v === null ? undefined : `--h:${Math.max(v / maxMonth, v > 0 ? 0.05 : 0)}`}
-                title={v === null ? undefined : `${MONTHS[m]} ${YEAR}: ${fmt(v)} contributions`}
-              ></span>
-            ))}
-          </div>
-          <div class="graph__initials" aria-hidden="true">
-            {MONTHS.map((name, m) => (
-              <span class:list={{ "is-now": m === thisMonth, "is-future": m > thisMonth }}>{name[0]}</span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div class="graph__recent">
-        <div class="graph__caption">
-          <p class="graph__caption-t">Last 6 months <span class="graph__caption-n">{fmt(windowTotal)}</span></p>
-          <div class="graph__legend" aria-hidden="true">
-            Less
-            <span class="graph__cell"></span>
-            <span class="graph__cell l1"></span>
-            <span class="graph__cell l2"></span>
-            <span class="graph__cell l3"></span>
-            <span class="graph__cell l4"></span>
-            More
-          </div>
-        </div>
-        <div class="graph__scroll">
+    <div class="graph__sheet" role="img" aria-label={`GitHub contributions in ${YEAR}: ${fmt(yearTotal)} so far`}>
+      {halves.map((h) => (
+        <div class="graph__half" style={`--cols:${h.weeks.length}`}>
           <div class="graph__months" aria-hidden="true">
-            {monthLabels.map((m) => <span class="graph__month">{m ?? ""}</span>)}
+            {h.labels.map((m, i) => m && <span style={`grid-column:${i + 1} / span 4`}>{m}</span>)}
           </div>
-          <div class="graph__grid" role="img" aria-label={`GitHub contribution heatmap: ${windowTotal} contributions in the last 6 months`}>
-            {weeks.map((w) => (
-              <div class="graph__week">
-                {w.map((d) => (
-                  <span
-                    class:list={["graph__cell", d && `l${d.level}`, { "is-today": d?.date === today }]}
-                    title={d ? dayLabel(d) : undefined}
-                  ></span>
-                ))}
-              </div>
-            ))}
+          <div class="graph__grid">
+            {h.weeks.flatMap((w) =>
+              w.map((d) => (
+                <span
+                  class:list={[
+                    "graph__cell",
+                    d ? (d.future ? "is-future" : `l${d.level}`) : "is-pad",
+                    { "is-today": d?.date === today },
+                  ]}
+                  title={d && !d.future ? dayLabel(d) : undefined}
+                ></span>
+              )),
+            )}
           </div>
         </div>
-      </div>
+      ))}
     </div>
   )}
 
-  <p class="graph__foot">
-    github.com/{USER}{publicRepos !== null && <span class="graph__count"> · {publicRepos} public repos</span>}
-  </p>
+  <div class="graph__foot">
+    {!failed && (
+      <span class="graph__legend" aria-hidden="true">
+        Less
+        <span class="graph__key"></span>
+        <span class="graph__key l1"></span>
+        <span class="graph__key l2"></span>
+        <span class="graph__key l3"></span>
+        <span class="graph__key l4"></span>
+        More
+      </span>
+    )}
+    <span class="graph__where">github.com/{USER}</span>
+  </div>
 </a>
-
-<script>
-  // Narrow screens scroll the weeks sideways: open on the latest ones.
-  document.querySelectorAll<HTMLElement>(".graph__scroll").forEach((el) => {
-    el.scrollLeft = el.scrollWidth;
-  });
-</script>
 
 <style>
   /* Whole plate is one link to the GitHub profile. A size container, so
-     the two columns stack by the tile's own width, not the viewport's. */
+     the strips stack by the tile's own width, not the viewport's. */
   .graph {
-    --canvas: #0c1a29; /* the site's ink, taken down to night */
-    --line: #22364a;
-    --fg: #eef3f8;
-    --muted: #8fa3b6;
-    --faint: #4a5f73;
-    --green: #7ee787;
-    --now: var(--link-on-ink); /* ochre: the one warm accent, for "now" */
-    --shadow: #2ea043; /* GitHub's success green */
-    /* heatmap ramp: one green, warming to lime at the top so every adjacent
-       level clears 15 ΔE (dataviz validator, dark, on --canvas) */
-    --l0: #1a2c3e;
-    --l1: #145c3b;
-    --l2: #1f9152;
-    --l3: #4fd17a;
-    --l4: #c2f5a0;
-    --bar: #1f7a4d; /* past months: the quiet green */
+    --canvas: #ffffff;
+    --line: #d6dde5;
+    --fg: var(--color-ink);
+    --muted: var(--color-muted);
+    --green: #297147; /* writing text hue */
+    --now: #a5700c; /* work gold */
+    --now-dim: rgb(165 112 12 / 0.3);
+    --shadow: #2e7d4f; /* moss */
+    --l0: #eaeef3;
+    --l1: #b5d892;
+    --l2: #76aa70;
+    --l3: #377d51;
+    --l4: #004f38;
+    --pencil: rgb(21 50 78 / 0.2); /* days still to come */
 
     container-type: inline-size;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
     width: 100%;
     min-width: 0;
-    padding: 18px 22px 16px;
-    /* one green glow behind the figure + a faint drafting grid */
-    background:
-      radial-gradient(110% 95% at 0% 0%, rgb(79 209 122 / 0.12), transparent 55%),
-      linear-gradient(rgb(143 163 182 / 0.055) 1px, transparent 1px) 0 0 / 24px 24px,
-      linear-gradient(90deg, rgb(143 163 182 / 0.055) 1px, transparent 1px) 0 0 / 24px 24px,
-      var(--canvas);
+    padding: 14px 20px;
+    background: var(--canvas);
     border: 2px solid var(--color-ink);
     box-shadow: 6px 6px 0 var(--shadow);
     color: var(--fg);
@@ -276,24 +209,22 @@ const GH_MARK =
     transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
       box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
   }
-
   .graph:hover,
   .graph:focus-visible {
     transform: translate(-2px, -2px);
     box-shadow: 8px 8px 0 var(--shadow);
   }
-
   .graph:focus-visible {
     outline: 2px solid var(--green);
     outline-offset: 3px;
   }
 
-  /* ── Head ─────────────────────────────────────────────────────── */
+  /* ── Head: name | the year in one sentence | ↗ ──────────────────── */
   .graph__head {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 14px;
   }
   .graph__name {
     display: inline-flex;
@@ -301,14 +232,33 @@ const GH_MARK =
     gap: 9px;
     font-family: var(--font-serif);
     font-weight: 500;
-    font-size: 1.3rem;
-    color: var(--fg);
+    font-size: 1.2rem;
   }
   .graph__name svg {
     position: relative;
-    top: -2px; /* sit on the serif's x-height, not its descenders */
+    top: -1px; /* sit on the serif's x-height, not its descenders */
+  }
+  .graph__sum {
+    margin: 0;
+    max-width: none;
+    padding-left: 14px;
+    border-left: 1px solid var(--line);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  /* The total in the site's display serif, lining figures, at sentence
+     size — it reads, it doesn't shout. */
+  .graph__total {
+    margin-right: 2px;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 1.3rem;
+    letter-spacing: -0.01em;
+    font-variant-numeric: lining-nums proportional-nums;
+    color: var(--fg);
   }
   .graph__out {
+    margin-left: auto;
     color: var(--fg);
     opacity: 0.6;
     transition: opacity 0.18s ease, transform 0.18s ease, color 0.18s ease;
@@ -320,198 +270,97 @@ const GH_MARK =
     transform: translate(2px, -2px);
   }
 
-  /* ── Body: the year | the last six months ─────────────────────── */
-  /* The heatmap column is exactly as wide as its weeks (min-content),
-     the caption wraps inside it; the year takes the rest. Cell + gap
-     step down with the tile's width so six months always fit — set here,
-     not on .graph, because a container query can't restyle the container. */
-  .graph__body {
-    --cell: 13px;
-    --gap: 4px;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) min-content;
-    gap: 22px;
-    align-items: stretch;
-  }
-
-  .graph__year {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 18px;
-    min-width: 0;
-  }
-
-  .graph__hero {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin: 0;
-    max-width: none;
-  }
-  /* The one hero figure, in the site's display serif (the masthead and
-     every tile name speak Newsreader here, so sans read off-brand):
-     lining, proportional figures. */
-  .graph__total {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    font-size: clamp(2.9rem, 8cqi, 3.9rem);
-    line-height: 0.9;
-    letter-spacing: -0.02em;
-    font-variant-numeric: lining-nums proportional-nums;
-    color: var(--fg);
-  }
-  .graph__label {
-    font-size: 0.95rem;
-    color: var(--muted);
-  }
-
-  /* Twelve-month strip: bars anchored to one baseline, a 3px surface gap
-     between them. Future months are bare stubs on the line. */
-  .graph__trend {
-    max-width: 220px;
-  }
-  .graph__bars {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 3px;
-    align-items: end;
-    height: 46px;
-    border-bottom: 1px solid var(--line);
-  }
-  .graph__bar {
-    height: calc(var(--h, 0) * 100%);
-    min-height: 0;
-    background: var(--bar);
-  }
-  .graph__bar.is-now {
-    background: var(--now);
-  }
-  .graph__bar.is-future {
-    height: 2px;
-    background: var(--line);
-  }
-  .graph__initials {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 3px;
-    margin-top: 5px;
-    font-family: var(--font-sans);
-    font-size: 11px;
-    text-align: center;
-    color: var(--muted);
-  }
-  .graph__initials .is-now {
-    color: var(--fg);
-  }
-  .graph__initials .is-future {
-    color: var(--faint);
-  }
-
-  .graph__recent {
-    min-width: 0;
-    padding-left: 22px;
-    border-left: 1px solid var(--line);
-  }
-  .graph__caption {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 6px 16px;
-    margin-bottom: 10px;
-  }
-  .graph__caption-t {
-    margin: 0;
-    max-width: none;
-    font-size: 0.9rem;
-    color: var(--muted);
-  }
-  .graph__caption-n {
-    margin-left: 6px;
-    font-weight: 600;
-    color: var(--fg);
-  }
-
-  /* 3px of room for today's ring, taken back by the margin, so the
-     weeks fit exactly and nothing scrolls or clips at full size. */
-  .graph__scroll {
-    overflow-x: auto;
-    padding: 3px;
-    margin: -3px;
-  }
-
-  .graph__months {
+  /* ── The sheet: two half-year strips, flexed by their week count so
+     every cell comes out the same size, edge to edge. Set on the sheet,
+     not on .graph, because a container query can't restyle the
+     container itself. ─────────────────────────────────────────────── */
+  .graph__sheet {
+    --gap: 3px;
     display: flex;
     gap: var(--gap);
-    margin-bottom: 4px;
   }
-  .graph__month {
-    width: var(--cell);
-    flex-shrink: 0;
+  .graph__half {
+    flex: var(--cols) 1 0;
+    min-width: 0;
+  }
+  .graph__months,
+  .graph__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    column-gap: var(--gap);
+  }
+  .graph__months {
+    margin-bottom: 4px;
     font-family: var(--font-sans);
-    font-size: 11px;
+    font-size: 10px;
+    line-height: 1.2;
     color: var(--muted);
-    overflow: visible;
+  }
+  .graph__months span {
+    grid-row: 1;
     white-space: nowrap;
   }
-
   .graph__grid {
-    display: flex;
-    gap: var(--gap);
-  }
-  .graph__week {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap);
+    grid-template-rows: repeat(7, auto);
+    grid-auto-flow: column;
+    row-gap: var(--gap);
   }
 
-  .graph__cell {
-    width: var(--cell);
-    height: var(--cell);
-    flex-shrink: 0;
+  .graph__cell,
+  .graph__key {
     background: var(--l0);
-    box-shadow: inset 0 0 0 1px rgb(240 246 252 / 0.05);
   }
-  .graph__cell.l1 { background: var(--l1); box-shadow: none; }
-  .graph__cell.l2 { background: var(--l2); box-shadow: none; }
-  .graph__cell.l3 { background: var(--l3); box-shadow: none; }
-  .graph__cell.l4 { background: var(--l4); box-shadow: none; }
+  .graph__cell {
+    aspect-ratio: 1;
+  }
+  .l1 { background: var(--l1); }
+  .l2 { background: var(--l2); }
+  .l3 { background: var(--l3); }
+  .l4 { background: var(--l4); }
+  .is-future {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--pencil);
+  }
+  .is-pad {
+    visibility: hidden;
+  }
 
   /* Today, ringed — the build's "you are here". */
   .graph__cell.is-today {
+    position: relative;
+    z-index: 1;
     outline: 2px solid var(--now);
     outline-offset: 1px;
     animation: graph-today 2.4s ease-in-out infinite;
   }
   @keyframes graph-today {
-    50% { outline-color: rgb(232 161 60 / 0.35); }
+    50% { outline-color: var(--now-dim); }
   }
 
-  .graph__legend {
+  /* ── Foot: legend | where ───────────────────────────────────────── */
+  .graph__foot {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+  }
+  .graph__legend {
+    display: inline-flex;
     align-items: center;
     gap: 4px;
     font-size: 11px;
     color: var(--muted);
   }
-  .graph__legend .graph__cell {
-    width: 10px;
-    height: 10px;
+  .graph__key {
+    width: 9px;
+    height: 9px;
   }
-
-  /* ── Foot ─────────────────────────────────────────────────────── */
-  .graph__foot {
-    margin: 0;
-    padding-top: 12px;
-    border-top: 1px solid var(--line);
+  .graph__where {
     font-family: var(--font-mono);
     font-size: var(--text-meta);
     color: var(--green);
-    max-width: none;
-  }
-  .graph__count {
-    color: var(--muted);
+    white-space: nowrap;
   }
 
   .graph__fail {
@@ -519,48 +368,23 @@ const GH_MARK =
     color: var(--muted);
   }
 
-  /* Mid tiles (a laptop beside SkillCraft): smaller cells, still side by
-     side. Container widths are the plate's content box: full desktop is
-     ~723px, and 13px cells need ~700 beside the year column. */
-  @container (max-width: 699px) {
-    .graph__body {
-      --cell: 10px;
-      --gap: 3px;
-      gap: 18px;
-    }
-    .graph__recent {
-      padding-left: 18px;
-    }
-  }
-
-  /* Narrow tiles: the year sits on top, the six months below it. */
-  @container (max-width: 540px) {
-    .graph__body {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 18px;
-    }
-    .graph__year {
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      justify-content: space-between;
-    }
-    .graph__trend {
-      flex: 1 1 180px;
-    }
-    .graph__recent {
-      padding-left: 0;
-      padding-top: 18px;
-      border-left: 0;
-      border-top: 1px solid var(--line);
-    }
-  }
-
-  /* Phones: the smallest step, so all six months show without scrolling. */
-  @container (max-width: 400px) {
-    .graph__body {
-      --cell: 8px;
+  @container (max-width: 599px) {
+    .graph__sheet {
       --gap: 2px;
+    }
+  }
+  /* Phones: the two halves stack, so each strip gets the full width; the
+     sentence takes its own row under the name. */
+  @container (max-width: 480px) {
+    .graph__sheet {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .graph__sum {
+      flex: 1 1 100%;
+      order: 3;
+      padding-left: 0;
+      border-left: 0;
     }
   }
 

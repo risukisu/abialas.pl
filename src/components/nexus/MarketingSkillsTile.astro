@@ -13,11 +13,19 @@
  * - copy is the library's own: "you say → it runs" prompt/command pairs
  *   lifted verbatim from brand/source/hero.html; tagline = the site's h1
  *
- * Motion (the one authored moment): dashed current flows through the
- * constellation's wires (stroke-dashoffset, linear, same DASH/GAP rhythm
- * as the hero) while a green square cursor blinks and the readout cycles
- * the five pairs. Reduced-motion: first pair static, cursor solid, no flow.
- * The loop pauses offscreen (IntersectionObserver → data-idle).
+ * The art is a star chart (owner's pick 2026-09-28, replacing the seeded
+ * constellation): five small constellations, one per skill in the
+ * readout, each drawn after what the skill does — a magnifier, a funnel,
+ * a speech bubble, steps going up, three at a table. Faint field stars
+ * for depth, no glow halos (brand: "nothing glows").
+ *
+ * Motion (the one authored moment): the readout cycles the five pairs,
+ * and the art follows it — the skill on stage lights its constellation in
+ * the command's hue, with the kit's dashed current (DASH 7 / GAP 12)
+ * flowing along its lines and a ring on its brightest star. Same 20%
+ * window of the loop as the readout pair. Reduced-motion: first pair
+ * static and lit, cursor solid, no flow. The loop pauses offscreen
+ * (IntersectionObserver → data-idle).
  *
  * Site frame stays: 2px ink border + hard offset shadow, like every other
  * guest sticker. Site mono/sans stand in for the kit's system faces
@@ -36,29 +44,40 @@ const PAIRS: [string, string, string][] = [
 const HOLD = 2.6; // s each pair stays
 const LOOP = PAIRS.length * HOLD;
 
-// Constellation — seeded like the hero (LCG), circles for nodes, four
-// accent nodes in the kit green, nearest-neighbour wires. Deterministic,
-// so the SVG is identical on every build.
-let s = 7;
-const rnd = () => (s = (s * 1103515245 + 12345) % 2147483648) / 2147483648;
+// Star chart — each figure's stars as [x, y, r] in its own box, the lines
+// as index pairs, and its brightest star (the ring goes there). Order
+// follows PAIRS. Deterministic, so the SVG is identical on every build.
 const W = 300, H = 210;
-type N = { x: number; y: number; r: number };
-const nodes: N[] = [];
-for (let i = 0; i < 22; i++) nodes.push({ x: 16 + rnd() * (W - 32), y: 14 + rnd() * (H - 28), r: 1.7 + rnd() * 1.8 });
-const edges: [number, number][] = [];
-for (let i = 0; i < nodes.length; i++) {
-  const near = nodes
-    .map((o, j) => ({ j, d: Math.hypot(o.x - nodes[i].x, o.y - nodes[i].y) }))
-    .filter((o) => o.j !== i)
-    .sort((a, b) => a.d - b.d)
-    .slice(0, 2);
-  for (const { j } of near) {
-    if (!edges.some(([a, b]) => (a === i && b === j) || (a === j && b === i))) edges.push([i, j]);
-  }
+const S = 1.3; // figure scale
+type Fig = { at: [number, number]; stars: [number, number, number][]; lines: [number, number][]; alpha: number };
+const FIGS: Fig[] = [
+  // /seo-audit — a magnifier: a ring of five stars and a handle
+  { at: [12, 8], stars: [[18, 5, 2.1], [30.4, 14, 1.6], [25.6, 28.5, 1.9], [10.4, 28.5, 1.5], [5.6, 14, 1.7], [35, 38, 1.5], [43, 46, 2.4]], lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 0], [2, 5], [5, 6]], alpha: 6 },
+  // /cro — a funnel
+  { at: [206, 12], stars: [[0, 4, 2], [46, 2, 2.3], [29, 23, 1.6], [18, 24, 1.6], [23, 42, 2.4]], lines: [[0, 1], [0, 3], [1, 2], [3, 4], [2, 4]], alpha: 4 },
+  // /copy-deslop — a speech bubble
+  { at: [112, 72], stars: [[0, 3, 1.8], [44, 0, 2.2], [46, 25, 1.6], [18, 27, 1.5], [7, 39, 2.3], [8, 26, 1.4]], lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0]], alpha: 4 },
+  // /content-strategy — steps going up
+  { at: [16, 124], stars: [[0, 40, 1.6], [16, 40, 1.5], [16, 26, 1.7], [32, 26, 1.5], [32, 12, 1.8], [48, 11, 2.4]], lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]], alpha: 5 },
+  // /marketing-council — three at a table, one in the middle
+  { at: [198, 132], stars: [[0, 34, 2], [25, 2, 2.3], [50, 32, 1.9], [25, 22, 1.6]], lines: [[0, 3], [1, 3], [2, 3], [0, 1], [1, 2]], alpha: 1 },
+];
+const figs = FIGS.map((g) => {
+  const stars = g.stars.map(([x, y, r]) => ({ x: g.at[0] + x * S, y: g.at[1] + y * S, r }));
+  const d = g.lines.map(([a, b]) => `M${stars[a].x.toFixed(1)},${stars[a].y.toFixed(1)} L${stars[b].x.toFixed(1)},${stars[b].y.toFixed(1)}`).join(" ");
+  return { stars, d, alpha: stars[g.alpha] };
+});
+// Faint field stars for depth (seeded LCG, like the hero), kept clear of
+// the figures and of each other.
+let seed = 3;
+const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+const boxes = FIGS.map((g) => ({ x0: g.at[0] - 8, y0: g.at[1] - 8, x1: g.at[0] + 70, y1: g.at[1] + 66 }));
+const field: { x: number; y: number }[] = [];
+for (let t = 0; t < 400 && field.length < 16; t++) {
+  const p = { x: 8 + rnd() * (W - 16), y: 8 + rnd() * (H - 16) };
+  if (boxes.some((b) => p.x > b.x0 && p.x < b.x1 && p.y > b.y0 && p.y < b.y1)) continue;
+  if (field.every((q) => Math.hypot(p.x - q.x, p.y - q.y) > 22)) field.push(p);
 }
-const ACC = [2, 8, 15, 20];
-// The current runs along the wires that touch an accent node.
-const live = edges.filter(([a, b]) => ACC.includes(a) || ACC.includes(b));
 const f = (n: number) => n.toFixed(1);
 ---
 <a href="https://skills.abialas.pl" class="msk" rel="me" data-msk>
@@ -88,21 +107,17 @@ const f = (n: number) => n.toFixed(1);
       </span>
     </span>
     <span class="msk__sr">You say “audit the whole site”, it runs /seo-audit — and four more pairs like it.</span>
-
-    <span class="msk__where">skills.abialas.pl</span>
   </span>
 
   <svg class="msk__cst" viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
-    {edges.map(([a, b]) => (
-      <line x1={f(nodes[a].x)} y1={f(nodes[a].y)} x2={f(nodes[b].x)} y2={f(nodes[b].y)} stroke="#2a2f27" stroke-width="0.9" />
-    ))}
-    {live.map(([a, b]) => (
-      <line class="msk__wire" x1={f(nodes[a].x)} y1={f(nodes[a].y)} x2={f(nodes[b].x)} y2={f(nodes[b].y)} />
-    ))}
-    {nodes.map((n, i) => (
+    {field.map((p) => <circle class="msk__star" cx={f(p.x)} cy={f(p.y)} r="0.8" opacity="0.35" />)}
+    {figs.map((g) => <path class="msk__fig" d={g.d} />)}
+    {figs.map((g, i) => <path class="msk__wire" d={g.d} style={`--i:${i}; --c:${PAIRS[i][2]}`} />)}
+    {figs.map((g, i) => (
       <>
-        {ACC.includes(i) && <circle cx={f(n.x)} cy={f(n.y)} r="6" fill="#3fd68c" opacity="0.12" />}
-        <circle cx={f(n.x)} cy={f(n.y)} r={f(ACC.includes(i) ? n.r + 0.6 : n.r)} fill={ACC.includes(i) ? "#3fd68c" : "#6f766a"} opacity={ACC.includes(i) ? 1 : 0.55} />
+        {g.stars.map((st) => <circle class="msk__star" cx={f(st.x)} cy={f(st.y)} r={f(st.r)} opacity="0.6" />)}
+        {g.stars.map((st) => <circle class="msk__lit" cx={f(st.x)} cy={f(st.y)} r={f(st.r + 0.3)} fill={PAIRS[i][2]} style={`--i:${i}`} />)}
+        <circle class="msk__lit msk__ring" cx={f(g.alpha.x)} cy={f(g.alpha.y)} r="6.5" style={`--i:${i}; --c:${PAIRS[i][2]}`} />
       </>
     ))}
   </svg>
@@ -224,13 +239,15 @@ const f = (n: number) => n.toFixed(1);
   }
 
   /* ── readout ───────────────────────────────────────────────────── */
+  /* the readout sits on the tile's floor (the where-line under it came
+     off 2026-09-28, owner call) */
   .msk__readout {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     column-gap: 14px;
     row-gap: 4px;
     align-items: baseline;
-    margin-top: 4px;
+    margin-top: auto;
     padding-top: 12px;
     border-top: 1px solid var(--line);
     font-family: var(--font-mono);
@@ -311,19 +328,6 @@ const f = (n: number) => n.toFixed(1);
     clip-path: inset(50%);
   }
 
-  .msk__where {
-    margin-top: auto;
-    padding-top: 10px;
-    font-family: var(--font-mono);
-    font-size: var(--text-meta);
-    color: var(--dim-text);
-    transition: color 0.18s ease;
-  }
-  .msk:hover .msk__where,
-  .msk:focus-visible .msk__where {
-    color: var(--green);
-  }
-
   /* ── constellation ─────────────────────────────────────────────── */
   .msk__cst {
     position: relative;
@@ -335,13 +339,47 @@ const f = (n: number) => n.toFixed(1);
     box-sizing: border-box;
   }
 
+  .msk__fig {
+    fill: none;
+    stroke: #2a2f27;
+    stroke-width: 0.9;
+  }
+  .msk__star {
+    fill: #6f766a;
+  }
+
+  /* On stage: the skill's constellation lights only in its window of the
+     loop — the same 20% window its readout pair owns. */
+  .msk__lit {
+    opacity: 0;
+    animation: msk-on var(--loop) ease-out infinite backwards;
+    animation-delay: calc(var(--i) * var(--hold));
+  }
+  .msk__ring {
+    fill: none;
+    stroke: var(--c);
+    stroke-width: 0.9;
+  }
   /* the current: dashed, flowing, kit DASH 7 / GAP 12 */
   .msk__wire {
-    stroke: var(--green);
-    stroke-width: 1.1;
+    fill: none;
+    stroke: var(--c);
+    stroke-width: 1.3;
     stroke-dasharray: 7 12;
-    opacity: 0.8;
-    animation: msk-flow 1.6s linear infinite;
+    opacity: 0;
+    animation-name: msk-flow, msk-on;
+    animation-duration: 1.6s, var(--loop);
+    animation-timing-function: linear, ease-out;
+    animation-iteration-count: infinite;
+    animation-delay: 0s, calc(var(--i) * var(--hold));
+    animation-fill-mode: none, backwards;
+  }
+  @keyframes msk-on {
+    0% { opacity: 0; }
+    2% { opacity: 1; }
+    18.6% { opacity: 1; }
+    20% { opacity: 0; }
+    100% { opacity: 0; }
   }
   @keyframes msk-flow {
     to { stroke-dashoffset: -19; }
@@ -350,6 +388,7 @@ const f = (n: number) => n.toFixed(1);
   /* offscreen / hidden tab: hold the loop */
   .msk[data-idle] .msk__line,
   .msk[data-idle] .msk__cursor,
+  .msk[data-idle] .msk__lit,
   .msk[data-idle] .msk__wire {
     animation-play-state: paused;
   }
@@ -379,13 +418,16 @@ const f = (n: number) => n.toFixed(1);
     .msk:focus-visible .msk__out {
       transform: none;
     }
-    /* first pair stays, cursor solid, the current stands still */
+    /* first pair stays, lit; cursor solid, the current stands still */
     .msk__line,
     .msk__cursor,
+    .msk__lit,
     .msk__wire {
       animation: none;
     }
-    .msk__line[style^="--i:0"] {
+    .msk__line[style^="--i:0"],
+    .msk__lit[style^="--i:0"],
+    .msk__wire[style^="--i:0"] {
       opacity: 1;
       clip-path: none;
     }
