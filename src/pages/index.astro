@@ -4,7 +4,7 @@ import NexusBox from "../components/nexus/NexusBox.astro";
 import GrugTile from "../components/nexus/GrugTile.astro";
 import SkillCraftTile from "../components/nexus/SkillCraftTile.astro";
 import MarketingSkillsTile from "../components/nexus/MarketingSkillsTile.astro";
-import MarketingSkillsRepoTile from "../components/nexus/MarketingSkillsRepoTile.astro";
+import StatuslineTile from "../components/nexus/StatuslineTile.astro";
 import ResumeTile from "../components/nexus/ResumeTile.astro";
 import ComingSoonTile from "../components/nexus/ComingSoonTile.astro";
 import ContributionGraph from "../components/nexus/ContributionGraph.astro";
@@ -83,7 +83,7 @@ import { follow, followStack } from "../data/nexus";
       </div>
       <div class="msk-row">
         <MarketingSkillsTile />
-        <MarketingSkillsRepoTile />
+        <StatuslineTile />
       </div>
     </div>
   </section>
@@ -305,9 +305,9 @@ import { follow, followStack } from "../data/nexus";
   .build-row > :global(.graph) {
     width: 100%;
   }
-  /* Skills pair — uneven on purpose: the site tile leads, the repo
-     tile is the side door. 1.9 : 1.1 = the site tile 5% shorter than the
-     old 2 : 1, the repo tile longer by the same width (owner, 2026-09-28). */
+  /* Skills pair — uneven on purpose: marketing-skills leads, the statusline
+     tile (a narrow-terminal render sized for this slot) sits in the side
+     slot the repo tile had. 1.9 : 1.1 (owner, 2026-09-28). */
   .msk-row {
     display: grid;
     grid-template-columns: minmax(0, 1.9fr) minmax(0, 1.1fr);
@@ -337,7 +337,9 @@ import { follow, followStack } from "../data/nexus";
       grid-template-columns: 1fr 1fr;
     }
   }
-  @media (max-width: 820px) {
+  /* below this the side slot gets too narrow for the statusline tile: its
+     wordmark would wrap and its terminal text drop under 10px */
+  @media (max-width: 1080px) {
     .msk-row {
       grid-template-columns: 1fr;
     }
