@@ -145,7 +145,10 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
 
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(180px, 34%, 300px);
+    /* the keyboard column keeps the size it had when this tile was 1.9/3 of the
+       row: 44% of the half-row tile is the old 34% of the wider one (225px at
+       1440). The text column narrows and wraps instead. */
+    grid-template-columns: minmax(0, 1fr) clamp(180px, 44%, 300px);
     gap: 18px;
     align-items: stretch;
     min-height: 220px;
@@ -258,11 +261,10 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
     justify-items: start;
     min-width: 0;
   }
+  /* the phrase wraps in the narrower text column; the stacked cell keeps the
+     height of the longest one, so the readout never jumps */
   .msk__line {
     grid-area: 1 / 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     max-width: 100%;
     color: var(--ink);
     opacity: 0;
@@ -273,6 +275,7 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
      same pace whatever the length */
   .msk__line--cmd {
     width: max-content;
+    white-space: nowrap;
     color: var(--c, var(--green));
     animation-name: msk-type;
   }
@@ -382,6 +385,13 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
   .msk[data-idle] .msk__press,
   .msk[data-idle] .msk__trail {
     animation-play-state: paused;
+  }
+
+  /* full-row again (the pair stacks at 960px): the keyboard's old share */
+  @media (max-width: 960px) {
+    .msk {
+      grid-template-columns: minmax(0, 1fr) clamp(180px, 34%, 300px);
+    }
   }
 
   @media (max-width: 720px) {

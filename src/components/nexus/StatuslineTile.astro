@@ -1,0 +1,137 @@
+---
+/**
+ * StatuslineTile — claude-code-statusline, the four-line dashboard under the
+ * Claude Code prompt. It took the repo tile's slot beside marketing-skills
+ * (owner, 2026-09-28): the pair is now two equal tiles.
+ *
+ * The art is the status line itself acting out its four lines in 3-second
+ * beats (context fills and turns red with /compact, the limit notch and its
+ * overspend, git counts and a clicked repo link, the fox typing its line).
+ * It is a REAL render, generated in the statusline repo:
+ *
+ *   node <claude-code-statusline>/assets/readme/source/tile.js --art public/tiles/statusline.svg
+ *
+ * A CSS-animated SVG in an <img>: no script, it honours reduced motion on
+ * its own (every beat's result, still), and it only costs its 20 KB.
+ *
+ * Site frame stays: 2px ink border + hard offset shadow, like every other
+ * guest sticker; the shadow is the statusline's own cyan, toned. The head's
+ * mark is the dashboard's gutter: four cells, cyan to mint.
+ */
+---
+<a href="https://github.com/risukisu/claude-code-statusline" class="sl" rel="me">
+  <span class="sl__head">
+    <span class="sl__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span class="sl__wm">claude-code-statusline</span>
+    <span class="sl__out" aria-hidden="true">↗</span>
+  </span>
+  <span class="sl__tag">Four lines under the Claude&nbsp;Code prompt: context, limits, git, and a&nbsp;companion.</span>
+  <img
+    class="sl__art"
+    src="/tiles/statusline.svg"
+    width="538"
+    height="152"
+    loading="lazy"
+    decoding="async"
+    alt="The status line acting out its four lines: the context bar fills and turns red with a /compact hint, a rate-limit bar shows overspend past the clock notch, git counts tick up and the repo link is clicked, and a fox types its line."
+  />
+</a>
+
+<style>
+  .sl {
+    --ground: #0b0e14;
+    --line: #222a35;
+    --ink: #eef2f6;
+    --muted: #aab4bf;
+    --dim-text: #7d8590;
+    --cyan: #06b6d4;
+    --shadow: #0e8fa6; /* the statusline cyan, toned like the kit green next door */
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    padding: 22px 24px;
+    background: var(--ground);
+    border: 2px solid var(--color-ink);
+    box-shadow: 6px 6px 0 var(--shadow);
+    color: var(--muted);
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  .sl:hover,
+  .sl:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--shadow);
+  }
+
+  .sl:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+  }
+
+  .sl__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* the gutter, four cells tall */
+  .sl__mark {
+    display: grid;
+    gap: 2px;
+    flex: none;
+  }
+  .sl__mark i {
+    display: block;
+    width: 5px;
+    height: 5px;
+  }
+  .sl__mark i:nth-child(1) { background: #06b6d4; }
+  .sl__mark i:nth-child(2) { background: #1ec5b0; }
+  .sl__mark i:nth-child(3) { background: #36d398; }
+  .sl__mark i:nth-child(4) { background: #4ade80; }
+
+  /* same headline register as the marketing-skills wordmark */
+  .sl__wm {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    line-height: 1.1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .sl__out {
+    margin-left: auto;
+    color: var(--dim-text);
+    transition: color 0.18s ease, transform 0.18s ease;
+  }
+  .sl:hover .sl__out,
+  .sl:focus-visible .sl__out {
+    color: var(--cyan);
+    transform: translate(2px, -2px);
+  }
+
+  .sl__tag {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--muted);
+    max-width: 46ch;
+  }
+
+  /* the art sits on the tile's floor, full width */
+  .sl__art {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: auto;
+    padding-top: 4px;
+  }
+</style>
