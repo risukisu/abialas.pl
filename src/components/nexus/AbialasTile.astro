@@ -1,98 +1,52 @@
 ---
 /**
  * AbialasTile — abialas.pl, this site (MOCKUP for /projects, owner
- * 2026-09-29).
+ * 2026-09-29). Still on purpose (owner: a mix of moving and still tiles).
  *
  * Kit: the Drafting Table itself: mist paper with the blueprint grid, ink
- * lines, Newsreader for the name, mono measures, the vermilion accent, and
- * the spectrum gradient as the tile's shadow (the only tile that wears it,
- * because it is the site's own).
+ * lines, Newsreader for the name, mono measures, the vermilion accent.
  *
- * The art is the home page in miniature: the masthead, then every home tile
- * as a small plate in its own ground and shadow hue, so the page reads as
- * the tiles it is made of. Resting look: dashed cut-lines where each tile goes.
- *
- * Motion (choreographed, 4 beats x 2.5s = 10s), true to how the site runs
- * (.github/workflows/deploy.yml: a daily rebuild at 05:00 UTC):
- *   1 05:00 UTC   the build wakes; the masthead draws in, the spectrum
- *                 sliver under the name grows, the portrait lands
- *   2 astro build the tiles drop into their cut-lines one by one
- *   3 github year inside the GitHub tile, today's square fills in and pulses
- *   4 deploy      a spectrum progress bar runs under the address bar, the
- *                 dot turns green, "live"
- * Everything built holds until the loop ends. Pauses offscreen; reduced
- * motion shows the built, deployed page.
+ * How it stands out without moving:
+ * - the spectrum gradient as its shadow, the only tile that wears it,
+ *   because it is the site's own
+ * - the home page in miniature, laid on the paper like a print (-1.5°):
+ *   the masthead and every home tile in its own ground and shadow hue, today
+ *   ringed on the GitHub year
+ * - drafting marks: a vermilion dimension line over the sheet, 1200 (the
+ *   site's container width, .container in global.css), and a "you are here"
+ *   pin, because you are
  */
 const HREF = "https://abialas.pl";
-const HOLD = 2.5;
-const BEATS = 4;
-const LOOP = HOLD * BEATS;
-const FI = 0.12, FO = 0.14;
-const END = LOOP - 0.02; // "until the loop ends", in absolute seconds
 
-const kf = new Map<string, string>();
-const pc = (t: number) => `${((t / LOOP) * 100).toFixed(2)}%`;
-// on: fade in at beat b + t0, hold until `until` (absolute s), fade out
-function on(b: number, t0: number, until = (b + 1) * HOLD - 0.02) {
-  const a = b * HOLD + t0;
-  const name = `ab-w${Math.round(a * 100)}-${Math.round(until * 100)}`;
-  if (!kf.has(name)) kf.set(name, `@keyframes ${name}{0%,${pc(a)}{opacity:0}${pc(a + FI)},${pc(until - FO)}{opacity:1}${pc(until)},100%{opacity:0}}`);
-  return `animation-name:${name}`;
-}
-// drop: the same window, falling 5px into place
-function drop(b: number, t0: number, until = END) {
-  const a = b * HOLD + t0;
-  const name = `ab-d${Math.round(a * 100)}-${Math.round(until * 100)}`;
-  if (!kf.has(name)) kf.set(name, `@keyframes ${name}{0%,${pc(a)}{opacity:0;transform:translateY(-5px)}${pc(a + 0.22)},${pc(until - FO)}{opacity:1;transform:translateY(0)}${pc(until)},100%{opacity:0;transform:translateY(0)}}`);
-  return `animation-name:${name}`;
-}
-// grow: the same window, growing in from the left over `dur`
-function grow(b: number, t0: number, dur: number, until = END) {
-  const a = b * HOLD + t0;
-  const name = `ab-g${Math.round(a * 100)}-${Math.round(dur * 100)}-${Math.round(until * 100)}`;
-  if (!kf.has(name)) kf.set(name, `@keyframes ${name}{0%,${pc(a)}{opacity:0;transform:scaleX(0)}${pc(a + 0.04)}{opacity:1}${pc(a + dur)},${pc(until - FO)}{opacity:1;transform:scaleX(1)}${pc(until)},100%{opacity:0;transform:scaleX(1)}}`);
-  return `animation-name:${name}`;
-}
-
-// The home tiles in miniature: [x, y, w, h, ground, shadow, inner marks]. Grounds
-// and shadows are each component's own (--shadow and background).
 type Mark = [number, number, number, number, string];
-type Mini = { name: string; x: number; y: number; w: number; h: number; ground: string; shadow: string; dashed?: boolean; marks?: Mark[] };
+type Mini = { x: number; y: number; w: number; h: number; ground: string; shadow: string; dashed?: boolean; year?: boolean; marks?: Mark[] };
+// the home tiles: grounds and shadows are each component's own
 const TILES: Mini[] = [
-  { name: "newsletter", x: 10, y: 64, w: 126, h: 16, ground: "#0c2a20", shadow: "#b85a1f", marks: [[4, 4, 8, 8, "#e8763a"], [16, 5, 40, 2, "#f4efe3"], [16, 9, 60, 2, "#6fbf8f"]] },
-  { name: "blog", x: 140, y: 64, w: 92, h: 16, ground: "#0b0e0c", shadow: "#23915a", marks: [[4, 5, 4, 4, "#c2652b"], [11, 5, 18, 2, "#e9ebe3"], [4, 11, 26, 2, "#3fd68c"]] },
-  { name: "linkedin", x: 236, y: 64, w: 76, h: 7, ground: "#0a66c2", shadow: "#a5700c", marks: [[3, 2, 22, 2, "#ffffff"]] },
-  { name: "x", x: 236, y: 73, w: 76, h: 7, ground: "#000000", shadow: "#2a52b3", marks: [[3, 2, 6, 2, "#ffffff"]] },
-  { name: "github year", x: 10, y: 84, w: 212, h: 20, ground: "#ffffff", shadow: "#2e7d4f" },
-  { name: "skillcraft", x: 226, y: 84, w: 86, h: 20, ground: "#fbfaf6", shadow: "#c2652b", marks: [[4, 4, 30, 4, "#1a1a1a"], [4, 10, 22, 4, "#1a1a1a"], [64, 9, 8, 6, "#c2652b"]] },
-  { name: "marketing-skills", x: 10, y: 108, w: 186, h: 14, ground: "#0e100d", shadow: "#2b9d68", marks: [[4, 4, 3, 3, "#3fd68c"], [10, 4, 36, 2, "#e9ebe3"], [120, 3, 56, 8, "#1f241c"]] },
-  { name: "the repo", x: 200, y: 108, w: 112, h: 14, ground: "#151813", shadow: "#0e8fa6", marks: [[4, 4, 3, 3, "#e8a13d"], [10, 4, 26, 2, "#e9ebe3"], [4, 9, 60, 2, "#7c8cf0"]] },
-  { name: "résumé", x: 10, y: 126, w: 149, h: 14, ground: "#ffffff", shadow: "#c22d18", marks: [[4, 2, 10, 10, "#dfe5ec"], [18, 4, 40, 2, "#15324e"], [18, 8, 60, 2, "#9aa7b4"]] },
-  { name: "coming soon", x: 163, y: 126, w: 149, h: 14, ground: "#f4f8fd", shadow: "#2257d6", dashed: true, marks: [[100, 3, 30, 8, "#c9d7f2"]] },
+  { x: 10, y: 64, w: 126, h: 16, ground: "#0c2a20", shadow: "#b85a1f", marks: [[4, 4, 8, 8, "#e8763a"], [16, 5, 40, 2, "#f4efe3"], [16, 9, 60, 2, "#6fbf8f"]] },
+  { x: 140, y: 64, w: 92, h: 16, ground: "#0b0e0c", shadow: "#23915a", marks: [[4, 5, 4, 4, "#c2652b"], [11, 5, 18, 2, "#e9ebe3"], [4, 11, 26, 2, "#3fd68c"]] },
+  { x: 236, y: 64, w: 76, h: 7, ground: "#0a66c2", shadow: "#a5700c", marks: [[3, 2, 22, 2, "#ffffff"]] },
+  { x: 236, y: 73, w: 76, h: 7, ground: "#000000", shadow: "#2a52b3", marks: [[3, 2, 6, 2, "#ffffff"]] },
+  { x: 10, y: 84, w: 212, h: 20, ground: "#ffffff", shadow: "#2e7d4f", year: true },
+  { x: 226, y: 84, w: 86, h: 20, ground: "#fbfaf6", shadow: "#c2652b", marks: [[4, 4, 30, 4, "#1a1a1a"], [4, 10, 22, 4, "#1a1a1a"], [64, 9, 8, 6, "#c2652b"]] },
+  { x: 10, y: 108, w: 186, h: 14, ground: "#0e100d", shadow: "#2b9d68", marks: [[4, 4, 3, 3, "#3fd68c"], [10, 4, 36, 2, "#e9ebe3"], [120, 3, 56, 8, "#1f241c"]] },
+  { x: 200, y: 108, w: 112, h: 14, ground: "#151813", shadow: "#0e8fa6", marks: [[4, 4, 3, 3, "#e8a13d"], [10, 4, 26, 2, "#e9ebe3"], [4, 9, 60, 2, "#7c8cf0"]] },
+  { x: 10, y: 126, w: 149, h: 14, ground: "#ffffff", shadow: "#c22d18", marks: [[4, 2, 10, 10, "#dfe5ec"], [18, 4, 40, 2, "#15324e"], [18, 8, 60, 2, "#9aa7b4"]] },
+  { x: 163, y: 126, w: 149, h: 14, ground: "#f4f8fd", shadow: "#2257d6", dashed: true, marks: [[100, 3, 30, 8, "#c9d7f2"]] },
 ];
 
-// The GitHub year inside its mini tile: 52 weeks x 3 rows, the past in the
-// moss ramp (a fixed pattern), the rest as empty pencil squares; today is
-// week 39 (29 September).
+// the GitHub year: 52 weeks x 3 rows, the past in the moss ramp (a fixed
+// pattern), the rest as empty pencil squares; today (week 39) ringed in gold
 const RAMP = ["#eaeef3", "#c6e7c8", "#8bcf93", "#3f9d5f", "#004f38"];
 const TODAY = { w: 39, r: 1 };
 const year = Array.from({ length: 52 * 3 }, (_, i) => {
   const w = i % 52, r = Math.floor(i / 52);
-  const past = w < TODAY.w || (w === TODAY.w && r < TODAY.r);
-  const lvl = past ? [0, 1, 1, 2, 3, 1, 2, 4, 0, 2][(w * 7 + r * 3) % 10] : -1;
+  const past = w < TODAY.w || (w === TODAY.w && r <= TODAY.r);
+  const lvl = w === TODAY.w && r === TODAY.r ? 3 : past ? [0, 1, 1, 2, 3, 1, 2, 4, 0, 2][(w * 7 + r * 3) % 10] : -1;
   return { x: 13 + w * 4, y: 88 + r * 4, lvl };
-}).filter((c) => !(c.x === 13 + TODAY.w * 4 && c.y === 88 + TODAY.r * 4));
+});
 const today = { x: 13 + TODAY.w * 4, y: 88 + TODAY.r * 4 };
-
-const LINES: [string, string][] = [
-  ["05:00 UTC", "the daily build wakes up"],
-  ["astro build", "every tile in its place"],
-  ["github year", "today's square fills in"],
-  ["deploy", "live on abialas.pl"],
-];
-const css = () => [...kf.values()].join("");
 ---
-<a href={HREF} class="ab" rel="me" data-ab>
+<a href={HREF} class="ab" rel="me">
   <span class="ab__shadow" aria-hidden="true"></span>
   <span class="ab__plate">
     <span class="ab__head">
@@ -101,7 +55,7 @@ const css = () => [...kf.values()].join("");
       <span class="ab__out" aria-hidden="true">↗</span>
     </span>
 
-    <svg class="ab__art" viewBox="0 0 322 146" aria-hidden="true">
+    <svg class="ab__art" viewBox="0 0 322 172" aria-hidden="true">
       <defs>
         <linearGradient id="ab-spectrum" x1="0" x2="1">
           <stop offset="0" stop-color="#de3c26" />
@@ -109,30 +63,35 @@ const css = () => [...kf.values()].join("");
           <stop offset="0.66" stop-color="#2e7d4f" />
           <stop offset="1" stop-color="#2257d6" />
         </linearGradient>
+        <marker id="ab-tick" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M3 0v6" stroke="#c22d18" stroke-width="1.2" />
+        </marker>
       </defs>
 
-      <!-- the page and its address bar, at rest -->
-      <rect x="0.5" y="0.5" width="321" height="145" fill="#fff" stroke="#15324e" />
-      <rect x="1" y="1" width="320" height="11" fill="#e9edf2" />
-      <circle cx="7" cy="6.5" r="2" fill="#9aa7b4" />
-      <text class="ab__url" x="13" y="9">abialas.pl</text>
-      <rect x="10" y="18" width="5" height="5" fill="#c2652b" />
-      <rect x="18" y="19.5" width="38" height="2" fill="#26384a" />
-      {[262, 280, 298].map((x) => <rect x={x} y="19.5" width="13" height="2" fill="#26384a" />)}
-      <!-- cut-lines where the masthead and every tile go -->
-      <rect x="10.5" y="29.5" width="170" height="26" fill="none" stroke="#b9c4cf" stroke-dasharray="2 2" />
-      <rect x="284.5" y="27.5" width="24" height="24" fill="none" stroke="#b9c4cf" stroke-dasharray="2 2" />
-      {TILES.map((t) => <rect x={t.x + 0.5} y={t.y + 0.5} width={t.w - 1} height={t.h - 1} fill="none" stroke="#b9c4cf" stroke-dasharray="2 2" />)}
+      <!-- the dimension line: the sheet is the site's 1200px container -->
+      <line x1="4" y1="9" x2="318" y2="9" stroke="#c22d18" stroke-width="0.8" marker-start="url(#ab-tick)" marker-end="url(#ab-tick)" />
+      <rect x="141" y="3" width="40" height="11" fill="#f4f7fa" />
+      <text class="ab__dim" x="161" y="11.5" text-anchor="middle">1200</text>
+      <line x1="4" y1="12" x2="4" y2="20" stroke="#c22d18" stroke-width="0.6" stroke-dasharray="1.5 1.5" />
+      <line x1="318" y1="12" x2="318" y2="20" stroke="#c22d18" stroke-width="0.6" stroke-dasharray="1.5 1.5" />
 
-      <!-- 1 · 05:00 UTC: the masthead draws in -->
-      <text class="ab__time ab-a" style={on(0, 0.15)} x="314" y="9" text-anchor="end">05:00 UTC</text>
-      <g class="ab-a ab-final" style={on(0, 0.35, END)}>
-        <rect x="11" y="30" width="169" height="25" fill="#fff" />
+      <!-- the print, laid on the paper -->
+      <g transform="translate(0 22) rotate(-1.5 161 73)">
+        <rect x="3" y="3" width="321" height="145" fill="rgb(21 50 78 / 0.12)" />
+        <rect x="0.5" y="0.5" width="321" height="145" fill="#fff" stroke="#15324e" />
+        <rect x="1" y="1" width="320" height="11" fill="#e9edf2" />
+        <rect x="1" y="12" width="320" height="2" fill="url(#ab-spectrum)" />
+        <circle cx="7" cy="6.5" r="2" fill="#2e7d4f" />
+        <text class="ab__url" x="13" y="9">abialas.pl</text>
+        <text class="ab__time" x="314" y="9" text-anchor="end">rebuilt 05:00 UTC</text>
+        <rect x="10" y="18" width="5" height="5" fill="#c2652b" />
+        <rect x="18" y="19.5" width="38" height="2" fill="#26384a" />
+        {[262, 280, 298].map((x) => <rect x={x} y="19.5" width="13" height="2" fill="#26384a" />)}
+
         <text class="ab__h1" x="12" y="41">Hi, I'm Andrzej. I do marketing.</text>
-      </g>
-      <rect class="ab-a ab-grow ab-final" style={grow(0, 0.85, 0.45)} x="12" y="45" width="34" height="3" fill="url(#ab-spectrum)" />
-      <rect class="ab-a ab-final" style={on(0, 1.15, END)} x="12" y="51" width="150" height="2" fill="#9aa7b4" />
-      <g class="ab-a ab-final" style={on(0, 1.4, END)}>
+        <rect x="12" y="45" width="34" height="3" fill="url(#ab-spectrum)" />
+        <rect x="12" y="51" width="150" height="2" fill="#9aa7b4" />
+        <rect x="12" y="55" width="112" height="2" fill="#9aa7b4" />
         <g transform="rotate(2 296 39)">
           <rect x="287" y="30" width="24" height="24" fill="#7a4a9e" />
           <rect x="285" y="28" width="24" height="24" fill="#dfe5ec" stroke="#15324e" />
@@ -140,55 +99,34 @@ const css = () => [...kf.values()].join("");
           <rect x="290" y="43" width="14" height="9" fill="#9aa7b4" />
           <rect x="302" y="33" width="4" height="4" fill="#c2652b" />
         </g>
-      </g>
 
-      <!-- 2 · astro build: every tile drops into its cut-line -->
-      {TILES.map((t, i) => (
-        <g class="ab-a ab-final" style={drop(1, 0.15 + i * 0.16)}>
-          <rect x={t.x + 2} y={t.y + 2} width={t.w} height={t.h} fill={t.shadow} />
-          <rect x={t.x + 0.5} y={t.y + 0.5} width={t.w - 1} height={t.h - 1} fill={t.ground} stroke={t.dashed ? t.shadow : "#15324e"} stroke-dasharray={t.dashed ? "2 1.5" : undefined} />
-          {(t.marks ?? []).map(([x, y, w, h, c]) => <rect x={t.x + x} y={t.y + y} width={w} height={h} fill={c} />)}
-          {t.name === "github year" && year.map((c) => (
-            c.lvl < 0
-              ? <rect x={c.x + 0.25} y={c.y + 0.25} width="2.5" height="2.5" fill="none" stroke="#cfd8e3" stroke-width="0.5" />
-              : <rect x={c.x} y={c.y} width="3" height="3" fill={RAMP[c.lvl]} />
-          ))}
+        {TILES.map((t) => (
+          <g>
+            <rect x={t.x + 2} y={t.y + 2} width={t.w} height={t.h} fill={t.shadow} />
+            <rect x={t.x + 0.5} y={t.y + 0.5} width={t.w - 1} height={t.h - 1} fill={t.ground} stroke={t.dashed ? t.shadow : "#15324e"} stroke-dasharray={t.dashed ? "2 1.5" : undefined} />
+            {(t.marks ?? []).map(([x, y, w, h, c]) => <rect x={t.x + x} y={t.y + y} width={w} height={h} fill={c} />)}
+            {t.year && year.map((c) => (
+              c.lvl < 0
+                ? <rect x={c.x + 0.25} y={c.y + 0.25} width="2.5" height="2.5" fill="none" stroke="#cfd8e3" stroke-width="0.5" />
+                : <rect x={c.x} y={c.y} width="3" height="3" fill={RAMP[c.lvl]} />
+            ))}
+          </g>
+        ))}
+        <rect x={today.x - 1} y={today.y - 1} width="5" height="5" fill="none" stroke="#a5700c" stroke-width="1" />
+
+        <!-- you are here -->
+        <g transform="translate(200 30)">
+          <path d="M0 22 L-6 10 A7 7 0 1 1 6 10 Z" fill="#c22d18" stroke="#15324e" stroke-width="1" />
+          <circle cx="0" cy="5" r="2.6" fill="#fff" />
+          <rect x="10" y="-1" width="58" height="12" fill="#c22d18" />
+          <text class="ab__here" x="39" y="7.5" text-anchor="middle">YOU ARE HERE</text>
         </g>
-      ))}
-
-      <!-- 3 · github year: today's square fills in and pulses -->
-      <rect x={today.x + 0.25} y={today.y + 0.25} width="2.5" height="2.5" fill="none" stroke="#cfd8e3" stroke-width="0.5" class="ab-a" style={drop(1, 0.15 + 4 * 0.16, 2 * HOLD + 0.4)} />
-      <rect class="ab-a ab-final" style={on(2, 0.4, END)} x={today.x} y={today.y} width="3" height="3" fill="#2e7d4f" />
-      <rect class="ab-ring" x={today.x - 1.5} y={today.y - 1.5} width="6" height="6" fill="none" stroke="#a5700c" stroke-width="1" />
-
-      <!-- 4 · deploy: a spectrum progress bar, the dot goes green, live -->
-      <rect class="ab-a ab-grow ab-final" style={grow(3, 0.2, 1.0)} x="1" y="12" width="320" height="2" fill="url(#ab-spectrum)" />
-      <circle class="ab-a ab-final" style={on(3, 1.2)} cx="7" cy="6.5" r="2" fill="#2e7d4f" />
-      <text class="ab__live ab-a ab-final" style={on(3, 1.3)} x="314" y="9" text-anchor="end">✓ live</text>
+      </g>
     </svg>
-
-    <span class="ab__readout" aria-hidden="true">
-      {LINES.map(([k, t], i) => (
-        <span class="ab__line" style={`--i:${i}`}><span class="ab__k">{k}</span> · {t}</span>
-      ))}
-    </span>
-    <span class="ab__sr">abialas.pl rebuilds itself every morning at 05:00 UTC: the page and its tiles come together, today's square fills in on the GitHub year, and the new build goes live.</span>
   </span>
 </a>
 
-<style is:inline set:html={css()}></style>
-
-<script>
-  // Nonessential loop: pause when the tile is offscreen or the tab hides.
-  const tile = document.querySelector<HTMLElement>("[data-ab]");
-  if (tile && "IntersectionObserver" in window) {
-    const io = new IntersectionObserver(([e]) => tile.toggleAttribute("data-idle", !e.isIntersecting), { threshold: 0.05 });
-    io.observe(tile);
-    document.addEventListener("visibilitychange", () => tile.toggleAttribute("data-idle", document.hidden));
-  }
-</script>
-
-<style define:vars={{ hold: `${HOLD}s`, loop: `${LOOP}s` }}>
+<style>
   /* the plate sits on a spectrum "shadow": a gradient block offset behind it
      (box-shadow can't take a gradient) */
   .ab {
@@ -272,124 +210,39 @@ const css = () => [...kf.values()].join("");
     height: auto;
     margin-top: auto;
   }
-  .ab__url {
+  .ab__dim,
+  .ab__url,
+  .ab__time,
+  .ab__here {
     font-family: var(--font-mono);
     font-size: 6.5px;
-    fill: #15324e;
   }
-  .ab__time {
-    font-family: var(--font-mono);
-    font-size: 6.5px;
-    fill: #c22d18;
-  }
-  .ab__live {
-    font-family: var(--font-mono);
-    font-size: 6.5px;
-    font-weight: 600;
-    fill: #297147;
-  }
+  .ab__dim { fill: #c22d18; font-size: 7.5px; font-weight: 600; }
+  .ab__url { fill: #15324e; }
+  .ab__time { fill: #5f7384; }
+  .ab__here { fill: #fff; font-weight: 700; font-size: 6px; letter-spacing: 0.06em; }
   .ab__h1 {
     font-family: var(--font-serif);
     font-size: 10.5px;
     fill: #15324e;
   }
 
-  /* the readout, in the site's measure voice */
-  .ab__readout {
-    display: grid;
-    padding-top: 8px;
-    border-top: 1px solid var(--color-line);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    line-height: 1.5;
-    letter-spacing: 0.02em;
-    color: var(--color-body);
-  }
-  .ab__line {
-    grid-area: 1 / 1;
-    opacity: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    animation: ab-say var(--loop) linear infinite;
-    animation-delay: calc(var(--i) * var(--hold));
-  }
-  .ab__k {
-    color: #c22d18;
-  }
-  @keyframes ab-say {
-    0% { opacity: 0; }
-    1% { opacity: 1; }
-    23.6% { opacity: 1; }
-    25% { opacity: 0; }
-    100% { opacity: 0; }
-  }
-
-  .ab-a {
-    opacity: 0;
-    animation-duration: var(--loop);
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-  }
-  .ab-grow {
-    transform-box: fill-box;
-    transform-origin: left;
-  }
-  /* today's ring: two pulses in beat 3 */
-  .ab-ring {
-    opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: ab-ring var(--loop) linear infinite;
-  }
-  @keyframes ab-ring {
-    0%, 55% { opacity: 0; transform: scale(0.6); }
-    55.5% { opacity: 1; transform: scale(0.6); }
-    61% { opacity: 0; transform: scale(2.2); }
-    63% { opacity: 0; transform: scale(0.6); }
-    63.5% { opacity: 1; transform: scale(0.6); }
-    69%, 100% { opacity: 0; transform: scale(2.2); }
-  }
-
-  .ab__sr {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-  }
-
-  .ab[data-idle] *,
-  .ab[data-idle] :global(*) {
-    animation-play-state: paused;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .ab,
-    .ab:hover,
-    .ab:focus-visible,
     .ab__shadow,
-    .ab:hover .ab__shadow {
+    .ab__out {
       transition: none;
     }
     .ab:hover,
     .ab:focus-visible {
       transform: none;
     }
-    .ab:hover .ab__shadow {
+    .ab:hover .ab__shadow,
+    .ab:focus-visible .ab__shadow {
       transform: translate(6px, 6px);
     }
     .ab:hover .ab__out {
       transform: none;
     }
-    /* the built, deployed page, still */
-    .ab *,
-    .ab :global(*) {
-      animation: none !important;
-    }
-    .ab-a { opacity: 0; }
-    .ab-a.ab-final { opacity: 1; }
-    .ab__line { opacity: 0; }
-    .ab__line[style^="--i:3"] { opacity: 1; }
   }
 </style>

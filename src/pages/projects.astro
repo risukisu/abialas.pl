@@ -26,6 +26,9 @@ import RoguelikeTile from "../components/nexus/RoguelikeTile.astro";
 import ProjectTile from "../components/nexus/ProjectTile.astro";
 import CiAgentTile from "../components/nexus/CiAgentTile.astro";
 import AbialasTile from "../components/nexus/AbialasTile.astro";
+import GrugManifestoTile from "../components/nexus/GrugManifestoTile.astro";
+import VanillaStatsTile from "../components/nexus/VanillaStatsTile.astro";
+import CampfireTile from "../components/nexus/CampfireTile.astro";
 import { groups, type TileKey } from "../data/projects";
 import { follow } from "../data/nexus";
 
@@ -35,6 +38,9 @@ const TILES: Record<TileKey, { C: any; props?: Record<string, unknown> }> = {
   statusline: { C: StatuslineTile, props: { wide: true } },
   "ci-agent": { C: CiAgentTile },
   abialas: { C: AbialasTile },
+  "grug-manifesto": { C: GrugManifestoTile },
+  "vanilla-stats": { C: VanillaStatsTile },
+  campfire: { C: CampfireTile },
   roguelike: { C: RoguelikeTile },
   skillcraft: { C: SkillCraftTile },
   blog: { C: NexusBox, props: { ...follow[0], size: "md" } },

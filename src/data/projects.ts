@@ -19,7 +19,7 @@
  */
 export type Link = { label: "site" | "repo" | "read" | "play"; href: string };
 
-export type TileKey = "marketing-skills" | "marketing-skills-repo" | "statusline" | "ci-agent" | "roguelike" | "skillcraft" | "blog" | "grug" | "abialas";
+export type TileKey = "marketing-skills" | "marketing-skills-repo" | "statusline" | "ci-agent" | "roguelike" | "skillcraft" | "blog" | "grug" | "abialas" | "grug-manifesto" | "vanilla-stats" | "campfire";
 
 export type Project = {
   name: string;
@@ -160,10 +160,11 @@ export const groups: Group[] = [
         name: "Grug manifesto",
         line: "Twelve rules for marketers tired of complexity.",
         status: "repo",
-        links: [gh("grug-manifesto")],
+        links: [{ label: "site", href: "https://risukisu.github.io/grug-manifesto/" }, gh("grug-manifesto")],
         stack: "HTML",
         updated: "2026-04-06",
-        hue: "#b85a1f",
+        hue: "#e8695c",
+        tile: "grug-manifesto",
         span: 3,
       },
     ],
@@ -179,7 +180,8 @@ export const groups: Group[] = [
         links: [gh("vanilla-stats")],
         stack: "HTML",
         updated: "2026-08-12",
-        hue: "#a5700c",
+        hue: "#2563eb",
+        tile: "vanilla-stats",
         span: 3,
       },
       {
@@ -189,7 +191,8 @@ export const groups: Group[] = [
         links: [{ label: "site", href: "https://risu.pl/campfire" }, gh("campfire-api")],
         stack: "JavaScript",
         updated: "2026-08-12",
-        hue: "#23915a",
+        hue: "#d9772e",
+        tile: "campfire",
         span: 3,
       },
     ],

@@ -1,0 +1,191 @@
+---
+/**
+ * GrugManifestoTile — The Grug-Brained Marketer Manifesto (MOCKUP for
+ * /projects, owner 2026-09-29). Still on purpose (owner: a mix of moving
+ * and still tiles).
+ *
+ * Kit: Grug Kit 01, the canonical brief (projects/grug-brained-marketer/
+ * brand/kit, per context/brand.md): Cave ink #101310, Bone white #FFFDF5,
+ * Matrix green #39E75F, Coffee coral #FF8072, Cave hide #FF981F; poster type
+ * (Anton, the same Impact stand-in the newsletter tile uses) over Courier;
+ * the logo as delivered, never redrawn (/grug-logo.webp). A poster, not the
+ * newsletter's teal: the two sit side by side in Writing.
+ *
+ * The twelve rules are the manifesto's own headings (grug-manifesto/index.html),
+ * verbatim; rule 01 carries the coral marker.
+ */
+import "@fontsource/anton";
+
+const HREF = "https://risukisu.github.io/grug-manifesto/";
+const RULES = [
+  "Complexity is the enemy",
+  "Know your one thing. Protect it.",
+  "Don't be a marketing shaman",
+  "Ship before it's perfect",
+  "Give value before you ask",
+  "Measure what you need to know",
+  "Learn by doing",
+  "Respect what came before you",
+  "Share everything, hoard nothing",
+  "Talk simple",
+  "Everyone's an imposter, keep moving",
+  "Experiment always",
+];
+---
+<a href={HREF} class="gm" rel="me">
+  <span class="gm__side">
+    <img class="gm__logo" src="/grug-logo.webp" alt="" width="64" height="64" loading="lazy" />
+    <span class="gm__title">Grug<br />Manifesto</span>
+    <span class="gm__sub">Twelve rules for marketers tired of complexity.</span>
+    <span class="gm__out" aria-hidden="true">↗</span>
+  </span>
+  <ol class="gm__rules">
+    {RULES.map((r, i) => (
+      <li class={i === 0 ? "gm__rule gm__rule--one" : "gm__rule"}>
+        <span class="gm__n">{String(i + 1).padStart(2, "0")}</span>
+        <span class="gm__r">{r}</span>
+      </li>
+    ))}
+  </ol>
+</a>
+
+<style>
+  .gm {
+    --ink: #101310;
+    --bone: #fffdf5;
+    --green: #39e75f;
+    --coral: #ff8072;
+    --hide: #ff981f;
+    --shadow: #e8695c; /* coffee coral, toned */
+
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(150px, 0.68fr) minmax(0, 1.32fr);
+    gap: 20px;
+    min-width: 0;
+    padding: 20px 22px;
+    background: var(--bone);
+    border: 2px solid var(--color-ink);
+    box-shadow: 6px 6px 0 var(--shadow);
+    color: var(--ink);
+    text-decoration: none;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+  .gm:hover,
+  .gm:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--shadow);
+  }
+  .gm:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  .gm__side {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+  /* the logo as a sticker: ink outline, hard shadow, a small tilt */
+  .gm__logo {
+    display: block;
+    width: 56px;
+    height: 56px;
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--hide);
+    transform: rotate(-4deg);
+    background: var(--ink);
+  }
+  .gm__title {
+    margin-top: 4px;
+    font-family: "Anton", Impact, sans-serif;
+    font-size: 2rem;
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+  .gm__sub {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    color: #3a3d38;
+  }
+  .gm__out {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #6b6f68;
+    transition: color 0.18s ease, transform 0.18s ease;
+  }
+  .gm:hover .gm__out,
+  .gm:focus-visible .gm__out {
+    color: var(--ink);
+    transform: translate(2px, -2px);
+  }
+
+  /* the twelve rules: Courier, one line each, rule 01 marked in coral */
+  .gm__rules {
+    display: grid;
+    align-content: center;
+    gap: 1px;
+    margin: 0;
+    padding: 0 0 0 16px;
+    list-style: none;
+    border-left: 2px solid var(--ink);
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.72rem;
+    line-height: 1.26;
+  }
+  .gm__rule {
+    display: flex;
+    gap: 8px;
+    min-width: 0;
+  }
+  .gm__n {
+    flex: none;
+    font-weight: 700;
+    color: #8a8e86;
+  }
+  .gm__r {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .gm__rule--one {
+    margin: 0 -6px 2px;
+    padding: 1px 6px;
+    background: var(--coral);
+    font-weight: 700;
+  }
+  .gm__rule--one .gm__n {
+    color: var(--ink);
+  }
+
+  @media (max-width: 720px) {
+    .gm {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .gm__rules {
+      padding: 12px 0 0;
+      border-left: 0;
+      border-top: 2px solid var(--ink);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gm,
+    .gm:hover,
+    .gm:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .gm:hover .gm__out {
+      transform: none;
+    }
+  }
+</style>

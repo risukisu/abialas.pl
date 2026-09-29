@@ -1,0 +1,352 @@
+---
+/**
+ * CampfireTile — campfire-api, the guestbook API behind risu.pl/campfire
+ * (MOCKUP for /projects, owner 2026-09-29).
+ *
+ * The clearing from risu.pl/campfire (blog repo: src/pages/campfire.astro +
+ * src/scripts/campfire.js), redrawn small: the night #0A0E1F, stars, a few
+ * story stars joined by faint lines (the page's four-point star), a crescent
+ * moon, pines on the horizon, a ring of stones and logs, and the squirrel on
+ * its stump (the page's own 16x16 sprite and palette, facing the fire).
+ *
+ * Only the fire moves (owner: "just the fire animated"): soft blobs rise off
+ * the logs and cool from core #FFF1C1 through flame #FF9A3C to red #FF5A1F,
+ * embers drift up, the warm glow breathes. Pauses offscreen; reduced motion
+ * shows a still flame.
+ */
+const HREF = "https://risu.pl/campfire";
+const W = 564, H = 260;
+const FX = 410, FY = 222; // the fire's base
+
+// the squirrel, from campfire.js (SQ + SQPAL), warmed a little by the fire
+const SQ = [
+  ".........ooo....",
+  "........oyyyoo..",
+  ".......oyyttyyo.",
+  "..oo...oytoottyo",
+  ".okbo..oyo..otyo",
+  ".obbbo..o...otyo",
+  "ohbbbbo.....otyo",
+  "ohebbbbo...ottyo",
+  "nhhbbbbo..otttyo",
+  "ohccbbdo.otttyo.",
+  "ohhcbdbboottyyo.",
+  ".occcbdbbbttyo..",
+  "..occbdbbbtyo...",
+  "..occcbbbbbo....",
+  ".ohcobbbbbbo....",
+  ".oooooooooo.....",
+];
+const SQPAL: Record<string, string> = { o: "#1A0F0A", b: "#8A4B24", h: "#C27A3E", c: "#EBCB9C", d: "#3B2014", t: "#9A5528", y: "#D08A45", e: "#05070F", n: "#2A1208", k: "#C9775A" };
+const hex = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const warm = (h: string, k = 0.22) => {
+  const [r, g, b] = hex(h), [wr, wg, wb] = hex("#FFB36B");
+  return `rgb(${Math.round(r + (wr - r) * k)},${Math.round(g + (wg - g) * k)},${Math.round(b + (wb - b) * k)})`;
+};
+const SQX = 470, SQY = 176, PX = 2; // on the stump, 2px pixels
+const squirrel = SQ.flatMap((row, j) => [...row].map((ch, i) => (SQPAL[ch] ? { x: SQX + i * PX, y: SQY + j * PX, c: warm(SQPAL[ch]) } : null)).filter(Boolean)) as { x: number; y: number; c: string }[];
+
+// the sky: fixed stars, and four story stars joined like the page's constellation
+const STARS = [[40, 30, 0.5], [92, 18, 0.7], [150, 46, 0.4], [210, 22, 0.8], [262, 60, 0.5], [300, 14, 0.6], [338, 40, 0.9], [388, 26, 0.5], [436, 62, 0.4], [468, 18, 0.7], [512, 44, 0.5], [548, 24, 0.6], [120, 80, 0.3], [236, 96, 0.35], [320, 88, 0.3], [30, 110, 0.3], [540, 100, 0.35], [180, 120, 0.25]];
+const STORY: [number, number][] = [[286, 36], [352, 70], [420, 44], [492, 82]];
+const star4 = (x: number, y: number, s: number) =>
+  `M${x} ${y - 6 * s}l${1.1 * s} ${4.9 * s}L${x + 6 * s} ${y}l${-4.9 * s} ${1.1 * s}L${x} ${y + 6 * s}l${-1.1 * s} ${-4.9 * s}L${x - 6 * s} ${y}l${4.9 * s} ${-1.1 * s}z`;
+// pines on the horizon: [x, height]
+const PINES = [[250, 44], [276, 60], [300, 38], [520, 58], [548, 72], [496, 40], [572, 50], [12, 50], [-8, 66]];
+const pine = (x: number, h: number, base = 206) => {
+  const w = h * 0.42;
+  return `M${x} ${base - h}L${x + w * 0.55} ${base - h * 0.55}L${x + w * 0.3} ${base - h * 0.55}L${x + w * 0.8} ${base - h * 0.15}L${x + w * 0.35} ${base - h * 0.15}L${x + w} ${base}L${x - w} ${base}L${x - w * 0.35} ${base - h * 0.15}L${x - w * 0.8} ${base - h * 0.15}L${x - w * 0.3} ${base - h * 0.55}L${x - w * 0.55} ${base - h * 0.55}Z`;
+};
+// the fire: blobs (x offset, size, rise, duration, delay, hot) and embers
+const FLAMES = [
+  [-10, 1.0, 44, 0.95, 0, 1], [8, 0.9, 50, 1.05, -0.3, 1], [-2, 1.15, 58, 0.9, -0.6, 1], [14, 0.8, 38, 0.85, -0.15, 0],
+  [-16, 0.75, 34, 0.8, -0.45, 0], [4, 1.05, 54, 1.0, -0.75, 1], [-6, 0.85, 46, 0.92, -0.9, 0], [10, 0.7, 42, 0.78, -0.2, 0],
+  [0, 1.2, 62, 1.1, -0.5, 1], [-12, 0.7, 36, 0.86, -0.65, 0], [6, 0.95, 48, 0.96, -0.05, 1], [-4, 0.8, 40, 0.82, -0.35, 0],
+];
+const EMBERS = [[-6, 86, 2.6, 0], [10, 70, 2.2, -0.8], [-14, 64, 3.0, -1.6], [4, 92, 3.4, -2.3], [16, 58, 2.4, -1.1], [-2, 78, 2.8, -0.4]];
+const STONES = [[-34, 4, 9], [-22, 9, 10], [-6, 11, 10], [12, 10, 10], [28, 7, 9], [38, 2, 8], [-40, -1, 8]];
+---
+<a href={HREF} class="cf" rel="me" data-cf>
+  <svg class="cf__scene" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMaxYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="cf-sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#070a17" />
+        <stop offset="0.75" stop-color="#0d1330" />
+      </linearGradient>
+      <linearGradient id="cf-ground" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0b0f20" />
+        <stop offset="0.3" stop-color="#080b17" />
+        <stop offset="1" stop-color="#05070f" />
+      </linearGradient>
+      <radialGradient id="cf-air">
+        <stop offset="0" stop-color="#ffb36b" stop-opacity="0.34" />
+        <stop offset="0.45" stop-color="#ff9a3c" stop-opacity="0.1" />
+        <stop offset="1" stop-color="#ff9a3c" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="cf-hot">
+        <stop offset="0" stop-color="#fff1c1" stop-opacity="1" />
+        <stop offset="0.35" stop-color="#ff9a3c" stop-opacity="0.85" />
+        <stop offset="1" stop-color="#ff9a3c" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="cf-red">
+        <stop offset="0" stop-color="#ff9a3c" stop-opacity="0.9" />
+        <stop offset="0.45" stop-color="#ff5a1f" stop-opacity="0.6" />
+        <stop offset="1" stop-color="#ff5a1f" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="cf-bed">
+        <stop offset="0" stop-color="#ffb36b" stop-opacity="0.9" />
+        <stop offset="0.5" stop-color="#ff5a1f" stop-opacity="0.5" />
+        <stop offset="1" stop-color="#ff5a1f" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="cf-ember">
+        <stop offset="0" stop-color="#ffd9a0" stop-opacity="1" />
+        <stop offset="0.4" stop-color="#ff8c3c" stop-opacity="0.5" />
+        <stop offset="1" stop-color="#ff8c3c" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+
+    <!-- the night, the stars, the story constellation, the moon -->
+    <rect width={W} height={H} fill="url(#cf-sky)" />
+    {STARS.map(([x, y, a]) => <circle cx={x} cy={y} r="0.9" fill="#e9edff" opacity={a} />)}
+    <polyline points={STORY.map((p) => p.join(",")).join(" ")} fill="none" stroke="#e9edff" stroke-width="0.5" opacity="0.28" />
+    {STORY.map(([x, y]) => <path d={star4(x, y, 0.75)} fill="#e9edff" />)}
+    <circle cx="520" cy="40" r="13" fill="#e9edff" opacity="0.95" />
+    <circle cx="526" cy="35" r="12" fill="#080c1c" />
+
+    <!-- the warm air, the pines, the ground -->
+    <ellipse class="cf__air" cx={FX} cy={FY - 30} rx="190" ry="150" fill="url(#cf-air)" />
+    {PINES.map(([x, h]) => <path d={pine(x, h)} fill="#060914" />)}
+    <rect x="0" y="204" width={W} height={H - 204} fill="url(#cf-ground)" />
+    <ellipse cx={FX} cy={FY + 6} rx="120" ry="16" fill="#ff9a3c" opacity="0.07" />
+
+    <!-- the stump and the squirrel, facing the fire -->
+    <rect x="466" y="208" width="40" height="18" fill="#2a1a10" />
+    <ellipse cx="486" cy="208" rx="20" ry="5" fill="#5a3a24" />
+    <ellipse cx="486" cy="208" rx="13" ry="3" fill="#3b2014" />
+    {squirrel.map((p) => <rect x={p.x} y={p.y} width={PX} height={PX} fill={p.c} />)}
+
+    <!-- the fire: back stones, logs, flames, front stones, embers -->
+    {STONES.filter(([, dy]) => dy < 6).map(([dx, dy, r]) => <ellipse cx={FX + dx} cy={FY + dy} rx={r} ry={r * 0.6} fill="#262a3c" />)}
+    <rect x={FX - 26} y={FY - 4} width="52" height="7" fill="#3b2014" transform={`rotate(-12 ${FX} ${FY})`} />
+    <rect x={FX - 26} y={FY - 4} width="52" height="7" fill="#4a2a17" transform={`rotate(14 ${FX} ${FY})`} />
+    <ellipse class="cf__bed" cx={FX} cy={FY - 2} rx="17" ry="5" fill="url(#cf-bed)" />
+    <g class="cf__flames">
+      {FLAMES.map(([dx, s, rise, dur, delay, hot]) => (
+        <circle class="cf__blob" cx={FX + dx} cy={FY - 6} r={11 * s} fill={hot ? "url(#cf-hot)" : "url(#cf-red)"}
+          style={`--dx:${-dx * 0.7}px; --rise:${-rise}px; animation-duration:${dur}s; animation-delay:${delay}s`} />
+      ))}
+      <ellipse class="cf__core" cx={FX} cy={FY - 12} rx="12" ry="15" fill="url(#cf-hot)" />
+      <path class="cf__still" d={`M${FX} ${FY - 62}C${FX + 10} ${FY - 40} ${FX + 22} ${FY - 22} ${FX + 16} ${FY - 6}C${FX + 10} ${FY + 4} ${FX - 10} ${FY + 4} ${FX - 16} ${FY - 6}C${FX - 22} ${FY - 22} ${FX - 8} ${FY - 36} ${FX} ${FY - 62}Z`} fill="url(#cf-hot)" />
+    </g>
+    {STONES.filter(([, dy]) => dy >= 6).map(([dx, dy, r]) => (
+      <>
+        <ellipse cx={FX + dx} cy={FY + dy} rx={r} ry={r * 0.6} fill="#2e3246" />
+        <ellipse cx={FX + dx} cy={FY + dy - r * 0.25} rx={r * 0.7} ry={r * 0.25} fill="#8a5a3c" opacity="0.55" />
+      </>
+    ))}
+    {EMBERS.map(([dx, rise, dur, delay]) => (
+      <circle class="cf__ember" cx={FX + dx} cy={FY - 20} r="3" fill="url(#cf-ember)"
+        style={`--rise:${-rise}px; --drift:${dx > 0 ? 8 : -8}px; animation-duration:${dur}s; animation-delay:${delay}s`} />
+    ))}
+  </svg>
+
+  <span class="cf__body">
+    <span class="cf__head">
+      <span class="cf__wm">campfire-api</span>
+      <span class="cf__out" aria-hidden="true">↗</span>
+    </span>
+    <span class="cf__tag">The guestbook API behind the campfire on risu.pl. Leave a few words by the fire and your story goes up as a star.</span>
+    <span class="cf__api">
+      <span><b>GET</b> /api/entries</span>
+      <span><b>POST</b> /api/sign</span>
+    </span>
+  </span>
+</a>
+
+<script>
+  // Nonessential loop: pause when the tile is offscreen or the tab hides.
+  const tile = document.querySelector<HTMLElement>("[data-cf]");
+  if (tile && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(([e]) => tile.toggleAttribute("data-idle", !e.isIntersecting), { threshold: 0.05 });
+    io.observe(tile);
+    document.addEventListener("visibilitychange", () => tile.toggleAttribute("data-idle", document.hidden));
+  }
+</script>
+
+<style>
+  .cf {
+    --night: #0a0e1f;
+    --star: #e9edff;
+    --text2: #c3c8e0;
+    --muted: #9aa1c2;
+    --cyan: #5fd4e6;
+    --flame: #ff9a3c;
+    --shadow: #d9772e; /* the flame, toned */
+
+    position: relative;
+    display: flex;
+    min-width: 0;
+    min-height: 240px;
+    background: var(--night);
+    border: 2px solid var(--color-ink);
+    box-shadow: 6px 6px 0 var(--shadow);
+    color: var(--text2);
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+  .cf:hover,
+  .cf:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--shadow);
+  }
+  .cf:focus-visible {
+    outline: 2px solid var(--flame);
+    outline-offset: 3px;
+  }
+  .cf__scene {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .cf__body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 58%;
+    padding: 20px 22px;
+  }
+  .cf__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cf__wm {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1.1;
+    color: var(--star);
+  }
+  .cf__out {
+    color: var(--muted);
+    transition: color 0.18s ease, transform 0.18s ease;
+  }
+  .cf:hover .cf__out,
+  .cf:focus-visible .cf__out {
+    color: var(--flame);
+    transform: translate(2px, -2px);
+  }
+  .cf__tag {
+    font-size: 0.92rem;
+    line-height: 1.45;
+    text-shadow: 0 1px 6px var(--night);
+  }
+  .cf__api {
+    display: grid;
+    gap: 2px;
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--muted);
+  }
+  .cf__api b {
+    display: inline-block;
+    min-width: 3.4em;
+    font-weight: 600;
+    color: var(--cyan);
+  }
+
+  /* ── the fire: only this moves ─────────────────────────────────── */
+  .cf__flames {
+    mix-blend-mode: screen;
+  }
+  .cf__blob {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+    animation-name: cf-rise;
+    animation-timing-function: cubic-bezier(0.3, 0.1, 0.6, 1);
+    animation-iteration-count: infinite;
+  }
+  @keyframes cf-rise {
+    0% { opacity: 0; transform: translate(0, 0) scale(1); }
+    12% { opacity: 0.95; }
+    60% { opacity: 0.55; }
+    100% { opacity: 0; transform: translate(var(--dx), var(--rise)) scale(0.22); }
+  }
+  .cf__core {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: cf-core 0.42s ease-in-out infinite alternate;
+  }
+  @keyframes cf-core {
+    from { opacity: 0.75; transform: scale(0.94, 0.9); }
+    to { opacity: 1; transform: scale(1.04, 1.08); }
+  }
+  .cf__still {
+    display: none;
+  }
+  .cf__ember {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+    animation-name: cf-ember;
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+  }
+  @keyframes cf-ember {
+    0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+    10% { opacity: 1; }
+    50% { transform: translate(var(--drift), calc(var(--rise) * 0.5)) scale(0.5); }
+    100% { opacity: 0; transform: translate(calc(var(--drift) * -0.5), var(--rise)) scale(0.3); }
+  }
+  .cf__air,
+  .cf__bed {
+    animation: cf-breathe 1.6s ease-in-out infinite alternate;
+  }
+  @keyframes cf-breathe {
+    from { opacity: 0.8; }
+    to { opacity: 1; }
+  }
+
+  .cf[data-idle] *,
+  .cf[data-idle] :global(*) {
+    animation-play-state: paused;
+  }
+
+  @media (max-width: 720px) {
+    .cf__body {
+      max-width: 100%;
+      padding-bottom: 130px; /* the fire sits under the text */
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cf,
+    .cf:hover,
+    .cf:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .cf:hover .cf__out {
+      transform: none;
+    }
+    /* a still flame */
+    .cf *,
+    .cf :global(*) {
+      animation: none !important;
+    }
+    .cf__blob,
+    .cf__ember {
+      opacity: 0;
+    }
+    .cf__still {
+      display: inline;
+    }
+  }
+</style>

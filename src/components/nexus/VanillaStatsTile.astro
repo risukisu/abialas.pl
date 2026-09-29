@@ -1,0 +1,223 @@
+---
+/**
+ * VanillaStatsTile — vanilla-stats, the single-file GA4 traffic analyzer
+ * (MOCKUP for /projects, owner 2026-09-29). Still on purpose (owner: a mix of
+ * moving and still tiles).
+ *
+ * Kit: the tool's own dashboard (ga4.html in risukisu/vanilla-stats): white
+ * and #F9FAFB surfaces, #111827 text, #6B7280 secondary, #E5E7EB borders, the
+ * #2563EB accent, #059669 / #EF4444 for up and down, a system sans.
+ *
+ * The art is its Traffic Timeline and Algorithm Impact ideas in one chart:
+ * weekly users for two years (last year grey, this year blue with its 8-week
+ * moving average), a core update marker with the 4 weeks before and after it
+ * shaded, and an AI Overviews marker. The curves are drawn for the tile, not
+ * read from anyone's analytics.
+ */
+const HREF = "https://github.com/risukisu/vanilla-stats";
+
+// 52 weeks, two years; a seasonal wave with noise, this year dipping after
+// the core update (week 20) and climbing back (fixed numbers, no randomness)
+// drawn at its display size in the /projects slot (~490px), so it isn't scaled up
+const W = 490, H = 92, X0 = 8, X1 = 482, Y0 = 13, Y1 = 78;
+const x = (w: number) => X0 + (w / 51) * (X1 - X0);
+const wave = (w: number) => 0.55 + 0.18 * Math.sin((w / 51) * Math.PI * 2 - 0.6) + 0.06 * Math.sin(w * 1.9);
+const last = Array.from({ length: 52 }, (_, w) => wave(w) * 0.92);
+const now = Array.from({ length: 52 }, (_, w) => {
+  const dip = w >= 20 ? -0.2 * Math.exp(-(w - 20) / 9) : 0;
+  return wave(w) + 0.06 + dip + 0.035 * Math.sin(w * 3.1);
+});
+const ma = now.map((_, i) => { const s = now.slice(Math.max(0, i - 7), i + 1); return s.reduce((a, b) => a + b, 0) / s.length; });
+const y = (v: number) => Y1 - v * (Y1 - Y0);
+const path = (vals: number[]) => vals.map((v, w) => `${w ? "L" : "M"}${x(w).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
+const CORE = 20, AIO = 34;
+const MONTHS = ["Jan", "Apr", "Jul", "Oct"];
+---
+<a href={HREF} class="vs" rel="me">
+  <span class="vs__head">
+    <svg class="vs__mark" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+      <rect x="1" y="9" width="3" height="6" fill="#2563eb" />
+      <rect x="6.5" y="5" width="3" height="10" fill="#2563eb" />
+      <rect x="12" y="1" width="3" height="14" fill="#2563eb" />
+    </svg>
+    <span class="vs__wm">vanilla-stats</span>
+    <span class="vs__out" aria-hidden="true">↗</span>
+  </span>
+  <span class="vs__tag">One HTML file turns your GA4 CSV exports into a traffic dashboard.</span>
+
+  <span class="vs__panel">
+    <span class="vs__ph">
+      <span class="vs__pt">Traffic timeline</span>
+      <span class="vs__legend"><i class="vs__key vs__key--last"></i>last year <i class="vs__key vs__key--now"></i>this year <i class="vs__key vs__key--ma"></i>8-week avg</span>
+    </span>
+    <svg class="vs__chart" viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
+      <!-- 4 weeks before and after the core update -->
+      <rect x={x(CORE - 4)} y={Y0 - 4} width={x(CORE) - x(CORE - 4)} height={Y1 - Y0 + 4} fill="#f3f4f6" />
+      <rect x={x(CORE)} y={Y0 - 4} width={x(CORE + 4) - x(CORE)} height={Y1 - Y0 + 4} fill="#fef2f2" />
+      {[0.25, 0.5, 0.75].map((v) => <line x1={X0} x2={X1} y1={y(v)} y2={y(v)} stroke="#e5e7eb" stroke-width="0.6" />)}
+      <line x1={X0} x2={X1} y1={Y1} y2={Y1} stroke="#d1d5db" stroke-width="0.8" />
+      {MONTHS.map((m, i) => <text class="vs__ax" x={x(i * 13)} y={H - 3}>{m}</text>)}
+
+      <path d={path(last)} fill="none" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2 1.5" />
+      <path d={path(now)} fill="none" stroke="#93b4f5" stroke-width="0.9" />
+      <path d={path(ma)} fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round" />
+
+      <!-- the markers -->
+      <line x1={x(CORE)} x2={x(CORE)} y1={Y0 - 6} y2={Y1} stroke="#ef4444" stroke-width="0.9" stroke-dasharray="2 1.5" />
+      <rect x={x(CORE) + 3} y={Y0 - 12} width="76" height="13" fill="#fff" stroke="#fecaca" stroke-width="0.6" />
+      <text class="vs__tagt" x={x(CORE) + 7} y={Y0 - 2.6} fill="#b91c1c">▼ core update</text>
+      <line x1={x(AIO)} x2={x(AIO)} y1={Y0 - 6} y2={Y1} stroke="#6b7280" stroke-width="0.9" stroke-dasharray="2 1.5" />
+      <rect x={x(AIO) + 3} y={Y0 - 12} width="68" height="13" fill="#fff" stroke="#e5e7eb" stroke-width="0.6" />
+      <text class="vs__tagt" x={x(AIO) + 7} y={Y0 - 2.6} fill="#4b5563">AI Overviews</text>
+    </svg>
+  </span>
+
+  <span class="vs__foot">
+    <span>ga4.html</span>
+    <span>one file · no dependencies · MIT</span>
+  </span>
+</a>
+
+<style>
+  .vs {
+    --text: #111827;
+    --text2: #6b7280;
+    --border: #e5e7eb;
+    --subtle: #f9fafb;
+    --accent: #2563eb;
+    --shadow: #2563eb; /* the dashboard's accent */
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    padding: 20px 22px;
+    background: #fff;
+    border: 2px solid var(--color-ink);
+    box-shadow: 6px 6px 0 var(--shadow);
+    color: var(--text2);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+  .vs:hover,
+  .vs:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--shadow);
+  }
+  .vs:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .vs__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .vs__mark {
+    flex: none;
+  }
+  .vs__wm {
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .vs__out {
+    margin-left: auto;
+    color: #9ca3af;
+    transition: color 0.18s ease, transform 0.18s ease;
+  }
+  .vs:hover .vs__out,
+  .vs:focus-visible .vs__out {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+  }
+  .vs__tag {
+    margin-top: -4px;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: #374151;
+  }
+
+  /* the dashboard card */
+  .vs__panel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: auto;
+    padding: 10px 12px 6px;
+    background: var(--subtle);
+    border: 1px solid var(--border);
+  }
+  .vs__ph {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+  }
+  .vs__pt {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .vs__legend {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.68rem;
+    color: var(--text2);
+  }
+  .vs__key {
+    display: inline-block;
+    width: 12px;
+    height: 0;
+    margin-left: 6px;
+    border-top: 2px solid;
+  }
+  .vs__key--last { border-top: 1.5px dashed #9ca3af; }
+  .vs__key--now { border-color: #93b4f5; }
+  .vs__key--ma { border-color: var(--accent); }
+  .vs__chart {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .vs__ax {
+    font-size: 8.5px;
+    fill: #9ca3af;
+  }
+  .vs__tagt {
+    font-size: 8.5px;
+    font-weight: 600;
+  }
+
+  .vs__foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text2);
+  }
+  .vs__foot span:first-child {
+    color: var(--accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vs,
+    .vs:hover,
+    .vs:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .vs:hover .vs__out {
+      transform: none;
+    }
+  }
+</style>
