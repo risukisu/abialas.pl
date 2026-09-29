@@ -21,7 +21,16 @@
  * guest sticker; the shadow is the statusline's own cyan, toned. The head's
  * mark is the dashboard's gutter: four cells, cyan to mint.
  */
-const ART = { w: 380, h: 137 }; // the strip's own size
+// `wide`: for a slot ~700px+ wide (the /projects bento), the 96-column strip
+// with the sync age and repo link; phones still get the 52-column one.
+export interface Props {
+  wide?: boolean;
+}
+const { wide = false } = Astro.props;
+const NARROW = { src: "/tiles/statusline-narrow.svg", w: 380, h: 137 }; // tile.js --layout narrow
+const WIDE = { src: "/tiles/statusline-wide.svg", w: 654, h: 152 }; // tile.js --layout wide
+const ART = wide ? WIDE : NARROW;
+const alt = "The status line acting out its four lines: the context bar fills and turns red with a /compact hint, a rate-limit bar shows overspend past the clock notch, git counts tick up to the pull request, and a fox says its line.";
 ---
 <a href="https://github.com/risukisu/claude-code-statusline" class="sl" rel="me">
   <span class="sl__head">
@@ -29,15 +38,10 @@ const ART = { w: 380, h: 137 }; // the strip's own size
     <span class="sl__wm">claude-code-statusline</span>
     <span class="sl__out" aria-hidden="true">↗</span>
   </span>
-  <img
-    class="sl__art"
-    src="/tiles/statusline-narrow.svg"
-    width={ART.w}
-    height={ART.h}
-    loading="lazy"
-    decoding="async"
-    alt="The status line acting out its four lines: the context bar fills and turns red with a /compact hint, a rate-limit bar shows overspend past the clock notch, git counts tick up to the pull request, and a fox says its line."
-  />
+  <picture class="sl__pic">
+    {wide && <source media="(max-width: 720px)" srcset={NARROW.src} width={NARROW.w} height={NARROW.h} />}
+    <img class="sl__art" src={ART.src} width={ART.w} height={ART.h} loading="lazy" decoding="async" alt={alt} />
+  </picture>
 </a>
 
 <style define:vars={{ artw: `${ART.w}px` }}>
@@ -122,12 +126,21 @@ const ART = { w: 380, h: 137 }; // the strip's own size
   }
 
   /* on the tile's floor, never past its own size */
+  .sl__pic {
+    display: block;
+    margin-top: auto;
+    min-width: 0;
+  }
   .sl__art {
     display: block;
     width: 100%;
     max-width: var(--artw);
     height: auto;
-    margin-top: auto;
+  }
+  @media (max-width: 720px) {
+    .sl__art {
+      max-width: 380px;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

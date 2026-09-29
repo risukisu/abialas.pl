@@ -19,7 +19,7 @@
  */
 export type Link = { label: "site" | "repo" | "read" | "play"; href: string };
 
-export type TileKey = "marketing-skills" | "marketing-skills-repo" | "statusline" | "roguelike" | "skillcraft" | "blog" | "grug";
+export type TileKey = "marketing-skills" | "marketing-skills-repo" | "statusline" | "ci-agent" | "roguelike" | "skillcraft" | "blog" | "grug" | "abialas";
 
 export type Project = {
   name: string;
@@ -71,7 +71,7 @@ export const groups: Group[] = [
         updated: "2026-09-28",
         hue: "#0e8fa6",
         tile: "statusline",
-        span: 2,
+        span: 4,
       },
       {
         name: "ci-agent",
@@ -80,8 +80,9 @@ export const groups: Group[] = [
         links: [gh("ci-agent")],
         stack: "JavaScript",
         updated: "2026-09-11",
-        hue: "#2257d6",
-        span: 4,
+        hue: "#5b4fcf",
+        tile: "ci-agent",
+        span: 2,
       },
     ],
   },
@@ -136,6 +137,7 @@ export const groups: Group[] = [
         stack: "Astro",
         updated: "2026-09-29",
         hue: "#15324e",
+        tile: "abialas",
         span: 2,
       },
     ],

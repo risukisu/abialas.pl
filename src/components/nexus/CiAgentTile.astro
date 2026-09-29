@@ -1,0 +1,361 @@
+---
+/**
+ * CiAgentTile — ci-agent, the competitive intelligence agent (MOCKUP for
+ * /projects, owner 2026-09-29).
+ *
+ * Kit: the tool's own report header (templates/report.html in the ci-agent
+ * repo): the indigo night gradient #0f0c29 → #302b63 → #24243e with the
+ * #00d2ff cyan accent, and its change markers (new / changed / removed) in
+ * green, yellow, and red, brightened for a dark ground.
+ *
+ * Motion (choreographed, 4 beats x 2.5s = 10s): the tool's own pipeline,
+ * acted out on a sample competitor, "rival.com" (a demo, not a real site):
+ *   1 pages   a scan line runs down the homepage; the nav links it follows
+ *             light up; the pages it found list on the right
+ *   2 ads     the LinkedIn and Google ad libraries, ads popping in
+ *   3 diff    the headline is struck and rewritten, a new nav item appears;
+ *             the changes list on the right, with their markers
+ *   4 report  the report builds on the right: its gradient header, then the
+ *             comparison table cell by cell, then the PDF stamp
+ * The readout under the art names the step. Pauses offscreen; reduced motion
+ * shows the finished report.
+ */
+const HREF = "https://github.com/risukisu/ci-agent";
+const HOLD = 2.5;
+const BEATS = 4;
+const LOOP = HOLD * BEATS;
+const FI = 0.12, FO = 0.14;
+
+// Per-piece keyframes: piece of beat b, on from t0 s into the beat until t1
+// (default: the beat's end). Built here so every piece gets its own window.
+const kf = new Map<string, string>();
+const pc = (t: number) => `${((t / LOOP) * 100).toFixed(2)}%`;
+function on(b: number, t0: number, t1 = HOLD - 0.02) {
+  const a = b * HOLD + t0, z = b * HOLD + t1;
+  const name = `ci-w${Math.round(a * 100)}-${Math.round(z * 100)}`;
+  if (!kf.has(name)) kf.set(name, `@keyframes ${name}{0%,${pc(a)}{opacity:0}${pc(a + FI)},${pc(z - FO)}{opacity:1}${pc(z)},100%{opacity:0}}`);
+  return `animation-name:${name}`;
+}
+// Same window, and the piece grows in from the left over `dur`.
+function grow(b: number, t0: number, dur: number, t1 = HOLD - 0.02) {
+  const a = b * HOLD + t0, z = b * HOLD + t1;
+  const name = `ci-g${Math.round(a * 100)}-${Math.round(dur * 100)}-${Math.round(z * 100)}`;
+  if (!kf.has(name)) kf.set(name, `@keyframes ${name}{0%,${pc(a)}{opacity:0;transform:scaleX(0)}${pc(a + 0.04)}{opacity:1}${pc(a + dur)},${pc(z - FO)}{opacity:1;transform:scaleX(1)}${pc(z)},100%{opacity:0;transform:scaleX(1)}}`);
+  return `animation-name:${name}`;
+}
+
+// the sample page (left) and the right column
+const P = { x: 0, y: 0, w: 132, h: 112 };
+const R = { x: 144, w: 178 };
+const NAV = [34, 58, 82, 106]; // nav item x positions
+const PAGES = ["/", "/services", "/case-studies", "/about", "sitemap.xml  +3"];
+const CHANGES: [string, string, string][] = [
+  ["+", "new service page", "#5fe0a0"],
+  ["~", "headline rewritten", "#ffd166"],
+  ["+", "3 new LinkedIn ads", "#5fe0a0"],
+  ["−", "pricing page gone", "#ff7b8a"],
+];
+const ROWS = ["positioning", "services", "google ads", "linkedin ads"];
+const LINES: [string, string][] = [
+  ["pages", "homepage + subpages, nav + sitemap"],
+  ["ads", "the LinkedIn and Google ad libraries"],
+  ["diff", "what changed since the last run"],
+  ["report", "markdown + a branded PDF"],
+];
+
+const css = () => [...kf.values()].join("");
+---
+<a href={HREF} class="ci" rel="me" data-ci>
+  <span class="ci__head">
+    <svg class="ci__mark" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+      <circle cx="8" cy="8" r="6.5" fill="none" stroke="#00d2ff" stroke-width="1.5" />
+      <path d="M8 0v4M8 12v4M0 8h4M12 8h4" stroke="#00d2ff" stroke-width="1.5" />
+      <circle cx="8" cy="8" r="1.6" fill="#00d2ff" />
+    </svg>
+    <span class="ci__wm">ci-agent</span>
+    <span class="ci__out" aria-hidden="true">↗</span>
+  </span>
+  <span class="ci__tag">Monitors your competitors automatically.</span>
+
+  <svg class="ci__art" viewBox="0 0 322 112" aria-hidden="true">
+    <!-- the sample homepage, at rest -->
+    <rect x="0.5" y="0.5" width={P.w - 1} height={P.h - 1} fill="#1b1840" stroke="#3d3780" />
+    <rect x="1" y="1" width={P.w - 2} height="11" fill="#141132" />
+    <circle cx="7" cy="6.5" r="1.6" fill="#3d3780" /><circle cx="12" cy="6.5" r="1.6" fill="#3d3780" />
+    <text class="ci__url" x="19" y="9">rival.com</text>
+    <rect x="8" y="18" width="16" height="5" fill="#4a44a0" />
+    {NAV.map((x) => <rect x={x} y="19" width="18" height="3" fill="#4a44a0" />)}
+    <rect class="ci__h1" x="8" y="32" width="96" height="7" fill="#cfcaf5" />
+    <rect x="8" y="44" width="78" height="3" fill="#6f69c2" />
+    <rect x="8" y="50" width="62" height="3" fill="#6f69c2" />
+    <rect x="8" y="58" width="28" height="7" fill="#00a9cf" />
+    {[8, 48, 88].map((x) => <rect x={x} y="74" width="36" height="30" fill="#252060" />)}
+
+    <!-- the right column, at rest: faint lines so it reads in any frame -->
+    <rect x={R.x + 0.5} y="0.5" width={R.w - 1} height={P.h - 1} fill="#15123a" stroke="#2b2766" />
+    {[16, 36, 56, 76, 96].map((y) => <rect x={R.x + 12} y={y} width={R.w - 40} height="2" fill="#221e52" />)}
+
+    <!-- 1 · pages: the scan runs down, the nav links light, the pages list -->
+    <g class="ci__sweep">
+      <rect x="1" y="14" width={P.w - 2} height="8" fill="#00d2ff" opacity="0.12" />
+      <rect x="1" y="21" width={P.w - 2} height="1" fill="#00d2ff" />
+    </g>
+    {NAV.map((x, i) => <rect class="ci-a" style={on(0, 0.35 + i * 0.12)} x={x} y="19" width="18" height="3" fill="#00d2ff" />)}
+    {PAGES.map((p, i) => (
+      <g class="ci-a" style={on(0, 0.55 + i * 0.2)}>
+        <rect x={R.x + 10} y={12 + i * 20} width="4" height="4" fill="#00d2ff" />
+        <text class="ci__t" x={R.x + 20} y={16 + i * 20}>{p}</text>
+      </g>
+    ))}
+
+    <!-- 2 · ads: the two libraries, ads popping in -->
+    {[["LinkedIn ad library", 0.2, 4], ["Google ads transparency", 0.4, 3]].map(([label, t, n], k) => (
+      <g>
+        <g class="ci-a" style={on(1, t as number)}>
+          <rect x={R.x + 6} y={6 + k * 53} width={R.w - 12} height="47" fill="#1f1b4d" stroke="#3d3780" />
+          <text class="ci__t ci__t--dim" x={R.x + 12} y={17 + k * 53}>{label}</text>
+        </g>
+        {Array.from({ length: n as number }, (_, j) => (
+          <g class="ci-a" style={on(1, (t as number) + 0.3 + j * 0.16)}>
+            <rect x={R.x + 12 + j * 38} y={23 + k * 53} width="32" height="24" fill="#2e2870" />
+            <rect x={R.x + 15 + j * 38} y={27 + k * 53} width="18" height="3" fill="#00d2ff" />
+            <rect x={R.x + 15 + j * 38} y={33 + k * 53} width="24" height="2" fill="#8b87c9" />
+            <rect x={R.x + 15 + j * 38} y={38 + k * 53} width="14" height="2" fill="#8b87c9" />
+          </g>
+        ))}
+      </g>
+    ))}
+
+    <!-- 3 · diff: the headline is struck and rewritten, a new nav item; the list -->
+    <rect class="ci-a" style={on(2, 0.25)} x="6" y="35" width="100" height="1.5" fill="#ff7b8a" />
+    <rect class="ci-a ci-grow" style={grow(2, 0.6, 0.4)} x="8" y="32" width="84" height="7" fill="#5fe0a0" />
+    <g class="ci-a" style={on(2, 1.0)}>
+      <rect x="112" y="18" width="14" height="5" fill="#5fe0a0" />
+      <text class="ci__t ci__t--ink" x="119" y="22.3" text-anchor="middle">+</text>
+    </g>
+    {CHANGES.map(([m, label, c], i) => (
+      <g class="ci-a" style={on(2, 0.9 + i * 0.28)}>
+        <rect x={R.x + 10} y={9 + i * 25} width="12" height="12" fill={c} opacity="0.18" />
+        <text class="ci__t" x={R.x + 16} y={18 + i * 25} text-anchor="middle" fill={c}>{m}</text>
+        <text class="ci__t" x={R.x + 28} y={18 + i * 25}>{label}</text>
+      </g>
+    ))}
+
+    <!-- 4 · report: header, the comparison table, the PDF stamp -->
+    <defs>
+      <linearGradient id="ci-night" x1="0" x2="1">
+        <stop offset="0" stop-color="#0f0c29" />
+        <stop offset="0.6" stop-color="#302b63" />
+        <stop offset="1" stop-color="#24243e" />
+      </linearGradient>
+    </defs>
+    <g class="ci-a ci-final" style={on(3, 0.15)}>
+      <rect x={R.x + 4} y="4" width={R.w - 8} height={P.h - 8} fill="#f8f9fa" />
+      <rect x={R.x + 4} y="4" width={R.w - 8} height="20" fill="url(#ci-night)" />
+      <rect x={R.x + 4} y="23" width={R.w - 8} height="1.5" fill="#00d2ff" />
+      <text class="ci__t ci__t--paper" x={R.x + 10} y="16">CI report</text>
+      <text class="ci__t ci__t--cyan" x={R.x + R.w - 10} y="16" text-anchor="end">2026-09-29</text>
+      {["you", "rival", "rival-b"].map((h, j) => (
+        <text class="ci__t ci__t--ink" x={R.x + 74 + j * 32} y="36">{h}</text>
+      ))}
+      {ROWS.map((r, i) => (
+        <>
+          <rect x={R.x + 10} y={40 + i * 14} width={R.w - 20} height="1" fill="#dee2e6" />
+          <text class="ci__t ci__t--row" x={R.x + 10} y={49 + i * 14}>{r}</text>
+        </>
+      ))}
+    </g>
+    {ROWS.flatMap((_, i) => [0, 1, 2].map((j) => (
+      <rect class="ci-a ci-final" style={on(3, 0.45 + (i * 3 + j) * 0.07)} x={R.x + 74 + j * 32} y={45 + i * 14} width={[22, 16, 26, 12][(i + j) % 4]} height="4" fill={j === 0 ? "#302b63" : "#00a9cf"} />
+    )))}
+    <g class="ci-a ci-final" style={on(3, 1.5)}>
+      <rect x={R.x + R.w - 42} y={P.h - 19} width="32" height="12" fill="none" stroke="#e5484d" stroke-width="1.5" transform={`rotate(-6 ${R.x + R.w - 26} ${P.h - 13})`} />
+      <text class="ci__t ci__stamp" x={R.x + R.w - 26} y={P.h - 10.5} text-anchor="middle" transform={`rotate(-6 ${R.x + R.w - 26} ${P.h - 13})`}>PDF</text>
+    </g>
+  </svg>
+
+  <span class="ci__readout" aria-hidden="true">
+    {LINES.map(([k, t], i) => (
+      <span class="ci__line" style={`--i:${i}`}><span class="ci__k">{k}</span> {t}</span>
+    ))}
+  </span>
+  <span class="ci__sr">ci-agent scans a competitor's homepage and subpages, checks the LinkedIn and Google ad libraries, lists what changed since the last run, and writes the report.</span>
+</a>
+
+<style is:inline set:html={css()}></style>
+
+<script>
+  // Nonessential loop: pause when the tile is offscreen or the tab hides.
+  const tile = document.querySelector<HTMLElement>("[data-ci]");
+  if (tile && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(([e]) => tile.toggleAttribute("data-idle", !e.isIntersecting), { threshold: 0.05 });
+    io.observe(tile);
+    document.addEventListener("visibilitychange", () => tile.toggleAttribute("data-idle", document.hidden));
+  }
+</script>
+
+<style define:vars={{ hold: `${HOLD}s`, loop: `${LOOP}s` }}>
+  .ci {
+    --shadow: #5b4fcf; /* the report's indigo, lifted */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    padding: 20px 22px;
+    background: linear-gradient(135deg, #0f0c29, #302b63 62%, #24243e);
+    border: 2px solid var(--color-ink);
+    box-shadow: 6px 6px 0 var(--shadow);
+    color: #b9b5ea;
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+  .ci:hover,
+  .ci:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--shadow);
+  }
+  .ci:focus-visible {
+    outline: 2px solid #00d2ff;
+    outline-offset: 3px;
+  }
+  .ci__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ci__mark {
+    flex: none;
+  }
+  .ci__wm {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: #f4f3ff;
+  }
+  .ci__out {
+    margin-left: auto;
+    color: #8b87c9;
+    transition: color 0.18s ease, transform 0.18s ease;
+  }
+  .ci:hover .ci__out,
+  .ci:focus-visible .ci__out {
+    color: #00d2ff;
+    transform: translate(2px, -2px);
+  }
+  .ci__tag {
+    margin-top: -4px;
+    font-size: 0.92rem;
+    line-height: 1.4;
+  }
+  .ci__art {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: auto;
+  }
+  .ci__url,
+  .ci__t {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    fill: #d9d6fb;
+  }
+  .ci__url { fill: #8b87c9; }
+  .ci__t--dim { fill: #8b87c9; }
+  .ci__t--ink { fill: #0f0c29; font-weight: 600; }
+  .ci__t--paper { fill: #fff; font-weight: 600; font-size: 8px; }
+  .ci__t--cyan { fill: #00d2ff; }
+  .ci__t--row { fill: #495057; }
+  .ci__stamp { fill: #e5484d; font-weight: 700; font-size: 8px; }
+
+  /* the readout: one step at a time, the step's name in cyan */
+  .ci__readout {
+    display: grid;
+    padding-top: 8px;
+    border-top: 1px solid #3d3780;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    line-height: 1.5;
+    color: #e8e6ff;
+  }
+  .ci__line {
+    grid-area: 1 / 1;
+    opacity: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    animation: ci-say var(--loop) linear infinite;
+    animation-delay: calc(var(--i) * var(--hold));
+  }
+  .ci__k {
+    color: #00d2ff;
+  }
+  @keyframes ci-say {
+    0% { opacity: 0; }
+    1% { opacity: 1; }
+    23.6% { opacity: 1; }
+    25% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* every choreographed piece: hidden until its window (inline animation-name) */
+  .ci-a {
+    opacity: 0;
+    animation-duration: var(--loop);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  .ci-grow {
+    transform-box: fill-box;
+    transform-origin: left;
+  }
+  .ci__sweep {
+    opacity: 0;
+    animation: ci-sweep var(--loop) linear infinite;
+  }
+  @keyframes ci-sweep {
+    0%, 2% { opacity: 0; transform: translateY(0); }
+    3% { opacity: 1; transform: translateY(2px); }
+    16% { opacity: 1; transform: translateY(86px); }
+    17.5%, 100% { opacity: 0; transform: translateY(86px); }
+  }
+
+  .ci__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .ci[data-idle] *,
+  .ci[data-idle] :global(*) {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ci,
+    .ci:hover,
+    .ci:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .ci:hover .ci__out,
+    .ci:focus-visible .ci__out {
+      transform: none;
+    }
+    /* the finished report, still */
+    .ci *,
+    .ci :global(*) {
+      animation: none !important;
+    }
+    .ci-a { opacity: 0; }
+    .ci-a.ci-final { opacity: 1; }
+    .ci__line { opacity: 0; }
+    .ci__line[style^="--i:3"] { opacity: 1; }
+  }
+</style>

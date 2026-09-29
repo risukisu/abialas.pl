@@ -24,13 +24,17 @@ import MarketingSkillsRepoTile from "../components/nexus/MarketingSkillsRepoTile
 import StatuslineTile from "../components/nexus/StatuslineTile.astro";
 import RoguelikeTile from "../components/nexus/RoguelikeTile.astro";
 import ProjectTile from "../components/nexus/ProjectTile.astro";
+import CiAgentTile from "../components/nexus/CiAgentTile.astro";
+import AbialasTile from "../components/nexus/AbialasTile.astro";
 import { groups, type TileKey } from "../data/projects";
 import { follow } from "../data/nexus";
 
 const TILES: Record<TileKey, { C: any; props?: Record<string, unknown> }> = {
   "marketing-skills": { C: MarketingSkillsTile },
   "marketing-skills-repo": { C: MarketingSkillsRepoTile },
-  statusline: { C: StatuslineTile },
+  statusline: { C: StatuslineTile, props: { wide: true } },
+  "ci-agent": { C: CiAgentTile },
+  abialas: { C: AbialasTile },
   roguelike: { C: RoguelikeTile },
   skillcraft: { C: SkillCraftTile },
   blog: { C: NexusBox, props: { ...follow[0], size: "md" } },
