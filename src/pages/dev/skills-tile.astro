@@ -3,6 +3,10 @@
 // shared by link with friends for feedback (2026-09-28), plus the star
 // chart they replaced, kept to look back at. The keyboard went live the
 // same day. Noindexed, out of the sitemap, linked only from /dev/.
+// Assets (2026-09-29): square GIFs of the tile for a LinkedIn post, built
+// by scripts/skills-gifs/make.py into public/dev/skills-tile/.
+import { statSync } from "node:fs";
+import { join } from "node:path";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SkillsArtTile from "../../components/dev/SkillsArtTile.astro";
 import StarChartTile from "../../components/dev/StarChartTile.astro";
@@ -16,6 +20,30 @@ const WORK = [
   "a content hub grows its spokes",
   "five seats each speak, then a verdict",
 ];
+
+// The LinkedIn GIFs; sizes are read off the files at build time.
+const mb = (file: string) =>
+  (statSync(join(process.cwd(), "public", "dev", "skills-tile", file)).size / 1e6).toFixed(1);
+const ASSETS = [
+  {
+    slug: "keys",
+    name: "Keyboard",
+    note: "The live tile's art. The keys light as the command types.",
+    alt: "The marketing-skills tile as a square: the tagline, a readout typing “audit the whole site” into /seo-audit, and a keyboard whose keys light in the command's colour.",
+  },
+  {
+    slug: "work",
+    name: "The work",
+    note: "What each skill hands back, drawn as it builds.",
+    alt: "The marketing-skills tile as a square: the tagline, the readout, and a wireframe of what the skill hands back, such as a page scanned with three problems flagged.",
+  },
+  {
+    slug: "type",
+    name: "Big type",
+    note: "The phrase and the command set large, with all five commands listed under them.",
+    alt: "The marketing-skills tile as a square: the tagline, “audit the whole site” in large type, /seo-audit typing below it, and the five commands listed with the current one lit.",
+  },
+].map((a) => ({ ...a, gif: `/dev/skills-tile/linkedin-${a.slug}.gif`, png: `/dev/skills-tile/linkedin-${a.slug}.png`, size: mb(`linkedin-${a.slug}.gif`) }));
 ---
 <BaseLayout
   title="The work, or the keyboard?"
@@ -64,6 +92,30 @@ const WORK = [
     <h2 class="dv-h2">The star chart</h2>
     <p class="dv-text">What the tile showed on 28 September 2026 until the keyboard replaced it: one small constellation per skill, drawn after what it does, lit in the command's colour.</p>
     <div class="dv-exhibit"><StarChartTile /></div>
+  </section>
+
+  <section class="container dv-opt" id="assets">
+    <p class="measure">Assets</p>
+    <h2 class="dv-h2">GIFs for LinkedIn</h2>
+    <p class="dv-text">
+      Square GIFs of the tile, to post the library with. Each is 1080 × 1080 and runs the same
+      <span class="dv-nw">{LOOP}-second</span> loop. Open one to see it full size, or save the GIF or a still from the links.
+    </p>
+    <div class="dv-assets">
+      {ASSETS.map((a) => (
+        <figure class="dv-asset">
+          <a href={a.gif}><img src={a.gif} width="1080" height="1080" alt={a.alt} loading="lazy" decoding="async" /></a>
+          <figcaption>
+            <span class="dv-asset__name">{a.name}</span>
+            <span>{a.note}</span>
+            <span class="dv-asset__links">
+              <a href={a.gif} download>GIF · {a.size} MB</a>
+              <a href={a.png} download>PNG still</a>
+            </span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
   </section>
 
   <div class="container dv-close">
@@ -126,6 +178,7 @@ const WORK = [
   }
 
   .dv-opt {
+    scroll-margin-top: 80px; /* clear the sticky header on #anchors */
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -179,6 +232,54 @@ const WORK = [
     height: 9px;
     flex: none;
     background: var(--c);
+  }
+
+  .dv-nw {
+    white-space: nowrap;
+  }
+  .dv-assets {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 28px;
+    margin-top: 8px;
+  }
+  .dv-asset {
+    display: grid;
+    align-content: start;
+    gap: 12px;
+    margin: 0;
+  }
+  .dv-asset img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 2px solid var(--color-ink);
+  }
+  .dv-asset figcaption {
+    display: grid;
+    gap: 4px;
+    color: var(--color-body);
+  }
+  .dv-asset__name {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    color: var(--color-ink);
+  }
+  .dv-asset__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    margin-top: 4px;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+  }
+  .dv-asset__links a {
+    color: var(--color-ink);
+    text-decoration-color: var(--color-accent);
+    text-underline-offset: 3px;
+  }
+  .dv-asset__links a:hover {
+    color: var(--color-accent);
   }
 
   .dv-close {

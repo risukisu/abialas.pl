@@ -29,6 +29,18 @@ test("/dev/skills-tile shows both options, noindexed", async ({ page }) => {
   await expect(page.locator("a[data-msk-chart] svg.msk__cst")).toBeVisible(); // the star chart, archived
 });
 
+test("/dev/skills-tile offers the three LinkedIn GIFs", async ({ page }) => {
+  await page.goto("/dev/skills-tile/#assets");
+  const gifs = page.locator("#assets .dv-asset img");
+  await expect(gifs).toHaveCount(3);
+  for (const slug of ["keys", "work", "type"]) {
+    for (const ext of ["gif", "png"]) {
+      const res = await page.request.get(`/dev/skills-tile/linkedin-${slug}.${ext}`);
+      expect(res.status()).toBe(200);
+    }
+  }
+});
+
 test("no /dev page is in the sitemap or linked from home", async ({ page, request }) => {
   const index = await (await request.get("/sitemap-index.xml")).text();
   const maps = [...index.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname);
