@@ -11,7 +11,8 @@
  * - the square motif: category head, cursor, connector, dot grid (1.4px)
  * - three category hues used only to mark a category (green / amber / blue)
  * - copy is the library's own: "you say → it runs" prompt/command pairs
- *   lifted verbatim from brand/source/hero.html; tagline = the site's h1
+ *   lifted verbatim from brand/source/hero.html; tagline = owner's copy
+ *   (2026-09-29), with "marketing skills" in bold
  *
  * The art is a keyboard (owner's pick 2026-09-28, after the star chart;
  * both earlier arts are archived on /dev/skills-tile/): kit Panel keys on
@@ -76,7 +77,7 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
       <span class="msk__wm">marketing-skills</span>
       <span class="msk__out" aria-hidden="true">↗</span>
     </span>
-    <span class="msk__tag">A working marketer’s skill library for Claude&nbsp;Code.</span>
+    <span class="msk__tag">A curated library of <strong>marketing skills</strong> for <span class="msk__nw">high-performing</span> AI&nbsp;operators</span>
 
     <!-- the readout: you say → it runs -->
     <span class="msk__readout" aria-hidden="true">
@@ -228,6 +229,13 @@ const hits = PAIRS.flatMap(([, run, c], i) => [
     line-height: 1.45;
     color: var(--muted);
     max-width: 38ch;
+  }
+  .msk__tag strong {
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .msk__nw {
+    white-space: nowrap;
   }
 
   /* ── readout ───────────────────────────────────────────────────── */

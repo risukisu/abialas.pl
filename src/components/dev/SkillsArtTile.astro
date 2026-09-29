@@ -17,7 +17,7 @@
  *           into a clean pulse train while the command types. SMIL (path
  *           morph), kept in step with the CSS by pausing both together.
  */
-import { PAIRS, HOLD, LOOP, TAGLINE, SR } from "./skillsData";
+import { PAIRS, HOLD, LOOP, SR } from "./skillsData";
 
 interface Props {
   art: "scope" | "work" | "keys";
@@ -120,7 +120,7 @@ const bars = (spec: [number, number, number][], h = 3) => spec.map(([x, y, w]) =
       <span class="msk__wm">marketing-skills</span>
       <span class="msk__out" aria-hidden="true">↗</span>
     </span>
-    <span class="msk__tag">{TAGLINE}</span>
+    <span class="msk__tag">A curated library of <strong>marketing skills</strong> for <span class="msk__nw">high-performing</span> AI&nbsp;operators</span>
 
     <span class="msk__readout" aria-hidden="true">
       <span class="msk__k">you say</span>
@@ -420,6 +420,13 @@ const bars = (spec: [number, number, number][], h = 3) => spec.map(([x, y, w]) =
     line-height: 1.45;
     color: var(--muted);
     max-width: 38ch;
+  }
+  .msk__tag strong {
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .msk__nw {
+    white-space: nowrap;
   }
   .msk__readout {
     display: grid;

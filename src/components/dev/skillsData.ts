@@ -12,5 +12,4 @@ export const PAIRS: [string, string, string][] = [
 ];
 export const HOLD = 2.6; // s each pair stays
 export const LOOP = PAIRS.length * HOLD;
-export const TAGLINE = "A working marketer’s skill library for Claude Code.";
 export const SR = "You say “audit the whole site”, it runs /seo-audit — and four more pairs like it.";
