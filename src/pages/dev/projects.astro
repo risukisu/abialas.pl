@@ -1,7 +1,7 @@
 ---
 /**
- * /projects — MOCKUP (owner, 2026-09-29; localhost only, branch
- * mockup/projects-page). Every builder project as a tile, in the home page's
+ * /dev/projects — MOCKUP (owner, 2026-09-29), parked in the /dev corner until
+ * the owner comes back to it. Every builder project as a tile, in the home page's
  * bento dialect; the home Building row is the featured cut of this page.
  *
  * - A filter picker at the top: All, or one category. Without script every
@@ -12,25 +12,26 @@
  *   src/data/projects.ts. Projects with their own tile use it; the rest get
  *   the plain ProjectTile.
  *
- * Noindexed while it's a mockup. Nothing links here yet; the home page's
- * "all projects ↗" still points at github.com/risukisu.
+ * Noindexed and out of the sitemap like the rest of /dev; only the /dev index
+ * links here. The home page's "all projects ↗" still points at
+ * github.com/risukisu.
  */
-import BaseLayout from "../layouts/BaseLayout.astro";
-import NexusBox from "../components/nexus/NexusBox.astro";
-import GrugTile from "../components/nexus/GrugTile.astro";
-import SkillCraftTile from "../components/nexus/SkillCraftTile.astro";
-import MarketingSkillsTile from "../components/nexus/MarketingSkillsTile.astro";
-import MarketingSkillsRepoTile from "../components/nexus/MarketingSkillsRepoTile.astro";
-import StatuslineTile from "../components/nexus/StatuslineTile.astro";
-import RoguelikeTile from "../components/nexus/RoguelikeTile.astro";
-import ProjectTile from "../components/nexus/ProjectTile.astro";
-import CiAgentTile from "../components/nexus/CiAgentTile.astro";
-import AbialasTile from "../components/nexus/AbialasTile.astro";
-import GrugManifestoTile from "../components/nexus/GrugManifestoTile.astro";
-import VanillaStatsTile from "../components/nexus/VanillaStatsTile.astro";
-import CampfireTile from "../components/nexus/CampfireTile.astro";
-import { groups, type TileKey } from "../data/projects";
-import { follow } from "../data/nexus";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NexusBox from "../../components/nexus/NexusBox.astro";
+import GrugTile from "../../components/nexus/GrugTile.astro";
+import SkillCraftTile from "../../components/nexus/SkillCraftTile.astro";
+import MarketingSkillsTile from "../../components/nexus/MarketingSkillsTile.astro";
+import MarketingSkillsRepoTile from "../../components/nexus/MarketingSkillsRepoTile.astro";
+import StatuslineTile from "../../components/nexus/StatuslineTile.astro";
+import RoguelikeTile from "../../components/nexus/RoguelikeTile.astro";
+import ProjectTile from "../../components/nexus/ProjectTile.astro";
+import CiAgentTile from "../../components/nexus/CiAgentTile.astro";
+import AbialasTile from "../../components/nexus/AbialasTile.astro";
+import GrugManifestoTile from "../../components/nexus/GrugManifestoTile.astro";
+import VanillaStatsTile from "../../components/nexus/VanillaStatsTile.astro";
+import CampfireTile from "../../components/nexus/CampfireTile.astro";
+import { groups, type TileKey } from "../../data/projects";
+import { follow } from "../../data/nexus";
 
 const TILES: Record<TileKey, { C: any; props?: Record<string, unknown> }> = {
   "marketing-skills": { C: MarketingSkillsTile },
@@ -55,7 +56,7 @@ const TILES: Record<TileKey, { C: any; props?: Record<string, unknown> }> = {
   <header class="pj-head">
     <div class="pj-head__grid blueprint" aria-hidden="true"></div>
     <div class="container pj-head__inner">
-      <p class="measure">abialas.pl / projects · mockup</p>
+      <p class="measure">abialas.pl/dev · projects mockup</p>
       <h1 class="pj-title">Projects</h1>
       <p class="pj-lead">
         Everything I'm building, in one place. The home page shows a few of these; here is all of it,

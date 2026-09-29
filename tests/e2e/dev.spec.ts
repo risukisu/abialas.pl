@@ -9,6 +9,7 @@ test("/dev lists the shared pages and is noindexed", async ({ page }) => {
   await expect(page.locator("meta[name='robots']")).toHaveAttribute("content", "noindex");
   await expect(page.locator("main a[href='/dev/skills-tile/']")).toBeVisible();
   await expect(page.locator("main a[href='/dev/foil-cards/']")).toBeVisible();
+  await expect(page.locator("main a[href='/dev/projects/']")).toBeVisible();
 });
 
 test("/dev/foil-cards shows the pixel quest foil, noindexed", async ({ page }) => {
