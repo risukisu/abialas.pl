@@ -1,34 +1,45 @@
 /**
- * /projects — what I'm building, in public. MOCKUP (2026-09-29, localhost).
+ * /projects — every builder project, as tiles. MOCKUP (2026-09-29, localhost).
+ * The home page's Building row is the featured cut of this list.
  *
  * Sources, so nothing here is invented: each `line` is the repo's own GitHub
- * description (lightly edited) or the copy its home tile already uses; `status`
- * is the latest GitHub release tag, or "live" for a site that answered 200 on
- * 2026-09-29; `updated` is the repo's last push per `gh repo list risukisu`
- * that day. Only public repos and public sites: private builds (the roguelike,
- * Le System, the family hub) stay off until the owner says otherwise.
+ * description or README (lightly edited), or the copy its tile already uses;
+ * `status` is the latest GitHub release tag, "live" for a site that answered
+ * 200 on 2026-09-29, "playtest" for the r0guelike Pages build, else "repo";
+ * `updated` is the repo's last push per `gh repo list risukisu` that day.
+ * Public repos and public sites only, plus project-r0guelike (private repo,
+ * public playtest build), added at the owner's request.
+ *
+ * `tile` names a project's own tile (the page maps it to the component);
+ * without one it gets the plain ProjectTile. `span` is its width in the
+ * page's 6-column bento.
  *
  * TODO before it ships: read `updated` and `status` from the GitHub API at
  * build (the daily rebuild keeps them fresh) instead of this snapshot.
  */
-export type Link = { label: "site" | "repo" | "read"; href: string };
+export type Link = { label: "site" | "repo" | "read" | "play"; href: string };
+
+export type TileKey = "marketing-skills" | "marketing-skills-repo" | "statusline" | "roguelike" | "skillcraft" | "blog" | "grug";
 
 export type Project = {
   name: string;
   line: string;
-  status: string; // "live", a release tag, or "repo"
+  status: string;
   links: Link[];
   stack?: string;
   updated?: string; // YYYY-MM-DD, last push
-  hue: string; // the shadow hue of its home tile, or a site hue
+  hue: string; // the shadow hue of its tile, or a site hue
+  tile?: TileKey;
+  span: 2 | 3 | 4 | 6;
 };
 
-export type Group = { title: string; note?: string; projects: Project[] };
+export type Group = { id: string; title: string; note?: string; projects: Project[] };
 
 const gh = (repo: string): Link => ({ label: "repo", href: `https://github.com/risukisu/${repo}` });
 
 export const groups: Group[] = [
   {
+    id: "claude-code",
     title: "For Claude Code",
     projects: [
       {
@@ -39,6 +50,17 @@ export const groups: Group[] = [
         stack: "Python",
         updated: "2026-09-28",
         hue: "#2b9d68",
+        tile: "marketing-skills",
+        span: 4,
+      },
+      {
+        name: "marketing-skills repo",
+        line: "The README's two install lines and the license.",
+        status: "v1.1.1",
+        links: [gh("marketing-skills")],
+        hue: "#0e8fa6",
+        tile: "marketing-skills-repo",
+        span: 2,
       },
       {
         name: "claude-code-statusline",
@@ -48,6 +70,8 @@ export const groups: Group[] = [
         stack: "JavaScript",
         updated: "2026-09-28",
         hue: "#0e8fa6",
+        tile: "statusline",
+        span: 2,
       },
       {
         name: "ci-agent",
@@ -57,10 +81,29 @@ export const groups: Group[] = [
         stack: "JavaScript",
         updated: "2026-09-11",
         hue: "#2257d6",
+        span: 4,
       },
     ],
   },
   {
+    id: "games",
+    title: "Games",
+    projects: [
+      {
+        name: "project-r0guelike",
+        line: "A turn-based tile roguelike with an ADOM feel, modernized. Canvas 2D and TypeScript, no engine.",
+        status: "playtest",
+        links: [{ label: "play", href: "https://risukisu.github.io/project-r0guelike/" }],
+        stack: "TypeScript",
+        updated: "2026-09-29",
+        hue: "#b88c51",
+        tile: "roguelike",
+        span: 6,
+      },
+    ],
+  },
+  {
+    id: "sites",
     title: "Sites",
     projects: [
       {
@@ -71,6 +114,8 @@ export const groups: Group[] = [
         stack: "Next.js",
         updated: "2026-09-28",
         hue: "#c2652b",
+        tile: "skillcraft",
+        span: 2,
       },
       {
         name: "risu.pl",
@@ -80,6 +125,8 @@ export const groups: Group[] = [
         stack: "Astro",
         updated: "2026-09-27",
         hue: "#23915a",
+        tile: "blog",
+        span: 2,
       },
       {
         name: "abialas.pl",
@@ -89,10 +136,12 @@ export const groups: Group[] = [
         stack: "Astro",
         updated: "2026-09-29",
         hue: "#15324e",
+        span: 2,
       },
     ],
   },
   {
+    id: "writing",
     title: "Writing",
     projects: [
       {
@@ -102,6 +151,8 @@ export const groups: Group[] = [
         links: [{ label: "read", href: "https://grugbrained.substack.com" }],
         stack: "Substack",
         hue: "#b85a1f",
+        tile: "grug",
+        span: 3,
       },
       {
         name: "Grug manifesto",
@@ -111,10 +162,12 @@ export const groups: Group[] = [
         stack: "HTML",
         updated: "2026-04-06",
         hue: "#b85a1f",
+        span: 3,
       },
     ],
   },
   {
+    id: "tools",
     title: "Small tools",
     projects: [
       {
@@ -125,6 +178,7 @@ export const groups: Group[] = [
         stack: "HTML",
         updated: "2026-08-12",
         hue: "#a5700c",
+        span: 3,
       },
       {
         name: "campfire-api",
@@ -134,10 +188,12 @@ export const groups: Group[] = [
         stack: "JavaScript",
         updated: "2026-08-12",
         hue: "#23915a",
+        span: 3,
       },
     ],
   },
   {
+    id: "earlier",
     title: "Earlier",
     note: "Still public, no longer where the work happens.",
     projects: [
@@ -148,6 +204,7 @@ export const groups: Group[] = [
         links: [gh("marketing_os_public")],
         updated: "2026-04-09",
         hue: "#5f7384",
+        span: 3,
       },
     ],
   },

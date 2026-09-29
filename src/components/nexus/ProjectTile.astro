@@ -1,0 +1,178 @@
+---
+/**
+ * ProjectTile — the plain tile for a project that has no tile of its own yet
+ * (MOCKUP for /projects, 2026-09-29). White plate, 2px ink frame, hard offset
+ * shadow in the project's hue, the home tiles' hover lift. The whole plate
+ * opens the first link (a stretched link); any further link (the repo)
+ * stays clickable on its own. Foot: status · stack · last push.
+ */
+import type { Project } from "../../data/projects";
+
+export interface Props {
+  project: Project;
+}
+const { project: p } = Astro.props;
+const [main, ...rest] = p.links;
+const shown = (href: string) => href.replace(/^https?:\/\//, "").replace(/^github\.com\//, "").replace(/\/$/, "");
+const key = (label: string) => (label === "repo" ? "github" : label);
+---
+<article class="pt" style={`--hue:${p.hue}`}>
+  <div class="pt__top">
+    <span class="pt__sq" aria-hidden="true"></span>
+    <h3 class="pt__name"><a class="pt__main" href={main.href} rel="me">{p.name}</a></h3>
+    <span class="pt__out" aria-hidden="true">↗</span>
+  </div>
+  <p class="pt__line">{p.line}</p>
+  <dl class="pt__links">
+    {p.links.map((l) => (
+      <>
+        <dt>{key(l.label)}</dt>
+        <dd>{l === main ? shown(l.href) : <a class="pt__more" href={l.href} rel="me">{shown(l.href)} <span aria-hidden="true">↗</span></a>}</dd>
+      </>
+    ))}
+  </dl>
+  <p class="pt__meta">
+    <span class={`pt__status${p.status === "live" ? " pt__status--live" : ""}`}>{p.status}</span>
+    {[p.stack, p.updated && `updated ${p.updated}`].filter(Boolean).map((m) => <span>· {m}</span>)}
+  </p>
+</article>
+
+<style>
+  .pt {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    padding: 20px 22px;
+    background: #fff;
+    border: 2px solid var(--color-ink);
+    box-shadow: 4px 4px 0 var(--hue);
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+  .pt:hover,
+  .pt:focus-within {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--hue);
+  }
+  .pt__top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .pt__sq {
+    width: 9px;
+    height: 9px;
+    flex: none;
+    background: var(--hue);
+  }
+  .pt__name {
+    margin: 0;
+    min-width: 0;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .pt__main {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  /* the whole plate opens the main link */
+  .pt__main::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .pt__main:focus-visible {
+    outline: none;
+  }
+  .pt:has(.pt__main:focus-visible) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+  .pt__out {
+    margin-left: auto;
+    color: var(--color-muted);
+    transition: color 0.18s ease, transform 0.18s ease;
+  }
+  .pt:hover .pt__out {
+    color: var(--color-accent);
+    transform: translate(2px, -2px);
+  }
+  .pt__line {
+    margin: 0;
+    max-width: 60ch;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    color: var(--color-body);
+  }
+  /* the marketing-skills readout grammar: a dim key, a value */
+  .pt__links {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 12px;
+    row-gap: 2px;
+    margin: auto 0 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.7;
+  }
+  .pt__links dt {
+    color: var(--color-muted);
+  }
+  .pt__links dd {
+    margin: 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-ink);
+  }
+  /* a second link sits above the stretched one */
+  .pt__more {
+    position: relative;
+    z-index: 1;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .pt__more:hover,
+  .pt__more:focus-visible {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .pt__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--color-muted);
+  }
+  .pt__status {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-ink);
+  }
+  .pt__status--live {
+    color: #297147; /* writing moss, AA text variant */
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pt,
+    .pt:hover,
+    .pt:focus-within {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .pt:hover .pt__out {
+      transform: none;
+    }
+  }
+</style>

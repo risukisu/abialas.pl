@@ -1,0 +1,685 @@
+---
+/**
+ * RoguelikeTile — project-r0guelike, a turn-based tile roguelike (working
+ * title). MOCKUP for /projects (owner, 2026-09-29).
+ *
+ * Visual brief: the owner's "Emberfall" share GIF (_inbox-personal, a pixel
+ * game screen: navy ground, cream pixel type, a gold rule, a dungeon map in a
+ * cornered frame, HP/MP bars, a chronicle log). This is a REDRAW in that
+ * style, not the GIF: every sprite and tile below is drawn here as pixel
+ * rows, so no art-pack pixels are shipped.
+ *
+ * Motion (choreographed, 4 beats x 2.5s = 10s), synced to the chronicle:
+ *   1 "A GOBLIN LURKS."  the goblin fades in out of the dark, its eyes glint;
+ *                         MP refills
+ *   2 "YOU STEP CLOSER." the hero hops two tiles right; the turn ticks
+ *   3 "YOU HIT FOR 19!"  lunge, a slash arc, the goblin flashes and drops,
+ *                         -19 rises, its HP bar empties
+ *   4 "BLADE BURNING."   the blade glows, embers rise, MP drains, the hero
+ *                         steps back to where the loop began
+ * The torches flicker throughout (the one ambient layer). Pauses offscreen;
+ * reduced motion shows the first beat's result, still.
+ */
+import "@fontsource/silkscreen/400.css";
+import "@fontsource/silkscreen/700.css";
+
+const HREF = "https://risukisu.github.io/project-r0guelike/"; // the playtest build on GitHub Pages
+const HOLD = 2.5;
+const LOOP = 4 * HOLD;
+
+const PAL: Record<string, string> = {
+  K: "#0c1017", // outline
+  C: "#f5e7c3", // bone / skin
+  B: "#3f5670", // hood
+  R: "#ac4f4b", // tunic, rug
+  T: "#b88c51", // gold
+  G: "#8bad64", // goblin
+  Y: "#ffce71", // eyes, flame core
+  W: "#514335", // wood, rag
+  S: "#d8dde0", // steel
+  O: "#f39849", // ember
+};
+
+type Run = { x: number; y: number; w: number; c: string };
+// Pixel rows → horizontal runs of one colour ("." is empty). `solid` paints
+// every pixel one colour (the hit flash).
+function runs(rows: string[], ox: number, oy: number, solid?: string): Run[] {
+  const out: Run[] = [];
+  rows.forEach((row, y) => {
+    for (let x = 0; x < row.length; ) {
+      const ch = row[x];
+      if (ch === ".") { x++; continue; }
+      let w = 1;
+      while (row[x + w] === ch || (solid && row[x + w] && row[x + w] !== ".")) w++;
+      out.push({ x: ox + x, y: oy + y, w, c: solid ?? PAL[ch] });
+      x += w;
+    }
+  });
+  return out;
+}
+
+const HERO = [
+  "....KKKK....",
+  "...KBBBBK...",
+  "..KBBBBBBK..",
+  "..KBCCCCBK..",
+  "..KBCKCKBK..",
+  "...KCCCCK...",
+  "..KKRRRRKK..",
+  ".KRKRRRRKRK.",
+  ".KCKRRRRKCK.",
+  "..KKTTTTKK..",
+  "...KBBBBK...",
+  "...KBKKBK...",
+  "...KB..BK...",
+  "...KK..KK...",
+];
+const SWORD = [
+  ".C.",
+  ".S.",
+  ".S.",
+  ".S.",
+  ".S.",
+  ".S.",
+  "TTT",
+  ".W.",
+  ".W.",
+];
+const GOBLIN = [
+  ".K........K.",
+  "KGK......KGK",
+  ".KGKKKKKKGK.",
+  "..KGGGGGGK..",
+  "..KGYGGYGK..",
+  "..KGGGGGGK..",
+  "...KGKKGK...",
+  "..KWWWWWWK..",
+  ".KGKWWWWKGK.",
+  "...KG..GK...",
+  "...KK..KK...",
+];
+const CHEST = [
+  ".KKKKKKKKKK.",
+  "KWWWWWWWWWWK",
+  "KWWWTTTTWWWK",
+  "KKKKTKKTKKKK",
+  "KWWWTTTTWWWK",
+  "KWWWWWWWWWWK",
+  "KWWWWWWWWWWK",
+  ".KKKKKKKKKK.",
+];
+const SKULL = [
+  ".KKKKKK.",
+  "KCCCCCCK",
+  "KCKCCKCK",
+  "KCCCCCCK",
+  ".KCKCKK.",
+  "..KCCK..",
+  "..KKKK..",
+];
+
+// The map: 16 x 5 tiles of 16px, inside a cornered frame. Row 0 is the wall
+// face, rows 1-3 floor, row 4 the ledge; column 15 opens onto the dark.
+const TS = 16, OX = 6, OY = 6, COLS = 16, ROWS = 5;
+const VW = OX * 2 + COLS * TS, VH = OY * 2 + ROWS * TS; // 268 x 92
+const tx = (c: number) => OX + c * TS;
+const ty = (r: number) => OY + r * TS;
+
+const hero = { x: tx(4) + 2, y: ty(2) + 1 }; // steps to columns 5 and 6, then back
+const gob = { x: tx(7) + 2, y: ty(2) + 4 };
+const heroRuns = runs(HERO, 0, 0);
+const swordRuns = runs(SWORD, 9, 1);
+const goblinRuns = runs(GOBLIN, 0, 0);
+const flashRuns = runs(GOBLIN, 0, 0, "#f5e7c3");
+const torches = [2, 7, 12].map((c) => ({ x: tx(c), y: ty(0) }));
+const dirt = [[0, 1], [3, 3], [9, 1], [13, 3]];
+// The slash: a crescent over the goblin, 2px cream with an ember inner edge.
+const SLASH: [number, number][] = [[4, -4], [6, -3], [8, -2], [9, 0], [10, 2], [10, 4], [10, 6], [9, 8], [8, 10], [6, 11], [4, 12]];
+// Embers rise from the blade in beat 4, staggered.
+const EMBERS = [[10, 2], [8, 4], [11, 5], [9, 1], [12, 3], [10, 6]].map(([x, y], i) => ({ x, y, d: (7.8 + i * 0.28).toFixed(2) }));
+
+const LINES = ["A GOBLIN LURKS.", "YOU STEP CLOSER.", "YOU HIT FOR 19!", "BLADE BURNING."];
+---
+<a href={HREF} class="rg" rel="me" data-rg>
+  <span class="rg__body">
+    <span class="rg__head">
+      <span class="rg__spark" aria-hidden="true">✦</span>
+      <span class="rg__wm">project-r0guelike</span>
+      <span class="rg__out" aria-hidden="true">↗</span>
+    </span>
+    <span class="rg__rule" aria-hidden="true"></span>
+    <span class="rg__tag">A turn-based tile roguelike with an ADOM feel, modernized. Canvas&nbsp;2D and TypeScript, no engine.</span>
+
+    <span class="rg__hud" aria-hidden="true">
+      <span class="rg__k">Chronicle</span>
+      <span class="rg__cycle">
+        {LINES.map((l, i) => <span class="rg__line" style={`--i:${i}`}>{l}</span>)}
+      </span>
+      <span class="rg__k rg__k--hp">HP</span>
+      <span class="rg__stat">
+        <span class="rg__bar rg__bar--hp"><i></i></span><span class="rg__n">32/38</span>
+        <span class="rg__k rg__k--mp">MP</span>
+        <span class="rg__bar rg__bar--mp"><i></i></span>
+        <span class="rg__n rg__swap"><span class="rg__mp rg__mp--full">16/16</span><span class="rg__mp rg__mp--low">12/16</span></span>
+      </span>
+    </span>
+    <span class="rg__foot" aria-hidden="true">
+      <span>WASD move · Space attack</span>
+      <span class="rg__turn">Turn <span class="rg__swap">{[585, 586, 587, 588].map((t, i) => <span class={`rg__t rg__t--${i}`}>{t}</span>)}</span></span>
+    </span>
+    <span class="rg__sr">A hero steps up to a goblin in a torch-lit keep, hits it for 19, and their blade catches fire.</span>
+  </span>
+
+  <svg class="rg__map" viewBox={`0 0 ${VW} ${VH}`} width={VW * 2} height={VH * 2} shape-rendering="crispEdges" aria-hidden="true">
+    <defs>
+      <pattern id="rg-floor" width="16" height="16" patternUnits="userSpaceOnUse" x={OX} y={OY}>
+        <rect width="16" height="16" fill="#29323d" />
+        <rect x="15" width="1" height="16" fill="#222a33" />
+        <rect y="15" width="16" height="1" fill="#222a33" />
+        <rect x="1" y="1" width="5" height="1" fill="#303c46" />
+        <rect x="1" y="2" width="1" height="3" fill="#303c46" />
+        <rect x="10" y="9" width="2" height="1" fill="#252d37" />
+      </pattern>
+      <pattern id="rg-wall" width="16" height="16" patternUnits="userSpaceOnUse" x={OX} y={OY}>
+        <rect width="16" height="16" fill="#343a3b" />
+        <rect y="7" width="16" height="1" fill="#232829" />
+        <rect y="15" width="16" height="1" fill="#232829" />
+        <rect x="7" width="1" height="7" fill="#232829" />
+        <rect x="15" y="8" width="1" height="7" fill="#232829" />
+        <rect width="7" height="1" fill="#454c4c" />
+        <rect x="8" width="7" height="1" fill="#454c4c" />
+        <rect y="8" width="15" height="1" fill="#454c4c" />
+      </pattern>
+      <pattern id="rg-dirt" width="16" height="16" patternUnits="userSpaceOnUse" x={OX} y={OY}>
+        <rect width="16" height="16" fill="#514335" />
+        <rect x="15" width="1" height="16" fill="#3a2f25" />
+        <rect y="15" width="16" height="1" fill="#3a2f25" />
+        <rect x="4" y="5" width="2" height="1" fill="#6a5842" />
+        <rect x="11" y="10" width="1" height="1" fill="#6a5842" />
+      </pattern>
+      <radialGradient id="rg-glow">
+        <stop offset="0" stop-color="#ffce71" stop-opacity="0.45" />
+        <stop offset="1" stop-color="#ffce71" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="rg-pool">
+        <stop offset="0" stop-color="#f39849" stop-opacity="0.16" />
+        <stop offset="1" stop-color="#f39849" stop-opacity="0" />
+      </radialGradient>
+      <linearGradient id="rg-dark" x1="0" x2="1">
+        <stop offset="0" stop-color="#0c1017" stop-opacity="0.9" />
+        <stop offset="0.14" stop-color="#0c1017" stop-opacity="0" />
+        <stop offset="0.84" stop-color="#0c1017" stop-opacity="0" />
+        <stop offset="1" stop-color="#0c1017" stop-opacity="0.95" />
+      </linearGradient>
+    </defs>
+
+    <!-- ground: void, floor, dirt, wall face, ledge, the dark doorway -->
+    <rect width={VW} height={VH} fill="#0c1017" />
+    <rect x={tx(0)} y={ty(1)} width={COLS * TS} height={3 * TS} fill="url(#rg-floor)" />
+    {dirt.map(([c, r]) => <rect x={tx(c)} y={ty(r)} width={TS} height={TS} fill="url(#rg-dirt)" />)}
+    <rect x={tx(0)} y={ty(0)} width={COLS * TS} height={TS} fill="url(#rg-wall)" />
+    <rect x={tx(0)} y={ty(4)} width={COLS * TS} height={TS} fill="#1d2226" />
+    <rect x={tx(0)} y={ty(4)} width={COLS * TS} height="2" fill="#343a3b" />
+    <rect x={tx(0)} y={ty(4)} width={COLS * TS} height="1" fill="#454c4c" />
+    <rect x={tx(15)} y={ty(1)} width={TS} height={3 * TS} fill="#0c1017" />
+
+    <!-- a small rug, the stairs down, the chest, a skull -->
+    <rect x={tx(10) + 2} y={ty(3) + 3} width={2 * TS - 4} height={TS - 6} fill="#7a3a37" />
+    <rect x={tx(10) + 3} y={ty(3) + 4} width={2 * TS - 6} height={TS - 8} fill="#231a1e" />
+    <rect x={tx(10) + 5} y={ty(3) + 6} width={2 * TS - 10} height="1" fill="#8a6a3f" />
+    <rect x={tx(10) + 5} y={ty(3) + 9} width={2 * TS - 10} height="1" fill="#8a6a3f" />
+    <rect x={tx(11) - 1} y={ty(3) + 7} width="2" height="2" fill="#b88c51" />
+    {[[2, 3, 12, "#7d8d93"], [3, 6, 10, "#5c6b72"], [4, 9, 8, "#46545b"], [5, 12, 6, "#35434d"]].map(([x, y, w, c]) => (
+      <rect x={tx(14) + (x as number)} y={ty(1) + (y as number)} width={w} height="2" fill={c as string} />
+    ))}
+    {runs(CHEST, tx(12) + 2, ty(1) + 5).map((r) => <rect x={r.x} y={r.y} width={r.w} height="1" fill={r.c} />)}
+    {runs(SKULL, tx(1) + 4, ty(3) + 6).map((r) => <rect x={r.x} y={r.y} width={r.w} height="1" fill={r.c} />)}
+
+    <!-- torches: warm light on the wall and the floor, a two-frame flame -->
+    {torches.map(({ x, y }) => (
+      <g>
+        <ellipse class="rg-pool" cx={x + 8} cy={y + 24} rx="20" ry="8" fill="url(#rg-pool)" />
+        <circle class="rg-glow" cx={x + 8} cy={y + 6} r="13" fill="url(#rg-glow)" />
+        <rect x={x + 7} y={y + 9} width="2" height="5" fill="#514335" />
+        <rect x={x + 6} y={y + 9} width="4" height="1" fill="#3a2f25" />
+        <g class="rg-flame rg-flame--a">
+          <rect x={x + 7} y={y + 3} width="2" height="1" fill="#ffce71" />
+          <rect x={x + 6} y={y + 4} width="4" height="3" fill="#f39849" />
+          <rect x={x + 7} y={y + 4} width="2" height="3" fill="#ffce71" />
+          <rect x={x + 7} y={y + 7} width="2" height="2" fill="#f39849" />
+        </g>
+        <g class="rg-flame rg-flame--b">
+          <rect x={x + 8} y={y + 2} width="1" height="2" fill="#ffce71" />
+          <rect x={x + 6} y={y + 5} width="4" height="2" fill="#f39849" />
+          <rect x={x + 7} y={y + 4} width="2" height="3" fill="#ffce71" />
+          <rect x={x + 7} y={y + 7} width="2" height="2" fill="#f39849" />
+        </g>
+      </g>
+    ))}
+
+    <!-- the goblin: fades in, glints, flashes when hit, drops -->
+    <g transform={`translate(${gob.x} ${gob.y})`}>
+      <g class="rg-gob">
+        {goblinRuns.map((r) => <rect x={r.x} y={r.y} width={r.w} height="1" fill={r.c} />)}
+        <rect class="rg-gob__glint" x="4" y="4" width="1" height="1" fill="#fff4c8" />
+        <rect class="rg-gob__glint" x="7" y="4" width="1" height="1" fill="#fff4c8" />
+        <g class="rg-gob__flash">
+          {flashRuns.map((r) => <rect x={r.x} y={r.y} width={r.w} height="1" fill={r.c} />)}
+        </g>
+        <rect x="0" y="-4" width="12" height="2" fill="#19222c" />
+        <rect class="rg-gob__hp" x="0" y="-4" width="12" height="2" fill="#ac4f4b" />
+      </g>
+    </g>
+
+    <!-- the hero and the blade -->
+    <g class="rg-hero" style={`--x:${hero.x}px; --y:${hero.y}px`}>
+      <circle class="rg-burn" cx="10.5" cy="4" r="9" fill="url(#rg-glow)" />
+      {heroRuns.map((r) => <rect x={r.x} y={r.y} width={r.w} height="1" fill={r.c} />)}
+      {swordRuns.map((r) => <rect x={r.x} y={r.y} width={r.w} height="1" fill={r.c} />)}
+      <g class="rg-burn">
+        <rect x="10" y="2" width="1" height="5" fill="#f39849" />
+        <rect x="10" y="0" width="1" height="2" fill="#ffce71" />
+        <rect x="9" y="2" width="1" height="4" fill="#f39849" opacity="0.7" />
+        <rect x="11" y="2" width="1" height="4" fill="#f39849" opacity="0.7" />
+      </g>
+      {EMBERS.map((e) => (
+        <rect class="rg-ember" x={e.x - 0.5} y={e.y - 1} width="2" height="2" fill={e.x % 2 ? "#ffce71" : "#f39849"} style={`--d:${e.d}s`} />
+      ))}
+    </g>
+
+    <!-- the hit: slash, damage number -->
+    <g class="rg-slash" transform={`translate(${gob.x} ${gob.y})`}>
+      {SLASH.map(([x, y]) => <rect x={x} y={y} width="2" height="2" fill="#f5e7c3" />)}
+      {SLASH.map(([x, y]) => <rect x={x - 1} y={y + 1} width="1" height="1" fill="#f39849" />)}
+    </g>
+    <text class="rg-dmg" x={gob.x + 6} y={gob.y - 7} text-anchor="middle">-19</text>
+
+    <!-- the dark at both ends, then the frame with its gold corners -->
+    <rect x={OX} y={OY} width={COLS * TS} height={ROWS * TS} fill="url(#rg-dark)" />
+    <rect x="2.5" y="2.5" width={VW - 5} height={VH - 5} fill="none" stroke="#35434d" />
+    {[[1, 1], [VW - 6, 1], [1, VH - 6], [VW - 6, VH - 6]].map(([x, y]) => (
+      <rect x={x} y={y} width="5" height="5" fill="#0c1017" stroke="#b88c51" stroke-width="1" />
+    ))}
+  </svg>
+</a>
+
+<script>
+  // Nonessential loop: pause when the tile is offscreen or the tab hides.
+  const tile = document.querySelector<HTMLElement>("[data-rg]");
+  if (tile && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(([e]) => tile.toggleAttribute("data-idle", !e.isIntersecting), { threshold: 0.05 });
+    io.observe(tile);
+    document.addEventListener("visibilitychange", () => tile.toggleAttribute("data-idle", document.hidden));
+  }
+</script>
+
+<style define:vars={{ hold: `${HOLD}s`, loop: `${LOOP}s` }}>
+  .rg {
+    --ground: #121923;
+    --panel: #19222c;
+    --edge: #35434d;
+    --cream: #efd7a0;
+    --bone: #f5e7c3;
+    --gold: #b88c51;
+    --label: #d4a05a;
+    --ember: #f39849;
+    --muted: #aab4bf;
+    --dim: #7d8d93;
+    --shadow: #b88c51; /* the brief's gold rule */
+
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
+    align-items: center;
+    padding: 22px 24px;
+    background: var(--ground);
+    border: 2px solid var(--color-ink);
+    box-shadow: 6px 6px 0 var(--shadow);
+    color: var(--muted);
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1),
+      box-shadow 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+  .rg:hover,
+  .rg:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--shadow);
+  }
+  .rg:focus-visible {
+    outline: 2px solid var(--ember);
+    outline-offset: 3px;
+  }
+
+  .rg__body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    align-self: stretch;
+  }
+  .rg__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .rg__spark {
+    color: var(--ember);
+    font-size: 1rem;
+  }
+  .rg__wm {
+    font-family: "Silkscreen", var(--font-mono);
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--cream);
+    letter-spacing: 0.02em;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .rg__out {
+    margin-left: auto;
+    color: var(--dim);
+    transition: color 0.18s ease, transform 0.18s ease;
+  }
+  .rg:hover .rg__out,
+  .rg:focus-visible .rg__out {
+    color: var(--ember);
+    transform: translate(2px, -2px);
+  }
+  .rg__rule {
+    height: 2px;
+    background: var(--gold);
+    opacity: 0.8;
+  }
+  .rg__tag {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    max-width: 60ch;
+  }
+
+  /* the HUD: the brief's side panel, in its pixel type */
+  .rg__hud {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 14px;
+    row-gap: 5px;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--edge);
+    font-family: "Silkscreen", var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.3;
+    text-transform: uppercase;
+    color: var(--bone);
+  }
+  .rg__k {
+    color: var(--label);
+  }
+  .rg__k--hp { color: #d8716b; }
+  .rg__k--mp { color: #7f9bb8; }
+  .rg__cycle,
+  .rg__swap {
+    display: inline-grid;
+  }
+  .rg__cycle > *,
+  .rg__swap > * {
+    grid-area: 1 / 1;
+  }
+  .rg__line {
+    opacity: 0;
+    animation: rg-say var(--loop) linear infinite;
+    animation-delay: calc(var(--i) * var(--hold));
+  }
+  .rg__line[style*="--i:2"] {
+    color: var(--ember);
+  }
+  .rg__stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .rg__k--mp {
+    margin-left: 10px;
+  }
+  .rg__bar {
+    position: relative;
+    width: 96px;
+    height: 8px;
+    background: #0c1017;
+    box-shadow: inset 0 0 0 1px var(--edge);
+  }
+  .rg__bar i {
+    position: absolute;
+    inset: 1px;
+    transform-origin: left;
+  }
+  .rg__bar--hp i {
+    background: #ac4f4b;
+    transform: scaleX(0.84); /* 32/38 */
+  }
+  .rg__bar--mp i {
+    background: #526d86;
+    animation: rg-mp var(--loop) linear infinite;
+  }
+  .rg__n {
+    color: var(--bone);
+  }
+  .rg__mp--full { animation: rg-mp-full var(--loop) steps(1, end) infinite; }
+  .rg__mp--low { animation: rg-mp-low var(--loop) steps(1, end) infinite; }
+
+  .rg__foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: "Silkscreen", var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .rg__turn {
+    color: var(--label);
+  }
+  .rg__t { opacity: 0; animation: var(--loop) steps(1, end) infinite; }
+  .rg__t--0 { animation-name: rg-t0; }
+  .rg__t--1 { animation-name: rg-t1; }
+  .rg__t--2 { animation-name: rg-t2; }
+  .rg__t--3 { animation-name: rg-t3; }
+
+  .rg__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  /* the map at exactly 2x, so the pixels stay square */
+  .rg__map {
+    display: block;
+    width: 536px;
+    height: auto;
+    max-width: 100%;
+    image-rendering: pixelated;
+  }
+  .rg-dmg {
+    font-family: "Silkscreen", monospace;
+    font-size: 8px;
+    font-weight: 700;
+    fill: var(--ember);
+    opacity: 0;
+    animation: rg-dmg var(--loop) linear infinite;
+  }
+
+  /* ── the beats (one loop = 4 x 25%) ─────────────────────────────── */
+  @keyframes rg-say {
+    0% { opacity: 0; }
+    1% { opacity: 1; }
+    23.6% { opacity: 1; }
+    25% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+  /* MP: refills in beat 1, the burning blade costs 4 in beat 4 */
+  @keyframes rg-mp {
+    0%, 2% { transform: scaleX(0.75); }
+    20%, 76.5% { transform: scaleX(1); }
+    77.5%, 100% { transform: scaleX(0.75); }
+  }
+  @keyframes rg-mp-full { 0% { opacity: 0; } 20% { opacity: 1; } 77%, 100% { opacity: 0; } }
+  @keyframes rg-mp-low { 0% { opacity: 1; } 20% { opacity: 0; } 77%, 100% { opacity: 1; } }
+  @keyframes rg-t0 { 0% { opacity: 1; } 28%, 100% { opacity: 0; } }
+  @keyframes rg-t1 { 0% { opacity: 0; } 28% { opacity: 1; } 38%, 100% { opacity: 0; } }
+  @keyframes rg-t2 { 0% { opacity: 0; } 38% { opacity: 1; } 53%, 100% { opacity: 0; } }
+  @keyframes rg-t3 { 0% { opacity: 0; } 53%, 100% { opacity: 1; } }
+
+  /* the hero: two hops right, a lunge, two hops back */
+  .rg-hero {
+    transform: translate(var(--x), var(--y));
+    animation: rg-walk var(--loop) linear infinite;
+  }
+  @keyframes rg-walk {
+    0%, 28% { transform: translate(var(--x), var(--y)); }
+    28.6% { transform: translate(calc(var(--x) + 8px), calc(var(--y) - 3px)); }
+    29.2%, 38% { transform: translate(calc(var(--x) + 16px), var(--y)); }
+    38.6% { transform: translate(calc(var(--x) + 24px), calc(var(--y) - 3px)); }
+    39.2%, 52.6% { transform: translate(calc(var(--x) + 32px), var(--y)); }
+    53.2% { transform: translate(calc(var(--x) + 36px), var(--y)); }
+    55%, 81% { transform: translate(calc(var(--x) + 32px), var(--y)); }
+    81.6% { transform: translate(calc(var(--x) + 24px), calc(var(--y) - 3px)); }
+    82.2%, 90% { transform: translate(calc(var(--x) + 16px), var(--y)); }
+    90.6% { transform: translate(calc(var(--x) + 8px), calc(var(--y) - 3px)); }
+    91.2%, 100% { transform: translate(var(--x), var(--y)); }
+  }
+  .rg-burn {
+    opacity: 0;
+    animation: rg-burn var(--loop) linear infinite;
+  }
+  @keyframes rg-burn {
+    0%, 76% { opacity: 0; }
+    77%, 97% { opacity: 1; }
+    80% { opacity: 0.7; }
+    84% { opacity: 1; }
+    88% { opacity: 0.75; }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  .rg-ember {
+    opacity: 0;
+    animation: rg-ember var(--loop) linear infinite;
+    animation-delay: var(--d);
+  }
+  /* each ember owns 8% of the loop from its delay: rise 9px and fade */
+  @keyframes rg-ember {
+    0% { opacity: 1; transform: translateY(0); }
+    8% { opacity: 0; transform: translateY(-9px); }
+    100% { opacity: 0; transform: translateY(-9px); }
+  }
+
+  /* the goblin: out of the dark in beat 1, down in beat 3 */
+  .rg-gob {
+    animation: rg-gob var(--loop) linear infinite;
+  }
+  @keyframes rg-gob {
+    0%, 2% { opacity: 0; transform: translateX(0); }
+    8%, 53.4% { opacity: 1; transform: translateX(0); }
+    53.6%, 56.4% { opacity: 1; transform: translateX(2px); } /* knocked back */
+    57%, 58% { opacity: 1; transform: translateX(0); }
+    64%, 100% { opacity: 0; transform: translateX(0); }
+  }
+  .rg-gob__hp {
+    transform-box: fill-box;
+    transform-origin: left;
+    animation: rg-gob-hp var(--loop) linear infinite;
+  }
+  @keyframes rg-gob-hp {
+    0%, 54% { transform: scaleX(1); }
+    55.5%, 100% { transform: scaleX(0); }
+  }
+  .rg-gob__glint {
+    opacity: 0;
+    animation: rg-glint var(--loop) steps(1, end) infinite;
+  }
+  @keyframes rg-glint { 0% { opacity: 0; } 11% { opacity: 1; } 13% { opacity: 0; } 15% { opacity: 1; } 16%, 100% { opacity: 0; } }
+  .rg-gob__flash {
+    opacity: 0;
+    animation: rg-flash var(--loop) steps(1, end) infinite;
+  }
+  @keyframes rg-flash { 0% { opacity: 0; } 53.5% { opacity: 1; } 54.5% { opacity: 0; } 55.3% { opacity: 1; } 56.3%, 100% { opacity: 0; } }
+  .rg-slash {
+    opacity: 0;
+    animation: rg-slash var(--loop) steps(1, end) infinite;
+  }
+  @keyframes rg-slash { 0% { opacity: 0; } 53% { opacity: 1; } 56%, 100% { opacity: 0; } }
+  @keyframes rg-dmg {
+    0%, 53.8% { opacity: 0; transform: translateY(0); }
+    54.4% { opacity: 1; transform: translateY(0); }
+    64% { opacity: 1; transform: translateY(-9px); }
+    67%, 100% { opacity: 0; transform: translateY(-10px); }
+  }
+
+  /* torches: two frames and a breathing glow, all the time */
+  .rg-flame--a { animation: rg-fa 0.5s steps(1, end) infinite; }
+  .rg-flame--b { animation: rg-fb 0.5s steps(1, end) infinite; }
+  @keyframes rg-fa { 0% { opacity: 1; } 50% { opacity: 0; } }
+  @keyframes rg-fb { 0% { opacity: 0; } 50% { opacity: 1; } }
+  .rg-glow,
+  .rg-pool {
+    animation: rg-breathe 1.3s ease-in-out infinite alternate;
+  }
+  @keyframes rg-breathe { from { opacity: 0.75; } to { opacity: 1; } }
+
+  /* offscreen / hidden tab: hold the loop */
+  .rg[data-idle] *,
+  .rg[data-idle] :global(*) {
+    animation-play-state: paused;
+  }
+
+  /* too narrow for the map beside the text: the map goes under it */
+  @media (max-width: 960px) {
+    .rg {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+    }
+    .rg__map {
+      width: 100%;
+      max-width: 536px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rg,
+    .rg:hover,
+    .rg:focus-visible {
+      transform: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .rg:hover .rg__out,
+    .rg:focus-visible .rg__out {
+      transform: none;
+    }
+    /* the first beat's result, still: the goblin in view, the first line */
+    .rg *,
+    .rg :global(*) {
+      animation: none !important;
+    }
+    .rg__line[style^="--i:0"],
+    .rg__mp--full,
+    .rg__t--0,
+    .rg-flame--a {
+      opacity: 1;
+    }
+    .rg__line:not([style^="--i:0"]),
+    .rg__mp--low,
+    .rg__t--1,
+    .rg__t--2,
+    .rg__t--3,
+    .rg-flame--b {
+      opacity: 0;
+    }
+    .rg__bar--mp i {
+      transform: none;
+    }
+  }
+</style>

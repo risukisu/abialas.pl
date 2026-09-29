@@ -1,16 +1,16 @@
 ---
 /**
  * /projects — MOCKUP (owner, 2026-09-29; localhost only, branch
- * mockup/projects-page). Two parts:
+ * mockup/projects-page). Every builder project as a tile, in the home page's
+ * bento dialect; the home Building row is the featured cut of this page.
  *
- * 1. What I'm building — every public project as a plate: a hue square, the
- *    name, its status (release tag, "live", or "repo"), one sentence, the
- *    site and repo links in the mono key/value grammar of the marketing-skills
- *    readout, then stack and last push. Data and sources: src/data/projects.ts.
- * 2. Tile gallery — every home tile, rendered live at the size it has on the
- *    home page (1440 measurements, 2026-09-29), each with a caption; then the
- *    tiles that were retired or never shipped. Captions come from the
- *    component inventory in docs/DESIGN-SYSTEM.md.
+ * - A filter picker at the top: All, or one category. Without script every
+ *   category shows; with it, a click hides the others and the choice lands
+ *   in the URL hash (#games), so a filtered view can be linked.
+ * - One section per category (measure + spectrum rule, like the home
+ *   sections), tiles in a 6-column bento: each project's `span` from
+ *   src/data/projects.ts. Projects with their own tile use it; the rest get
+ *   the plain ProjectTile.
  *
  * Noindexed while it's a mockup. Nothing links here yet; the home page's
  * "all projects ↗" still points at github.com/risukisu.
@@ -21,66 +21,25 @@ import GrugTile from "../components/nexus/GrugTile.astro";
 import SkillCraftTile from "../components/nexus/SkillCraftTile.astro";
 import MarketingSkillsTile from "../components/nexus/MarketingSkillsTile.astro";
 import MarketingSkillsRepoTile from "../components/nexus/MarketingSkillsRepoTile.astro";
-import ResumeTile from "../components/nexus/ResumeTile.astro";
-import ComingSoonTile from "../components/nexus/ComingSoonTile.astro";
-import ContributionGraph from "../components/nexus/ContributionGraph.astro";
-import GitHubTile from "../components/nexus/GitHubTile.astro";
 import StatuslineTile from "../components/nexus/StatuslineTile.astro";
-import StarChartTile from "../components/dev/StarChartTile.astro";
-import SkillsArtTile from "../components/dev/SkillsArtTile.astro";
-import { groups } from "../data/projects";
-import { follow, followStack } from "../data/nexus";
+import RoguelikeTile from "../components/nexus/RoguelikeTile.astro";
+import ProjectTile from "../components/nexus/ProjectTile.astro";
+import { groups, type TileKey } from "../data/projects";
+import { follow } from "../data/nexus";
 
-// "github  risukisu/marketing-skills": the key says where, so the value drops the host
-const host = (href: string) => href.replace(/^https?:\/\//, "").replace(/^github\.com\//, "").replace(/\/$/, "");
-const key = (label: string) => (label === "repo" ? "github" : label);
-
-type Spec = {
-  C?: any; // the tile component
-  props?: Record<string, unknown>;
-  stack?: boolean; // LinkedIn over X, as on the home page
-  w: number; // home width at 1440
-  h: number; // home height at 1440
-  name: string;
-  where: string;
-  note: string;
+const TILES: Record<TileKey, { C: any; props?: Record<string, unknown> }> = {
+  "marketing-skills": { C: MarketingSkillsTile },
+  "marketing-skills-repo": { C: MarketingSkillsRepoTile },
+  statusline: { C: StatuslineTile },
+  roguelike: { C: RoguelikeTile },
+  skillcraft: { C: SkillCraftTile },
+  blog: { C: NexusBox, props: { ...follow[0], size: "md" } },
+  grug: { C: GrugTile },
 };
-
-// Rows mirror the home page, so each row fills the width the way it does there.
-const home: Spec[][] = [
-  [
-    { C: GrugTile, w: 486, h: 201, name: "Newsletter", where: "Home · Follow", note: "The Grug-Brained Marketer in its own kit: the caveman-and-coffee logo over a rain of binary." },
-    { C: NexusBox, props: { ...follow[0], size: "md" }, w: 347, h: 201, name: "Blog", where: "Home · Follow", note: "risu.pl in the blog's terminal look, with the pixel squirrel." },
-    { stack: true, w: 278, h: 201, name: "LinkedIn and X", where: "Home · Follow", note: "Two small stickers, stacked." },
-  ],
-  [
-    { C: ContributionGraph, w: 771, h: 231, name: "GitHub year", where: "Home · Building", note: "The whole year as one heatmap, January to December. Days still to come are empty pencil squares, and today pulses in gold. Picked from four options on 2026-09-28." },
-    { C: SkillCraftTile, w: 357, h: 231, name: "SkillCraft", where: "Home · Building", note: "SkillCraft in its own kit: the ANSI mark and an animated pixel fox." },
-  ],
-  [
-    { C: MarketingSkillsTile, w: 714, h: 223, name: "marketing-skills", where: "Home · Building", note: "The readout types what a marketer might say and the command that answers it. The keyboard types along, each key lighting in the command's color. Keyboard since 2026-09-28." },
-    { C: MarketingSkillsRepoTile, w: 414, h: 223, name: "The repo", where: "Home · Building", note: "The README's two install lines and the license line. No motion. Cyan shadow since 2026-09-29." },
-  ],
-  [
-    { C: ResumeTile, w: 564, h: 232, name: "Résumé", where: "Home · More", note: "Page one of the résumé, tilted −3°, squares up on hover. It says Under construction while the résumé is a draft." },
-    { C: ComingSoonTile, w: 564, h: 232, name: "More coming soon", where: "Home · More", note: "A tile not cut out yet: a pencil sketch that draws itself, a status that cycles sketching, measuring twice, cutting once, and scissors that cut along the top on hover." },
-  ],
-];
-
-const retired: Spec[][] = [
-  [
-    { C: StarChartTile, w: 714, h: 223, name: "Star chart", where: "Retired 2026-09-28", note: "The marketing-skills art before the keyboard: a star chart that followed the readout." },
-    { C: StatuslineTile, w: 414, h: 223, name: "claude-code-statusline", where: "Built 2026-09-28, not shipped", note: "Made for the repo tile's slot: a 52-column status line acting out its four lines." },
-  ],
-  [
-    { C: SkillsArtTile, props: { art: "work" }, w: 714, h: 223, name: "The work", where: "Not picked, 2026-09-28", note: "The keyboard's rival: each command draws what the skill hands back, as a wireframe that builds itself." },
-    { C: GitHubTile, w: 414, h: 223, name: "GitHub", where: "Retired 2026-09-27", note: "The GitHub avatar filled the right half, with a live public-repo count. Coming soon took its slot." },
-  ],
-];
 ---
 <BaseLayout
   title="Projects"
-  description="What Andrzej Białaś is building in public, and every tile from the abialas.pl home page."
+  description="Everything Andrzej Białaś is building, in one place."
   noindex={true}
 >
   <header class="pj-head">
@@ -89,90 +48,69 @@ const retired: Spec[][] = [
       <p class="measure">abialas.pl / projects · mockup</p>
       <h1 class="pj-title">Projects</h1>
       <p class="pj-lead">
-        What I'm building in public, with the live page and the repo for each. Further down,
-        every tile from the home page with a note on what it does, plus the ones that didn't make it.
+        Everything I'm building, in one place. The home page shows a few of these; here is all of it,
+        sorted by what it's for.
       </p>
+      <div class="pj-filter" role="group" aria-label="Show projects by category" data-filter>
+        <button type="button" class="pj-chip" data-cat="all" aria-pressed="true">All</button>
+        {groups.map((g) => (
+          <button type="button" class="pj-chip" data-cat={g.id} aria-pressed="false">{g.title}</button>
+        ))}
+      </div>
     </div>
   </header>
 
-  <!-- ── What I'm building ───────────────────────────────────────── -->
-  <section class="container pj-sec">
-    <div class="pj-sec__head">
-      <span class="measure">What I'm building</span>
-      <span class="pj-sec__rule" aria-hidden="true"></span>
-    </div>
-
+  <div class="container pj-list">
     {groups.map((g) => (
-      <div class="pj-group">
-        <h2 class="pj-group__title">
-          {g.title}
-          {g.note && <span class="pj-group__note">{g.note}</span>}
-        </h2>
-        <div class="pj-grid">
-          {g.projects.map((p) => (
-            <article class="pj" style={`--hue:${p.hue}`}>
-              <div class="pj__top">
-                <span class="pj__sq" aria-hidden="true"></span>
-                <h3 class="pj__name">{p.name}</h3>
-                <span class={`pj__status${p.status === "live" ? " pj__status--live" : ""}`}>{p.status}</span>
-              </div>
-              <p class="pj__line">{p.line}</p>
-              <dl class="pj__links">
-                {p.links.map((l) => (
-                  <>
-                    <dt>{key(l.label)}</dt>
-                    <dd><a href={l.href} rel="me">{host(l.href)} <span aria-hidden="true">↗</span></a></dd>
-                  </>
-                ))}
-              </dl>
-              <p class="pj__meta">
-                {[p.stack, p.updated && `updated ${p.updated}`].filter(Boolean).join(" · ")}
-              </p>
-            </article>
-          ))}
+      <section class="pj-sec" id={g.id} data-sec={g.id} aria-labelledby={`h-${g.id}`}>
+        <div class="pj-sec__head">
+          <h2 class="measure pj-sec__title" id={`h-${g.id}`}>{g.title}</h2>
+          <span class="pj-sec__rule" aria-hidden="true"></span>
+          {g.note && <span class="pj-sec__note">{g.note}</span>}
         </div>
-      </div>
+        <div class="pj-bento">
+          {g.projects.map((p) => {
+            const t = p.tile ? TILES[p.tile] : undefined;
+            const Tile = t?.C;
+            return (
+              <div class={`pj-cell s${p.span}`} data-project={p.name}>
+                {Tile ? <Tile {...t!.props} /> : <ProjectTile project={p} />}
+              </div>
+            );
+          })}
+        </div>
+      </section>
     ))}
-  </section>
-
-  <!-- ── Tile gallery ─────────────────────────────────────────────── -->
-  <section class="container pj-sec pj-sec--last">
-    <div class="pj-sec__head">
-      <span class="measure">Tile gallery</span>
-      <span class="pj-sec__rule" aria-hidden="true"></span>
-    </div>
-    <p class="pj-sec__lead">Every tile at the size it has on the home page, live, with a note on what it does.</p>
-
-    {[{ title: "On the home page", rows: home }, { title: "Retired and unshipped", rows: retired }].map((part) => (
-      <div class="gl-part">
-        <h2 class="pj-group__title">{part.title}</h2>
-        {part.rows.map((row) => (
-          <div class="gl-row" style={`--cols:${row.map((s) => `minmax(0, ${s.w}fr)`).join(" ")}`}>
-            {row.map(({ C, props, stack, w, h, name, where, note }) => (
-              <figure class="gl" style={`--w:${w}px; --h:${h}px`}>
-                <div class={`gl__tile${stack ? " gl__tile--stack" : ""}`}>
-                  {stack ? followStack.map((b) => <NexusBox {...b} />) : <C {...props} />}
-                </div>
-                <figcaption class="gl__cap">
-                  <span class="gl__name">{name}</span>
-                  <span class="gl__where">{where}</span>
-                  <span class="gl__note">{note}</span>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        ))}
-      </div>
-    ))}
-  </section>
+  </div>
 </BaseLayout>
+
+<script>
+  // The filter: one category at a time, or all. The choice goes in the hash.
+  const bar = document.querySelector<HTMLElement>("[data-filter]");
+  const chips = [...document.querySelectorAll<HTMLButtonElement>("[data-filter] [data-cat]")];
+  const secs = [...document.querySelectorAll<HTMLElement>("[data-sec]")];
+  const show = (cat: string, push = false) => {
+    const known = cat === "all" || secs.some((s) => s.dataset.sec === cat);
+    const c = known ? cat : "all";
+    chips.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.cat === c)));
+    secs.forEach((s) => (s.hidden = c !== "all" && s.dataset.sec !== c));
+    if (push) history.replaceState(null, "", c === "all" ? location.pathname : `#${c}`);
+  };
+  if (bar) {
+    bar.addEventListener("click", (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-cat]");
+      if (b) show(b.dataset.cat!, true);
+    });
+    show(location.hash.slice(1) || "all");
+  }
+</script>
 
 <style>
   /* ── header: the drafting sheet, like the home masthead ─────────── */
   .pj-head {
     position: relative;
     overflow: hidden;
-    padding-block: clamp(40px, 6vw, 72px) 28px;
+    padding-block: clamp(40px, 6vw, 72px) 8px;
   }
   .pj-head__grid {
     position: absolute;
@@ -197,209 +135,116 @@ const retired: Spec[][] = [
     color: var(--color-body);
   }
 
-  /* ── section heads: measure + the spectrum rule ─────────────────── */
-  .pj-sec {
-    padding-top: 36px;
+  /* ── the filter: stickers you can press ─────────────────────────── */
+  .pj-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
   }
-  .pj-sec--last {
+  .pj-chip {
+    padding: 7px 14px;
+    background: #fff;
+    border: 2px solid var(--color-ink);
+    box-shadow: 3px 3px 0 var(--color-ink);
+    font: 500 0.95rem var(--font-sans);
+    color: var(--color-ink);
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+  }
+  .pj-chip:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--color-ink);
+  }
+  .pj-chip[aria-pressed="true"] {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--color-ink);
+  }
+  .pj-chip:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  /* ── one section per category, like the home sections ───────────── */
+  .pj-list {
     padding-bottom: var(--section-padding);
+  }
+  .pj-sec {
+    padding-top: 40px;
+  }
+  .pj-sec[hidden] {
+    display: none;
   }
   .pj-sec__head {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-bottom: 18px;
+  }
+  .pj-sec__title {
+    margin: 0;
+    font-weight: 400;
   }
   .pj-sec__rule {
     flex: 1;
+    min-width: 60px;
     height: 3px;
     background: var(--gradient-spectrum);
   }
-  .pj-sec__lead {
-    max-width: 60ch;
-    margin: -6px 0 8px;
-    color: var(--color-body);
-  }
-
-  .pj-group,
-  .gl-part {
-    margin-top: 26px;
-  }
-  .pj-group__title {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 4px 14px;
-    margin: 0 0 14px;
-    font-family: var(--font-serif);
-    font-weight: 500;
-    font-size: var(--text-h3);
-    color: var(--color-ink);
-  }
-  .pj-group__note {
-    font-family: var(--font-sans);
+  .pj-sec__note {
+    flex-basis: 100%;
     font-size: 0.95rem;
     color: var(--color-muted);
   }
 
-  /* ── project plates ─────────────────────────────────────────────── */
-  .pj-grid {
+  /* the bento: 6 columns; each tile spans what its data says */
+  .pj-bento {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 18px;
-    padding-right: 6px; /* shadow room */
+    align-items: stretch;
+    padding-right: 6px; /* hover-shadow room */
   }
-  .pj {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    min-width: 0;
-    padding: 18px 20px;
-    background: #fff;
-    border: 2px solid var(--color-ink);
-    box-shadow: 4px 4px 0 var(--hue);
-  }
-  .pj__top {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .pj__sq {
-    width: 9px;
-    height: 9px;
-    flex: none;
-    background: var(--hue);
-  }
-  .pj__name {
-    margin: 0;
-    min-width: 0;
-    font-family: var(--font-sans);
-    font-weight: 800;
-    font-size: 1.12rem;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    color: var(--color-ink);
-    overflow-wrap: anywhere;
-  }
-  .pj__status {
-    margin-left: auto;
-    flex: none;
-    padding: 2px 7px;
-    border: 1px solid var(--color-line-2);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-  }
-  .pj__status--live {
-    border-color: #2e7d4f;
-    color: #297147; /* writing moss, AA text variant */
-  }
-  .pj__line {
-    margin: 0;
-    font-size: 0.98rem;
-    line-height: 1.5;
-    color: var(--color-body);
-  }
-  /* the marketing-skills readout grammar: a dim key, a value */
-  .pj__links {
+  .pj-cell {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    column-gap: 12px;
-    row-gap: 2px;
-    margin: auto 0 0;
-    padding-top: 10px;
-    border-top: 1px solid var(--color-line);
-    font-family: var(--font-mono);
-    font-size: 0.76rem;
-    line-height: 1.7;
-  }
-  .pj__links dt {
-    color: var(--color-muted);
-  }
-  .pj__links dd {
-    margin: 0;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
-  .pj__links a {
-    color: var(--color-ink);
-    text-decoration: none;
+  .pj-cell > :global(*) {
+    min-width: 0;
   }
-  .pj__links a:hover,
-  .pj__links a:focus-visible {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-  .pj__meta {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--color-muted);
-  }
-  .pj__meta:empty {
-    display: none;
-  }
+  .s2 { grid-column: span 2; }
+  .s3 { grid-column: span 3; }
+  .s4 { grid-column: span 4; }
+  .s6 { grid-column: span 6; }
 
-  /* ── gallery: each row in the home row's proportions, so at 1440 every
-     tile is exactly its home size; a caption under each ────────────── */
-  .gl-row {
-    display: grid;
-    grid-template-columns: var(--cols);
-    align-items: start;
-    gap: 18px;
-    margin-bottom: 26px;
-    padding-right: 6px;
+  @media (max-width: 1080px) {
+    .pj-bento {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .s2,
+    .s3 { grid-column: span 1; }
+    .s4,
+    .s6 { grid-column: span 2; }
   }
-  .gl {
-    min-width: 0;
-    margin: 0;
-  }
-  .gl__tile {
-    display: grid;
-    grid-template-rows: minmax(var(--h), auto);
-  }
-  .gl__tile > :global(*) {
-    min-width: 0;
-  }
-  .gl__tile--stack {
-    grid-template-rows: 1fr 1fr;
-    gap: 18px;
-    min-height: var(--h);
-  }
-  .gl__cap {
-    display: grid;
-    gap: 2px;
-    margin-top: 14px;
-    padding-top: 8px;
-    border-top: 1px solid var(--color-line);
-  }
-  .gl__name {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    color: var(--color-ink);
-  }
-  .gl__where {
-    font-family: var(--font-mono);
-    font-size: var(--text-meta);
-    letter-spacing: 0.04em;
-    color: var(--color-muted);
-  }
-  .gl__note {
-    max-width: 62ch;
-    margin-top: 4px;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: var(--color-body);
-  }
-
   @media (max-width: 720px) {
-    .gl-row {
+    .pj-bento {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .s2,
+    .s3,
+    .s4,
+    .s6 { grid-column: span 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pj-chip,
+    .pj-chip:hover,
+    .pj-chip[aria-pressed="true"] {
+      transform: none;
+      transition: background 0.12s ease;
     }
   }
 </style>
