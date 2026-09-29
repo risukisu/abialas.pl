@@ -150,7 +150,9 @@ const TILES: Record<TileKey, { C: any; props?: Record<string, unknown> }> = {
     font: 500 0.95rem var(--font-sans);
     color: var(--color-ink);
     cursor: pointer;
-    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    /* only the press moves; the colours swap at once, so the label never
+       passes through grey-on-grey */
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
   }
   .pj-chip:hover {
     transform: translate(-1px, -1px);
@@ -244,7 +246,7 @@ const TILES: Record<TileKey, { C: any; props?: Record<string, unknown> }> = {
     .pj-chip:hover,
     .pj-chip[aria-pressed="true"] {
       transform: none;
-      transition: background 0.12s ease;
+      transition: none;
     }
   }
 </style>
