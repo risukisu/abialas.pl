@@ -124,7 +124,7 @@ const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.n
     margin-bottom: 22px;
   }
   .archive-head__title {
-    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    font-size: clamp(2.5rem, 1.45rem + 4.2vw, 4.25rem);
     line-height: 1.04;
     letter-spacing: -0.025em;
     max-width: 18ch;
@@ -132,7 +132,7 @@ const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.n
   }
   .archive-head__standfirst {
     font-family: var(--font-serif);
-    font-size: clamp(1.15rem, 2.1vw, 1.4rem);
+    font-size: clamp(1.15rem, 1rem + 0.6vw, 1.4rem);
     line-height: 1.5;
     color: var(--color-body);
     max-width: 52ch;
@@ -149,11 +149,28 @@ const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.n
     position: relative;
     background: var(--color-ink);
     padding: clamp(22px, 3.3vw, 38px) clamp(28px, 5vw, 64px);
-    transition: transform 0.18s ease;
+    transition: transform 0.18s var(--ease-out);
   }
-  .featured__plate:hover,
   .featured__plate:focus-within {
     transform: translateY(-3px);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .featured__plate:hover {
+      transform: translateY(-3px);
+    }
+  }
+  .featured__plate:active {
+    transform: scale(0.99);
+    transition-duration: 0.08s;
+  }
+  /* The whole plate is the link (stretched ::after), so the keyboard
+     ring goes round the plate, not the title. */
+  .featured__plate:has(.featured__title a:focus-visible) {
+    outline: 2px solid var(--link-on-ink);
+    outline-offset: 3px;
+  }
+  .featured__title a:focus-visible {
+    outline: 2px solid transparent;
   }
   .featured__meta {
     display: block;
@@ -172,7 +189,7 @@ const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.n
   }
   .featured__title {
     margin: 0 0 12px;
-    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-size: clamp(1.6rem, 1.12rem + 1.92vw, 2.4rem);
     line-height: 1.08;
     letter-spacing: -0.02em;
     max-width: 26ch;
@@ -188,13 +205,17 @@ const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.n
     position: absolute;
     inset: 0;
   }
-  .featured__plate:hover .featured__title a,
   .featured__title a:focus-visible {
     color: var(--link-on-ink);
   }
+  @media (hover: hover) and (pointer: fine) {
+    .featured__plate:hover .featured__title a {
+      color: var(--link-on-ink);
+    }
+  }
   .featured__standfirst {
     font-family: var(--font-serif);
-    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+    font-size: clamp(1.05rem, 0.96rem + 0.36vw, 1.2rem);
     line-height: 1.45;
     color: var(--color-paper);
     opacity: 0.85;
@@ -240,7 +261,7 @@ const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.n
     letter-spacing: 0.04em;
     color: var(--color-muted);
     cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
+    transition: color 0.15s, border-color 0.15s, transform 0.1s var(--ease-out);
   }
   .chip[data-filter]:not([data-filter="all"])::before {
     content: "";
@@ -249,9 +270,14 @@ const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.n
     height: 9px;
     background: var(--tick);
   }
-  .chip:hover {
-    color: var(--color-ink);
-    border-color: var(--color-ink);
+  @media (hover: hover) and (pointer: fine) {
+    .chip:hover {
+      color: var(--color-ink);
+      border-color: var(--color-ink);
+    }
+  }
+  .chip:active {
+    transform: scale(0.97);
   }
   .chip.is-active {
     color: var(--tick, var(--color-ink));
@@ -277,7 +303,7 @@ const featuredSeries = series.find((s) => s.tag === featured?.data.topics[0])?.n
   }
   .archive-empty__line {
     font-family: var(--font-serif);
-    font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+    font-size: clamp(1.15rem, 1rem + 0.6vw, 1.4rem);
     line-height: 1.5;
     color: var(--color-muted);
     margin: 0;

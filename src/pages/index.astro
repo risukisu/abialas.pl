@@ -114,7 +114,9 @@ import { follow, followStack } from "../data/nexus";
     padding-top: clamp(48px, 7vw, 88px);
     /* tight — no CTAs anymore; the Follow row is the hero's counterpart */
     padding-bottom: clamp(28px, 3.5vw, 48px);
-    overflow: hidden;
+    /* clip, not hidden: cuts the wash and the tilted print without
+       making the header a scroll container. */
+    overflow: clip;
   }
 
   /* Blueprint sheet behind the header only. Masked so the grid fades
@@ -193,7 +195,9 @@ import { follow, followStack } from "../data/nexus";
   }
 
   .masthead__name {
-    font-size: clamp(2.75rem, 7vw, 4.75rem);
+    /* 44px on a 400px screen → 85.5px at 1200, a straight line between
+       (rem + vw, so it also follows the reader's font size). */
+    font-size: clamp(2.75rem, 1.55rem + 4.8vw, 4.75rem);
     line-height: 1.02;
     letter-spacing: -0.025em;
     max-width: 16ch;
@@ -211,7 +215,7 @@ import { follow, followStack } from "../data/nexus";
 
   .masthead__sub {
     font-family: var(--font-serif);
-    font-size: clamp(1.15rem, 2.1vw, 1.4rem);
+    font-size: clamp(1.15rem, 1rem + 0.6vw, 1.4rem);
     line-height: 1.5;
     color: var(--color-body);
     max-width: 54ch;
@@ -224,26 +228,19 @@ import { follow, followStack } from "../data/nexus";
 
   /* ── Page-load reveal ─────────────────────────────────────────────
      One orchestrated, staggered fade-rise in the masthead only.
-     Fully disabled under prefers-reduced-motion. ──────────────────── */
-  .reveal {
-    opacity: 0;
-    transform: translateY(10px);
-    animation: reveal 0.62s cubic-bezier(0.22, 0.7, 0.25, 1) forwards;
-    animation-delay: calc(var(--i) * 0.09s + 0.05s);
-  }
-
-  @keyframes reveal {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
+     Opt-in: the resting state is visible, and the rise exists only
+     for people who haven't asked for reduced motion. ──────────────── */
+  @media (prefers-reduced-motion: no-preference) {
     .reveal {
-      opacity: 1;
-      transform: none;
-      animation: none;
+      animation: reveal 0.62s cubic-bezier(0.22, 0.7, 0.25, 1) backwards;
+      animation-delay: calc(var(--i) * 0.09s + 0.05s);
+    }
+
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
     }
   }
 
@@ -269,8 +266,14 @@ import { follow, followStack } from "../data/nexus";
     color: var(--color-muted);
     text-decoration: none;
   }
-  .nexus-all:hover {
+  .nexus-all:active,
+  .nexus-all:focus-visible {
     color: var(--color-accent);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .nexus-all:hover {
+      color: var(--color-accent);
+    }
   }
 
   /* Newsletter (hero) | Blog | narrow stack. The stack column is

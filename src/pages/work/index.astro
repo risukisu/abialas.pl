@@ -269,7 +269,7 @@ const parts = [
     position: relative;
     padding-top: clamp(48px, 7vw, 88px);
     padding-bottom: var(--section-padding);
-    overflow: hidden;
+    overflow: clip;
   }
   .work-head__grid {
     position: absolute;
@@ -292,7 +292,7 @@ const parts = [
     margin-bottom: 22px;
   }
   .work-head__title {
-    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    font-size: clamp(2.5rem, 1.45rem + 4.2vw, 4.25rem);
     line-height: 1.04;
     letter-spacing: -0.025em;
     max-width: 16ch;
@@ -300,7 +300,7 @@ const parts = [
   }
   .work-head__standfirst {
     font-family: var(--font-serif);
-    font-size: clamp(1.15rem, 2.1vw, 1.4rem);
+    font-size: clamp(1.15rem, 1rem + 0.6vw, 1.4rem);
     line-height: 1.5;
     color: var(--color-body);
     max-width: 52ch;
@@ -334,7 +334,7 @@ const parts = [
     padding-top: 6px;
   }
   .built-item__title {
-    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem);
     line-height: 1.12;
     letter-spacing: -0.02em;
     margin: 0;
@@ -379,7 +379,7 @@ const parts = [
   }
   .resume__lede {
     font-family: var(--font-serif);
-    font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+    font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem);
     line-height: 1.45;
     color: var(--color-ink);
     max-width: 46ch;
@@ -456,7 +456,7 @@ const parts = [
   .quote__text {
     margin: 0;
     font-family: var(--font-serif);
-    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    font-size: clamp(1.15rem, 1.03rem + 0.48vw, 1.35rem);
     line-height: 1.5;
     color: var(--color-ink);
   }
@@ -483,7 +483,7 @@ const parts = [
   }
   .contact__line {
     font-family: var(--font-serif);
-    font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+    font-size: clamp(1.2rem, 1.02rem + 0.72vw, 1.5rem);
     line-height: 1.5;
     color: var(--color-ink);
     margin: 16px 0 0;

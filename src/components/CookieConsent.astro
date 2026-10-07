@@ -149,11 +149,28 @@ const id = import.meta.env.PUBLIC_GA_ID || GA_ID;
   .cc-icon[hidden] {
     display: none;
   }
-  .cc-icon:hover,
   .cc-icon:focus-visible {
     transform: translate(-1px, -1px);
     box-shadow: 4px 4px 0 var(--cc-shadow);
     color: var(--color-accent);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .cc-icon:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 var(--cc-shadow);
+      color: var(--color-accent);
+    }
+  }
+  .cc-icon:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--cc-shadow);
+    transition-duration: 0.08s;
+  }
+  /* 38px button, 44px target. */
+  .cc-icon::after {
+    content: "";
+    position: absolute;
+    inset: min(0px, (100% - 44px) / 2);
   }
   .cc[data-open] .cc-icon {
     background: var(--color-ink);
@@ -259,13 +276,15 @@ const id = import.meta.env.PUBLIC_GA_ID || GA_ID;
     text-transform: uppercase;
     border: 2px solid var(--color-ink);
     cursor: pointer;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.1s var(--ease-out);
+  }
+  .cc-btn:active {
+    transform: scale(0.97);
   }
   .cc-btn--accept {
     background: var(--color-ink);
     color: var(--color-paper);
   }
-  .cc-btn--accept:hover,
   .cc-btn--accept:focus-visible {
     background: var(--color-accent);
     border-color: var(--color-accent);
@@ -275,10 +294,19 @@ const id = import.meta.env.PUBLIC_GA_ID || GA_ID;
     color: var(--color-ink);
     border-color: var(--color-line-2);
   }
-  .cc-btn--decline:hover,
   .cc-btn--decline:focus-visible {
     color: var(--color-accent);
     border-color: var(--color-accent);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .cc-btn--accept:hover {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+    .cc-btn--decline:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

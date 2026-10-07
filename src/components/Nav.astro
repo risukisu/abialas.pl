@@ -14,13 +14,17 @@ const is = (p: string) => path === p || path.startsWith(p + "/");
   </ul>
 </nav>
 <style>
+  /* 22px + one brand line + 22px = --nav-height in global.css, which
+     html's scroll-padding reads so #anchors land below this bar. */
   .nav { display:flex; justify-content:space-between; align-items:center;
-         padding:22px 24px; position:sticky; top:0; z-index:10;
-         background:var(--color-bg); border-bottom:1px solid transparent; }
+         padding:22px 24px; position:sticky; inset-block-start:0; z-index:10;
+         background:var(--color-bg); border-block-end:1px solid transparent; }
   .nav__brand { display:flex; align-items:center; gap:10px; font-family:var(--font-serif); font-size:1.15rem; color:var(--color-ink); border:none; text-decoration:none; }
-  .nav__squirrel { image-rendering:pixelated; }
+  .nav__squirrel { flex:none; image-rendering:pixelated; }
   .nav__links { display:flex; gap:34px; list-style:none; margin:0; padding:0; }
   /* bumped from 15px — sections should be easy to find (owner call, lab D round) */
-  .nav__links a { font:500 17px var(--font-sans); color:var(--color-ink); text-decoration:none; border:none; }
-  .nav__links a[aria-current="page"] { color:var(--color-accent); }
+  .nav__links a { position:relative; font:500 17px var(--font-sans); color:var(--color-ink); text-decoration:none; border:none; }
+  /* 44px-tall tap target around a 20px-tall word. */
+  .nav__links a::after { content:""; position:absolute; inset:min(0px, (100% - 44px) / 2); }
+  .nav__links a[aria-current="page"], .nav__links a:active { color:var(--color-accent); }
 </style>

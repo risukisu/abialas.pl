@@ -167,7 +167,7 @@ const today = { x: 13 + TODAY.w * 4, y: 88 + TODAY.r * 4 };
     transform: translate(8px, 8px);
   }
   .ab:focus-visible {
-    outline: none;
+    outline: 2px solid transparent; /* not none: forced-colors mode repaints it */
   }
   .ab:focus-visible .ab__plate {
     outline: 2px solid var(--color-accent);

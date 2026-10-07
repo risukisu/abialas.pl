@@ -153,10 +153,16 @@ const tiles = [
     transition: color 0.15s, border-color 0.15s;
   }
 
-  .footer__nav a:hover,
-  .footer__nav a:focus-visible {
+  .footer__nav a:focus-visible,
+  .footer__nav a:active {
     color: var(--color-accent);
     border-color: var(--color-accent);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .footer__nav a:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
   }
 
   .footer__tiles {
@@ -170,20 +176,39 @@ const tiles = [
   }
 
   .footer__tiles a {
+    position: relative;
     display: grid;
     place-items: center;
     width: 34px;
     height: 34px;
     color: var(--color-ink);
     border: 1px solid var(--color-line);
-    transition: color 0.15s, border-color 0.15s, transform 0.15s;
+    transition: color 0.15s, border-color 0.15s, transform 0.15s var(--ease-out);
   }
 
-  .footer__tiles a:hover,
+  /* The tile stays 34px; a finger gets the 44px target around it. */
+  .footer__tiles a::after {
+    content: "";
+    position: absolute;
+    inset: min(0px, (100% - 44px) / 2);
+  }
+
   .footer__tiles a:focus-visible {
     color: var(--color-accent);
     border-color: var(--color-line-2);
     transform: translateY(-2px);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .footer__tiles a:hover {
+      color: var(--color-accent);
+      border-color: var(--color-line-2);
+      transform: translateY(-2px);
+    }
+  }
+  .footer__tiles a:active {
+    color: var(--color-accent);
+    transform: scale(0.95);
+    transition-duration: 0.08s;
   }
 
   .footer__news {
@@ -228,19 +253,27 @@ const tiles = [
   .footer__grug {
     display: inline-block;
     vertical-align: middle;
-    margin-left: 8px;
+    margin-inline-start: 8px;
     line-height: 0;
     transform: rotate(-8deg);
-    transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+    transition: transform 0.18s var(--ease-out);
   }
   .footer__grug img {
     display: block;
     width: 28px;
     height: 28px;
   }
-  .footer__grug:hover,
   .footer__grug:focus-visible {
     transform: rotate(6deg) translateY(-3px) scale(1.12);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .footer__grug:hover {
+      transform: rotate(6deg) translateY(-3px) scale(1.12);
+    }
+  }
+  .footer__grug:active {
+    transform: rotate(6deg) scale(0.96);
+    transition-duration: 0.08s;
   }
 
   @media (prefers-reduced-motion: reduce) {

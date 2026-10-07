@@ -88,9 +88,14 @@ const person = personSchema({
     transition: border-color 0.2s;
   }
 
-  .about__narrative :global(a:hover),
-  .about__narrative :global(a:focus-visible) {
+  .about__narrative :global(a:focus-visible),
+  .about__narrative :global(a:active) {
     border-color: var(--color-accent);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .about__narrative :global(a:hover) {
+      border-color: var(--color-accent);
+    }
   }
 
   @media (max-width: 768px) {

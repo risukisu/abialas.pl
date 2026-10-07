@@ -39,7 +39,7 @@ import { resume } from "../data/resume";
     position: relative;
     padding-top: clamp(48px, 7vw, 88px);
     padding-bottom: var(--section-padding);
-    overflow: hidden;
+    overflow: clip;
   }
   .cv-head__grid {
     position: absolute;
@@ -62,7 +62,7 @@ import { resume } from "../data/resume";
     margin-bottom: 22px;
   }
   .cv-head__title {
-    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    font-size: clamp(2.5rem, 1.45rem + 4.2vw, 4.25rem);
     line-height: 1.04;
     letter-spacing: -0.025em;
     max-width: 16ch;
@@ -70,7 +70,7 @@ import { resume } from "../data/resume";
   }
   .cv-head__standfirst {
     font-family: var(--font-serif);
-    font-size: clamp(1.15rem, 2.1vw, 1.4rem);
+    font-size: clamp(1.15rem, 1rem + 0.6vw, 1.4rem);
     line-height: 1.5;
     color: var(--color-body);
     max-width: 52ch;

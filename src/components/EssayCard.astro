@@ -47,8 +47,13 @@ const hue = topicHue(topics[0]);
     background: var(--tick);
   }
 
-  .essay-card:hover :global(a) {
+  .essay-card:focus-within :global(a) {
     color: var(--tick);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .essay-card:hover :global(a) {
+      color: var(--tick);
+    }
   }
 
   .essay-card__title {

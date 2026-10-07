@@ -87,7 +87,7 @@ const key = (label: string) => (label === "repo" ? "github" : label);
     inset: 0;
   }
   .pt__main:focus-visible {
-    outline: none;
+    outline: 2px solid transparent; /* not none: forced-colors mode repaints it */
   }
   .pt:has(.pt__main:focus-visible) {
     outline: 2px solid var(--color-accent);
