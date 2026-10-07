@@ -3,14 +3,13 @@
 // the sitemap (astro.config.mjs filter), and nothing on the site links
 // here. Add a row per shared page.
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import PlateLink from "../../components/cta/PlateLink.astro";
+import { readChangelog } from "../../lib/changelog";
+
+const { changes } = readChangelog();
+const latest = changes[0]?.date;
 
 const pages = [
-  {
-    href: "/dev/changelog/",
-    title: "Changelog",
-    note: "every change to the site, newest first, written by each build from the git history",
-    date: "2026-10-07",
-  },
   {
     href: "/dev/skills-tile/",
     title: "The work, or the keyboard?",
@@ -39,6 +38,12 @@ const pages = [
       Things I'm testing before they go on the site. You're here because someone sent you the link;
       search engines are asked to skip these pages.
     </p>
+    <div class="dv-index__log">
+      <PlateLink href="/dev/changelog/" label="Open the changelog" />
+      {latest && (
+        <span class="dv-index__log-note">{changes.length} changes · latest <time datetime={latest}>{latest}</time></span>
+      )}
+    </div>
     <ul class="dv-index__list">
       {pages.map((p) => (
         <li>
@@ -65,8 +70,20 @@ const pages = [
   }
   .dv-index__lead {
     max-width: 58ch;
-    margin: 0 0 32px;
+    margin: 0 0 24px;
     color: var(--color-body);
+  }
+  .dv-index__log {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 18px;
+    margin-block-end: 36px;
+  }
+  .dv-index__log-note {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--color-muted);
   }
   .dv-index__list {
     display: grid;

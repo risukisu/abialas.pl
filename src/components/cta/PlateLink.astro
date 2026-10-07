@@ -1,0 +1,102 @@
+---
+/**
+ * A link dressed as one of the site's plates: square, 2px ink frame, a
+ * hard offset shadow in a toned hue. It lifts on mouse hover and keyboard
+ * focus and sinks into its shadow when pressed, like every home tile.
+ * For new buttons; the rounded .primary CTA predates the plates.
+ */
+export interface Props {
+  href: string;
+  label: string;
+  /** Shadow hue. Default: cobalt, the drafting-table blue. */
+  shadow?: string;
+}
+const { href, label, shadow = "var(--hue-ai)" } = Astro.props;
+---
+<a class="plate-link" href={href} style={`--shadow: ${shadow}`}>
+  <span class="plate-link__label">{label}</span>
+  <svg class="plate-link__arrow" viewBox="0 0 16 16" aria-hidden="true">
+    <path d="M1 8h12.5M8.5 2.5 14 8l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.25" />
+  </svg>
+</a>
+
+<style>
+  .plate-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7em;
+    min-block-size: 44px;
+    /* Even padding reads as even: the label below is trimmed to its
+       capitals and baseline, so the box starts at the letters. */
+    padding: 0.95rem 1.15rem 0.95rem 1.2rem;
+    background: #fff;
+    border: 2px solid var(--color-ink);
+    box-shadow: 4px 4px 0 var(--shadow);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+  }
+
+  .plate-link__label {
+    text-box: trim-both cap alphabetic;
+  }
+
+  /* As tall as the capitals beside it, so it reads as one more letter. */
+  .plate-link__arrow {
+    flex: none;
+    block-size: 1cap;
+    inline-size: auto;
+    color: var(--color-muted);
+    transition: color 0.15s;
+  }
+
+  /* Lift: keyboard focus always, hover only with a mouse (a tap on a
+     phone would leave it stuck). The shadow's far edge never moves. */
+  .plate-link:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--shadow);
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 0; /* the global focus rule rounds corners; plates are square */
+  }
+  .plate-link:focus-visible .plate-link__arrow {
+    translate: 3px 0;
+    color: var(--color-accent);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .plate-link:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--shadow);
+    }
+    .plate-link:hover .plate-link__arrow {
+      translate: 3px 0;
+      color: var(--color-accent);
+    }
+  }
+
+  /* Press: the plate goes down into its shadow. */
+  .plate-link:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--shadow);
+  }
+
+  /* Opt-in motion: without it every state above still applies, at once. */
+  @media (prefers-reduced-motion: no-preference) {
+    .plate-link {
+      transition:
+        transform 0.18s var(--ease-out),
+        box-shadow 0.18s var(--ease-out);
+    }
+    .plate-link:active {
+      transition-duration: 0.08s;
+    }
+    .plate-link__arrow {
+      transition:
+        translate 0.18s var(--ease-out),
+        color 0.15s;
+    }
+  }
+</style>

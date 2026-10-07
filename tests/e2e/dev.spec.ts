@@ -10,7 +10,7 @@ test("/dev lists the shared pages and is noindexed", async ({ page }) => {
   await expect(page.locator("main a[href='/dev/skills-tile/']")).toBeVisible();
   await expect(page.locator("main a[href='/dev/foil-cards/']")).toBeVisible();
   await expect(page.locator("main a[href='/dev/projects/']")).toBeVisible();
-  await expect(page.locator("main a[href='/dev/changelog/']")).toBeVisible();
+  await expect(page.locator("main a.plate-link[href='/dev/changelog/']")).toBeVisible();
 });
 
 test("/dev/changelog lists commits from git, noindexed", async ({ page }) => {
