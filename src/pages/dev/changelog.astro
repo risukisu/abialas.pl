@@ -1,0 +1,169 @@
+---
+// /dev/changelog/ — every change to the site, read from git at build
+// time (src/lib/changelog.ts), so each deploy writes its own entry.
+// Noindexed and out of the sitemap like the rest of /dev/.
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { readChangelog, byDay, REPO } from "../../lib/changelog";
+
+const { changes, shallow, head } = readChangelog();
+const days = byDay(changes);
+
+const built = new Date().toISOString().slice(0, 16).replace("T", " ") + " UTC";
+const trigger =
+  {
+    push: "a push to master",
+    schedule: "the daily 05:00 UTC rebuild",
+    workflow_dispatch: "a manual run",
+  }[process.env.GITHUB_EVENT_NAME ?? ""] ?? "a local build";
+---
+<BaseLayout title="Changelog" description="Every change to abialas.pl, newest first." noindex={true}>
+  <section class="container cl">
+    <p class="measure"><a href="/dev/">abialas.pl/dev</a></p>
+    <h1 class="cl__title">Changelog</h1>
+    <p class="cl__lead">
+      Every change to the site, newest first. The list is read from the site's git history each
+      time the site is built, so it can't fall behind.
+    </p>
+
+    <dl class="cl__build">
+      <div><dt>This build</dt><dd><time datetime={built.replace(" UTC", "Z").replace(" ", "T")}>{built}</time>, from {trigger}</dd></div>
+      {head && (
+        <div><dt>Commit</dt><dd><a href={`${REPO}/commit/${head.sha}`}>{head.short}</a></dd></div>
+      )}
+      <div><dt>Every build</dt><dd><a href={`${REPO}/actions/workflows/deploy.yml`}>deploy runs on GitHub</a>, daily rebuilds included</dd></div>
+    </dl>
+
+    {shallow && (
+      <p class="cl__warn">This build only saw part of the history (a shallow git checkout), so older changes are missing.</p>
+    )}
+    {changes.length === 0 && (
+      <p class="cl__warn">No history was available to this build.</p>
+    )}
+
+    {days.map(([day, list]) => (
+      <section class="cl__day" aria-labelledby={`d-${day}`}>
+        <h2 class="cl__date" id={`d-${day}`}><time datetime={day}>{day}</time></h2>
+        <ul class="cl__list">
+          {list.map((c) => (
+            <li class="cl__item">
+              {c.area && <span class="cl__area">{c.area}</span>}
+              <span class="cl__text">{c.text}</span>
+              <a class="cl__sha" href={`${REPO}/commit/${c.sha}`} aria-label={`Commit ${c.short} on GitHub`}>{c.short}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .cl {
+    padding-block: clamp(40px, 6vw, 72px) var(--section-padding);
+  }
+  .cl .measure a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .cl__title {
+    margin-block: 14px 18px;
+    font-size: clamp(2.2rem, 1.6rem + 2.4vw, 3.4rem);
+    line-height: 1.05;
+  }
+  .cl__lead {
+    max-inline-size: 58ch;
+    margin: 0 0 28px;
+  }
+
+  /* Build stamp — a small ruled box, mono labels. */
+  .cl__build {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: baseline;
+    gap: 6px 18px;
+    max-inline-size: 64ch;
+    margin: 0 0 40px;
+    padding: 14px 18px;
+    border: 1px solid var(--color-line-2);
+    background: var(--color-tint-2);
+  }
+  .cl__build div {
+    display: contents;
+  }
+  .cl__build a,
+  .cl__sha {
+    text-decoration: underline;
+    text-decoration-color: var(--color-line-2);
+    text-underline-offset: 3px;
+  }
+  .cl__build dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .cl__build dd {
+    margin: 0;
+  }
+  .cl__warn {
+    padding-inline-start: 12px;
+    border-inline-start: 3px solid var(--color-accent);
+  }
+
+  /* One day: the date as a mono rule, then that day's changes. */
+  .cl__day + .cl__day {
+    margin-block-start: 28px;
+  }
+  .cl__date {
+    margin: 0 0 4px;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
+  }
+  .cl__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-block-start: 1px solid var(--color-line);
+  }
+  .cl__item {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    padding-block: 10px;
+    border-block-end: 1px solid var(--color-line);
+  }
+  .cl__area {
+    flex: none;
+    padding: 1px 7px;
+    border: 1px solid var(--color-line-2);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--color-ink);
+  }
+  .cl__text {
+    flex: 1 1 18ch;
+    color: var(--color-body);
+  }
+  /* The hash sits at the row's end, pushed by its auto margin. */
+  .cl__sha {
+    margin-inline-start: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--color-muted);
+  }
+  .cl__sha:active,
+  .cl__build a:active {
+    color: var(--color-accent);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .cl__sha:hover {
+      color: var(--color-accent);
+    }
+  }
+</style>

@@ -10,6 +10,16 @@ test("/dev lists the shared pages and is noindexed", async ({ page }) => {
   await expect(page.locator("main a[href='/dev/skills-tile/']")).toBeVisible();
   await expect(page.locator("main a[href='/dev/foil-cards/']")).toBeVisible();
   await expect(page.locator("main a[href='/dev/projects/']")).toBeVisible();
+  await expect(page.locator("main a[href='/dev/changelog/']")).toBeVisible();
+});
+
+test("/dev/changelog lists commits from git, noindexed", async ({ page }) => {
+  await page.goto("/dev/changelog/");
+  await expect(page.locator("h1")).toHaveText("Changelog");
+  await expect(page.locator("meta[name='robots']")).toHaveAttribute("content", "noindex");
+  await expect(page.locator(".cl__build")).toContainText("This build");
+  await expect(page.locator(".cl__item").first()).toBeVisible();
+  await expect(page.locator(".cl__sha").first()).toHaveAttribute("href", /github\.com\/risukisu\/abialas\.pl\/commit\/[0-9a-f]{40}$/);
 });
 
 test("/dev/foil-cards shows the pixel quest foil, noindexed", async ({ page }) => {

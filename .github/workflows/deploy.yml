@@ -27,6 +27,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history: /dev/changelog/ is built from git log.
+          fetch-depth: 0
       - name: Build with Astro
         uses: withastro/action@v3 # detects the package manager, runs build, uploads the Pages artifact
         env:
