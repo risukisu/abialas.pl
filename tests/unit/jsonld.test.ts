@@ -20,6 +20,15 @@ describe("jsonld helpers", () => {
     expect(p.sameAs).toContain("https://www.linkedin.com/in/andrzejbialas/");
   });
 
+  it("personSchema adds the employer as an Organization", () => {
+    const p = personSchema({
+      name: "Andrzej Białaś",
+      url: "https://abialas.pl",
+      worksFor: { name: "Everfield", url: "https://everfield.com" },
+    });
+    expect(p.worksFor).toEqual({ "@type": "Organization", name: "Everfield", url: "https://everfield.com" });
+  });
+
   it("creativeWorkSchema returns valid CreativeWork JSON", () => {
     const w = creativeWorkSchema({
       name: "How I run marketing",

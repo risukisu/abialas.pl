@@ -2,6 +2,7 @@ type PersonInput = {
   name: string;
   url: string;
   jobTitle?: string;
+  worksFor?: { name: string; url: string };
   sameAs?: string[];
 };
 
@@ -20,6 +21,7 @@ export function personSchema(input: PersonInput) {
     name: input.name,
     url: input.url,
     ...(input.jobTitle && { jobTitle: input.jobTitle }),
+    ...(input.worksFor && { worksFor: { "@type": "Organization", ...input.worksFor } }),
     ...(input.sameAs && { sameAs: input.sameAs }),
   };
 }
