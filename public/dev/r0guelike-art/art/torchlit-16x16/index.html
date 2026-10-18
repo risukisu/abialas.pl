@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Torchlit, 16×16 — Art exploration — Old Legends: Grim Awakening</title>
-  <meta name="description" content="Stone, earth and moss that flow across the tiles, walls of uneven stone, and light that falls off tile by tile around each torch. The figures stay small and bright. Since version 2 it is drawn in each of the game's areas: the City, the Shallows and the Mines. The tiles are shown unlit; the light is laid over the room as a whole.">
+  <meta name="description" content="Stone, earth and moss that flow across the tiles, walls of uneven stone, and light that falls off tile by tile around each torch. The figures stay small and bright. Since version 2 it is drawn in each of the game's areas: the City, the Shallows and the Mines. Since version 2.1 lava and water meet the rest on natural edges, and its page shows ways of drawing the characters, every creature in the game, and chests. The tiles are shown unlit; the light is laid over the room as a whole.">
   <meta name="theme-color" content="#121119">
   <meta name="color-scheme" content="dark">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%2314141c'/%3E%3Cpath fill='%23f2b45a' d='M7 1h2v1H7zM6 2h4v4H6zM7 6h2v1H7z'/%3E%3Cpath fill='%23ffd88a' d='M7 3h2v3H7z'/%3E%3Cpath fill='%23f6e7c8' d='M6 8h4v5H6z'/%3E%3Cpath fill='%23cdb991' d='M9 8h1v5H9z'/%3E%3Cpath fill='%236b5030' d='M4 13h8v2H4z'/%3E%3C/svg%3E">
@@ -14,6 +14,15 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Grenze+Gotisch:wght@500;700&family=Silkscreen&display=swap">
   <link rel="stylesheet" href="../../styles.css">
   <style>
+    .sheet-v2-1-test .look-tile { background-image: url("v2-1-test-tiles.png"); background-size: 704px auto; }
+    .sheet-v2-1-city .look-tile { background-image: url("v2-1-city-tiles.png"); background-size: 704px auto; }
+    .sheet-v2-1-shallows .look-tile { background-image: url("v2-1-shallows-tiles.png"); background-size: 704px auto; }
+    .sheet-v2-1-mines .look-tile { background-image: url("v2-1-mines-tiles.png"); background-size: 704px auto; }
+    .sheet-v2-1-edges .look-tile { background-image: url("v2-1-edges-tiles.png"); background-size: 704px auto; }
+    .sheet-v2-1-characters .look-tile { background-image: url("v2-1-characters-tiles.png"); background-size: 704px auto; }
+    .sheet-v2-1-creatures-1 .look-tile { background-image: url("v2-1-creatures-1-tiles.png"); background-size: 704px auto; }
+    .sheet-v2-1-creatures-2 .look-tile { background-image: url("v2-1-creatures-2-tiles.png"); background-size: 704px auto; }
+    .sheet-v2-1-chests .look-tile { background-image: url("v2-1-chests-tiles.png"); background-size: 704px auto; }
     .sheet-v2-test .look-tile { background-image: url("v2-test-tiles.png"); background-size: 704px auto; }
     .sheet-v2-city .look-tile { background-image: url("v2-city-tiles.png"); background-size: 704px auto; }
     .sheet-v2-shallows .look-tile { background-image: url("v2-shallows-tiles.png"); background-size: 704px auto; }
@@ -29,14 +38,317 @@
       <header class="look-head">
         <span class="eyebrow">Not in the game yet</span>
         <h1 class="art-h">Torchlit, 16×16</h1>
-        <p class="look-status">Still being tried · 2 versions, newest first</p>
-        <p class="art-lede">Stone, earth and moss that flow across the tiles, walls of uneven stone, and light that falls off tile by tile around each torch. The figures stay small and bright. Since version 2 it is drawn in each of the game's areas: the City, the Shallows and the Mines. The tiles are shown unlit; the light is laid over the room as a whole.</p>
+        <p class="look-status">Still being tried · 3 versions, newest first</p>
+        <p class="art-lede">Stone, earth and moss that flow across the tiles, walls of uneven stone, and light that falls off tile by tile around each torch. The figures stay small and bright. Since version 2 it is drawn in each of the game's areas: the City, the Shallows and the Mines. Since version 2.1 lava and water meet the rest on natural edges, and its page shows ways of drawing the characters, every creature in the game, and chests. The tiles are shown unlit; the light is laid over the room as a whole.</p>
       </header>
       <nav class="look-nav" aria-label="Versions">
+        <a href="#v2-1">Version 2.1 · 18 October 2026</a>
         <a href="#v2">Version 2 · 18 October 2026</a>
         <a href="#v1">Version 1 · 18 October 2026</a>
       </nav>
-      <section class="look-version" id="v2" aria-labelledby="v2-h">
+      <section class="look-version" id="v2-1" aria-labelledby="v2-1-h" data-look-version="2.1">
+        <h2 class="look-version-h" id="v2-1-h">Version 2.1 <span class="look-date">18 October 2026</span></h2>
+        <p class="look-changed">Lava and water now meet floor, rock, walls and each other on edges that wander across the tiles: jagged with a black crust for lava, a soft wet shore for water. They do so in the test room, the Shallows and the Mines, and in a new room of their own, whose tiles are the pieces a game would keep in its tile atlas. Four more rooms show five ways of drawing the characters, every creature in the game so far, and chests: three plain designs shut, locked, open and open and empty, then wooden, iron-bound, gilded and crystal chests after Shattered Pixel Dungeon's, and a mimic. The City is as it was.</p>
+        <blockquote class="look-feedback"><span class="look-label">Feedback</span> The City COMPLETELY SLAPS, it's amazing, no notes for now. The other ones are great too! I love the changes you made to the main room showcase, the walls look great now. For v2.1: transition tiles between lava/water and etc, and other, so that it looks more natural. Show me a few different ways to draw characters, I am still not loving what I see here. Create sprites / tiles of all the monsters that are in game now. Create a few versions of 'standard' chests and model treasure chests after Shattered Pixel Dungeon chests, but fitting our style.</blockquote>
+        <p class="look-jump"><a href="#v2-1-test">The test room</a> · <a href="#v2-1-city">The City</a> · <a href="#v2-1-shallows">The Shallows</a> · <a href="#v2-1-mines">The Mines</a> · <a href="#v2-1-edges">Where lava and water meet the rest</a> · <a href="#v2-1-characters">Five ways to draw the characters</a> · <a href="#v2-1-creatures-1">Creatures of the first floors</a> · <a href="#v2-1-creatures-2">Creatures further down</a> · <a href="#v2-1-chests">Chests</a></p>
+        <div class="look-scene sheet-v2-1-test" id="v2-1-test" data-sheet="v2-1-test-tiles.png">
+          <h3 class="look-scene-h">The test room</h3>
+          <p class="look-scene-about">The room every look draws, cell for cell as in version 1, so the two can be laid side by side.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-1-test-room.png" width="704" height="352" alt="The test room at 16 by 16 pixels a tile, lit by its torches: walls of uneven packed stone under rough stone tops, cracked floors with drifts of earth and moss, a glowing lava pool, and four small bright figures.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Floor</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Lit floor</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Stone wall</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Wall face</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Door</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Open door</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Gate door</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Switch</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Water</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Lava</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Rubble</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Altar</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Lever</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Stairs down</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Torch</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Chest</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Gold</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>Potion</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>Adventurer</li>
+            <li><span class="look-tile" style="background-position: -512px -64px"></span>Goblin</li>
+            <li><span class="look-tile" style="background-position: -576px -64px"></span>Skeleton</li>
+            <li><span class="look-tile" style="background-position: -640px -64px"></span>Giant rat</li>
+          </ul>
+        </div>
+        <div class="look-scene sheet-v2-1-city" id="v2-1-city" data-sheet="v2-1-city-tiles.png">
+          <h3 class="look-scene-h">The City</h3>
+          <p class="look-scene-about">Where every adventure starts, at night under torchlight: the city wall, a terrace of timber-framed houses, two market stalls and a fountain on the square, and a fenced yard, grass and a pond beyond.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-1-city-room.png" width="864" height="480" loading="lazy" alt="A corner of the City at night: a stone city wall, three timber-framed houses with their floors showing, a cobbled street opening into a paved square with a fountain and two stalls, townsfolk, a small house with a fenced yard, grass, trees and a pond.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Cobbles</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Plaza flags</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Yard</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Grass</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Dirt path</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Track</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>House floor</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Stone wall</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Wall face</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>House wall</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>House wall face</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Fence</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Door</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Open door</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Tree</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Water</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Fountain</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>Torch</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>Townsfolk</li>
+            <li><span class="look-tile" style="background-position: -512px -64px"></span>Adventurer</li>
+            <li><span class="look-tile" style="background-position: -576px -64px"></span>Potion</li>
+            <li><span class="look-tile" style="background-position: -640px -64px"></span>Gold</li>
+          </ul>
+        </div>
+        <div class="look-scene sheet-v2-1-shallows" id="v2-1-shallows" data-sheet="v2-1-shallows-tiles.png">
+          <h3 class="look-scene-h">The Shallows</h3>
+          <p class="look-scene-about">The first floors below the City, halls of worked stone: a pillared hall, a small round shrine with an altar, a flooded chamber and a room whose corner has fallen in, joined by corridors and doors.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-1-shallows-room.png" width="832" height="448" loading="lazy" alt="Halls of worked stone: a hall with six pillars, a shrine with an altar, a flooded chamber with a rat, and a room fallen in at one corner with rubble, a goblin and treasure, lit by torches.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Stone wall</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Wall face</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Wall corner</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Pillar</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Partition</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Stone floor</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Door</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Open door</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Rubble</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Water</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Lava</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Altar</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Stairs down</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Torch</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Chest</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Gold</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Potion</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>Adventurer</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>Goblin</li>
+            <li><span class="look-tile" style="background-position: -512px -64px"></span>Skeleton</li>
+            <li><span class="look-tile" style="background-position: -576px -64px"></span>Giant rat</li>
+          </ul>
+        </div>
+        <div class="look-scene sheet-v2-1-mines" id="v2-1-mines" data-sheet="v2-1-mines-tiles.png">
+          <h3 class="look-scene-h">The Mines</h3>
+          <p class="look-scene-about">Below the Shallows: a timbered gallery with a rail line, a cross-cut to an ore face and a collapse, opening into a cave of bare rock with stalagmites and a black pool, where goblins wait.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-1-mines-room.png" width="832" height="480" loading="lazy" alt="A timbered mine gallery with rails, an ore face, a collapsed passage with a rat, and a dark cave of rough rock with stalagmites, a black pool and three goblins.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Rough rock</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Rock face</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Stalagmite</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Timbered wall</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Timbered face</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Ore face</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Packed earth</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Rail</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Rail bend</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Rail crossing</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Rubble</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Black pool</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Torch</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Gold</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Chest</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Potion</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Adventurer</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>Goblin</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>Giant rat</li>
+          </ul>
+        </div>
+        <div class="look-scene sheet-v2-1-edges" id="v2-1-edges" data-sheet="v2-1-edges-tiles.png">
+          <h3 class="look-scene-h">Where lava and water meet the rest</h3>
+          <p class="look-scene-about">Lava and water against floor, rock, walls, moss and each other, on edges that wander across the tiles instead of following them: a stone hall on the left, a cave on the right. The tiles below are not cells but the pieces the edges are made of, which a game would keep in its tile atlas. Each piece sits where four tiles meet and is picked by which of the four are lava or water: sixteen shapes for each, every shape in four variants so an edge never repeats.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-1-edges-room.png" width="1024" height="480" loading="lazy" alt="Left, a stone hall with pools and channels of water on soft, wet shores and a little lava; right, a dark cave with a lava lake round an island of rock, a lava vein and a lava flow running into a black pool, every lava edge jagged with a black crust, lit by torches.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Lava on earth: none</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Lava on earth: top-left corner</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Lava on earth: top-right corner</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Lava on earth: bottom-left corner</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Lava on earth: bottom-right corner</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Lava on earth: top half</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Lava on earth: bottom half</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Lava on earth: left half</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Lava on earth: right half</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Lava on earth: top-left and bottom-right</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Lava on earth: top-right and bottom-left</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Lava on earth: all but top-left</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Lava on earth: all but top-right</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Lava on earth: all but bottom-left</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Lava on earth: all but bottom-right</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Lava on earth: all</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Water on stone: none</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>Water on stone: top-left corner</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>Water on stone: top-right corner</li>
+            <li><span class="look-tile" style="background-position: -512px -64px"></span>Water on stone: bottom-left corner</li>
+            <li><span class="look-tile" style="background-position: -576px -64px"></span>Water on stone: bottom-right corner</li>
+            <li><span class="look-tile" style="background-position: -640px -64px"></span>Water on stone: top half</li>
+            <li><span class="look-tile" style="background-position: -0px -128px"></span>Water on stone: bottom half</li>
+            <li><span class="look-tile" style="background-position: -64px -128px"></span>Water on stone: left half</li>
+            <li><span class="look-tile" style="background-position: -128px -128px"></span>Water on stone: right half</li>
+            <li><span class="look-tile" style="background-position: -192px -128px"></span>Water on stone: top-left and bottom-right</li>
+            <li><span class="look-tile" style="background-position: -256px -128px"></span>Water on stone: top-right and bottom-left</li>
+            <li><span class="look-tile" style="background-position: -320px -128px"></span>Water on stone: all but top-left</li>
+            <li><span class="look-tile" style="background-position: -384px -128px"></span>Water on stone: all but top-right</li>
+            <li><span class="look-tile" style="background-position: -448px -128px"></span>Water on stone: all but bottom-left</li>
+            <li><span class="look-tile" style="background-position: -512px -128px"></span>Water on stone: all but bottom-right</li>
+            <li><span class="look-tile" style="background-position: -576px -128px"></span>Water on stone: all</li>
+            <li><span class="look-tile" style="background-position: -640px -128px"></span>Lava on earth: top half, variant 2</li>
+            <li><span class="look-tile" style="background-position: -0px -192px"></span>Lava on earth: top half, variant 3</li>
+            <li><span class="look-tile" style="background-position: -64px -192px"></span>Lava on earth: top half, variant 4</li>
+            <li><span class="look-tile" style="background-position: -128px -192px"></span>Water left, lava right</li>
+            <li><span class="look-tile" style="background-position: -192px -192px"></span>Water above, lava below</li>
+            <li><span class="look-tile" style="background-position: -256px -192px"></span>Water in a corner, lava in the rest</li>
+          </ul>
+        </div>
+        <div class="look-scene sheet-v2-1-characters" id="v2-1-characters" data-sheet="v2-1-characters-tiles.png">
+          <h3 class="look-scene-h">Five ways to draw the characters</h3>
+          <p class="look-scene-about">The adventurer, a townsperson, a goblin, a skeleton and a giant rat, drawn five ways, one row each from the top: as now, with coloured outlines, with big heads, tall and lean, and as shadows the torchlight picks out. Each row has a torch at both ends, so every way is seen in full light and, in the middle, in the dark.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-1-characters-room.png" width="416" height="416" loading="lazy" alt="Five rows of the same five figures in a stone hall, each row drawn a different way, from small bright figures with dark outlines at the top to near-black shapes with glowing eyes at the bottom, a torch at each end of every row.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>As now: Adventurer</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>As now: Townsfolk</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>As now: Goblin</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>As now: Skeleton</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>As now: Giant rat</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Coloured outline: Adventurer</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Coloured outline: Townsfolk</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Coloured outline: Goblin</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Coloured outline: Skeleton</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Coloured outline: Giant rat</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Big heads: Adventurer</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Big heads: Townsfolk</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Big heads: Goblin</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Big heads: Skeleton</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Big heads: Giant rat</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Tall and lean: Adventurer</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Tall and lean: Townsfolk</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>Tall and lean: Goblin</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>Tall and lean: Skeleton</li>
+            <li><span class="look-tile" style="background-position: -512px -64px"></span>Tall and lean: Giant rat</li>
+            <li><span class="look-tile" style="background-position: -576px -64px"></span>Shadow figures: Adventurer</li>
+            <li><span class="look-tile" style="background-position: -640px -64px"></span>Shadow figures: Townsfolk</li>
+            <li><span class="look-tile" style="background-position: -0px -128px"></span>Shadow figures: Goblin</li>
+            <li><span class="look-tile" style="background-position: -64px -128px"></span>Shadow figures: Skeleton</li>
+            <li><span class="look-tile" style="background-position: -128px -128px"></span>Shadow figures: Giant rat</li>
+          </ul>
+        </div>
+        <div class="look-scene sheet-v2-1-creatures-1" id="v2-1-creatures-1" data-sheet="v2-1-creatures-1-tiles.png">
+          <h3 class="look-scene-h">Creatures of the first floors</h3>
+          <p class="look-scene-about">Every creature met on the first floors, from the City's townsfolk to the ghoul, in the order they turn up.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-1-creatures-1-room.png" width="544" height="256" loading="lazy" alt="Fourteen creatures lined up in two rows in a torchlit stone hall, from townsfolk, rats and bats to orcs, gnolls and the undead.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Townsfolk</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Giant rat</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Jackal</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Giant bat</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Kobold</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Goblin</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Zombie</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Skeleton</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Cave spider</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Wolf</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Orc</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Hobgoblin</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Gnoll</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Ghoul</li>
+          </ul>
+        </div>
+        <div class="look-scene sheet-v2-1-creatures-2" id="v2-1-creatures-2" data-sheet="v2-1-creatures-2-tiles.png">
+          <h3 class="look-scene-h">Creatures further down</h3>
+          <p class="look-scene-about">Every creature met further down, from the orc warlord to the wyvern, in the order they turn up. The big ones fill their tile.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-1-creatures-2-room.png" width="608" height="256" loading="lazy" alt="Fifteen large and strange creatures lined up in two rows in a torchlit stone hall, from an orc warlord and an ogre to a two-headed ettin and a wyvern.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Orc warlord</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Bugbear</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Dire wolf</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Ogre</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Cave bear</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Wight</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Bugbear warchief</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Troll</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Minotaur</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Carrion crawler</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Thrum</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Basilisk</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Ettin</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Pale strider</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Wyvern</li>
+          </ul>
+        </div>
+        <div class="look-scene sheet-v2-1-chests" id="v2-1-chests" data-sheet="v2-1-chests-tiles.png">
+          <h3 class="look-scene-h">Chests</h3>
+          <p class="look-scene-about">Three plain designs, each shut, locked, open with things in it, and open and empty; then chests whose material says what they hold, after Shattered Pixel Dungeon's, and a mimic awake.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-1-chests-room.png" width="576" height="256" loading="lazy" alt="Rows of chests in a torchlit vault: plank, domed and low chests shut, locked and open, then wooden, iron-bound, gilded and crystal chests, and a mimic.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Plank chest, shut</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Plank chest, locked</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Plank chest, open</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Plank chest, open and empty</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Domed chest, shut</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Domed chest, locked</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Domed chest, open</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Domed chest, open and empty</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Low coffer, shut</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Low coffer, locked</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Low coffer, open</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Low coffer, open and empty</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Wooden chest, shut</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Wooden chest, open</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Iron-bound chest, shut</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Iron-bound chest, open</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Gilded chest, shut</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>Gilded chest, open</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>Crystal chest, shut</li>
+            <li><span class="look-tile" style="background-position: -512px -64px"></span>Crystal chest, open</li>
+            <li><span class="look-tile" style="background-position: -576px -64px"></span>Mimic, awake</li>
+          </ul>
+        </div>
+      </section>
+      <section class="look-version" id="v2" aria-labelledby="v2-h" data-look-version="2">
         <h2 class="look-version-h" id="v2-h">Version 2 <span class="look-date">18 October 2026</span></h2>
         <p class="look-changed">The walls are redrawn as uneven stone: stones of many sizes packed course by course, joints that run on from tile to tile, rough stone tops, pillars and corners built rather than cut. And the look now visits the game's three areas: the City at night, the halls of the Shallows, and the timbered galleries and caves of the Mines, each with its own tiles.</p>
         <blockquote class="look-feedback"><span class="look-label">Feedback</span> Make the walls more varying, they all look like perfect squares and it looks like it's been made with Minecraft blocks. Try a bit more seamless walls joints, and walls irregular, with more variety in what's inside. Build 3 biomes we have so far, city, shallows and caves that will show tiles and sample rooms per each biome.</blockquote>
@@ -45,7 +357,7 @@
           <h3 class="look-scene-h">The test room</h3>
           <p class="look-scene-about">The room every look draws, cell for cell as in version 1, so the two can be laid side by side.</p>
           <figure class="look-room">
-            <img class="look-room-img pixelated" src="v2-test-room.png" width="704" height="352" alt="The test room at 16 by 16 pixels a tile, lit by its torches: walls of uneven packed stone under rough stone tops, cracked floors with drifts of earth and moss, a glowing lava pool, and four small bright figures.">
+            <img class="look-room-img pixelated" src="v2-test-room.png" width="704" height="352" loading="lazy" alt="The test room at 16 by 16 pixels a tile, lit by its torches: walls of uneven packed stone under rough stone tops, cracked floors with drifts of earth and moss, a glowing lava pool, and four small bright figures.">
             <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
           </figure>
           <h4 class="art-name look-tiles-h">Tiles</h4>
@@ -170,7 +482,7 @@
           </ul>
         </div>
       </section>
-      <section class="look-version" id="v1" aria-labelledby="v1-h">
+      <section class="look-version" id="v1" aria-labelledby="v1-h" data-look-version="1">
         <h2 class="look-version-h" id="v1-h">Version 1 <span class="look-date">18 October 2026</span></h2>
         <p class="look-changed">The first drawing.</p>
         <div class="look-scene sheet-v1" data-sheet="v1-tiles.png">
