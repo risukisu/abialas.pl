@@ -1,0 +1,162 @@
+[
+  {
+    "file": "mines-stage.png",
+    "state": "mines",
+    "caption": "Three floors into the Mines: a timbered gallery two abreast, the rails I came down along a cross-cut, and somewhere on this floor someone is cooking.",
+    "width": 802,
+    "height": 514,
+    "version": "0.3.0-alpha.4"
+  },
+  {
+    "file": "mines-full.png",
+    "state": "mines",
+    "caption": "Three floors into the Mines: a timbered gallery two abreast, the rails I came down along a cross-cut, and somewhere on this floor someone is cooking.",
+    "width": 1400,
+    "height": 1000,
+    "version": "0.3.0-alpha.4"
+  },
+  {
+    "file": "caves-stage.png",
+    "state": "caves",
+    "caption": "Seven floors into the Mines the timber is gone: uneven rock, a black pool, and a hole in the floor that leads further down.",
+    "width": 802,
+    "height": 514,
+    "version": "0.3.0-alpha.4"
+  },
+  {
+    "file": "caves-full.png",
+    "state": "caves",
+    "caption": "Seven floors into the Mines the timber is gone: uneven rock, a black pool, and a hole in the floor that leads further down.",
+    "width": 1400,
+    "height": 1000,
+    "version": "0.3.0-alpha.4"
+  },
+  {
+    "file": "hall-stage.png",
+    "state": "hall",
+    "caption": "The bottom of the Mines: the goblin king's hall, and the king himself, waiting on his seat.",
+    "width": 802,
+    "height": 514,
+    "version": "0.3.0-alpha.4"
+  },
+  {
+    "file": "hall-full.png",
+    "state": "hall",
+    "caption": "The bottom of the Mines: the goblin king's hall, and the king himself, waiting on his seat.",
+    "width": 1400,
+    "height": 1000,
+    "version": "0.3.0-alpha.4"
+  },
+  {
+    "file": "city-stage.png",
+    "state": "city",
+    "caption": "A new adventurer in the City of Angband, with market stalls, a fountain and gear lying in the square, and the unexplored streets still dark.",
+    "width": 802,
+    "height": 514,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "city-full.png",
+    "state": "city",
+    "caption": "A new adventurer in the City of Angband, with market stalls, a fountain and gear lying in the square, and the unexplored streets still dark.",
+    "width": 1400,
+    "height": 1000,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "shallows-stage.png",
+    "state": "shallows",
+    "caption": "The first floor of the Shallows: giant rats in a lit room, the corridor behind already fading into memory, and the rest of the floor unseen.",
+    "width": 802,
+    "height": 514,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "shallows-full.png",
+    "state": "shallows",
+    "caption": "The first floor of the Shallows: giant rats in a lit room, the corridor behind already fading into memory, and the rest of the floor unseen.",
+    "width": 1400,
+    "height": 1000,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "combat-stage.png",
+    "state": "combat",
+    "caption": "Two turns into the Shallows and a cave spider champion has me poisoned and down to 11 HP, with a goblin coming up the corridor behind it.",
+    "width": 802,
+    "height": 514,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "combat-full.png",
+    "state": "combat",
+    "caption": "Two turns into the Shallows and a cave spider champion has me poisoned and down to 11 HP, with a goblin coming up the corridor behind it.",
+    "width": 1400,
+    "height": 1000,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "deep-stage.png",
+    "state": "deep",
+    "caption": "Four floors down, three orcs close in and the bleeding hero has a hard choice to make.",
+    "width": 802,
+    "height": 514,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "deep-full.png",
+    "state": "deep",
+    "caption": "Four floors down, three orcs close in and the bleeding hero has a hard choice to make.",
+    "width": 1400,
+    "height": 1000,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "roster-panel.png",
+    "state": "roster",
+    "caption": "The roster: your saved characters, and a new one being made with a name and a choice of what death will cost.",
+    "width": 858,
+    "height": 503,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "roster-full.png",
+    "state": "roster",
+    "caption": "The roster: your saved characters, and a new one being made with a name and a choice of what death will cost.",
+    "width": 1400,
+    "height": 1000,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "inventory-panel.png",
+    "state": "inventory",
+    "caption": "The inventory: every slot on the body, what is worn in each, and what is carried in the pack.",
+    "width": 716,
+    "height": 662,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "inventory-full.png",
+    "state": "inventory",
+    "caption": "The inventory: every slot on the body, what is worn in each, and what is carried in the pack.",
+    "width": 1400,
+    "height": 1000,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "item-card-panel.png",
+    "state": "item-card",
+    "caption": "An item's full card: an iron shortsword of burning, with its material, quality, enchantment and the damage it really deals.",
+    "width": 868,
+    "height": 411,
+    "version": "0.3.0-alpha.1"
+  },
+  {
+    "file": "item-card-full.png",
+    "state": "item-card",
+    "caption": "An item's full card: an iron shortsword of burning, with its material, quality, enchantment and the damage it really deals.",
+    "width": 1400,
+    "height": 1000,
+    "version": "0.3.0-alpha.1"
+  }
+]

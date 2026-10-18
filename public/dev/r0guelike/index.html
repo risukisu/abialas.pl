@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta name="robots" content="noindex">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2314141c'/%3E%3Crect x='2' y='2' width='5' height='5' fill='%233e7a3a'/%3E%3Crect x='9' y='2' width='5' height='5' fill='%235a5a66'/%3E%3Crect x='2' y='9' width='5' height='5' fill='%2328527e'/%3E%3Crect x='9' y='9' width='5' height='5' fill='%238a7a66'/%3E%3C/svg%3E"
+    />
+    <title>Old Legends: Grim Awakening (dev)</title>
+    <style>
+      /* The notable tone is one colour wherever it shows: the log line, and a Notice over the map. */
+      :root { color-scheme: dark; --tone-notable: #c79ae8; }
+      body {
+        margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+        background: #14141c; color: #c8c8d4;
+        font-family: ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace; font-size: 13px;
+      }
+      header { padding: 12px 16px 4px; font-size: 15px; text-align: center; }
+      header .tag { color: #7d7d92; font-size: 12px; margin-left: 8px; }
+      header a { color: #9a9ab0; }
+      #toolbar { display: flex; gap: 8px; align-items: center; justify-content: center; padding: 6px 12px; flex-wrap: wrap; }
+      #toolbar label { display: flex; align-items: center; gap: 4px; color: #9a9ab0; }
+      #toolbar .dev { color: #7d7d92; }
+      select, input[type="text"] { background: #1d1d28; color: #c8c8d4; border: 1px solid #34344a; border-radius: 3px; padding: 4px 6px; font: inherit; }
+      button {
+        background: #232333; color: #c8c8d4; border: 1px solid #34344a; border-radius: 3px;
+        padding: 4px 10px; font: inherit; cursor: pointer;
+      }
+      button:hover { background: #2c2c40; }
+      button.primary { background: #2a3a2a; border-color: #3e7a3a; }
+      button.primary:hover { background: #334933; }
+      button.danger { border-color: #7a3a3a; }
+      #play { display: flex; align-items: flex-start; gap: 12px; padding: 8px 12px 12px; }
+      main { overflow: auto; position: relative; }
+      canvas#stage { image-rendering: pixelated; display: block; border: 1px solid #2c2c3a; }
+      #log {
+        flex: none; margin: 0; padding: 8px 10px; list-style: none;
+        background: #1a1a24; border: 1px solid #2c2c3a; border-radius: 3px; min-height: 200px;
+      }
+      #log li { padding: 1px 0; color: #9a9ab0; }
+      /* The newest line stands out by weight, so a tone's colour still shows. Not while the
+         log is read back, when the bottom line is not the newest; :where keeps the tones winning. */
+      #log:not(:where([data-scrolled])) li:last-child { color: #e0e0ea; font-weight: 600; }
+      /* Reading the log back: how far from the newest, above the panel, outside the list. */
+      #log-scroll { padding: 2px 10px; color: #7d7d92; font-size: 12px; }
+      /* Tones: what happened, at a glance. Set by the shell from each line's tone. */
+      #log li[data-tone="hit"] { color: #7fd1a0; }
+      #log li[data-tone="kill"] { color: #b6e86a; }
+      #log li[data-tone="hurt"] { color: #e08a8a; }
+      #log li[data-tone="heal"] { color: #7fd1e0; }
+      #log li[data-tone="gain"] { color: #f2d35a; }
+      #log li[data-tone="loss"] { color: #c96f9a; }
+      #log li[data-tone="notable"] { color: var(--tone-notable); }
+      #log li[data-tone="warning"] { color: #e0c060; }
+      #log li[data-tone="danger"] { color: #ff8f5a; font-weight: 600; }
+      /* Not the game speaking: the dev cheat says so in its own voice. */
+      #log li[data-tone="cheat"] { color: #8be9fd; font-family: ui-monospace, "Cascadia Mono", Menlo, monospace; }
+      footer { padding: 0 16px 16px; font-size: 12px; color: #7d7d92; text-align: center; }
+      #side { display: flex; flex-direction: column; gap: 8px; width: 320px; flex: none; }
+      #hud {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; padding: 8px 10px;
+        background: #1a1a24; border: 1px solid #2c2c3a; border-radius: 3px; color: #c8c8d4;
+      }
+      #hud .danger { color: #e08a8a; }
+      #hud #hud-statuses, #hud #hud-weapon, #hud #hud-defence { grid-column: 1 / -1; }
+      /* The Anchor bar (ADR-0046): an Anchor Monster's title and its HP as a bar, never numbers. */
+      #hud .anchor-bar {
+        grid-column: 1 / -1; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px;
+        padding-bottom: 4px; margin-bottom: 2px; border-bottom: 1px solid #2c2c3a;
+      }
+      #hud .anchor-title { color: var(--tone-notable); font-weight: 600; }
+      #hud .anchor-track { height: 8px; background: #2c2c3a; border-radius: 2px; overflow: hidden; }
+      #hud .anchor-fill { height: 100%; background: #b8a060; }
+      #hud .anchor-fill.danger { background: #e08a8a; }
+      #hud .anchor-phase { color: #ff8f5a; font-weight: 600; }
+      #look { padding: 6px 10px; background: #1a1a24; border: 1px solid #2c2c3a; border-radius: 3px; color: #e0d6a0; min-height: 1.2em; }
+      /* Tips teach a verb at the moment it is first needed; once per character. */
+      #tips {
+        padding: 8px 10px; background: #1c2230; border: 1px solid #3a4a68; border-radius: 3px;
+        color: #a8c2e8; line-height: 1.4;
+      }
+      #tips .label { color: #6e86ab; display: block; }
+      /* A question the game is waiting on: it takes the keyboard until answered. */
+      #ask {
+        padding: 8px 10px; background: #2a2a1c; border: 1px solid #5a5a34; border-radius: 3px;
+        color: #f2d35a;
+      }
+      /* A Notice: a line the game stops on, over the map, in the log's notable colour, until continue. */
+      #notice {
+        position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+        padding: 16px; pointer-events: none;
+      }
+      #notice .panel {
+        max-width: 560px; padding: 14px 20px; text-align: center; line-height: 1.5;
+        background: rgba(20, 16, 30, 0.94); border: 1px solid #6a4a8a; border-radius: 3px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6); pointer-events: auto;
+      }
+      #notice-text { margin: 0; color: var(--tone-notable); }
+      #notice-prompt { margin: 8px 0 0; color: #7d7d92; }
+      #level-up {
+        display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px 10px;
+        background: #2a2a1c; border: 1px solid #5a5a34; border-radius: 3px; color: #f2d35a;
+      }
+      #level-up span { width: 100%; }
+      #keep { display: flex; gap: 6px; align-items: center; padding: 4px 8px; background: #2a2a1c; border: 1px solid #5a5a34; border-radius: 3px; }
+      #keep span { color: #f2d35a; }
+      #keep #keep-reason { color: #e08a8a; }
+      /* A Dev Command's mark (ADR-0025): the HUD's cheat fields, and a cheated name in the Roster and on both boards. */
+      .cheat { color: #8be9fd; }
+      .screen {
+        position: fixed; inset: 0; background: rgba(11, 11, 18, 0.92); display: flex; flex-direction: column;
+        align-items: center; justify-content: flex-start; padding: 48px 16px; gap: 16px; overflow: auto;
+      }
+      .screen h2 { margin: 0; font-size: 18px; font-weight: normal; color: #e0e0ea; }
+      .screen h3, #roster h3 { margin: 16px 0 4px; font-size: 13px; font-weight: normal; color: #7d7d92; }
+      table { border-collapse: collapse; min-width: 480px; }
+      th, td { padding: 4px 12px; border-bottom: 1px solid #2c2c3a; text-align: left; }
+      th { color: #7d7d92; font-weight: normal; }
+      td.actions { display: flex; gap: 6px; }
+      tr.unloadable td { color: #e08a8a; }
+      .screen ul { margin: 0; padding-left: 18px; }
+      /* Menus in the ask panel and the inventory screen: lettered rows as buttons. */
+      #ask ul, #inventory ul { list-style: none; margin: 6px 0 0; padding: 0; }
+      #ask li, #inventory li { padding: 1px 0; }
+      #ask button, #inventory button { text-align: left; }
+      #inventory-list { min-width: 640px; max-width: 960px; }
+      /* The Keys: a binding's keys on the left, its own description on the right. */
+      /* One table a group, every group's key column the same width, so the screen reads as one list. */
+      #help-list { width: min(900px, 100%); }
+      #help-list table { width: 100%; table-layout: fixed; }
+      #help-list th { width: 220px; color: #e0d6a0; white-space: nowrap; vertical-align: top; }
+      #inventory .item-row { display: flex; gap: 8px; align-items: baseline; }
+      /* A Slot row is a button now: press its letter or click it for what fits there. */
+      #inventory .item-row button.slot { color: #7d7d92; min-width: 112px; }
+      #inventory button.selected { border-color: #f2d35a; color: #f2d35a; }
+      #inventory-menu { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; padding: 8px 10px; background: #2a2a1c; border: 1px solid #5a5a34; border-radius: 3px; color: #f2d35a; }
+      #inventory-weight.danger { color: #e08a8a; }
+      /* An entry withheld in an item's menu, its reason in its place. */
+      #inventory-menu .refusal { color: #e0c060; }
+      /* A known Cursed item glimmers red wherever its line is drawn — the inventory, a Pile's menu,
+         the HUD's Wielding row: a slow pulse of a red tone, and a steady red under reduced motion. */
+      #inventory .cursed, #ask .cursed, #hud .cursed { color: #e05a5a; animation: cursed-glimmer 2.6s ease-in-out infinite; }
+      @keyframes cursed-glimmer {
+        0%, 100% { color: #c84a4a; text-shadow: none; }
+        50% { color: #ff7d7d; text-shadow: 0 0 4px rgba(255, 70, 70, 0.55); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #inventory .cursed, #ask .cursed, #hud .cursed { animation: none; color: #e05a5a; }
+      }
+      /* The Action Menu (16a-i): a pictogram, the row's words, its classic key on the right; the arrows' row lit. */
+      #action-rows button { display: flex; gap: 8px; align-items: baseline; width: 100%; min-width: 220px; }
+      #action-rows .pictogram { width: 1.6em; text-align: center; }
+      #action-rows .row-label { flex: 1; }
+      #action-rows .row-key { color: #9a9a6a; }
+      #action-rows button.selected { border-color: #f2d35a; background: #3a3a22; }
+      #examine table, #monster-card table { max-width: 820px; }
+      #examine td, #monster-card td { color: #e0d6a0; }
+      #examine-description { max-width: 820px; color: #c8c8d8; font-style: italic; }
+      #dead-text { font-size: 20px; color: #e08a8a; }
+      .muted { color: #7d7d92; }
+      #roster { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 24px 16px; }
+      #roster h2 { margin: 0; font-size: 18px; font-weight: normal; color: #e0e0ea; }
+      #roster .row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+      #roster-status { min-height: 1.2em; }
+      /* While a character from an earlier Epoch is listed: one line above the table. */
+      #roster-epoch { margin: 0 0 12px; max-width: 640px; color: #e0d6a0; }
+      #new-character-form {
+        display: flex; flex-direction: column; gap: 10px; padding: 12px 16px; min-width: 480px;
+        background: #1a1a24; border: 1px solid #2c2c3a; border-radius: 3px;
+      }
+      #new-character-form fieldset { border: 1px solid #2c2c3a; border-radius: 3px; display: flex; flex-direction: column; gap: 6px; }
+      #new-character-form legend { color: #7d7d92; padding: 0 4px; }
+      #new-character-form label.mode { display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; align-items: baseline; cursor: pointer; }
+      #new-character-form label.mode .description { grid-column: 2; color: #9a9ab0; }
+      [hidden] { display: none !important; }
+    </style>
+    <script type="module" crossorigin src="./assets/game-C6uFlWwU.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/renderer-BNiHf74U.js">
+  </head>
+  <body>
+    <header>project-r0guelike<span class="tag" id="build-tag"></span> <a class="tag" href="./editor/">Workbench →</a></header>
+
+    <section id="roster" hidden>
+      <h2>Roster</h2>
+      <p id="roster-status" class="muted"></p>
+      <div id="roster-list"></div>
+      <div class="row">
+        <button id="new-character" type="button" class="primary">New character</button>
+        <button id="import-save" type="button" title="a Save exported from this game">Import</button>
+        <input id="import-file" type="file" accept=".json,application/json" hidden />
+        <button id="roster-graveyard" type="button" title="the Chronicles of the permanently dead">Graveyard</button>
+        <button id="roster-hall" type="button" title="the Chronicles of those who beat the game">Hall of Fame</button>
+      </div>
+      <form id="new-character-form" hidden>
+        <label>Name <input id="character-name" type="text" maxlength="40" autocomplete="off" required /></label>
+        <fieldset id="mode-picker"><legend>Mode — what death does</legend></fieldset>
+        <div class="row">
+          <button id="create-character" type="submit" class="primary">Begin</button>
+          <button id="cancel-character" type="button">Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <div id="game" hidden>
+      <div id="toolbar">
+        <button id="back-to-roster" type="button" title="save and return to the roster">Roster</button>
+        <span id="keep" hidden>
+          <span>Unsaved dev character</span>
+          <input id="keep-name" type="text" maxlength="40" autocomplete="off" />
+          <button id="keep-character" type="button" class="primary">Keep this character</button>
+          <span id="keep-reason" hidden></span>
+        </span>
+        <button id="show-character" type="button" title="the character as they stand now (@)">Character</button>
+        <button id="show-help" type="button">Keys</button>
+        <button id="show-inventory" type="button">Inventory</button>
+        <button id="show-chronicle" type="button" title="this character's record so far">Chronicle</button>
+        <button id="show-graveyard" type="button" title="the Chronicles of the permanently dead">Graveyard</button>
+        <button id="show-hall" type="button" title="the Chronicles of those who beat the game">Hall of Fame</button>
+      </div>
+      <div id="play">
+        <main>
+          <canvas id="stage"></canvas>
+          <!-- A Notice (CONTEXT.md): shown over the map while the game waits for continue. -->
+          <div id="notice" hidden>
+            <div class="panel"><p id="notice-text"></p><p id="notice-prompt"></p></div>
+          </div>
+        </main>
+        <div id="side">
+          <div id="hud"></div>
+          <div id="level-up" hidden></div>
+          <div id="look" hidden></div>
+          <div id="tips" hidden></div>
+          <div id="ask" hidden></div>
+          <div id="log-scroll" hidden></div>
+          <ul id="log"></ul>
+        </div>
+      </div>
+      <!-- The hint line is built from the Keymap at startup (ADR-0034): no key is written here. -->
+      <footer id="status"></footer>
+    </div>
+
+    <section id="inventory" class="screen" hidden>
+      <h2>Inventory</h2>
+      <p id="inventory-weight" class="muted"></p>
+      <div id="inventory-menu" hidden></div>
+      <div id="inventory-list"></div>
+      <button id="close-inventory" type="button">Back to the game (Esc)</button>
+    </section>
+    <!-- Examine: one item's full card, over the inventory or a Pile's menu. No turn; Esc closes. -->
+    <section id="examine" class="screen" hidden>
+      <h2 id="examine-title">Examine</h2>
+      <table id="examine-rows"></table>
+      <p id="examine-description" hidden></p>
+      <button id="close-examine" type="button">Back (Esc)</button>
+    </section>
+    <!-- A monster's card, from Look (x): what can be seen, question marks until the Compendium. No turn; Esc closes. -->
+    <section id="monster-card" class="screen" hidden>
+      <h2 id="monster-card-title">Monster</h2>
+      <table id="monster-card-rows"></table>
+      <p class="muted">The rest is unknown until the Compendium.</p>
+      <button id="close-monster-card" type="button">Back (Esc)</button>
+    </section>
+    <!-- The Character sheet: the live character (@). No turn; Esc or @ closes. -->
+    <section id="character" class="screen" hidden>
+      <h2>Character</h2>
+      <div id="character-sheet"></div>
+      <button id="close-character" type="button" data-close>Back to the game (Esc)</button>
+    </section>
+    <!-- The Keys: the Keymap rendered (?). No turn; Esc or ? closes. -->
+    <section id="help" class="screen" hidden>
+      <h2>Keys</h2>
+      <div id="help-list"></div>
+      <button id="close-help" type="button" data-close>Back to the game (Esc)</button>
+    </section>
+    <section id="chronicle" class="screen" hidden>
+      <h2>Chronicle</h2>
+      <div id="chronicle-list"></div>
+      <button id="close-chronicle" type="button" data-close>Back to the game (Esc)</button>
+    </section>
+    <section id="graveyard" class="screen" hidden>
+      <h2>Graveyard</h2>
+      <div id="graveyard-list"></div>
+      <button id="close-graveyard" type="button" data-close>Back (Esc)</button>
+    </section>
+    <section id="hall-of-fame" class="screen" hidden>
+      <h2>Hall of Fame</h2>
+      <div id="hall-list"></div>
+      <button id="close-hall" type="button" data-close>Back (Esc)</button>
+    </section>
+    <section id="dead" class="screen" hidden>
+      <h2>Your story ends here</h2>
+      <p id="dead-text"></p>
+      <p id="dead-note" class="muted"></p>
+      <button id="dead-back" type="button">Back to the roster</button>
+    </section>
+  </body>
+</html>

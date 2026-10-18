@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Old Legends: Grim Awakening — a turn-based roguelike</title>
+  <meta name="description" content="A single-player, turn-based, tile-based roguelike with a classic ADOM feel and modern quality-of-life. Start in the City of Angband and go down. Made by risu; in playtest.">
+  <meta name="theme-color" content="#121119">
+  <meta name="color-scheme" content="dark">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Old Legends: Grim Awakening">
+  <meta property="og:title" content="Old Legends: Grim Awakening — a turn-based roguelike">
+  <meta property="og:description" content="A single-player, turn-based, tile-based roguelike with a classic ADOM feel and modern quality-of-life. Start in the City of Angband and go down.">
+  <meta property="og:url" content="https://risukisu.github.io/project-r0guelike/site/">
+  <meta property="og:image" content="https://risukisu.github.io/project-r0guelike/site/assets/shots/city-stage.png">
+  <meta property="og:image:width" content="802">
+  <meta property="og:image:height" content="514">
+  <meta property="og:image:alt" content="A new adventurer in the City of Angband, drawn in 32-pixel tiles.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%2314141c'/%3E%3Cpath fill='%23f2b45a' d='M7 1h2v1H7zM6 2h4v4H6zM7 6h2v1H7z'/%3E%3Cpath fill='%23ffd88a' d='M7 3h2v3H7z'/%3E%3Cpath fill='%23f6e7c8' d='M6 8h4v5H6z'/%3E%3Cpath fill='%23cdb991' d='M9 8h1v5H9z'/%3E%3Cpath fill='%236b5030' d='M4 13h8v2H4z'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Grenze+Gotisch:wght@500;700&family=Silkscreen&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add("js");</script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="Old Legends: Grim Awakening, home">Old Legends</a>
+      <nav class="nav" aria-label="Site">
+        <a class="hide-sm" href="#descent">The descent</a>
+        <a class="hide-sm" href="#screenshots">Screenshots</a>
+        <a href="releases.html">Patch notes</a>
+        <a href="#road">Road to 1.0</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- hero -->
+    <section class="hero" aria-labelledby="title">
+      <div class="wrap">
+        <div>
+          <span class="eyebrow rise"><span>A roguelike in playtest · <span data-version>v0.3.0-alpha.4</span></span></span>
+          <h1 class="title rise d1" id="title" aria-label="Old Legends: Grim Awakening">
+            <span class="line">Old Legends</span>
+            <span class="line grim">Grim Awakening</span>
+          </h1>
+          <p class="oneline rise d2">A single-player, turn-based, tile-based roguelike with a classic ADOM feel and modern quality-of-life.</p>
+          <p class="byline rise d3">Made by one person, risu. It runs in the browser as a playtest build; a desktop build is planned.</p>
+          <div class="cta rise d4">
+            <span data-play></span>
+            <a class="btn ghost" href="releases.html"><span class="arrow" aria-hidden="true"></span>What's new</a>
+          </div>
+        </div>
+
+        <figure class="hero-figure rise d3">
+          <button type="button" class="shot-frame hero-open" data-hero-open aria-label="Open the screenshot at full size"><span class="corner tl" aria-hidden="true"></span><img src="assets/shots/city-stage.png" width="802" height="514" alt="A new adventurer in the City of Angband, with market stalls, a fountain and gear lying in the square, and the unexplored streets still dark." fetchpriority="high"><span class="corner br" aria-hidden="true"></span></button>
+          <figcaption><span>A new adventurer in the City of Angband. The streets you have not walked yet are still dark.</span><span class="px">in-game, <span data-version>v0.3.0-alpha.4</span></span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <div class="course" aria-hidden="true"></div>
+
+    <!-- what the game is -->
+    <section class="block" id="what" aria-labelledby="what-h">
+      <div class="wrap">
+        <div class="block-head split fade-up">
+          <div>
+            <span class="eyebrow">What it is</span>
+            <h2 class="h-section" id="what-h">A city, and a long way down.</h2>
+          </div>
+          <p class="lede">You make a character in the City of Angband and choose how far below it you go. One move, one turn. Every action saves.</p>
+        </div>
+
+        <div class="pillars">
+          <article class="pillar fade-up">
+            <h3>Go down when you are ready.</h3>
+            <p>The story is down there, under the City. Nothing forces you to go and get it. The stairs wait.</p>
+          </article>
+          <article class="pillar fade-up">
+            <h3>Freedom, and consequence.</h3>
+            <p>Skip the story and just live in the world: fight, level up, grind. When the Island and its Towns come, anyone there will be killable, and the world will answer for it.</p>
+          </article>
+          <article class="pillar fade-up">
+            <h3>Strange from the first hour.</h3>
+            <p>Strange things turn up everywhere, from the start, and no one explains them. You understand more the further down you get.</p>
+          </article>
+          <article class="pillar fade-up">
+            <h3>What you learn outlives you.</h3>
+            <p>Characters die; what you learned does not. The game keeps its own record: a Chronicle for every character, a Graveyard for the permanently dead, a Hall of Fame still waiting for its first name.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- the descent -->
+    <section class="block descent" id="descent" aria-labelledby="descent-h">
+      <div class="wrap">
+        <div class="block-head split fade-up">
+          <div>
+            <span class="eyebrow">The descent</span>
+            <h2 class="h-section" id="descent-h">One way down.</h2>
+          </div>
+          <p class="lede">Every new character starts in the City. Below it the floors get older, darker and harder to explain. Scroll down; the candle goes with you.</p>
+        </div>
+
+        <div class="shaft">
+          <span class="lantern-halo" aria-hidden="true"></span>
+          <span class="lantern" aria-hidden="true"></span>
+
+          <div class="stratum s-city">
+            <div class="depth" aria-hidden="true"><span class="long">Surface</span><b>City</b></div>
+            <div class="node" aria-hidden="true"></div>
+            <div class="layer">
+              <span class="kicker">Where every character starts</span>
+              <h3>The City of Angband</h3>
+              <p>Your first steps, your way back after a death in Adventurer Mode, and the one place that stays as it is. On the floors below, something may arrive out of your sight while you are there; the City stays as it is.</p>
+            </div>
+          </div>
+
+          <aside class="endless" aria-labelledby="endless-h">
+            <div class="card">
+              <span class="kicker">Beside where you wake</span>
+              <h3 id="endless-h">The Endless Dungeon</h3>
+              <p>A gilded stair next to where you start leads down a shaft with no bottom. It is made again every time you go in.</p>
+              <div class="lvl"><b>25</b><span>the Level its monsters now reach, up from 10</span></div>
+            </div>
+          </aside>
+          <div class="endless-gap" aria-hidden="true"></div>
+
+          <div class="stratum s-shallows">
+            <div class="depth" aria-hidden="true"><span class="long">Floors</span><b>1–4</b></div>
+            <div class="node" aria-hidden="true"></div>
+            <div class="layer">
+              <span class="kicker">Made the first time you enter</span>
+              <h3>The Shallows</h3>
+              <p>Four floors, made the first time you walk into them and kept for that character's life. No corridor ends in a bare wall. Each floor has a Special Room:</p>
+              <ul class="rooms">
+                <li>a vault behind a locked door</li>
+                <li>a pillared hall</li>
+                <li>a flooded chamber</li>
+                <li>a collapsed room</li>
+                <li>a round shrine</li>
+                <li>the miners' mess halls, bunk rooms and storerooms</li>
+              </ul>
+              <div class="floors"><span>Floor 1</span><span>Floor 2</span><span>Floor 3</span><span>Floor 4</span></div>
+            </div>
+          </div>
+
+          <div class="stratum s-mines">
+            <div class="depth" aria-hidden="true"><span class="long">Floors</span><b>5–12</b></div>
+            <div class="node" aria-hidden="true"></div>
+            <div class="layer">
+              <span class="kicker">Under the Shallows</span>
+              <h3>The Mines</h3>
+              <p>Eight floors below the Shallows, with a look of their own: rough rock, packed earth and timber. Galleries two abreast and rail-laid cross-cuts, timbered near the top and bare rock lower down, with working faces where the shift stopped. The Mines have rooms of their own:</p>
+              <ul class="rooms">
+                <li>a collapsed gallery</li>
+                <li>a flooded shaft</li>
+                <li>an ore face</li>
+                <li>a goblin warren</li>
+              </ul>
+              <p>By the seventh floor the timber is gone: uneven tunnels, stalagmites and black pools. At the bottom waits the goblin king in his hall, the first boss. How that goes is yours to find out.</p>
+              <div class="floors"><span>Mines 1</span><span>Mines 2</span><span>Mines 3</span><span>Mines 4</span><span>Mines 5</span><span>Mines 6</span><span>Mines 7</span><span class="hall">Mines 8 · the king's hall</span></div>
+            </div>
+          </div>
+
+          <div class="stratum s-door">
+            <div class="depth" aria-hidden="true"><span class="long">Bottom</span><b>—</b></div>
+            <div class="node" aria-hidden="true"></div>
+            <div class="layer">
+              <span class="kicker">The end of the Early Game</span>
+              <h3>The Sealed Door <span class="tag-ahead">on the road</span></h3>
+              <p>Shut. No one in the City can say who shut it, or why. Opening it wins the game at 1.0, and the Hall of Fame is waiting for the first character who does.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- modes -->
+    <section class="block" id="death" aria-labelledby="death-h">
+      <div class="wrap">
+        <div class="block-head split fade-up">
+          <div>
+            <span class="eyebrow">Death</span>
+            <h2 class="h-section" id="death-h">Death is your choice.</h2>
+          </div>
+          <p class="lede">You pick a Mode when you make a character. It decides what dying costs.</p>
+        </div>
+
+        <div class="modes">
+          <article class="mode adv fade-up">
+            <svg class="glyph" viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true">
+              <path fill="#a07a44" d="M5 2h2v1H5zM4 3h4v1H4zM3 4h6v1H3zM2 5h8v1H2z"/>
+              <path fill="#4b3a26" d="M3 6h6v5H3z"/>
+              <path fill="#ffd88a" d="M5 7h2v2H5z"/>
+              <path fill="#6b5030" d="M0 11h12v1H0z"/>
+            </svg>
+            <h3>Adventurer</h3>
+            <p class="rule">Die, lose gold, wake in the City</p>
+            <p>Death costs you gold and the walk back down. The character carries on.</p>
+          </article>
+          <article class="mode rog fade-up">
+            <svg class="glyph" viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true">
+              <path fill="#8a8698" d="M4 1h4v1H4zM3 2h6v1H3zM2 3h8v7H2z"/>
+              <path fill="#3a3646" d="M5 4h2v4H5zM4 5h4v1H4z"/>
+              <path fill="#6b5030" d="M0 10h12v2H0z"/>
+            </svg>
+            <h3>Roguelike</h3>
+            <p class="rule">Death is final</p>
+            <p>When the character dies, it stays dead and its save is deleted. Its name goes to the Graveyard.</p>
+          </article>
+          <article class="mode cls fade-up">
+            <svg class="glyph" viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true">
+              <path fill="#5a4470" d="M2 1h7v10H2z"/>
+              <path fill="#3a2c4a" d="M2 1h1v10H2z"/>
+              <path fill="#e2dbcc" d="M9 2h1v8H9z"/>
+              <path fill="#f2b45a" d="M2 6h8v1H2zM5 5h2v3H5z"/>
+              <path fill="#2a1a0b" d="M6 6h1v1H6z"/>
+            </svg>
+            <h3>Classic Roguelike</h3>
+            <p class="rule">Final, and the Compendium sealed</p>
+            <p>Everything a Roguelike is, with the Compendium sealed.</p>
+          </article>
+        </div>
+
+        <p class="no-score fade-up">No score in any of them.</p>
+        <div class="memory fade-up">
+          <div><b>Chronicle</b><span>Every character keeps one.</span></div>
+          <div><b>Graveyard</b><span>Holds the permanently dead.</span></div>
+          <div><b>Hall of Fame</b><span>Empty, until someone opens the Sealed Door.</span></div>
+          <div><b>Achievements</b><span>Three to earn so far.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- screenshots -->
+    <section class="block" id="screenshots" aria-labelledby="shots-h" data-hero-file="city-stage.png">
+      <div class="wrap">
+        <div class="block-head split fade-up">
+          <div>
+            <span class="eyebrow">From the playtest build</span>
+            <h2 class="h-section" id="shots-h">What it looks like.</h2>
+          </div>
+          <p class="lede">Real screenshots. The game paints every tile in code; there is no sprite art yet. Click one to see it full size.</p>
+        </div>
+        <div class="gallery" id="gallery"></div>
+      </div>
+    </section>
+
+    <!-- latest -->
+    <section class="block" id="latest" aria-labelledby="latest-h">
+      <div class="wrap">
+        <div class="latest fade-up">
+          <div class="side">
+            <span class="eyebrow">Latest</span>
+            <h3 id="latest-h">What's new</h3>
+            <p id="latest-since">In v0.3.0-alpha.4, cut 12 October 2026.</p>
+            <a class="btn" id="latest-all" href="releases.html"><span class="arrow" aria-hidden="true"></span>All patch notes</a>
+          </div>
+          <ul id="latest-lines" aria-live="polite">
+            <li><p>Loading the latest changes…</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- road to 1.0 -->
+    <section class="block" id="road" aria-labelledby="road-h">
+      <div class="wrap">
+        <div class="block-head split fade-up">
+          <div>
+            <span class="eyebrow">The road to 1.0</span>
+            <h2 class="h-section" id="road-h">Ten milestones.</h2>
+          </div>
+          <p class="lede">1.0 is the Early Game complete: from the City all the way down to the Sealed Door. Two milestones are closed and the third is being built.</p>
+        </div>
+
+        <ol class="road fade-up">
+          <li class="done"><span class="step"><span class="px">M1</span></span><span class="name">The first map</span><span class="state">Closed</span></li>
+          <li class="done"><span class="step"><span class="px">M2</span></span><span class="name">The City and the first Shallows floors</span><span class="state">Closed</span></li>
+          <li class="now" aria-current="step"><span class="step"><span class="px">M3</span></span><span class="name">Descent systems</span><span class="state">In progress</span></li>
+          <li><span class="step"><span class="px">M4</span></span><span class="name">The Island and Towns</span><span class="state">Ahead</span></li>
+          <li><span class="step"><span class="px">M5</span></span><span class="name">First packaging: a desktop build, itch.io</span><span class="state">Ahead</span></li>
+          <li><span class="step"><span class="px">M6</span></span><span class="name">The City fleshed out and the first quest</span><span class="state">Ahead</span></li>
+          <li><span class="step"><span class="px">M7</span></span><span class="name">The magic system</span><span class="state">Ahead</span></li>
+          <li><span class="step"><span class="px">M8</span></span><span class="name">The full Shallows and the Mines</span><span class="state">Ahead</span></li>
+          <li><span class="step"><span class="px">M9</span></span><span class="name">The Sealed Door</span><span class="state">Ahead</span></li>
+          <li><span class="step"><span class="px">M10</span></span><span class="name">The full run</span><span class="state">Ahead</span></li>
+        </ol>
+
+        <div class="road-foot fade-up">
+          <p>The minor number in a Version counts closed milestones, so 0.3 means M1 and M2 are behind us. There are no dates on this road.</p>
+          <p class="px" style="font-size:11px;color:var(--faint)">Current: <span data-version>v0.3.0-alpha.4</span> · cut <span data-version-date>2026-10-12</span></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <!-- art exploration: the looks being tried for the first pixel art; copies from art/explore, written by its build.py --site -->
+    <section class="art" id="art" aria-labelledby="art-h">
+      <div class="wrap">
+        <span class="eyebrow">Not in the game yet</span>
+        <h2 class="art-h" id="art-h">Art exploration</h2>
+        <p class="art-lede">The game still paints every tile in code. These are the looks being tried for its first real pixel art, each one drawing the same test room. None is chosen yet. Click a room to see it full size.</p>
+        <div class="art-grid">
+          <article class="art-idea" aria-labelledby="art-emberfall-8">
+            <h3 class="art-name" id="art-emberfall-8">Emberfall, 8×8</h3>
+            <figure>
+              <a class="shot-frame art-frame" href="assets/art/emberfall-8x8.png"><img class="art-img" src="assets/art/emberfall-8x8.png" width="704" height="352" loading="lazy" alt="The test room in the Emberfall look at 8 by 8 pixels a tile: two torchlit stone rooms, a pool, a lava pit, a barred door and four figures."></a>
+              <figcaption>Dark slate floors, mossy brick and warm torchlight, at 8×8 pixels a tile. Named after the mockup the look comes from.</figcaption>
+            </figure>
+          </article>
+          <article class="art-idea" aria-labelledby="art-mini-medieval">
+            <h3 class="art-name" id="art-mini-medieval">Mini Medieval, 8×8</h3>
+            <figure>
+              <a class="shot-frame art-frame" href="assets/art/mini-medieval-8x8.png"><img class="art-img" src="assets/art/mini-medieval-8x8.png" width="704" height="352" loading="lazy" alt="The same room drawn with the Mini Medieval pixel-art set: purple castle brick, a teal pool, a knight and three figures."></a>
+              <figcaption>The pixel-art set bought for the game, used as it comes. It is drawn for villages, so a dungeon needs a few stand-ins.</figcaption>
+            </figure>
+          </article>
+          <article class="art-idea" aria-labelledby="art-mix">
+            <h3 class="art-name" id="art-mix">The two mixed, 8×8</h3>
+            <figure>
+              <a class="shot-frame art-frame" href="assets/art/mix-8x8.png"><img class="art-img" src="assets/art/mix-8x8.png" width="704" height="352" loading="lazy" alt="The same room with Emberfall's floors, walls and torchlight, and Mini Medieval's figures, doors and treasure in Emberfall's colours."></a>
+              <figcaption>Emberfall's floors, walls and torchlight, with Mini Medieval's people, monsters, doors and treasure recoloured to match.</figcaption>
+            </figure>
+          </article>
+          <article class="art-idea" aria-labelledby="art-emberfall-16">
+            <h3 class="art-name" id="art-emberfall-16">Emberfall, 16×16</h3>
+            <figure>
+              <a class="shot-frame art-frame" href="assets/art/emberfall-16x16.png"><img class="art-img" src="assets/art/emberfall-16x16.png" width="704" height="352" loading="lazy" alt="The same room in the Emberfall look at 16 by 16 pixels a tile: stone slabs, worked brick, a knight with sword and shield, and three figures."></a>
+              <figcaption>Emberfall redrawn with four times the pixels in every tile: sharper faces, doors and treasure, and busier floors.</figcaption>
+            </figure>
+          </article>
+        </div>
+        <p class="art-credit">Mini Medieval art by VEXED, <a href="https://v3x3d.itch.io/mini-medieval">v3x3d.itch.io/mini-medieval</a>, CC BY 4.0.</p>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div>
+        <div class="mark">Old Legends: Grim Awakening</div>
+        <p>Made by <a href="https://github.com/risukisu">risu</a>, alone, one turn at a time.</p>
+      </div>
+      <div class="meta">
+        <div><span data-version>v0.3.0-alpha.4</span> · playtest build</div>
+        <div><span>TypeScript + Canvas 2D, no engine</span></div>
+        <div><a href="releases.html">Patch notes</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
+    <img src="data:," alt="">
+    <div class="bar">
+      <p></p>
+      <span>
+        <button type="button" data-next>Next</button>
+        <button type="button" data-close>Close</button>
+      </span>
+    </div>
+  </dialog>
+</body>
+</html>
