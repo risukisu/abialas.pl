@@ -2010,6 +2010,29 @@ dialog.lightbox button:active {
   text-transform: uppercase;
   color: var(--faint);
 }
+/* a version of several rooms: a line of links to them, then each room under
+   its own heading, the rooms set apart by space rather than rules */
+.look-jump {
+  font-family: var(--f-pixel);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.look-scene {
+  margin-block-start: var(--space-xs);
+}
+.look-scene-h {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(1.25rem, 1rem + 0.8vw, 1.625rem);
+  line-height: 1.15;
+  color: var(--candle);
+}
+.look-scene-about {
+  max-width: 44em;
+  margin-block-start: 8px;
+}
 .look-room {
   margin: 22px 0 0;
 }

@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Grenze+Gotisch:wght@500;700&family=Silkscreen&display=swap">
   <link rel="stylesheet" href="../../styles.css">
   <style>
-    .v1 .look-tile { background-image: url("v1-tiles.png"); background-size: 704px auto; }
+    .sheet-v1 .look-tile { background-image: url("v1-tiles.png"); background-size: 704px auto; }
   </style>
 </head>
 <body>
@@ -28,38 +28,40 @@
         <p class="look-status">Set aside 18 October 2026 · 1 version, newest first</p>
         <p class="art-lede">Emberfall's floors, walls and torchlight, with Mini Medieval's people, monsters, doors and treasure recoloured to match.</p>
       </header>
-      <section class="look-version v1" id="v1" aria-labelledby="v1-h" data-sheet="v1-tiles.png">
+      <section class="look-version" id="v1" aria-labelledby="v1-h">
         <h2 class="look-version-h" id="v1-h">Version 1 <span class="look-date">18 October 2026</span></h2>
         <p class="look-changed">The first drawing.</p>
-        <figure class="look-room">
-          <img class="look-room-img pixelated" src="v1-room.png" width="704" height="352" alt="The same room with Emberfall's floors, walls and torchlight, and Mini Medieval's figures, doors and treasure in Emberfall's colours.">
-          <figcaption>The test room at the size the game draws it, 32 pixels a tile.</figcaption>
-        </figure>
-        <h3 class="art-name look-tiles-h">Tiles</h3>
-        <ul class="look-tiles">
-          <li><span class="look-tile" style="background-position: -0px -0px"></span>Floor</li>
-          <li><span class="look-tile" style="background-position: -64px -0px"></span>Lit floor</li>
-          <li><span class="look-tile" style="background-position: -128px -0px"></span>Stone wall</li>
-          <li><span class="look-tile" style="background-position: -192px -0px"></span>Wall face</li>
-          <li><span class="look-tile" style="background-position: -256px -0px"></span>Door</li>
-          <li><span class="look-tile" style="background-position: -320px -0px"></span>Open door</li>
-          <li><span class="look-tile" style="background-position: -384px -0px"></span>Gate door</li>
-          <li><span class="look-tile" style="background-position: -448px -0px"></span>Switch</li>
-          <li><span class="look-tile" style="background-position: -512px -0px"></span>Water</li>
-          <li><span class="look-tile" style="background-position: -576px -0px"></span>Lava</li>
-          <li><span class="look-tile" style="background-position: -640px -0px"></span>Rubble</li>
-          <li><span class="look-tile" style="background-position: -0px -64px"></span>Altar</li>
-          <li><span class="look-tile" style="background-position: -64px -64px"></span>Lever</li>
-          <li><span class="look-tile" style="background-position: -128px -64px"></span>Stairs down</li>
-          <li><span class="look-tile" style="background-position: -192px -64px"></span>Torch</li>
-          <li><span class="look-tile" style="background-position: -256px -64px"></span>Chest</li>
-          <li><span class="look-tile" style="background-position: -320px -64px"></span>Gold</li>
-          <li><span class="look-tile" style="background-position: -384px -64px"></span>Potion</li>
-          <li><span class="look-tile" style="background-position: -448px -64px"></span>Adventurer</li>
-          <li><span class="look-tile" style="background-position: -512px -64px"></span>Goblin</li>
-          <li><span class="look-tile" style="background-position: -576px -64px"></span>Skeleton</li>
-          <li><span class="look-tile" style="background-position: -640px -64px"></span>Giant rat</li>
-        </ul>
+        <div class="look-scene sheet-v1" data-sheet="v1-tiles.png">
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v1-room.png" width="704" height="352" alt="The same room with Emberfall's floors, walls and torchlight, and Mini Medieval's figures, doors and treasure in Emberfall's colours.">
+            <figcaption>The test room at the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h3 class="art-name look-tiles-h">Tiles</h3>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Floor</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Lit floor</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Stone wall</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Wall face</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Door</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Open door</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Gate door</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Switch</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Water</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Lava</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Rubble</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Altar</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Lever</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Stairs down</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Torch</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Chest</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Gold</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>Potion</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>Adventurer</li>
+            <li><span class="look-tile" style="background-position: -512px -64px"></span>Goblin</li>
+            <li><span class="look-tile" style="background-position: -576px -64px"></span>Skeleton</li>
+            <li><span class="look-tile" style="background-position: -640px -64px"></span>Giant rat</li>
+          </ul>
+        </div>
       </section>
       <p class="art-credit look-credit">Mini Medieval art by VEXED, <a href="https://v3x3d.itch.io/mini-medieval">v3x3d.itch.io/mini-medieval</a>, CC BY 4.0.</p>
     </div>
