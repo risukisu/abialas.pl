@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Torchlit, 16×16 — Art exploration — Old Legends: Grim Awakening</title>
-  <meta name="description" content="Stone, earth and moss that flow across the tiles, walls of uneven stone, and light that falls off tile by tile around each torch. The figures stay small and bright. Since version 2 it is drawn in each of the game's areas: the City, the Shallows and the Mines. Since version 2.1 lava and water meet the rest on natural edges, and its page shows ways of drawing the characters, every creature in the game, and chests. The tiles are shown unlit; the light is laid over the room as a whole.">
+  <meta name="description" content="Stone, earth and moss that flow across the tiles, walls of uneven stone, and light that falls off tile by tile around each torch. The figures stay small and bright. Since version 2 it is drawn in each of the game's areas: the City, the Shallows and the Mines. Since version 2.1 lava and water meet the rest on natural edges, and its page shows ways of drawing the characters, every creature in the game, and chests; since 2.2, the hero dressed in the gear they wear, drawn four ways. The tiles are shown unlit; the light is laid over the room as a whole.">
   <meta name="theme-color" content="#121119">
   <meta name="color-scheme" content="dark">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%2314141c'/%3E%3Cpath fill='%23f2b45a' d='M7 1h2v1H7zM6 2h4v4H6zM7 6h2v1H7z'/%3E%3Cpath fill='%23ffd88a' d='M7 3h2v3H7z'/%3E%3Cpath fill='%23f6e7c8' d='M6 8h4v5H6z'/%3E%3Cpath fill='%23cdb991' d='M9 8h1v5H9z'/%3E%3Cpath fill='%236b5030' d='M4 13h8v2H4z'/%3E%3C/svg%3E">
@@ -14,6 +14,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Grenze+Gotisch:wght@500;700&family=Silkscreen&display=swap">
   <link rel="stylesheet" href="../../styles.css">
   <style>
+    .sheet-v2-2-hero-heads .look-tile { background-image: url("v2-2-hero-heads-tiles.png"); background-size: 704px auto; }
+    .sheet-v2-2-hero-action .look-tile { background-image: url("v2-2-hero-action-tiles.png"); background-size: 704px auto; }
+    .sheet-v2-2-hero-tall .look-tile { background-image: url("v2-2-hero-tall-tiles.png"); background-size: 704px auto; block-size: 96px; }
+    .sheet-v2-2-hero-32 .look-tile { background-image: url("v2-2-hero-32-tiles.png"); background-size: 704px auto; }
     .sheet-v2-1-test .look-tile { background-image: url("v2-1-test-tiles.png"); background-size: 704px auto; }
     .sheet-v2-1-city .look-tile { background-image: url("v2-1-city-tiles.png"); background-size: 704px auto; }
     .sheet-v2-1-shallows .look-tile { background-image: url("v2-1-shallows-tiles.png"); background-size: 704px auto; }
@@ -38,14 +42,153 @@
       <header class="look-head">
         <span class="eyebrow">Not in the game yet</span>
         <h1 class="art-h">Torchlit, 16×16</h1>
-        <p class="look-status">Still being tried · 3 versions, newest first</p>
-        <p class="art-lede">Stone, earth and moss that flow across the tiles, walls of uneven stone, and light that falls off tile by tile around each torch. The figures stay small and bright. Since version 2 it is drawn in each of the game's areas: the City, the Shallows and the Mines. Since version 2.1 lava and water meet the rest on natural edges, and its page shows ways of drawing the characters, every creature in the game, and chests. The tiles are shown unlit; the light is laid over the room as a whole.</p>
+        <p class="look-status">Still being tried · 4 versions, newest first</p>
+        <p class="art-lede">Stone, earth and moss that flow across the tiles, walls of uneven stone, and light that falls off tile by tile around each torch. The figures stay small and bright. Since version 2 it is drawn in each of the game's areas: the City, the Shallows and the Mines. Since version 2.1 lava and water meet the rest on natural edges, and its page shows ways of drawing the characters, every creature in the game, and chests; since 2.2, the hero dressed in the gear they wear, drawn four ways. The tiles are shown unlit; the light is laid over the room as a whole.</p>
       </header>
       <nav class="look-nav" aria-label="Versions">
+        <a href="#v2-2">Version 2.2 · 18 October 2026</a>
         <a href="#v2-1">Version 2.1 · 18 October 2026</a>
         <a href="#v2">Version 2 · 18 October 2026</a>
         <a href="#v1">Version 1 · 18 October 2026</a>
       </nav>
+      <section class="look-version" id="v2-2" aria-labelledby="v2-2-h" data-look-version="2.2">
+        <h2 class="look-version-h" id="v2-2-h">Version 2.2 <span class="look-date">18 October 2026</span></h2>
+        <p class="look-changed">The hero now shows the gear they wear. Each piece of the game's own gear (a robe, a jerkin, a chain shirt, a scale hauberk, a cap or a helm, leggings, greaves, boots, a cloak, six weapons, two shields) is drawn once and stacked on the hero in order, and coloured by what it is made of, so a chain shirt is the same drawing in iron, steel or mithril and any helm goes on any hero. Four ways of drawing it: big heads, in action, tall with the head in the tile above, and at twice the detail. Each shows six heroes, one hero putting gear on piece by piece, and the body armours in their three materials. The rooms of version 2.1 are as they were.</p>
+        <blockquote class="look-feedback"><span class="look-label">Feedback</span> Let's explore some ways to build player character models. Ideally I would like these to reflect the gear the player is wearing so character in plate armour looks different than one in robes. Here are some references but use your creativity too!</blockquote>
+        <p class="look-jump"><a href="#v2-2-hero-heads">The hero in their gear: big heads</a> · <a href="#v2-2-hero-action">The hero in their gear: in action</a> · <a href="#v2-2-hero-tall">The hero in their gear: tall</a> · <a href="#v2-2-hero-32">The hero in their gear: twice the detail</a></p>
+        <div class="look-scene sheet-v2-2-hero-heads" id="v2-2-hero-heads" data-sheet="v2-2-hero-heads-tiles.png">
+          <h3 class="look-scene-h">The hero in their gear: big heads</h3>
+          <p class="look-scene-about">Front on and chunky, a big head and a navy outline; a red scarf marks the hero in every outfit. Top row, six heroes in the game's own gear, from unarmoured to mithril; middle row, one hero putting gear on piece by piece; bottom row, a robe, a jerkin and a chain shirt each in its three materials. Every piece is drawn once and coloured by what it is made of, so any helm goes on any hero.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-2-hero-heads-room.png" width="672" height="352" alt="Three rows of small chunky heroes in a torchlit hall: six in different gear, one putting on armour step by step, and robes, jerkins and chain shirts in three materials each.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Unarmoured, a dagger</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Robe and quarterstaff</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Jerkin, cap and shortbow</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Chain shirt, helm, sword and round shield</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Scale hauberk, warhammer and tower shield</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Mithril, a silk cloak and a greatsword</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Put on: nothing yet</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Put on: Leggings and boots</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Put on: Chain shirt and belt</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Put on: Helm</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Put on: Cloak</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Put on: Round shield</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Put on: Longsword</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Robe, rough hemp</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Robe, flaxen linen</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Robe, silk</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Jerkin, rawhide</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>Jerkin, fine leather</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>Jerkin, drake pelt</li>
+            <li><span class="look-tile" style="background-position: -512px -64px"></span>Chain shirt, iron</li>
+            <li><span class="look-tile" style="background-position: -576px -64px"></span>Chain shirt, refined steel</li>
+            <li><span class="look-tile" style="background-position: -640px -64px"></span>Chain shirt, mithril</li>
+          </ul>
+        </div>
+        <div class="look-scene sheet-v2-2-hero-action" id="v2-2-hero-action" data-sheet="v2-2-hero-action-tiles.png">
+          <h3 class="look-scene-h">The hero in their gear: in action</h3>
+          <p class="look-scene-about">Three-quarter view in a fighting stance, weapon out, a shadow on the ground; a red plume marks the hero, a feather on a cap and a crest on a helm. The weapon sets the arms: on guard, two hands on a greatsword, a staff across the body, a bow held out. The same rows: six heroes in the game's own gear, one putting it on piece by piece, and three body armours in their three materials. Facing left is the same figure mirrored.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-2-hero-action-room.png" width="672" height="352" loading="lazy" alt="Three rows of small heroes in fighting stances, each with a shadow on the ground, in a torchlit hall: six in different gear, one putting on armour step by step, and armours in three materials each.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Unarmoured, a dagger</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Robe and quarterstaff</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Jerkin, cap and shortbow</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Chain shirt, helm, sword and round shield</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Scale hauberk, warhammer and tower shield</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Mithril, a silk cloak and a greatsword</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Put on: nothing yet</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Put on: Leggings and boots</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Put on: Chain shirt and belt</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Put on: Helm</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Put on: Cloak</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Put on: Round shield</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Put on: Longsword</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Robe, rough hemp</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Robe, flaxen linen</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Robe, silk</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Jerkin, rawhide</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>Jerkin, fine leather</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>Jerkin, drake pelt</li>
+            <li><span class="look-tile" style="background-position: -512px -64px"></span>Chain shirt, iron</li>
+            <li><span class="look-tile" style="background-position: -576px -64px"></span>Chain shirt, refined steel</li>
+            <li><span class="look-tile" style="background-position: -640px -64px"></span>Chain shirt, mithril</li>
+          </ul>
+        </div>
+        <div class="look-scene sheet-v2-2-hero-tall" id="v2-2-hero-tall" data-sheet="v2-2-hero-tall-tiles.png">
+          <h3 class="look-scene-h">The hero in their gear: tall</h3>
+          <p class="look-scene-about">Sixteen pixels wide and twenty-four high: the hero stands on their tile with head and shoulders in the tile above, as many tile games draw people, which leaves room for the gear: a robe's folds, laced leather, mail rings, rows of scales, a visored helm. A blue scarf marks the hero; with a greatsword both hands meet on the hilt. The same rows as the others.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-2-hero-tall-room.png" width="672" height="352" loading="lazy" alt="Three rows of taller heroes whose heads rise into the tile above, in a torchlit hall: six in different gear, one putting on armour step by step, and armours in three materials each.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Unarmoured, a dagger</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Robe and quarterstaff</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Jerkin, cap and shortbow</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Chain shirt, helm, sword and round shield</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Scale hauberk, warhammer and tower shield</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Mithril, a silk cloak and a greatsword</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Put on: nothing yet</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Put on: Leggings and boots</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Put on: Chain shirt and belt</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Put on: Helm</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Put on: Cloak</li>
+            <li><span class="look-tile" style="background-position: -0px -96px"></span>Put on: Round shield</li>
+            <li><span class="look-tile" style="background-position: -64px -96px"></span>Put on: Longsword</li>
+            <li><span class="look-tile" style="background-position: -128px -96px"></span>Robe, rough hemp</li>
+            <li><span class="look-tile" style="background-position: -192px -96px"></span>Robe, flaxen linen</li>
+            <li><span class="look-tile" style="background-position: -256px -96px"></span>Robe, silk</li>
+            <li><span class="look-tile" style="background-position: -320px -96px"></span>Jerkin, rawhide</li>
+            <li><span class="look-tile" style="background-position: -384px -96px"></span>Jerkin, fine leather</li>
+            <li><span class="look-tile" style="background-position: -448px -96px"></span>Jerkin, drake pelt</li>
+            <li><span class="look-tile" style="background-position: -512px -96px"></span>Chain shirt, iron</li>
+            <li><span class="look-tile" style="background-position: -576px -96px"></span>Chain shirt, refined steel</li>
+            <li><span class="look-tile" style="background-position: -640px -96px"></span>Chain shirt, mithril</li>
+          </ul>
+        </div>
+        <div class="look-scene sheet-v2-2-hero-32" id="v2-2-hero-32" data-sheet="v2-2-hero-32-tiles.png">
+          <h3 class="look-scene-h">The hero in their gear: twice the detail</h3>
+          <p class="look-scene-about">Thirty-two pixels square, so the hero has twice the detail of the ground, shown on the look's tiles at the size the game draws them, to see whether a finer figure sits well on chunkier ground. A blue scarf marks the hero; mail rings, scales, folds and lacing are drawn in full, and with a greatsword both hands meet on the hilt. The same rows as the others.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v2-2-hero-32-room.png" width="672" height="352" loading="lazy" alt="Three rows of detailed heroes standing on the same chunky stone floor, in a torchlit hall: six in different gear, one putting on armour step by step, and armours in three materials each.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Unarmoured, a dagger</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Robe and quarterstaff</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Jerkin, cap and shortbow</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Chain shirt, helm, sword and round shield</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Scale hauberk, warhammer and tower shield</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Mithril, a silk cloak and a greatsword</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Put on: nothing yet</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Put on: Leggings and boots</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Put on: Chain shirt and belt</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Put on: Helm</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Put on: Cloak</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Put on: Round shield</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Put on: Longsword</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Robe, rough hemp</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Robe, flaxen linen</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Robe, silk</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Jerkin, rawhide</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>Jerkin, fine leather</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>Jerkin, drake pelt</li>
+            <li><span class="look-tile" style="background-position: -512px -64px"></span>Chain shirt, iron</li>
+            <li><span class="look-tile" style="background-position: -576px -64px"></span>Chain shirt, refined steel</li>
+            <li><span class="look-tile" style="background-position: -640px -64px"></span>Chain shirt, mithril</li>
+          </ul>
+        </div>
+      </section>
       <section class="look-version" id="v2-1" aria-labelledby="v2-1-h" data-look-version="2.1">
         <h2 class="look-version-h" id="v2-1-h">Version 2.1 <span class="look-date">18 October 2026</span></h2>
         <p class="look-changed">Lava and water now meet floor, rock, walls and each other on edges that wander across the tiles: jagged with a black crust for lava, a soft wet shore for water. They do so in the test room, the Shallows and the Mines, and in a new room of their own, whose tiles are the pieces a game would keep in its tile atlas. Four more rooms show five ways of drawing the characters, every creature in the game so far, and chests: three plain designs shut, locked, open and open and empty, then wooden, iron-bound, gilded and crystal chests after Shattered Pixel Dungeon's, and a mimic. The City is as it was.</p>
@@ -55,7 +198,7 @@
           <h3 class="look-scene-h">The test room</h3>
           <p class="look-scene-about">The room every look draws, cell for cell as in version 1, so the two can be laid side by side.</p>
           <figure class="look-room">
-            <img class="look-room-img pixelated" src="v2-1-test-room.png" width="704" height="352" alt="The test room at 16 by 16 pixels a tile, lit by its torches: walls of uneven packed stone under rough stone tops, cracked floors with drifts of earth and moss, a glowing lava pool, and four small bright figures.">
+            <img class="look-room-img pixelated" src="v2-1-test-room.png" width="704" height="352" loading="lazy" alt="The test room at 16 by 16 pixels a tile, lit by its torches: walls of uneven packed stone under rough stone tops, cracked floors with drifts of earth and moss, a glowing lava pool, and four small bright figures.">
             <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
           </figure>
           <h4 class="art-name look-tiles-h">Tiles</h4>
