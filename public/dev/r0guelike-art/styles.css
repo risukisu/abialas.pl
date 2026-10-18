@@ -1879,9 +1879,6 @@ dialog.lightbox button:active {
   margin: 14px 0 0;
   max-width: 720px;
 }
-.art-frame {
-  cursor: zoom-in;
-}
 .art-img {
   width: 100%;
   background: var(--abyss);
@@ -1927,10 +1924,130 @@ dialog.lightbox button:active {
   text-transform: uppercase;
   color: var(--faint);
 }
-.foot .art-credit {
+/* a look's line under its caption: which version is drawn, and the way to its page */
+.art-ver {
+  display: block;
+  inline-size: fit-content;
+  margin-block-start: 8px;
+  font-family: var(--f-pixel);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.foot .art-credit,
+.look-credit {
   margin-block-start: 26px;
   font-size: 0.86em;
   color: var(--faint);
+}
+
+/* a look's own page (art/<slug>/, written by art/tools/looks.mjs): its
+   versions newest first, each the room at game size and its tiles one by
+   one. The art stays crisp: a 16px tile is drawn 64px wide, 8px at 64px. */
+.look {
+  padding-block: var(--space-xs) var(--space-m);
+}
+.look-back {
+  font-family: var(--f-pixel);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.look-head {
+  margin-block-start: var(--space-xs);
+}
+.look-status,
+.look-date {
+  font-family: var(--f-pixel);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.look-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-block-start: 18px;
+  font-family: var(--f-pixel);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.look-version {
+  margin-block-start: var(--space-s);
+  padding-block-start: var(--space-xs);
+  border-block-start: 1px solid var(--hairline);
+}
+.look-version-h {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 1.1rem + 1.25vw, 2.125rem);
+  line-height: 1.1;
+  color: var(--wax);
+}
+.look-date {
+  margin-inline-start: 12px;
+  white-space: nowrap;
+}
+.look-changed,
+.look-feedback {
+  max-width: 44em;
+}
+.look-feedback {
+  margin: 14px 0 0;
+  padding-inline-start: 14px;
+  border-inline-start: 2px solid var(--hairline);
+  color: var(--muted);
+}
+.look-label {
+  margin-inline-end: 8px;
+  font-family: var(--f-pixel);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.look-room {
+  margin: 22px 0 0;
+}
+.look-room-img {
+  background: var(--abyss);
+  border: 2px solid var(--hairline);
+}
+.look-room figcaption {
+  margin-block-start: 10px;
+  font-size: 0.86em;
+  color: var(--faint);
+}
+.look-tiles-h {
+  margin-block-start: 30px;
+}
+.look-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 18px 10px;
+  max-width: 940px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--muted);
+}
+.look-tile {
+  display: block;
+  inline-size: 64px;
+  block-size: 64px;
+  margin-inline: auto;
+  margin-block-end: 8px;
+  background-color: var(--abyss);
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  outline: 1px solid var(--hairline);
 }
 
 /* ====================================================================== */
