@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The test room four ways — Art exploration — Old Legends: Grim Awakening</title>
+  <meta name="description" content="One room drawn four ways and switched in place: 16 by 16 throughout, 32 by 32 figures in the 16 by 16 world, the chest and the altar at 32 by 32 as well, and everything at 32 by 32.">
+  <meta name="theme-color" content="#121119">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%2314141c'/%3E%3Cpath fill='%23f2b45a' d='M7 1h2v1H7zM6 2h4v4H6zM7 6h2v1H7z'/%3E%3Cpath fill='%23ffd88a' d='M7 3h2v3H7z'/%3E%3Cpath fill='%23f6e7c8' d='M6 8h4v5H6z'/%3E%3Cpath fill='%23cdb991' d='M9 8h1v5H9z'/%3E%3Cpath fill='%236b5030' d='M4 13h8v2H4z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Grenze+Gotisch:wght@500;700&family=Silkscreen&display=swap">
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    /* Four pictures stacked in one place, the chosen one shown: radio buttons and :has(), no script,
+       so it works on abialas.pl, where the art pages carry none. All four load at once, so a switch
+       is instant and nothing moves. */
+    .ways-pick {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      min-inline-size: 0;
+      margin: 22px 0 0;
+      padding: 0;
+      border: 0;
+    }
+    .ways-pick legend {
+      inline-size: 100%;
+      margin-block-end: 10px;
+      padding: 0;
+      font-family: var(--f-pixel);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+    .ways-opt {
+      position: relative;
+      display: inline-flex;
+      cursor: pointer;
+    }
+    .ways-opt input {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .ways-opt span {
+      padding: 9px 14px;
+      border: 2px solid var(--border);
+      background: var(--panel);
+      font-family: var(--f-pixel);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-cool);
+    }
+    .ways-opt b {
+      margin-inline-end: 8px;
+      color: var(--faint);
+      font-weight: 400;
+    }
+    .ways-opt input:checked + span {
+      border-color: var(--candle);
+      background: color-mix(in oklch, var(--candle) 14%, var(--panel));
+      color: var(--flame);
+    }
+    .ways-opt input:checked + span b {
+      color: var(--candle);
+    }
+    .ways-opt input:focus-visible + span {
+      outline: 2px solid var(--flame);
+      outline-offset: 2px;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .ways-opt:hover input:not(:checked) + span {
+        border-color: var(--border-warm);
+        color: var(--wax);
+      }
+    }
+    .ways-stage {
+      display: grid;
+      margin-block-start: 22px;
+      overflow-x: auto;
+    }
+    .ways-way {
+      grid-area: 1 / 1;
+      margin: 0;
+      visibility: hidden;
+    }
+    .ways-img {
+      display: block;
+      inline-size: 704px;
+      max-inline-size: 100%;
+      block-size: auto;
+    }
+    .ways-way figcaption {
+      max-inline-size: 44em;
+      margin-block-start: 12px;
+      color: var(--muted);
+    }
+    .ways:has(#way-1:checked) .ways-1,
+    .ways:has(#way-2:checked) .ways-2,
+    .ways:has(#way-3:checked) .ways-3,
+    .ways:has(#way-4:checked) .ways-4 {
+      visibility: visible;
+    }
+    .ways:has(#zoom-2:checked) .ways-img {
+      inline-size: 1408px;
+      max-inline-size: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- the test room four ways: the pictures are written by art/explore/005-test-room-four-ways/build.py --site -->
+  <main class="look">
+    <div class="wrap">
+      <a class="look-back" href="../../index.html#art">← Art exploration</a>
+      <header class="look-head">
+        <span class="eyebrow">Not in the game yet</span>
+        <h1 class="art-h">The test room four ways</h1>
+        <p class="art-lede">The same room drawn four ways and switched in place, to see where 32 by 32 pixels help: first only the figures, then the chest and the altar as well, then everything. The world is Torchlit, 16×16's; the figures at 32 by 32 are Torchlit, 32×32's, with the hero in a chain shirt, helm, sword and round shield from Torchlit, 16×16's version 2.2. Health bars are left out of all four, so only the drawing changes.</p>
+      </header>
+
+      <div class="ways">
+        <fieldset class="ways-pick">
+          <legend>Draw the room with</legend>
+          <label class="ways-opt"><input type="radio" name="way" id="way-1" value="16-16" checked><span><b>1</b>16×16 world, 16×16 figures</span></label>
+          <label class="ways-opt"><input type="radio" name="way" id="way-2" value="16-32"><span><b>2</b>16×16 world, 32×32 figures</span></label>
+          <label class="ways-opt"><input type="radio" name="way" id="way-3" value="16-32-props"><span><b>3</b>32×32 figures, chest and altar</span></label>
+          <label class="ways-opt"><input type="radio" name="way" id="way-4" value="32-32"><span><b>4</b>Everything 32×32</span></label>
+        </fieldset>
+        <fieldset class="ways-pick">
+          <legend>Size</legend>
+          <label class="ways-opt"><input type="radio" name="zoom" id="zoom-1" value="1" checked><span>As in the game</span></label>
+          <label class="ways-opt"><input type="radio" name="zoom" id="zoom-2" value="2"><span>Twice as big</span></label>
+        </fieldset>
+
+        <div class="ways-stage">
+          <figure class="ways-way ways-1">
+            <img class="ways-img look-room-img pixelated" src="16-16.png" width="704" height="352" alt="The test room with everything at 16 by 16 pixels a tile: torchlit stone rooms, a pool, a lava pool, and four small bright figures.">
+            <figcaption>1 · Torchlit, 16×16 as it is: the world and the figures both drawn at 16 by 16, so every pixel shows as 2 by 2 at the game's size.</figcaption>
+          </figure>
+          <figure class="ways-way ways-2">
+            <img class="ways-img look-room-img pixelated" src="16-32.png" width="704" height="352" alt="The same room with the world at 16 by 16 and the figures at 32 by 32: a hero in a helm and chain shirt with a sword and a round shield, a goblin, a skeleton and a giant rat, all finer than the ground.">
+            <figcaption>2 · The same world, with the adventurer, the goblin, the skeleton and the giant rat at 32 by 32: twice the detail of the ground, so the hero's helm, mail, sword and shield show.</figcaption>
+          </figure>
+          <figure class="ways-way ways-3">
+            <img class="ways-img look-room-img pixelated" src="16-32-props.png" width="704" height="352" alt="The same room with the figures at 32 by 32, and the chest and the altar in the vault at 32 by 32 too; the rest of the world at 16 by 16.">
+            <figcaption>3 · As 2, and the chest and the altar in the vault at 32 by 32 as well. The rest stays at 16 by 16: the floor, the walls, the doors, the torches, the gold and the potion.</figcaption>
+          </figure>
+          <figure class="ways-way ways-4">
+            <img class="ways-img look-room-img pixelated" src="32-32.png" width="704" height="352" alt="The same room with everything at 32 by 32 pixels a tile: packed stone walls, cracked floors, the pool and the lava pool with wandering edges, and the four figures with the same hero.">
+            <figcaption>4 · Everything at 32 by 32: Torchlit, 32×32's room, with the same hero.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
