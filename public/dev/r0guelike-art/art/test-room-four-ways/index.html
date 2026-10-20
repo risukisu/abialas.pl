@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>The test room four ways — Art exploration — Old Legends: Grim Awakening</title>
-  <meta name="description" content="One room drawn four ways and switched in place: 16 by 16 throughout, 32 by 32 figures in the 16 by 16 world, the chest and the altar at 32 by 32 as well, and everything at 32 by 32.">
+  <meta name="description" content="One room drawn four ways and switched in place: 16 by 16 throughout, 32 by 32 figures in the 16 by 16 world, the chest and the altar at 32 by 32 as well, and everything at 32 by 32; and a room of the Shallows with ideas for telling the figures from the ground.">
   <meta name="theme-color" content="#121119">
   <meta name="color-scheme" content="dark">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%2314141c'/%3E%3Cpath fill='%23f2b45a' d='M7 1h2v1H7zM6 2h4v4H6zM7 6h2v1H7z'/%3E%3Cpath fill='%23ffd88a' d='M7 3h2v3H7z'/%3E%3Cpath fill='%23f6e7c8' d='M6 8h4v5H6z'/%3E%3Cpath fill='%23cdb991' d='M9 8h1v5H9z'/%3E%3Cpath fill='%236b5030' d='M4 13h8v2H4z'/%3E%3C/svg%3E">
@@ -112,6 +112,37 @@
       inline-size: 1408px;
       max-inline-size: none;
     }
+    /* Telling things apart: the same trick with two switches, the Art Set and the way; eight
+       pictures, one shown. Its own class names, so the four ways' rules and test never see it. */
+    .read {
+      margin-block-start: 56px;
+    }
+    .read-way {
+      grid-area: 1 / 1;
+      margin: 0;
+      visibility: hidden;
+    }
+    .read-img {
+      display: block;
+      inline-size: 832px;
+      max-inline-size: 100%;
+      block-size: auto;
+    }
+    .read-way figcaption {
+      max-inline-size: 44em;
+      margin-block-start: 12px;
+      color: var(--muted);
+    }
+    .read:has(#read-set-16:checked):has(#read-way-1:checked) .read-16-1,
+    .read:has(#read-set-16:checked):has(#read-way-2:checked) .read-16-2,
+    .read:has(#read-set-16:checked):has(#read-way-3:checked) .read-16-3,
+    .read:has(#read-set-16:checked):has(#read-way-4:checked) .read-16-4,
+    .read:has(#read-set-32:checked):has(#read-way-1:checked) .read-32-1,
+    .read:has(#read-set-32:checked):has(#read-way-2:checked) .read-32-2,
+    .read:has(#read-set-32:checked):has(#read-way-3:checked) .read-32-3,
+    .read:has(#read-set-32:checked):has(#read-way-4:checked) .read-32-4 {
+      visibility: visible;
+    }
   </style>
 </head>
 <body>
@@ -122,7 +153,7 @@
       <header class="look-head">
         <span class="eyebrow">Not in the game yet</span>
         <h1 class="art-h">The test room four ways</h1>
-        <p class="art-lede">The same room drawn four ways and switched in place, to see where 32 by 32 pixels help: first only the figures, then the chest and the altar as well, then everything. The world is Torchlit, 16×16's; the figures at 32 by 32 are Torchlit, 32×32's, with the hero in a chain shirt, helm, sword and round shield from Torchlit, 16×16's version 2.2. Health bars are left out of all four, so only the drawing changes.</p>
+        <p class="art-lede">The same room drawn four ways and switched in place, to see where 32 by 32 pixels help: first only the figures, then the chest and the altar as well, then everything. The world is Torchlit, 16×16's; the figures at 32 by 32 are Torchlit, 32×32's, with the hero in a chain shirt, helm, sword and round shield from Torchlit, 16×16's version 2.2. Health bars are left out of all four, so only the drawing changes. Below it, <a href="#read-h">telling things apart</a>: a room of the Shallows with ideas for making the figures stand out.</p>
       </header>
 
       <div class="ways">
@@ -158,6 +189,59 @@
           </figure>
         </div>
       </div>
+
+      <section class="read look-version" aria-labelledby="read-h">
+        <h2 class="look-version-h" id="read-h">Telling things apart <span class="look-date">20 October 2026</span></h2>
+        <p class="look-changed">Playing the Shallows in both Torchlits, the creatures were hard to pick out from the floor. Here a room of the Shallows is drawn as it is in play, then with ideas for making the figures stand out: a quieter world, more light, an outline round every figure, and a little movement. These are pictures of ideas, not the game; with each Torchlit, a crowd stands in the room, a spider right beside the hero.</p>
+        <blockquote class="look-feedback"><span class="look-label">Feedback</span> I had trouble telling elements apart, monsters didn't immediately pop out, it was in general hard to say what was going on in the game world</blockquote>
+        <fieldset class="ways-pick">
+          <legend>Torchlit</legend>
+          <label class="ways-opt"><input type="radio" name="read-set" id="read-set-16" value="16" checked><span>16×16, with a 32×32 hero</span></label>
+          <label class="ways-opt"><input type="radio" name="read-set" id="read-set-32" value="32"><span>32×32</span></label>
+        </fieldset>
+        <fieldset class="ways-pick">
+          <legend>Draw it</legend>
+          <label class="ways-opt"><input type="radio" name="read-way" id="read-way-1" value="1" checked><span><b>1</b>As played</span></label>
+          <label class="ways-opt"><input type="radio" name="read-way" id="read-way-2" value="2"><span><b>2</b>Outlines and more light</span></label>
+          <label class="ways-opt"><input type="radio" name="read-way" id="read-way-3" value="3"><span><b>3</b>And a quiet floor</span></label>
+          <label class="ways-opt"><input type="radio" name="read-way" id="read-way-4" value="4"><span><b>4</b>And idle movement</span></label>
+        </fieldset>
+
+        <div class="ways-stage">
+          <figure class="read-way read-16-1">
+            <img class="read-img pixelated" src="read-16-1.png" width="832" height="448" alt="A room of the Shallows in Torchlit, 16 by 16, as it is drawn in play: a pillared hall lit warm round the hero, a spider right beside the hero, a skeleton, a goblin, a jackal, a zombie and a giant rat on cracked floors with drifts of sand.">
+            <figcaption>1 · As the room is drawn in play now, with the light round the hero.</figcaption>
+          </figure>
+          <figure class="read-way read-16-2">
+            <img class="read-img pixelated" src="read-16-2.png" width="832" height="448" alt="The same room with the walls and floors a little greyer, more light, and every figure brighter with an outline: dark red round the creatures, white round the hero.">
+            <figcaption>2 · The world a little less colourful and darker; more light round the hero and in the dark beyond; the figures and the things on the floor never dimmed and a touch brighter; and a one-pixel outline round every figure, dark red for the creatures and white for the hero. A friendly figure would have green; none stands in this room.</figcaption>
+          </figure>
+          <figure class="read-way read-16-3">
+            <img class="read-img pixelated" src="read-16-3.png" width="832" height="448" alt="The same as before with the floor's pattern turned down: the stones and the drifts of sand stay as soft shapes, and the outlined figures stand out against it.">
+            <figcaption>3 · As 2, with the floor's pattern turned down to less than half: the stones and the drifts of sand stay as soft shapes, and nothing on the ground is as bright or as dark as a figure.</figcaption>
+          </figure>
+          <figure class="read-way read-16-4">
+            <img class="read-img pixelated" src="read-16-4.png" width="832" height="448" alt="The same as before, moving: every other figure dips its head by one pixel and back.">
+            <figcaption>4 · As 3, moving: every other figure dips its head by one pixel and back, a stand-in for the idle movement each figure would have.</figcaption>
+          </figure>
+          <figure class="read-way read-32-1">
+            <img class="read-img pixelated" src="read-32-1.png" width="832" height="448" alt="The same room in Torchlit, 32 by 32, as it is drawn in play: finer stones and sand, the hero lit warm, a spider right beside the hero and the other creatures in the dimmer rooms.">
+            <figcaption>1 · As the room is drawn in play now, with the light round the hero.</figcaption>
+          </figure>
+          <figure class="read-way read-32-2">
+            <img class="read-img pixelated" src="read-32-2.png" width="832" height="448" alt="The same room at 32 by 32 with the walls and floors a little greyer, more light, and every figure brighter with an outline: dark red round the creatures, white round the hero.">
+            <figcaption>2 · The world a little less colourful and darker; more light round the hero and in the dark beyond; the figures and the things on the floor never dimmed and a touch brighter; and a one-pixel outline round every figure, dark red for the creatures and white for the hero. A friendly figure would have green; none stands in this room.</figcaption>
+          </figure>
+          <figure class="read-way read-32-3">
+            <img class="read-img pixelated" src="read-32-3.png" width="832" height="448" alt="The same as before at 32 by 32 with the floor's pattern turned down: the stones and the drifts of sand stay as soft shapes, and the outlined figures stand out against it.">
+            <figcaption>3 · As 2, with the floor's pattern turned down to less than half: the stones and the drifts of sand stay as soft shapes, and nothing on the ground is as bright or as dark as a figure.</figcaption>
+          </figure>
+          <figure class="read-way read-32-4">
+            <img class="read-img pixelated" src="read-32-4.png" width="832" height="448" alt="The same as before at 32 by 32, moving: every other figure dips its head by one pixel and back.">
+            <figcaption>4 · As 3, moving: every other figure dips its head by one pixel and back, a stand-in for the idle movement each figure would have.</figcaption>
+          </figure>
+        </div>
+      </section>
     </div>
   </main>
 </body>
