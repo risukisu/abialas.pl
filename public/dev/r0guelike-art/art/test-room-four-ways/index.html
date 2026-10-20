@@ -140,6 +140,12 @@
     .read:has(#read-on-d:checked) .read-veil {
       visibility: visible;
     }
+    .read-rings {
+      visibility: hidden;
+    }
+    .read:has(#read-on-t:checked) .read-rings {
+      visibility: visible;
+    }
     .read-notes {
       max-inline-size: 44em;
       margin-block-start: 12px;
@@ -223,6 +229,7 @@
           <label class="ways-opt"><input type="checkbox" id="read-on-d" value="d"><span>A darker world</span></label>
           <label class="ways-opt"><input type="checkbox" id="read-on-b" value="b"><span>Brighter figures</span></label>
           <label class="ways-opt"><input type="checkbox" id="read-on-o" value="o"><span>Outlines</span></label>
+          <label class="ways-opt"><input type="checkbox" id="read-on-t" value="t"><span>Outlines on things</span></label>
           <label class="ways-opt"><input type="checkbox" id="read-on-i" value="i"><span>Idle movement</span></label>
         </fieldset>
 
@@ -236,6 +243,8 @@
           <img class="read-img pixelated s32 c1 l0" src="read-32-world-10.png" width="832" height="448" alt="">
           <img class="read-img pixelated s32 c1 l1" src="read-32-world-11.png" width="832" height="448" alt="">
           <div class="read-veil" aria-hidden="true"></div>
+          <img class="read-img read-rings pixelated s16" src="read-16-rings.png" width="832" height="448" alt="">
+          <img class="read-img read-rings pixelated s32" src="read-32-rings.png" width="832" height="448" alt="">
           <img class="read-img pixelated s16 b0 o0 l0 i0" src="read-16-figs-0000.png" width="832" height="448" alt="">
           <img class="read-img pixelated s16 b0 o0 l0 i1" src="read-16-figs-0001.png" width="832" height="448" alt="">
           <img class="read-img pixelated s16 b0 o0 l1 i0" src="read-16-figs-0010.png" width="832" height="448" alt="">
@@ -274,7 +283,8 @@
           <li><b>More light:</b> the light round the hero reaches further, and the dark beyond it is less deep.</li>
           <li><b>A darker world:</b> the walls and floors dimmed by a third while the figures and the things on the floor keep their own light, so the creatures stand above the ground; the floor's pattern stays as drawn. Proposed in place of a quieter floor: alone it helps most of the creatures, but a creature as dark as the spider needs brighter figures or outlines with it.</li>
           <li><b>Brighter figures:</b> the figures and the things on the floor never dimmed by the dark, a touch brighter and more colourful.</li>
-          <li><b>Outlines:</b> a one-pixel outline round every figure, dark red for the creatures and white for the hero. A friendly figure would have green; none stands in this room.</li>
+          <li><b>Outlines:</b> a one-pixel outline round every figure, dark red for the creatures and white for the hero, as thin round a 16 by 16 creature as round the hero. A friendly figure would have green; none stands in this room.</li>
+          <li><b>Outlines on things:</b> a one-pixel outline in light silver round the things on the floor, the stairs and the altar.</li>
           <li><b>Idle movement:</b> every other figure dips its head by one pixel and back, a stand-in for the idle movement each figure would have.</li>
         </ul>
       </section>
