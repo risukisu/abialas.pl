@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Grenze+Gotisch:wght@500;700&family=Silkscreen&display=swap">
   <link rel="stylesheet" href="../../styles.css">
   <style>
+    .sheet-v4-city-set .look-tile { background-image: url("v4-city-set-tiles.png"); background-size: 704px auto; }
+    .sheet-v4-city-plaza .look-tile { background-image: url("v4-city-plaza-tiles.png"); background-size: 704px auto; }
     .sheet-v3-mines-set .look-tile { background-image: url("v3-mines-set-tiles.png"); background-size: 704px auto; }
     .sheet-v2-2-hero-heads .look-tile { background-image: url("v2-2-hero-heads-tiles.png"); background-size: 704px auto; }
     .sheet-v2-2-hero-action .look-tile { background-image: url("v2-2-hero-action-tiles.png"); background-size: 704px auto; }
@@ -43,16 +45,81 @@
       <header class="look-head">
         <span class="eyebrow">Not in the game yet</span>
         <h1 class="art-h">Torchlit, 16×16</h1>
-        <p class="look-status">Still being tried · 5 versions, newest first</p>
+        <p class="look-status">Still being tried · 6 versions, newest first</p>
         <p class="art-lede">Stone, earth and moss that flow across the tiles, walls of uneven stone, and light that falls off tile by tile around each torch. The figures stay small and bright. Since version 2 it is drawn in each of the game's areas: the City, the Shallows and the Mines. Since version 2.1 lava and water meet the rest on natural edges, and its page shows ways of drawing the characters, every creature in the game, and chests; since 2.2, the hero dressed in the gear they wear, drawn four ways. The tiles are shown unlit; the light is laid over the room as a whole.</p>
       </header>
       <nav class="look-nav" aria-label="Versions">
+        <a href="#v4">Version 4 · 26 October 2026</a>
         <a href="#v3">Version 3 · 26 October 2026</a>
         <a href="#v2-2">Version 2.2 · 18 October 2026</a>
         <a href="#v2-1">Version 2.1 · 18 October 2026</a>
         <a href="#v2">Version 2 · 18 October 2026</a>
         <a href="#v1">Version 1 · 18 October 2026</a>
       </nav>
+      <section class="look-version" id="v4" aria-labelledby="v4-h" data-look-version="4">
+        <h2 class="look-version-h" id="v4-h">Version 4 <span class="look-date">26 October 2026</span></h2>
+        <p class="look-changed">The City drawn as the pieces the game reads, so the game can draw it: cobbles, flags, yards, grass, paths and the track; houses whose walls show their inside or their street front by what lies beyond them, so the game can build any house from them; the city wall and its gates, fences, trees and the pond, each tile chosen by the tiles around it. Added: the City's landmarks, a well, standing stones, a monument, a fountain ringed by flagstones, a shrine, market stalls and the dungeon entrance, each drawn whole over the ground it stands on. The other rooms are as before.</p>
+        <blockquote class="look-feedback"><span class="look-label">Feedback</span> Torchlit 16 is the game's look now: draw it for every place a player reaches; after the Mines, the City.</blockquote>
+        <p class="look-jump"><a href="#v4-city-set">The City, as the game draws it</a> · <a href="#v4-city-plaza">The City's square, as the game lays it out</a></p>
+        <div class="look-scene sheet-v4-city-set" id="v4-city-set" data-sheet="v4-city-set-tiles.png">
+          <h3 class="look-scene-h">The City, as the game draws it</h3>
+          <p class="look-scene-about">The City room again, now built only from the pieces the game reads, each tile chosen by the tiles around it: the grounds, the houses, whose walls show their inside or their street front by what lies beyond them, the city wall, the fence, the trees and the pond; the stalls and the fountain stand as the game places them. Lit as the game lights it, around the hero alone. Below it, every piece added for the City.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v4-city-set-room.png" width="864" height="480" alt="A corner of the City at night built from tiles: the stone city wall, three timber-framed houses with shelves and a hearth on their back walls and lit windows on their fronts, a cobbled street, a paved square with a fountain ringed by flagstones and two market stalls with their keepers, a fenced yard, grass, trees and a pond, lit only around the hero; below, rows of the City's tiles.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Cobbles</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Plaza flags</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Yard</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Grass</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Dirt path</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Track</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Stone floor</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>House floor</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>House front</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>House wall, inside</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>House wall, side on</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>House corner</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Wall between rooms</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Door</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Open door</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Broken door</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Side door</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>City wall</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>City wall, its top</li>
+            <li><span class="look-tile" style="background-position: -512px -64px"></span>City wall, side on</li>
+            <li><span class="look-tile" style="background-position: -576px -64px"></span>Gate</li>
+            <li><span class="look-tile" style="background-position: -640px -64px"></span>Open gate</li>
+            <li><span class="look-tile" style="background-position: -0px -128px"></span>Fence</li>
+            <li><span class="look-tile" style="background-position: -64px -128px"></span>Fence corner</li>
+            <li><span class="look-tile" style="background-position: -128px -128px"></span>Fence post</li>
+            <li><span class="look-tile" style="background-position: -192px -128px"></span>Tree</li>
+            <li><span class="look-tile" style="background-position: -256px -128px"></span>Pond</li>
+            <li><span class="look-tile" style="background-position: -320px -128px"></span>Pond, its bank</li>
+            <li><span class="look-tile" style="background-position: -384px -128px"></span>Rubble</li>
+          </ul>
+        </div>
+        <div class="look-scene sheet-v4-city-plaza" id="v4-city-plaza" data-sheet="v4-city-plaza-tiles.png">
+          <h3 class="look-scene-h">The City's square, as the game lays it out</h3>
+          <p class="look-scene-about">The heart of the City as the game itself lays it out, not a sample room: the square with its fountain and market stalls, the houses around it, a well, and the way down into the dungeon, lit around the hero where a new adventurer starts. Below it, the City's seven landmarks one by one, each on the ground it stands on: a well, standing stones, a monument, the fountain, a shrine, a market stall and the dungeon entrance.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v4-city-plaza-room.png" width="896" height="640" loading="lazy" alt="The City's square at night from above: grey flagstones around a fountain, market stalls with striped awnings, timber-framed houses, a stone well and a small walled entrance with stairs going down, lit only around the hero by the fountain; below, seven landmarks on their ground.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Well</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Standing stones</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Monument</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Fountain</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Shrine</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Market stall</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Dungeon entrance</li>
+          </ul>
+        </div>
+      </section>
       <section class="look-version" id="v3" aria-labelledby="v3-h" data-look-version="3">
         <h2 class="look-version-h" id="v3-h">Version 3 <span class="look-date">26 October 2026</span></h2>
         <p class="look-changed">The Mines drawn as the pieces the game reads, so the game can draw them: rock, timbered and ore walls, the rail, the black pool, doors and rubble, each tile chosen by the tiles around it. Added for every place below the City: lava, switches, gates, bone-set walls, a fountain, a forge and levers, three chests, five new stairs, a gem, and every creature the game draws that was still missing, the townsfolk among them. The other rooms are as before.</p>
@@ -61,7 +128,7 @@
           <h3 class="look-scene-h">The Mines, as the game draws them</h3>
           <p class="look-scene-about">The Mines room again, now built only from the pieces the game reads, each tile chosen by the tiles around it, and lit as the game lights it, around the hero alone. Below it, every piece added for the Mines and the deeper places: rock, timber and ore, rail, the black pool, doors, switches, gates, bone-set walls, lava, a fountain, a forge and levers, the chests, new stairs, a gem, and every creature still missing, the townsfolk among them.</p>
           <figure class="look-room">
-            <img class="look-room-img pixelated" src="v3-mines-set-room.png" width="832" height="480" alt="A mine gallery with timbered walls and rails that join and cross, a collapse, and a dark cave of rough rock with stalagmites, a black pool and three goblins, lit only around the hero; below, rows of tiles, things and creatures.">
+            <img class="look-room-img pixelated" src="v3-mines-set-room.png" width="832" height="480" loading="lazy" alt="A mine gallery with timbered walls and rails that join and cross, a collapse, and a dark cave of rough rock with stalagmites, a black pool and three goblins, lit only around the hero; below, rows of tiles, things and creatures.">
             <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
           </figure>
           <h4 class="art-name look-tiles-h">Tiles</h4>
