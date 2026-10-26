@@ -2597,3 +2597,659 @@ dialog.lightbox button:active {
 [data-version-date] {
   font-variant-numeric: tabular-nums;
 }
+
+/* ====================================================================== */
+/* --- Rulebook --------------------------------------------------------- */
+/* rulebook.html: the game's printed quick-reference, in the site's own inks.
+   Two inks on dark stone, as a cheap manual was printed: wax for the text,
+   candle for the spot colour. Label cells sit in the darkest stone (a printed
+   sheet's black label cell, turned over for a dark page); rules run where a
+   printed table has them. Static HTML and real tables, no script. */
+
+/* the Rulebook's link in the top bar, hidden where the bar has no room for it
+   (measured: a phone's three links need about 520px, the hub's five about 800px);
+   the hub's footer still links the page */
+@media (max-width: 559px) {
+  .nav .nav-rb {
+    display: none;
+  }
+}
+@media (min-width: 721px) and (max-width: 839px) {
+  .nav .nav-rb-hub {
+    display: none;
+  }
+}
+
+.rb-hero {
+  padding-block: var(--space-m) var(--space-xs);
+}
+.rb-hero .title {
+  font-size: clamp(3.25rem, 0.125rem + 7.225vw, 6.75rem);
+}
+.rb-hero .oneline {
+  max-inline-size: 30em;
+}
+
+/* a word a screen reader needs and the eye does not (a colon after a badge) */
+.rb-vh {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: clip;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.rb-layout {
+  display: grid;
+  grid-template-columns: 13.5rem minmax(0, 1fr);
+  gap: clamp(1.5rem, 0.125rem + 3.825vw, 4rem);
+  align-items: start;
+  padding-block-end: var(--space-xl);
+}
+
+/* the contents, set like a printed contents page: title, dotted leader, number */
+.rb-toc {
+  position: sticky;
+  inset-block-start: 84px;
+}
+/* Silkscreen is drawn on a pixel grid: under 12px its C closes into an O, so no label here goes smaller */
+.rb-toc h2 {
+  margin-block-end: 12px;
+  font-family: var(--f-pixel);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.rb-toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rb-toc ol ol {
+  margin-block-start: 4px;
+  padding-inline-start: 12px;
+  border-inline-start: 2px solid var(--border);
+}
+.rb-toc ol a {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding-block: 5px;
+  font-size: 0.92em;
+  line-height: 1.3;
+  color: var(--text-cool);
+  text-decoration: none;
+  transition: color 0.12s;
+}
+.rb-toc ol a::after {
+  content: "";
+  order: 1;
+  flex: 1 1 1rem;
+  border-block-end: 2px dotted var(--seam);
+}
+.rb-toc-n {
+  order: 2;
+  flex: none;
+  font-family: var(--f-pixel);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.rb-toc .rb-toc-ch {
+  font-size: 1.05em;
+  font-weight: 700;
+  color: var(--wax);
+}
+.rb-toc-ch .rb-toc-n {
+  font-size: 0.8125rem;
+  color: var(--candle);
+}
+@media (hover: hover) and (pointer: fine) {
+  .rb-toc ol a:hover {
+    color: var(--flame);
+  }
+}
+.rb-toc ol a:active {
+  color: var(--flame);
+}
+.rb-back {
+  position: relative;
+  display: inline-block;
+  margin-block-start: 22px;
+  font-family: var(--f-pixel);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.rb-back::before {
+  content: "";
+  position: absolute;
+  inset: min(0px, (100% - 44px) / 2);
+}
+@media (max-width: 960px) {
+  .rb-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rb-toc {
+    position: static;
+    max-inline-size: 26rem;
+    padding: 14px 18px 10px;
+    border: 2px solid var(--border);
+    background: color-mix(in oklch, var(--night) 60%, transparent);
+  }
+  .rb-back {
+    display: none;
+  }
+}
+
+/* --- the chapter: its opener, then the formula strip ---------------------- */
+
+.rb-chapter {
+  container: rb-chapter / inline-size;
+}
+.rb-kicker {
+  display: block;
+  font-family: var(--f-pixel);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--candle);
+}
+.rb-chapter-h {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  margin-block-start: 8px;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(2.75rem, 1.5rem + 3.2vw, 4.5rem);
+  line-height: 0.95;
+  color: var(--wax);
+  text-shadow: 0 0 34px color-mix(in oklch, var(--candle) 18%, transparent);
+}
+/* the chapter's double rule, run out to the edge like a printed chapter opener */
+.rb-chapter-h::after {
+  content: "";
+  flex: 1;
+  block-size: 8px;
+  margin-block-start: 0.2em;
+  border-block-start: 3px solid color-mix(in oklch, var(--candle) 80%, transparent);
+  border-block-end: 1px solid color-mix(in oklch, var(--candle) 55%, transparent);
+}
+.rb-lede {
+  margin: 16px 0 0;
+  max-inline-size: 40em;
+  font-size: 1.06em;
+  color: var(--text-cool);
+}
+
+/* the two rules worth knowing by heart, set across the top as a strip */
+.rb-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-block-start: var(--space-xs);
+  background: color-mix(in oklch, var(--abyss) 70%, transparent);
+  border-block: 2px solid var(--candle);
+}
+.rb-formula {
+  padding: clamp(1rem, 0.75rem + 0.8vw, 1.5rem) clamp(1rem, 0.6rem + 1.2vw, 1.75rem);
+}
+.rb-formula + .rb-formula {
+  border-inline-start: 2px dashed var(--seam);
+}
+.rb-f-name {
+  margin: 0 0 14px;
+  font-family: var(--f-pixel);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--candle);
+}
+/* the three stretches of the Bonus share one label column, as wide as its longest label */
+.rb-bands {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 8px 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rb-bands li {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+}
+.rb-band-at {
+  justify-self: start;
+  padding: 3px 7px 2px;
+  font-family: var(--f-pixel);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--candle);
+  background: color-mix(in oklch, var(--abyss) 60%, transparent);
+  border: 1px solid var(--timber);
+}
+.rb-band-rule,
+.rb-eq,
+.rb-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin: 0;
+  color: var(--text);
+}
+/* the bracket's contents stay on one line: a phone breaks the formula after the ×, never inside it */
+.rb-group {
+  flex-wrap: nowrap;
+}
+.rb-tok {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 6px;
+  border: 8px solid transparent;
+  border-image: var(--frame-stone) 4 fill / 8px stretch;
+  font-family: var(--f-pixel);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: var(--wax);
+}
+.rb-tok small {
+  font-family: var(--f-body);
+  font-size: 1.15em;
+  font-style: italic;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--muted);
+}
+.rb-op {
+  font-family: var(--f-body);
+  font-weight: 700;
+  font-size: 1.4em;
+  line-height: 1;
+  color: var(--candle);
+}
+.rb-num {
+  font-family: var(--f-pixel);
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--flame);
+}
+.rb-f-note {
+  margin: 14px 0 0;
+  font-size: 0.92em;
+  color: var(--muted);
+}
+.rb-f-note b {
+  color: var(--wax);
+}
+@container rb-chapter (inline-size < 44rem) {
+  .rb-strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rb-formula + .rb-formula {
+    border-inline-start: 0;
+    border-block-start: 2px dashed var(--seam);
+  }
+}
+
+/* --- sections -------------------------------------------------------------- */
+
+.rb-sec {
+  margin-block-start: var(--space-m);
+}
+.rb-sec-h {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-block-end: 18px;
+  padding-block-end: 10px;
+  border-block-end: 1px solid var(--border);
+  font-family: var(--f-body);
+  font-weight: 700;
+  font-size: clamp(1.375rem, 1.15rem + 0.75vw, 1.75rem);
+  line-height: 1.15;
+  color: var(--wax);
+}
+/* the section number, cut like the hub's numbered badges */
+.rb-no {
+  flex: none;
+  align-self: center;
+  padding: 4px 7px 3px;
+  font-family: var(--f-pixel);
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--night);
+  background: var(--candle);
+}
+
+/* --- tables ------------------------------------------------------------------ */
+
+.rb-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  border-block: 2px solid color-mix(in oklch, var(--candle) 70%, var(--timber));
+  font-size: 0.94em;
+  line-height: 1.45;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.rb-table caption {
+  caption-side: top;
+  padding-block-end: 8px;
+  text-align: start;
+  font-family: var(--f-pixel);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.rb-table thead th {
+  padding: 8px 14px 7px;
+  text-align: start;
+  font-family: var(--f-pixel);
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: color-mix(in oklch, var(--abyss) 50%, transparent);
+  border-block-end: 1px solid var(--border);
+}
+.rb-table td,
+.rb-table tbody th {
+  padding: 10px 14px;
+  text-align: start;
+  vertical-align: top;
+  border-block-end: 1px solid color-mix(in oklch, var(--border) 70%, transparent);
+}
+.rb-table td {
+  color: var(--text-cool);
+  background: color-mix(in oklch, var(--panel) 55%, transparent);
+}
+/* the column with the numbers is a step brighter than the one that names the thing */
+.rb-table td:last-child {
+  color: var(--text);
+}
+.rb-table tbody th {
+  font-weight: 400;
+  color: var(--wax);
+  background: var(--abyss);
+}
+.rb-table tbody + tbody {
+  border-block-start: 2px solid var(--border);
+}
+
+/* 1.1: score and Bonus in the sheet's own pixel figures, a band row over each stretch of the rule */
+.rb-bonus-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+  align-items: start;
+  gap: 18px 36px;
+}
+.rb-bonus thead th,
+.rb-bonus td {
+  text-align: end;
+}
+.rb-bonus thead th:first-child,
+.rb-bonus td:first-child {
+  text-align: start;
+}
+.rb-bonus td {
+  padding-block: 6px;
+  font-family: var(--f-pixel);
+  font-size: 0.875rem;
+}
+.rb-bonus td:last-child {
+  color: var(--flame);
+}
+.rb-bonus .rb-band th {
+  padding-block: 9px 8px;
+  font-style: italic;
+  font-size: 0.94em;
+  color: var(--text-cool);
+}
+.rb-band .rb-band-at {
+  display: inline-block;
+  margin-inline-end: 8px;
+  font-style: normal;
+}
+/* a margin note beside the table, its top on the table's top rule */
+.rb-aside-note {
+  margin: 0;
+  margin-block-start: 1.75rem;
+  max-inline-size: 22em;
+  padding-inline-start: 14px;
+  border-inline-start: 2px solid var(--timber);
+  color: var(--muted);
+}
+
+/* 1.2: the Attribute's name, and its short name as the sheet shows it */
+.rb-attrs tbody th {
+  inline-size: 9.5rem;
+}
+.rb-attrs td:nth-last-child(2) {
+  inline-size: 38%;
+}
+.rb-name {
+  display: block;
+  font-weight: 700;
+  font-size: 1.05em;
+  line-height: 1.2;
+}
+.rb-short {
+  display: inline-block;
+  margin-block-start: 6px;
+  padding: 2px 6px 1px;
+  font-family: var(--f-pixel);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--night);
+  background: var(--candle);
+}
+.rb-yet {
+  display: inline-block;
+  padding: 3px 7px 2px;
+  font-family: var(--f-pixel);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px dashed var(--faint);
+}
+
+/* 1.3: the worked example sits in the last column, its answer in the brightest ink */
+.rb-worked tbody th {
+  inline-size: 9.5rem;
+  font-weight: 700;
+}
+.rb-worked .rb-ex {
+  inline-size: 26%;
+}
+.rb-ex b {
+  font-weight: 700;
+  color: var(--flame);
+}
+.rb-line {
+  display: block;
+}
+.rb-line + .rb-line {
+  margin-block-start: 4px;
+}
+
+/* a narrow column: each Attribute and each Number becomes a card, its label a band across the top */
+@container rb-chapter (inline-size < 36rem) {
+  .rb-wide .rb-table,
+  .rb-wide .rb-table caption,
+  .rb-wide .rb-table tbody,
+  .rb-wide .rb-table tr,
+  .rb-wide .rb-table th,
+  .rb-wide .rb-table td {
+    display: block;
+  }
+  .rb-wide .rb-table thead {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: clip;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .rb-wide .rb-table tbody th,
+  .rb-wide .rb-table td {
+    inline-size: auto;
+  }
+  .rb-wide .rb-table tbody th {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 10px;
+    padding-block: 9px 8px;
+  }
+  .rb-short {
+    margin-block-start: 0;
+  }
+  .rb-attrs td:nth-last-child(2) {
+    padding-block-end: 2px;
+    border-block-end: 0;
+    font-size: 0.9em;
+    color: var(--muted);
+  }
+  .rb-attrs td:last-child {
+    padding-block-start: 0;
+  }
+  .rb-attrs td.rb-none {
+    padding-block-start: 10px;
+  }
+  .rb-worked td:not(.rb-ex) {
+    border-block-end: 0;
+    padding-block-end: 4px;
+  }
+  /* the column heads are hidden in a card, so each cell carries its own */
+  .rb-worked td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-block-end: 2px;
+    font-family: var(--f-pixel);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+}
+@container rb-chapter (inline-size < 40rem) {
+  .rb-bonus-wrap {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rb-aside-note {
+    margin-block-start: 0;
+  }
+}
+
+/* --- 1.4: a label-column list ---------------------------------------------------- */
+
+.rb-defs {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  margin: 0;
+  border-block: 2px solid color-mix(in oklch, var(--candle) 70%, var(--timber));
+}
+.rb-defs dt,
+.rb-defs dd {
+  padding: 11px 14px;
+  border-block-end: 1px solid color-mix(in oklch, var(--border) 70%, transparent);
+}
+.rb-defs dt {
+  padding-block-start: 14px;
+  font-family: var(--f-pixel);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--candle);
+  background: var(--abyss);
+}
+.rb-defs dd {
+  margin: 0;
+  color: var(--text-cool);
+  background: color-mix(in oklch, var(--panel) 55%, transparent);
+}
+.rb-defs > :nth-last-child(-n + 2) {
+  border-block-end: 0;
+}
+.rb-chip {
+  display: inline-block;
+  padding: 1px 7px 0;
+  font-family: var(--f-pixel);
+  font-size: 0.75em;
+  white-space: nowrap;
+  color: var(--wax);
+  background: var(--panel-2);
+  border: 1px solid var(--seam);
+  border-block-end-width: 3px;
+}
+@container rb-chapter (inline-size < 30rem) {
+  .rb-defs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rb-defs dt {
+    padding-block: 9px 8px;
+  }
+  .rb-defs > dt:nth-last-child(2) {
+    border-block-end: 1px solid color-mix(in oklch, var(--border) 70%, transparent);
+  }
+}
+
+/* --- boxed callouts: the Mana note and Good to know ------------------------------ */
+
+.rb-box {
+  padding: 12px 16px 14px;
+  border: 8px solid transparent;
+  border-image: var(--frame-warm) 4 fill / 8px stretch;
+}
+.rb-box-h {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 8px;
+  font-family: var(--f-pixel);
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--candle);
+}
+.rb-box-h::before {
+  content: "";
+  flex: none;
+  inline-size: 8px;
+  block-size: 8px;
+  background: var(--candle);
+  box-shadow: 0 0 10px 2px color-mix(in oklch, var(--candle) 55%, transparent);
+}
+.rb-box p {
+  margin: 0;
+  color: var(--text-cool);
+}
+.rb-box b {
+  color: var(--wax);
+}
+.rb-mana {
+  max-inline-size: 40rem;
+  margin-block-start: 22px;
+}
+.rb-notes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 16px;
+}

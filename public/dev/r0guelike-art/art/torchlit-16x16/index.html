@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Grenze+Gotisch:wght@500;700&family=Silkscreen&display=swap">
   <link rel="stylesheet" href="../../styles.css">
   <style>
+    .sheet-v3-mines-set .look-tile { background-image: url("v3-mines-set-tiles.png"); background-size: 704px auto; }
     .sheet-v2-2-hero-heads .look-tile { background-image: url("v2-2-hero-heads-tiles.png"); background-size: 704px auto; }
     .sheet-v2-2-hero-action .look-tile { background-image: url("v2-2-hero-action-tiles.png"); background-size: 704px auto; }
     .sheet-v2-2-hero-tall .look-tile { background-image: url("v2-2-hero-tall-tiles.png"); background-size: 704px auto; block-size: 96px; }
@@ -42,15 +43,87 @@
       <header class="look-head">
         <span class="eyebrow">Not in the game yet</span>
         <h1 class="art-h">Torchlit, 16×16</h1>
-        <p class="look-status">Still being tried · 4 versions, newest first</p>
+        <p class="look-status">Still being tried · 5 versions, newest first</p>
         <p class="art-lede">Stone, earth and moss that flow across the tiles, walls of uneven stone, and light that falls off tile by tile around each torch. The figures stay small and bright. Since version 2 it is drawn in each of the game's areas: the City, the Shallows and the Mines. Since version 2.1 lava and water meet the rest on natural edges, and its page shows ways of drawing the characters, every creature in the game, and chests; since 2.2, the hero dressed in the gear they wear, drawn four ways. The tiles are shown unlit; the light is laid over the room as a whole.</p>
       </header>
       <nav class="look-nav" aria-label="Versions">
+        <a href="#v3">Version 3 · 26 October 2026</a>
         <a href="#v2-2">Version 2.2 · 18 October 2026</a>
         <a href="#v2-1">Version 2.1 · 18 October 2026</a>
         <a href="#v2">Version 2 · 18 October 2026</a>
         <a href="#v1">Version 1 · 18 October 2026</a>
       </nav>
+      <section class="look-version" id="v3" aria-labelledby="v3-h" data-look-version="3">
+        <h2 class="look-version-h" id="v3-h">Version 3 <span class="look-date">26 October 2026</span></h2>
+        <p class="look-changed">The Mines drawn as the pieces the game reads, so the game can draw them: rock, timbered and ore walls, the rail, the black pool, doors and rubble, each tile chosen by the tiles around it. Added for every place below the City: lava, switches, gates, bone-set walls, a fountain, a forge and levers, three chests, five new stairs, a gem, and every creature the game draws that was still missing, the townsfolk among them. The other rooms are as before.</p>
+        <blockquote class="look-feedback"><span class="look-label">Feedback</span> Torchlit 16 is the game's look now: draw it for every place a player reaches, the Mines first.</blockquote>
+        <div class="look-scene sheet-v3-mines-set" id="v3-mines-set" data-sheet="v3-mines-set-tiles.png">
+          <h3 class="look-scene-h">The Mines, as the game draws them</h3>
+          <p class="look-scene-about">The Mines room again, now built only from the pieces the game reads, each tile chosen by the tiles around it, and lit as the game lights it, around the hero alone. Below it, every piece added for the Mines and the deeper places: rock, timber and ore, rail, the black pool, doors, switches, gates, bone-set walls, lava, a fountain, a forge and levers, the chests, new stairs, a gem, and every creature still missing, the townsfolk among them.</p>
+          <figure class="look-room">
+            <img class="look-room-img pixelated" src="v3-mines-set-room.png" width="832" height="480" alt="A mine gallery with timbered walls and rails that join and cross, a collapse, and a dark cave of rough rock with stalagmites, a black pool and three goblins, lit only around the hero; below, rows of tiles, things and creatures.">
+            <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
+          </figure>
+          <h4 class="art-name look-tiles-h">Tiles</h4>
+          <ul class="look-tiles">
+            <li><span class="look-tile" style="background-position: -0px -0px"></span>Rough rock</li>
+            <li><span class="look-tile" style="background-position: -64px -0px"></span>Rock face</li>
+            <li><span class="look-tile" style="background-position: -128px -0px"></span>Rock, its west side</li>
+            <li><span class="look-tile" style="background-position: -192px -0px"></span>Stalagmite</li>
+            <li><span class="look-tile" style="background-position: -256px -0px"></span>Timbered face</li>
+            <li><span class="look-tile" style="background-position: -320px -0px"></span>Ore face</li>
+            <li><span class="look-tile" style="background-position: -384px -0px"></span>Packed earth</li>
+            <li><span class="look-tile" style="background-position: -448px -0px"></span>Earth under the rock</li>
+            <li><span class="look-tile" style="background-position: -512px -0px"></span>Rail</li>
+            <li><span class="look-tile" style="background-position: -576px -0px"></span>Rail, east to west</li>
+            <li><span class="look-tile" style="background-position: -640px -0px"></span>Rail bend</li>
+            <li><span class="look-tile" style="background-position: -0px -64px"></span>Rubble</li>
+            <li><span class="look-tile" style="background-position: -64px -64px"></span>Black pool</li>
+            <li><span class="look-tile" style="background-position: -128px -64px"></span>Black pool, its bank</li>
+            <li><span class="look-tile" style="background-position: -192px -64px"></span>Door</li>
+            <li><span class="look-tile" style="background-position: -256px -64px"></span>Open door</li>
+            <li><span class="look-tile" style="background-position: -320px -64px"></span>Broken door</li>
+            <li><span class="look-tile" style="background-position: -384px -64px"></span>Dressed stone</li>
+            <li><span class="look-tile" style="background-position: -448px -64px"></span>Bone-set wall</li>
+            <li><span class="look-tile" style="background-position: -512px -64px"></span>Switch</li>
+            <li><span class="look-tile" style="background-position: -576px -64px"></span>Thrown switch</li>
+            <li><span class="look-tile" style="background-position: -640px -64px"></span>Secret switch</li>
+            <li><span class="look-tile" style="background-position: -0px -128px"></span>Gate</li>
+            <li><span class="look-tile" style="background-position: -64px -128px"></span>Open gate</li>
+            <li><span class="look-tile" style="background-position: -128px -128px"></span>Sealed door, its left end</li>
+            <li><span class="look-tile" style="background-position: -192px -128px"></span>Sealed door, its middle</li>
+            <li><span class="look-tile" style="background-position: -256px -128px"></span>Sealed door, its right end</li>
+            <li><span class="look-tile" style="background-position: -320px -128px"></span>Lava</li>
+            <li><span class="look-tile" style="background-position: -384px -128px"></span>Lava, its bank</li>
+            <li><span class="look-tile" style="background-position: -448px -128px"></span>Fountain</li>
+            <li><span class="look-tile" style="background-position: -512px -128px"></span>Forge</li>
+            <li><span class="look-tile" style="background-position: -576px -128px"></span>Lever</li>
+            <li><span class="look-tile" style="background-position: -640px -128px"></span>Pulled lever</li>
+            <li><span class="look-tile" style="background-position: -0px -192px"></span>Chest</li>
+            <li><span class="look-tile" style="background-position: -64px -192px"></span>Open chest</li>
+            <li><span class="look-tile" style="background-position: -128px -192px"></span>Empty chest</li>
+            <li><span class="look-tile" style="background-position: -192px -192px"></span>Hewn stairs up</li>
+            <li><span class="look-tile" style="background-position: -256px -192px"></span>Crude hole down</li>
+            <li><span class="look-tile" style="background-position: -320px -192px"></span>Crude way up</li>
+            <li><span class="look-tile" style="background-position: -384px -192px"></span>Gilded stairs down</li>
+            <li><span class="look-tile" style="background-position: -448px -192px"></span>Gilded stairs up</li>
+            <li><span class="look-tile" style="background-position: -512px -192px"></span>Gem</li>
+            <li><span class="look-tile" style="background-position: -576px -192px"></span>Ogre</li>
+            <li><span class="look-tile" style="background-position: -640px -192px"></span>Cave bear</li>
+            <li><span class="look-tile" style="background-position: -0px -256px"></span>Wight</li>
+            <li><span class="look-tile" style="background-position: -64px -256px"></span>Bugbear warchief</li>
+            <li><span class="look-tile" style="background-position: -128px -256px"></span>Troll</li>
+            <li><span class="look-tile" style="background-position: -192px -256px"></span>Minotaur</li>
+            <li><span class="look-tile" style="background-position: -256px -256px"></span>Carrion crawler</li>
+            <li><span class="look-tile" style="background-position: -320px -256px"></span>Thrum</li>
+            <li><span class="look-tile" style="background-position: -384px -256px"></span>Basilisk</li>
+            <li><span class="look-tile" style="background-position: -448px -256px"></span>Ettin</li>
+            <li><span class="look-tile" style="background-position: -512px -256px"></span>Pale strider</li>
+            <li><span class="look-tile" style="background-position: -576px -256px"></span>Wyvern</li>
+            <li><span class="look-tile" style="background-position: -640px -256px"></span>Townsfolk</li>
+          </ul>
+        </div>
+      </section>
       <section class="look-version" id="v2-2" aria-labelledby="v2-2-h" data-look-version="2.2">
         <h2 class="look-version-h" id="v2-2-h">Version 2.2 <span class="look-date">18 October 2026</span></h2>
         <p class="look-changed">The hero now shows the gear they wear. Each piece of the game's own gear (a robe, a jerkin, a chain shirt, a scale hauberk, a cap or a helm, leggings, greaves, boots, a cloak, six weapons, two shields) is drawn once and stacked on the hero in order, and coloured by what it is made of, so a chain shirt is the same drawing in iron, steel or mithril and any helm goes on any hero. Four ways of drawing it: big heads, in action, tall with the head in the tile above, and at twice the detail. Each shows six heroes, one hero putting gear on piece by piece, and the body armours in their three materials. The rooms of version 2.1 are as they were.</p>
@@ -60,7 +133,7 @@
           <h3 class="look-scene-h">The hero in their gear: big heads</h3>
           <p class="look-scene-about">Front on and chunky, a big head and a navy outline; a red scarf marks the hero in every outfit. Top row, six heroes in the game's own gear, from unarmoured to mithril; middle row, one hero putting gear on piece by piece; bottom row, a robe, a jerkin and a chain shirt each in its three materials. Every piece is drawn once and coloured by what it is made of, so any helm goes on any hero.</p>
           <figure class="look-room">
-            <img class="look-room-img pixelated" src="v2-2-hero-heads-room.png" width="672" height="352" alt="Three rows of small chunky heroes in a torchlit hall: six in different gear, one putting on armour step by step, and robes, jerkins and chain shirts in three materials each.">
+            <img class="look-room-img pixelated" src="v2-2-hero-heads-room.png" width="672" height="352" loading="lazy" alt="Three rows of small chunky heroes in a torchlit hall: six in different gear, one putting on armour step by step, and robes, jerkins and chain shirts in three materials each.">
             <figcaption>At the size the game draws it, 32 pixels a tile.</figcaption>
           </figure>
           <h4 class="art-name look-tiles-h">Tiles</h4>
