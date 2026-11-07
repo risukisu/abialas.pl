@@ -7,6 +7,7 @@ import MarketingSkillsTile from "../components/nexus/MarketingSkillsTile.astro";
 import MarketingSkillsRepoTile from "../components/nexus/MarketingSkillsRepoTile.astro";
 import ResumeTile from "../components/nexus/ResumeTile.astro";
 import ComingSoonTile from "../components/nexus/ComingSoonTile.astro";
+import StatuslineTile from "../components/nexus/StatuslineTile.astro";
 import ContributionGraph from "../components/nexus/ContributionGraph.astro";
 import { follow, followStack } from "../data/nexus";
 ---
@@ -69,7 +70,8 @@ import { follow, followStack } from "../data/nexus";
 
   <!-- ── Building ───────────────────────────────────────────────────
        Proof-of-work: live contribution graph (the GitHub tile) + SkillCraft, then the
-       marketing-skills pair — the site (big, animated) and the repo. -->
+       marketing-skills pair — the site (big, animated) and the repo, then
+       the statusline (wide art, as on /dev/projects) beside the next tile. -->
   <section class="nexus-sec">
     <div class="container">
       <div class="nexus-sec__head">
@@ -85,16 +87,20 @@ import { follow, followStack } from "../data/nexus";
         <MarketingSkillsTile />
         <MarketingSkillsRepoTile />
       </div>
+      <div class="sl-row">
+        <StatuslineTile wide />
+        <ComingSoonTile />
+      </div>
     </div>
   </section>
 
   <!-- ── More ───────────────────────────────────────────────────────
-       Résumé (the sheet) + the next tile, still a blueprint. -->
+       Résumé (the sheet), the row to itself; the blueprint tile moved up
+       beside the statusline. -->
   <section class="nexus-sec nexus-sec--last">
     <div class="container">
       <div class="nexus-grid">
         <ResumeTile />
-        <ComingSoonTile />
       </div>
     </div>
   </section>
@@ -316,17 +322,30 @@ import { follow, followStack } from "../data/nexus";
     grid-template-columns: minmax(0, 1.9fr) minmax(0, 1.1fr);
     gap: 18px;
     align-items: stretch;
+    margin-bottom: 18px;
+    padding-right: 6px;
+  }
+  /* Statusline | the next tile — 4 : 2 of the /dev/projects bento. */
+  .sl-row {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 18px;
+    align-items: stretch;
     padding-right: 6px;
   }
 
-  /* Résumé | coming soon. minmax(0, …) so neither tile's content can
-     inflate its track past the viewport. */
+  /* Résumé alone. minmax(0, …) so its content can't inflate the track
+     past the viewport; the body takes the row, so the arrow sits at the
+     plate's right edge like every other tile's. */
   .nexus-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     gap: 18px;
     padding-right: 6px;
     align-items: stretch;
+  }
+  .nexus-grid :global(.cv__body) {
+    flex: 1;
   }
 
   @media (max-width: 960px) {
@@ -340,14 +359,15 @@ import { follow, followStack } from "../data/nexus";
       grid-template-columns: 1fr 1fr;
     }
   }
+  /* the blueprint tile needs ~340px for its words beside the sketch */
+  @media (max-width: 1080px) {
+    .sl-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
   @media (max-width: 820px) {
     .msk-row {
       grid-template-columns: 1fr;
-    }
-  }
-  @media (max-width: 720px) {
-    .nexus-grid {
-      grid-template-columns: minmax(0, 1fr);
     }
   }
   @media (max-width: 540px) {

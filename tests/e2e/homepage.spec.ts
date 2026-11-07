@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { resume } from "../../src/data/resume";
 
-test("nexus home: masthead, follow row + stack, building section, skills pair, more row, footer mailto", async ({ page }) => {
+test("nexus home: masthead, follow row + stack, building section, skills pair, statusline row, more row, footer mailto", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("h1")).toBeVisible();
   // Follow: Newsletter | Blog | LinkedIn over X
@@ -14,12 +14,14 @@ test("nexus home: masthead, follow row + stack, building section, skills pair, m
   await expect(page.locator(".build-row a[href='https://skillcraft.cloud']")).toBeVisible();
   await expect(page.locator(".msk-row a[href='https://skillcraft.cloud/marketing-skills']")).toBeVisible();
   await expect(page.locator(".msk-row a[href='https://github.com/risukisu/marketing-skills']")).toBeVisible();
-  // More: Résumé | coming soon (footer PDF link hidden while `resume.draft`)
+  // Statusline (wide art) | coming soon
+  await expect(page.locator(".sl-row a[href='https://github.com/risukisu/claude-code-statusline']")).toBeVisible();
+  await expect(page.locator(".sl-row [data-soon]")).toContainText("More coming soon.");
+  // More: Résumé alone (footer PDF link hidden while `resume.draft`)
   await expect(page.locator(`.nexus-grid a[href='${resume.href}']`)).toBeVisible();
   if (resume.draft) {
     await expect(page.locator("a[href='/resume.pdf']")).toHaveCount(0);
   }
-  await expect(page.locator(".nexus-grid [data-soon]")).toContainText("More coming soon.");
   await expect(page.locator("a[href^='mailto:']").first()).toBeVisible();
 });
 
