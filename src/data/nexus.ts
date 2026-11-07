@@ -1,10 +1,10 @@
 /**
  * Nexus rosters — the homepage's link tiles (spec 2026-08-17, rows
  * reshuffled 2026-09-21). GrugTile / SkillCraftTile / MarketingSkillsTile /
- * MarketingSkillsRepoTile / ResumeTile / GitHubTile are component-owned
- * and do NOT appear here. Statusline / Marketing OS / Grug Manifesto
- * were removed for launch (post-launch revisit; Marketing OS likely
- * deprecated). URLs verified against `gh repo list risukisu` during
+ * MarketingSkillsRepoTile / StatuslineTile / ComingSoonTile / ResumeTile /
+ * GitHubTile are component-owned and do NOT appear here. Marketing OS /
+ * Grug Manifesto were removed for launch (Marketing OS since retired);
+ * the statusline came back as its own tile in Building (2026-11-07). URLs verified against `gh repo list risukisu` during
  * the lab arc; ga4-analyzer / vanilla-stats join when public.
  */
 export type NexusBox = {

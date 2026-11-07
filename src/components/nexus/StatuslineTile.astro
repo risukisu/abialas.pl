@@ -1,9 +1,10 @@
 ---
 /**
  * StatuslineTile — claude-code-statusline, the four-line dashboard under the
- * Claude Code prompt, in the side slot beside marketing-skills (the 1.1 of the
- * 1.9 : 1.1 pair; owner, 2026-09-28, after a half-width and a stacked version
- * both came out too tall).
+ * Claude Code prompt. Home: its own Building row under the marketing-skills
+ * pair, wide art, 2 : 1 beside the coming-soon tile (owner, 2026-11-07, the
+ * /dev/projects version). Earlier home tries, all dropped: half-width beside
+ * marketing-skills, a stacked full row, and the narrow art in the 1.1 slot.
  *
  * The art is the status line itself acting out its four lines in 3-second
  * beats (context fills and turns red with /compact, the limit notch and its
@@ -21,8 +22,8 @@
  * guest sticker; the shadow is the statusline's own cyan, toned. The head's
  * mark is the dashboard's gutter: four cells, cyan to mint.
  */
-// `wide`: for a slot ~700px+ wide (the /projects bento), the 96-column strip
-// with the sync age and repo link; phones still get the 52-column one.
+// `wide`: for a slot ~650px+ wide (home's statusline row, the /dev/projects
+// bento), the 96-column strip; phones (≤720px) still get the 52-column one.
 export interface Props {
   wide?: boolean;
 }
