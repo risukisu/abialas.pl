@@ -25,7 +25,8 @@
   let picked = 0;
   let start = performance.now();
   // A cameo (031's squirrel) shows itself now and then: first a few seconds after its screen
-  // shows, then every 20 to 40 s; never with reduced motion. A click while it is out drops its
+  // shows, then every 20 to 40 s, counted from one appearance's start to the next's; never with
+  // reduced motion, and a few seconds after motion comes back. A click while it is out drops its
   // picture (an acorn), which falls, bounces once, rests and goes.
   const FIRST = [4000, 8000];
   const EVERY = [20000, 40000];
@@ -36,6 +37,7 @@
   const MAX_DROPS = 3;
   let peeks = [];
   let drops = [];
+  let reducedLast = motion.matches; // reduced motion was on at the last frame drawn
   const within = ([lo, hi]) => lo + Math.random() * (hi - lo);
 
   const image = (src) =>
@@ -101,15 +103,30 @@
   }
 
   function drawCameos(now) {
-    if (!cur.cameos || motion.matches) return;
+    if (motion.matches) {
+      reducedLast = true;
+      return;
+    }
+    if (reducedLast) {
+      // Motion is back: a cameo waits its first few seconds again, rather than coming out at once
+      // because its time passed while it could not show. (Read here, not on the query's change
+      // event: a list whose `matches` is read every frame may never get one.)
+      reducedLast = false;
+      for (const p of peeks) {
+        p.at = null;
+        p.next = now + within(FIRST);
+      }
+    }
+    if (!cur.cameos) return;
     for (const p of peeks) {
-      if (p.at === null && now >= p.next) p.at = now;
+      if (p.at === null && now >= p.next) {
+        p.at = now;
+        // the next one is counted from this one's start (a click moves `at`, never `next`)
+        p.next = now + within(EVERY);
+      }
       const i = peekFrame(p, now);
       if (i < 0) {
-        if (p.at !== null) {
-          p.at = null;
-          p.next = now + within(EVERY);
-        }
+        p.at = null;
         continue;
       }
       const { cm } = p;
