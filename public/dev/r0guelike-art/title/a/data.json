@@ -83,8 +83,8 @@
   {
    "id": "continue",
    "label": "Continue",
-   "say": "the last played character",
-   "when": "a character exists",
+   "say": "opens the last played character",
+   "when": "once a character exists",
    "box": [
     163,
     80,
@@ -103,7 +103,7 @@
   {
    "id": "new",
    "label": "New character",
-   "say": "the Roster's create form: name and Mode",
+   "say": "opens the Roster's create form, a name and a Mode",
    "when": "always",
    "box": [
     163,
@@ -123,7 +123,7 @@
   {
    "id": "roster",
    "label": "Roster",
-   "say": "every saved character",
+   "say": "opens every saved character",
    "when": "always",
    "box": [
     163,
@@ -143,7 +143,7 @@
   {
    "id": "settings",
    "label": "Settings",
-   "say": "the Settings screen",
+   "say": "opens the Settings screen",
    "when": "always",
    "box": [
     163,
@@ -164,7 +164,7 @@
    "id": "quit",
    "label": "Quit",
    "say": "closes the game",
-   "when": "the desktop app",
+   "when": "in the desktop app only",
    "box": [
     163,
     162,
@@ -183,7 +183,7 @@
   {
    "id": "compendium",
    "label": "Compendium",
-   "say": "what all your characters have learned",
+   "say": "shows what all your characters have learned",
    "when": "always",
    "box": [
     94,
@@ -203,7 +203,7 @@
   {
    "id": "graveyard",
    "label": "Graveyard",
-   "say": "the Chronicles of the permanently dead",
+   "say": "opens the Chronicles of the permanently dead",
    "when": "always",
    "box": [
     170,
@@ -223,7 +223,7 @@
   {
    "id": "hall",
    "label": "Hall of Fame",
-   "say": "the Chronicles of those who beat the game",
+   "say": "opens the Chronicles of those who beat the game",
    "when": "always",
    "box": [
     246,
@@ -243,7 +243,7 @@
   {
    "id": "credits",
    "label": "Credits",
-   "say": "who made the game, the tools, the fonts",
+   "say": "lists who made the game, the tools and the fonts",
    "when": "always",
    "box": [
     322,

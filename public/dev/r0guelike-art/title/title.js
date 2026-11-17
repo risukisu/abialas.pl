@@ -1,7 +1,8 @@
 // 030's player: one Title screen concept at a time, live, at whole-number scale.
 // It draws the concept's layers (build.py writes them) onto a 480 x 270 canvas: the scene, each
-// animation's frame, the menu, the selected item's overlay. The arrow keys walk the menu, Enter or
-// a click picks a row and the line under the stage says what it opens. Nothing here is the game.
+// animation's frame, a cameo when one is out (031), the menu, the selected item's overlay. The
+// arrow keys walk the menu, Enter or a click picks a row and the line under the stage says what it
+// opens. The tab pressed in the page's HTML is shown first. Nothing here is the game.
 (() => {
   const root = document.querySelector("[data-title-concepts]");
   if (!root) return;
@@ -23,6 +24,19 @@
   let sel = null;
   let picked = 0;
   let start = performance.now();
+  // A cameo (031's squirrel) shows itself now and then: first a few seconds after its screen
+  // shows, then every 20 to 40 s; never with reduced motion. A click while it is out drops its
+  // picture (an acorn), which falls, bounces once, rests and goes.
+  const FIRST = [4000, 8000];
+  const EVERY = [20000, 40000];
+  const GRAVITY = 0.0006; // px per ms squared
+  const BOUNCE = 180;
+  const REST = 5000;
+  const BLINK = 900;
+  const MAX_DROPS = 3;
+  let peeks = [];
+  let drops = [];
+  const within = ([lo, hi]) => lo + Math.random() * (hi - lo);
 
   const image = (src) =>
     new Promise((ok, fail) => {
@@ -55,9 +69,59 @@
       s.period = 2400 + Math.random() * 5200;
       s.phase = Math.random() * s.period;
     }
-    const c = { data, scene, ui, anims, select, sky };
+    const cameos = data.cameos?.length ? await image(`${dir}cameos.png`) : null;
+    const c = { data, scene, ui, anims, select, sky, cameos };
     cache.set(id, c);
     return c;
+  }
+
+  // The frame a cameo is on, or -1 while it is away.
+  function peekFrame(p, now) {
+    if (p.at === null) return -1;
+    let at = now - p.at;
+    const d = p.cm.durations;
+    for (let i = 0; i < d.length; i++) {
+      if (at < d[i]) return i;
+      at -= d[i];
+    }
+    return -1;
+  }
+
+  // Where a dropped picture is (y), or null once it has gone; `on` is false in a blink.
+  function dropAt(a, now) {
+    const t = now - a.t0;
+    const fall = Math.sqrt((2 * (a.ground - a.y0)) / GRAVITY);
+    if (t < fall) return { y: a.y0 + 0.5 * GRAVITY * t * t, on: true };
+    const u = (t - fall) / BOUNCE;
+    if (u < 1) return { y: a.ground - 2 * Math.sin(Math.PI * u), on: true };
+    const r = t - fall - BOUNCE;
+    if (r < REST) return { y: a.ground, on: true };
+    if (r < REST + BLINK) return { y: a.ground, on: Math.floor((r - REST) / 150) % 2 === 1 };
+    return null;
+  }
+
+  function drawCameos(now) {
+    if (!cur.cameos || motion.matches) return;
+    for (const p of peeks) {
+      if (p.at === null && now >= p.next) p.at = now;
+      const i = peekFrame(p, now);
+      if (i < 0) {
+        if (p.at !== null) {
+          p.at = null;
+          p.next = now + within(EVERY);
+        }
+        continue;
+      }
+      const { cm } = p;
+      ctx.drawImage(cur.cameos, i * cm.w, cm.sy, cm.w, cm.h, cm.x, cm.y, cm.w, cm.h);
+    }
+    drops = drops.filter((a) => {
+      const at = dropAt(a, now);
+      if (!at) return false;
+      const d = a.cm.drop;
+      if (at.on) ctx.drawImage(cur.cameos, d.sx, d.sy, d.w, d.h, d.at[0], Math.round(at.y), d.w, d.h);
+      return true;
+    });
   }
 
   function frameOf(anim, t) {
@@ -93,6 +157,7 @@
         }
       }
     }
+    drawCameos(now);
     ctx.drawImage(ui, 0, 0);
     const it = data.items.find((i) => i.id === sel);
     if (it?.sel) {
@@ -112,8 +177,8 @@
 
   function say(it, pickedNow) {
     if (!readout || !it) return;
-    const when = it.when && it.when !== "always" ? ` Shown when ${it.when}.` : "";
-    readout.textContent = pickedNow ? `${it.label}: opens ${it.say}.${when}` : `${it.label}.${when}`;
+    const when = it.when && it.when !== "always" ? ` Shown ${it.when}.` : "";
+    readout.textContent = pickedNow ? `${it.label}: ${it.say}.${when}` : `${it.label}.${when}`;
   }
 
   function choose(id, pickedNow = false) {
@@ -144,6 +209,9 @@
     cur = await load(id);
     sel = cur.data.default;
     picked = 0;
+    const now = performance.now();
+    peeks = (cur.data.cameos || []).map((cm) => ({ cm, at: null, next: now + within(FIRST) }));
+    drops = [];
     for (const t of tabs) t.setAttribute("aria-pressed", String(t.dataset.concept === id));
     if (nameEl) nameEl.textContent = cur.data.name;
     if (aboutEl) aboutEl.textContent = cur.data.about;
@@ -157,25 +225,52 @@
     }
   }
 
-  function point(e) {
+  function onScreen(e) {
     const r = canvas.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width) * W;
-    const y = ((e.clientY - r.top) / r.height) * H;
+    return [((e.clientX - r.left) / r.width) * W, ((e.clientY - r.top) / r.height) * H];
+  }
+
+  function point(e) {
+    const [x, y] = onScreen(e);
     return cur?.data.items.find((i) => x >= i.box[0] && x < i.box[2] && y >= i.box[1] && y < i.box[3]);
   }
 
+  // The cameo under the pointer, if it is out and in a frame a click catches it in.
+  function caught(e) {
+    if (!cur?.cameos || motion.matches) return null;
+    const [x, y] = onScreen(e);
+    const now = performance.now();
+    return peeks.find((p) => {
+      const h = p.cm.hit;
+      return p.cm.shows.includes(peekFrame(p, now)) && x >= h[0] && x < h[2] && y >= h[1] && y < h[3];
+    });
+  }
+
   canvas.addEventListener("pointermove", (e) => {
-    const it = point(e);
-    canvas.style.cursor = it ? "pointer" : "default";
+    const p = caught(e);
+    const it = p ? null : point(e);
+    canvas.style.cursor = p || it ? "pointer" : "default";
     if (it && it.id !== sel) choose(it.id);
   });
   canvas.addEventListener("click", (e) => {
-    const it = point(e);
-    if (it) choose(it.id, true);
+    const p = caught(e);
+    if (p) {
+      // It drops what it holds and dashes back: the peek jumps to its flee frame.
+      const now = performance.now();
+      const d = p.cm.drop;
+      if (drops.length >= MAX_DROPS) drops.shift();
+      drops.push({ cm: p.cm, t0: now, y0: d.at[1], ground: d.ground });
+      p.at = now - p.cm.durations.slice(0, p.cm.flee).reduce((a, b) => a + b, 0);
+    } else {
+      const it = point(e);
+      if (it) choose(it.id, true);
+    }
     stage.focus({ preventScroll: true });
   });
   stage.addEventListener("keydown", (e) => {
     if (!cur) return;
+    // leave the browser's own shortcuts alone (Ctrl+F finds, Alt+Left goes back)
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
     if (e.key === "ArrowDown" || e.key === "ArrowRight") step(1);
     else if (e.key === "ArrowUp" || e.key === "ArrowLeft") step(-1);
     else if (e.key === "Home") choose(cur.data.items[0].id);
@@ -195,7 +290,8 @@
   document.addEventListener("fullscreenchange", fit);
   new ResizeObserver(fit).observe(stage);
 
-  show(tabs[0]?.dataset.concept || "a").catch(() => {
+  const first = tabs.find((t) => t.getAttribute("aria-pressed") === "true") || tabs[0];
+  show(first?.dataset.concept || "a").catch(() => {
     if (readout) readout.textContent = "The live screens did not load; the pictures above are the stills.";
   });
 })();
