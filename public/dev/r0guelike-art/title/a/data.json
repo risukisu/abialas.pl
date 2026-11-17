@@ -1,0 +1,264 @@
+{
+ "id": "a",
+ "name": "The edge of the light",
+ "about": "A forest clearing at night: the lone hero by a campfire, the City far behind on its hill, and at the edge of the firelight, under the dark trees, goblins, a wolf and the Goblin King waiting.",
+ "w": 480,
+ "h": 270,
+ "default": "continue",
+ "anims": [
+  {
+   "id": "fire",
+   "x": 122,
+   "y": 181,
+   "w": 18,
+   "h": 25,
+   "sy": 0,
+   "durations": [
+    220,
+    180,
+    220,
+    180
+   ]
+  },
+  {
+   "id": "eyes-front",
+   "x": 321,
+   "y": 202,
+   "w": 41,
+   "h": 6,
+   "sy": 25,
+   "durations": [
+    2900,
+    140,
+    1700,
+    140
+   ]
+  },
+  {
+   "id": "eyes-back",
+   "x": 380,
+   "y": 171,
+   "w": 28,
+   "h": 20,
+   "sy": 31,
+   "durations": [
+    3700,
+    160,
+    2500,
+    160
+   ]
+  }
+ ],
+ "twinkle": [
+  [
+   146,
+   70
+  ],
+  [
+   104,
+   74
+  ],
+  [
+   134,
+   98
+  ],
+  [
+   342,
+   44
+  ],
+  [
+   336,
+   100
+  ],
+  [
+   386,
+   6
+  ],
+  [
+   30,
+   112
+  ]
+ ],
+ "items": [
+  {
+   "id": "continue",
+   "label": "Continue",
+   "say": "the last played character",
+   "when": "a character exists",
+   "box": [
+    163,
+    80,
+    318,
+    107
+   ],
+   "sel": {
+    "sx": 0,
+    "sy": 0,
+    "w": 94,
+    "h": 12,
+    "x": 165,
+    "y": 83
+   }
+  },
+  {
+   "id": "new",
+   "label": "New character",
+   "say": "the Roster's create form: name and Mode",
+   "when": "always",
+   "box": [
+    163,
+    108,
+    318,
+    126
+   ],
+   "sel": {
+    "sx": 94,
+    "sy": 0,
+    "w": 147,
+    "h": 12,
+    "x": 165,
+    "y": 111
+   }
+  },
+  {
+   "id": "roster",
+   "label": "Roster",
+   "say": "every saved character",
+   "when": "always",
+   "box": [
+    163,
+    126,
+    318,
+    144
+   ],
+   "sel": {
+    "sx": 241,
+    "sy": 0,
+    "w": 79,
+    "h": 12,
+    "x": 165,
+    "y": 129
+   }
+  },
+  {
+   "id": "settings",
+   "label": "Settings",
+   "say": "the Settings screen",
+   "when": "always",
+   "box": [
+    163,
+    144,
+    318,
+    162
+   ],
+   "sel": {
+    "sx": 320,
+    "sy": 0,
+    "w": 94,
+    "h": 15,
+    "x": 165,
+    "y": 147
+   }
+  },
+  {
+   "id": "quit",
+   "label": "Quit",
+   "say": "closes the game",
+   "when": "the desktop app",
+   "box": [
+    163,
+    162,
+    318,
+    180
+   ],
+   "sel": {
+    "sx": 414,
+    "sy": 0,
+    "w": 55,
+    "h": 15,
+    "x": 165,
+    "y": 165
+   }
+  },
+  {
+   "id": "compendium",
+   "label": "Compendium",
+   "say": "what all your characters have learned",
+   "when": "always",
+   "box": [
+    94,
+    222,
+    158,
+    264
+   ],
+   "sel": {
+    "sx": 469,
+    "sy": 0,
+    "w": 66,
+    "h": 37,
+    "x": 93,
+    "y": 225
+   }
+  },
+  {
+   "id": "graveyard",
+   "label": "Graveyard",
+   "say": "the Chronicles of the permanently dead",
+   "when": "always",
+   "box": [
+    170,
+    222,
+    234,
+    264
+   ],
+   "sel": {
+    "sx": 535,
+    "sy": 0,
+    "w": 63,
+    "h": 38,
+    "x": 171,
+    "y": 224
+   }
+  },
+  {
+   "id": "hall",
+   "label": "Hall of Fame",
+   "say": "the Chronicles of those who beat the game",
+   "when": "always",
+   "box": [
+    246,
+    222,
+    310,
+    264
+   ],
+   "sel": {
+    "sx": 598,
+    "sy": 0,
+    "w": 67,
+    "h": 36,
+    "x": 245,
+    "y": 224
+   }
+  },
+  {
+   "id": "credits",
+   "label": "Credits",
+   "say": "who made the game, the tools, the fonts",
+   "when": "always",
+   "box": [
+    322,
+    222,
+    386,
+    264
+   ],
+   "sel": {
+    "sx": 665,
+    "sy": 0,
+    "w": 43,
+    "h": 35,
+    "x": 333,
+    "y": 225
+   }
+  }
+ ]
+}

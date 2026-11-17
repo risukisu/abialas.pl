@@ -1,0 +1,249 @@
+{
+ "id": "b",
+ "name": "The mouth of the Mines",
+ "about": "A hero at a campfire before a mine's mouth, eyes waiting in the dark; the title is a board hung over the mine, the choices a signpost by the fire, the records things lying about the camp.",
+ "w": 480,
+ "h": 270,
+ "default": "continue",
+ "anims": [
+  {
+   "id": "fire",
+   "x": 212,
+   "y": 196,
+   "w": 18,
+   "h": 30,
+   "sy": 0,
+   "durations": [
+    220,
+    180,
+    220,
+    180
+   ]
+  },
+  {
+   "id": "lantern",
+   "x": 291,
+   "y": 123,
+   "w": 5,
+   "h": 4,
+   "sy": 30,
+   "durations": [
+    200,
+    160,
+    240
+   ]
+  },
+  {
+   "id": "blink",
+   "x": 383,
+   "y": 180,
+   "w": 6,
+   "h": 2,
+   "sy": 34,
+   "durations": [
+    3400,
+    160
+   ]
+  }
+ ],
+ "twinkle": [
+  [
+   122,
+   74
+  ],
+  [
+   146,
+   68
+  ],
+  [
+   46,
+   117
+  ],
+  [
+   39,
+   106
+  ]
+ ],
+ "items": [
+  {
+   "id": "continue",
+   "label": "Continue",
+   "say": "the last played character",
+   "when": "a character exists",
+   "box": [
+    152,
+    116,
+    218,
+    162
+   ],
+   "sel": {
+    "sx": 0,
+    "sy": 0,
+    "w": 80,
+    "h": 22,
+    "x": 138,
+    "y": 116
+   }
+  },
+  {
+   "id": "new",
+   "label": "New character",
+   "say": "the Roster's create form: name and Mode",
+   "when": "always",
+   "box": [
+    44,
+    140,
+    146,
+    153
+   ],
+   "sel": {
+    "sx": 80,
+    "sy": 0,
+    "w": 116,
+    "h": 22,
+    "x": 44,
+    "y": 140
+   }
+  },
+  {
+   "id": "roster",
+   "label": "Roster",
+   "say": "every saved character",
+   "when": "always",
+   "box": [
+    152,
+    162,
+    207,
+    175
+   ],
+   "sel": {
+    "sx": 196,
+    "sy": 0,
+    "w": 69,
+    "h": 22,
+    "x": 138,
+    "y": 162
+   }
+  },
+  {
+   "id": "settings",
+   "label": "Settings",
+   "say": "the Settings screen",
+   "when": "always",
+   "box": [
+    82,
+    180,
+    146,
+    193
+   ],
+   "sel": {
+    "sx": 265,
+    "sy": 0,
+    "w": 78,
+    "h": 22,
+    "x": 82,
+    "y": 180
+   }
+  },
+  {
+   "id": "quit",
+   "label": "Quit",
+   "say": "closes the game",
+   "when": "the desktop app",
+   "box": [
+    106,
+    198,
+    146,
+    211
+   ],
+   "sel": {
+    "sx": 343,
+    "sy": 0,
+    "w": 54,
+    "h": 22,
+    "x": 106,
+    "y": 198
+   }
+  },
+  {
+   "id": "graveyard",
+   "label": "Graveyard",
+   "say": "the Chronicles of the permanently dead",
+   "when": "always",
+   "box": [
+    4,
+    213,
+    87,
+    258
+   ],
+   "sel": {
+    "sx": 397,
+    "sy": 0,
+    "w": 84,
+    "h": 59,
+    "x": 3,
+    "y": 199
+   }
+  },
+  {
+   "id": "compendium",
+   "label": "Compendium",
+   "say": "what all your characters have learned",
+   "when": "always",
+   "box": [
+    184,
+    236,
+    292,
+    264
+   ],
+   "sel": {
+    "sx": 481,
+    "sy": 0,
+    "w": 109,
+    "h": 29,
+    "x": 183,
+    "y": 235
+   }
+  },
+  {
+   "id": "credits",
+   "label": "Credits",
+   "say": "who made the game, the tools, the fonts",
+   "when": "always",
+   "box": [
+    395,
+    138,
+    467,
+    154
+   ],
+   "sel": {
+    "sx": 590,
+    "sy": 0,
+    "w": 73,
+    "h": 17,
+    "x": 394,
+    "y": 137
+   }
+  },
+  {
+   "id": "hall",
+   "label": "Hall of Fame",
+   "say": "the Chronicles of those who beat the game",
+   "when": "always",
+   "box": [
+    392,
+    160,
+    473,
+    260
+   ],
+   "sel": {
+    "sx": 663,
+    "sy": 0,
+    "w": 83,
+    "h": 102,
+    "x": 392,
+    "y": 159
+   }
+  }
+ ]
+}

@@ -1,0 +1,170 @@
+/* 030's section: the Title screen concepts, live. Uses the art page's tokens (styles.css) and
+   falls back to their values where it stands alone. Pixel geometry stays in px on purpose. */
+
+.tc {
+  padding-block: 8px var(--space-s, 3rem);
+  margin-block-end: var(--space-s, 3rem);
+  border-block-end: 1px solid var(--hairline, #221f2a);
+}
+/* On the art page the section sits in the footer, whose .wrap is a flex row. */
+.foot .tc .wrap {
+  display: block;
+}
+
+.tc-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 12px;
+  margin-block: 28px 18px;
+}
+
+.tc-tab {
+  display: grid;
+  gap: 8px;
+  padding: 6px 6px 10px;
+  background: var(--panel, #1a1a24);
+  border: 2px solid var(--border, #2c2c3a);
+  color: var(--muted, #9a94a6);
+  font-family: var(--f-pixel, monospace);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: start;
+  cursor: pointer;
+}
+/* A thumbnail is smaller than the picture, so it is scaled smoothly: pixelated, a shrink drops
+   whole rows and the words break. */
+.tc-tab img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.tc-tab[aria-pressed="true"] {
+  border-color: var(--candle, #f2b45a);
+  color: var(--wax, #f6e7c8);
+  box-shadow: 0 0 18px -4px color-mix(in oklch, var(--candle, #f2b45a) 60%, transparent);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tc-tab:hover {
+    color: var(--text, #e2dbcc);
+    border-color: var(--timber, #6b5030);
+  }
+}
+.tc-tab:focus-visible {
+  outline: 2px solid var(--candle, #f2b45a);
+  outline-offset: 2px;
+}
+
+.tc-figure {
+  margin: 0;
+}
+
+.tc-stage {
+  display: grid;
+  place-items: center;
+  background: var(--abyss, #060509);
+  overflow: clip;
+}
+.tc-stage:focus-visible {
+  outline: 2px solid var(--candle, #f2b45a);
+  outline-offset: 6px;
+}
+.tc-stage:fullscreen {
+  border: 0;
+  padding: 0;
+  background: #000;
+}
+
+.tc-canvas,
+.tc-still {
+  display: block;
+  image-rendering: pixelated;
+}
+.tc-still {
+  width: 100%;
+  height: auto;
+}
+.tc-still[hidden],
+.tc-canvas[hidden] {
+  display: none;
+}
+.shot-frame .tc-canvas {
+  width: auto;
+}
+
+.tc-figure figcaption {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 24px;
+  align-items: start;
+  margin-block-start: 18px;
+}
+.tc-readout {
+  grid-column: 1 / -1;
+  min-block-size: 1.6em;
+  margin: 0;
+  font-family: var(--f-pixel, monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--flame, #ffd88a);
+}
+.tc-name {
+  margin: 6px 0 0;
+}
+.tc-about {
+  grid-column: 1;
+  margin: 0;
+  max-width: 44em;
+  text-wrap: pretty;
+}
+.tc-hint {
+  grid-column: 1;
+  margin: 4px 0 0;
+  font-family: var(--f-pixel, monospace);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint, #757083);
+}
+.tc-full {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+  align-self: start;
+  margin-block-start: 6px;
+  padding: 8px 12px;
+  background: var(--panel-2, #211f2c);
+  border: 2px solid var(--timber-dark, #5c4529);
+  color: var(--wax, #f6e7c8);
+  font-family: var(--f-pixel, monospace);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tc-full:hover {
+    border-color: var(--candle, #f2b45a);
+  }
+}
+.tc-full:focus-visible {
+  outline: 2px solid var(--candle, #f2b45a);
+  outline-offset: 2px;
+}
+
+.tc-menu {
+  max-width: 44em;
+  margin-block-start: 26px;
+  color: var(--muted, #9a94a6);
+  text-wrap: pretty;
+}
+
+@media (max-width: 600px) {
+  .tc-figure figcaption {
+    grid-template-columns: 1fr;
+  }
+  .tc-full {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+  }
+}
