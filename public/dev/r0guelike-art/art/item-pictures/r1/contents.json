@@ -1,0 +1,994 @@
+{
+ "cards": [
+  [
+   "Weapons",
+   [
+    [
+     "baseTypes-dagger",
+     "Dagger"
+    ],
+    [
+     "baseTypes-shortsword",
+     "Shortsword"
+    ],
+    [
+     "baseTypes-greatsword",
+     "Greatsword"
+    ],
+    [
+     "baseTypes-rapier",
+     "Rapier"
+    ],
+    [
+     "baseTypes-scimitar",
+     "Scimitar"
+    ],
+    [
+     "baseTypes-throwing-knife",
+     "Throwing knife"
+    ],
+    [
+     "baseTypes-handaxe",
+     "Handaxe"
+    ],
+    [
+     "baseTypes-axe",
+     "Axe"
+    ],
+    [
+     "baseTypes-battleaxe",
+     "Battleaxe"
+    ],
+    [
+     "baseTypes-mace",
+     "Mace"
+    ],
+    [
+     "baseTypes-morning-star",
+     "Morning star"
+    ],
+    [
+     "baseTypes-flail",
+     "Flail"
+    ],
+    [
+     "baseTypes-warhammer",
+     "Warhammer"
+    ],
+    [
+     "baseTypes-halberd",
+     "Halberd"
+    ],
+    [
+     "baseTypes-spear",
+     "Spear"
+    ],
+    [
+     "baseTypes-quarterstaff",
+     "Quarterstaff"
+    ],
+    [
+     "baseTypes-javelin",
+     "Javelin"
+    ],
+    [
+     "piles-throwing-knife",
+     "Throwing knife"
+    ],
+    [
+     "piles-javelin",
+     "Javelin"
+    ],
+    [
+     "baseTypes-longsword",
+     "Longsword"
+    ]
+   ]
+  ],
+  [
+   "Bows, ammunition and shields",
+   [
+    [
+     "baseTypes-shortbow",
+     "Shortbow"
+    ],
+    [
+     "baseTypes-crossbow",
+     "Crossbow"
+    ],
+    [
+     "baseTypes-sling",
+     "Sling"
+    ],
+    [
+     "baseTypes-arrows",
+     "Arrow"
+    ],
+    [
+     "baseTypes-bolts",
+     "Bolt"
+    ],
+    [
+     "baseTypes-sling-bullets",
+     "Sling bullet"
+    ],
+    [
+     "baseTypes-sling-stones",
+     "Sling stone"
+    ],
+    [
+     "baseTypes-buckler",
+     "Buckler"
+    ],
+    [
+     "baseTypes-tower-shield",
+     "Tower shield"
+    ],
+    [
+     "piles-arrows",
+     "Arrow"
+    ],
+    [
+     "piles-bolts",
+     "Bolt"
+    ],
+    [
+     "piles-sling-bullets",
+     "Sling bullet"
+    ],
+    [
+     "piles-sling-stones",
+     "Sling stone"
+    ],
+    [
+     "baseTypes-longbow",
+     "Longbow"
+    ],
+    [
+     "baseTypes-round-shield",
+     "Round shield"
+    ]
+   ]
+  ],
+  [
+   "Jewellery, gems and tools",
+   [
+    [
+     "baseTypes-band",
+     "Band"
+    ],
+    [
+     "baseTypes-thumb-ring",
+     "Thumb ring"
+    ],
+    [
+     "baseTypes-feather-ring",
+     "Feather ring"
+    ],
+    [
+     "baseTypes-warding-ring",
+     "Warding ring"
+    ],
+    [
+     "baseTypes-amulet",
+     "Amulet"
+    ],
+    [
+     "baseTypes-salamander-amulet",
+     "Salamander amulet"
+    ],
+    [
+     "baseTypes-torc",
+     "Torc"
+    ],
+    [
+     "baseTypes-garnet",
+     "Garnet"
+    ],
+    [
+     "baseTypes-sapphire",
+     "Sapphire"
+    ],
+    [
+     "baseTypes-amethyst",
+     "Amethyst"
+    ],
+    [
+     "baseTypes-diamond",
+     "Diamond"
+    ],
+    [
+     "baseTypes-zircon",
+     "Citrine"
+    ],
+    [
+     "baseTypes-curio",
+     "Curio"
+    ],
+    [
+     "baseTypes-key",
+     "Key"
+    ],
+    [
+     "baseTypes-lockpicks",
+     "Lockpicks"
+    ],
+    [
+     "baseTypes-trap-kit",
+     "Trap kit"
+    ],
+    [
+     "baseTypes-ring",
+     "Ring"
+    ]
+   ]
+  ],
+  [
+   "Armour and clothes",
+   [
+    [
+     "baseTypes-belt",
+     "Belt"
+    ],
+    [
+     "baseTypes-boots",
+     "Boots"
+    ],
+    [
+     "baseTypes-bracers",
+     "Bracers"
+    ],
+    [
+     "baseTypes-cap",
+     "Cap"
+    ],
+    [
+     "baseTypes-chain-shirt",
+     "Chain shirt"
+    ],
+    [
+     "baseTypes-cloak",
+     "Cloak"
+    ],
+    [
+     "baseTypes-gloves",
+     "Gloves"
+    ],
+    [
+     "baseTypes-greaves",
+     "Greaves"
+    ],
+    [
+     "baseTypes-helm",
+     "Helm"
+    ],
+    [
+     "baseTypes-jerkin",
+     "Jerkin"
+    ],
+    [
+     "baseTypes-leggings",
+     "Leggings"
+    ],
+    [
+     "baseTypes-robe",
+     "Robe"
+    ],
+    [
+     "baseTypes-scale-hauberk",
+     "Scale hauberk"
+    ]
+   ]
+  ],
+  [
+   "Potions, stones and the scroll",
+   [
+    [
+     "appearances-potion-black",
+     "Black potion"
+    ],
+    [
+     "appearances-potion-bubbling",
+     "Bubbling potion"
+    ],
+    [
+     "appearances-potion-cloudy",
+     "Cloudy potion"
+    ],
+    [
+     "appearances-potion-fizzing",
+     "Fizzing potion"
+    ],
+    [
+     "appearances-potion-glowing",
+     "Glowing potion"
+    ],
+    [
+     "appearances-potion-golden",
+     "Golden potion"
+    ],
+    [
+     "appearances-potion-milky",
+     "Milky potion"
+    ],
+    [
+     "appearances-potion-murky",
+     "Murky potion"
+    ],
+    [
+     "appearances-potion-oily",
+     "Oily potion"
+    ],
+    [
+     "appearances-potion-ruby",
+     "Ruby potion"
+    ],
+    [
+     "appearances-potion-smoky",
+     "Smoky potion"
+    ],
+    [
+     "appearances-potion-viscous",
+     "Viscous potion"
+    ],
+    [
+     "appearances-stone-banded",
+     "Banded stone"
+    ],
+    [
+     "appearances-stone-chipped",
+     "Chipped stone"
+    ],
+    [
+     "appearances-stone-cracked",
+     "Cracked stone"
+    ],
+    [
+     "appearances-stone-dull",
+     "Dull stone"
+    ],
+    [
+     "appearances-stone-glassy",
+     "Glassy stone"
+    ],
+    [
+     "appearances-stone-lustrous",
+     "Lustrous stone"
+    ],
+    [
+     "appearances-stone-mossy",
+     "Mossy stone"
+    ],
+    [
+     "appearances-stone-pitted",
+     "Pitted stone"
+    ],
+    [
+     "appearances-stone-smooth",
+     "Smooth stone"
+    ],
+    [
+     "appearances-stone-speckled",
+     "Speckled stone"
+    ],
+    [
+     "appearances-stone-veined",
+     "Veined stone"
+    ],
+    [
+     "appearances-stone-warm",
+     "Warm stone"
+    ],
+    [
+     "appearances-scroll",
+     "Scroll"
+    ]
+   ]
+  ],
+  [
+   "Artifacts and Relics",
+   [
+    [
+     "authored-the-seamless-knife",
+     "The seamless knife"
+    ],
+    [
+     "authored-the-ninth-grief",
+     "The ninth grief"
+    ],
+    [
+     "authored-brannas-band",
+     "Brannas band"
+    ],
+    [
+     "authored-the-road-grey-cloak",
+     "The road grey cloak"
+    ],
+    [
+     "authored-goblin-kings-relic",
+     "Goblin kings relic"
+    ],
+    [
+     "authored-goblin-kings-key",
+     "Goblin kings key"
+    ],
+    [
+     "authored-ward-breaker",
+     "Ward breaker"
+    ],
+    [
+     "authored-grey-spoon",
+     "Grey spoon"
+    ],
+    [
+     "authored-seamless-hinge",
+     "Seamless hinge"
+    ],
+    [
+     "authored-clear-pane",
+     "Clear pane"
+    ],
+    [
+     "authored-burnt-grip",
+     "Burnt grip"
+    ],
+    [
+     "authored-strange-buckle",
+     "Strange buckle"
+    ],
+    [
+     "authored-patterned-flake",
+     "Patterned flake"
+    ],
+    [
+     "authored-scored-tally",
+     "Scored tally"
+    ],
+    [
+     "authored-sheet-of-points",
+     "Sheet of points"
+    ],
+    [
+     "authored-small-journal",
+     "Small journal"
+    ],
+    [
+     "authored-bright-wire",
+     "Bright wire"
+    ]
+   ]
+  ]
+ ],
+ "floors": [
+  [
+   "Weapons",
+   [
+    [
+     "baseTypes-dagger",
+     "Dagger"
+    ],
+    [
+     "baseTypes-shortsword",
+     "Shortsword"
+    ],
+    [
+     "baseTypes-greatsword",
+     "Greatsword"
+    ],
+    [
+     "baseTypes-rapier",
+     "Rapier"
+    ],
+    [
+     "baseTypes-scimitar",
+     "Scimitar"
+    ],
+    [
+     "baseTypes-throwing-knife",
+     "Throwing knife"
+    ],
+    [
+     "baseTypes-handaxe",
+     "Handaxe"
+    ],
+    [
+     "baseTypes-axe",
+     "Axe"
+    ],
+    [
+     "baseTypes-battleaxe",
+     "Battleaxe"
+    ],
+    [
+     "baseTypes-mace",
+     "Mace"
+    ],
+    [
+     "baseTypes-morning-star",
+     "Morning star"
+    ],
+    [
+     "baseTypes-flail",
+     "Flail"
+    ],
+    [
+     "baseTypes-warhammer",
+     "Warhammer"
+    ],
+    [
+     "baseTypes-halberd",
+     "Halberd"
+    ],
+    [
+     "baseTypes-spear",
+     "Spear"
+    ],
+    [
+     "baseTypes-quarterstaff",
+     "Quarterstaff"
+    ],
+    [
+     "baseTypes-javelin",
+     "Javelin"
+    ],
+    [
+     "piles-throwing-knife",
+     "Throwing knife"
+    ],
+    [
+     "piles-javelin",
+     "Javelin"
+    ],
+    [
+     "baseTypes-longsword",
+     "Longsword"
+    ]
+   ]
+  ],
+  [
+   "Bows, ammunition and shields",
+   [
+    [
+     "baseTypes-shortbow",
+     "Shortbow"
+    ],
+    [
+     "baseTypes-crossbow",
+     "Crossbow"
+    ],
+    [
+     "baseTypes-sling",
+     "Sling"
+    ],
+    [
+     "baseTypes-arrows",
+     "Arrow"
+    ],
+    [
+     "baseTypes-bolts",
+     "Bolt"
+    ],
+    [
+     "baseTypes-sling-bullets",
+     "Sling bullet"
+    ],
+    [
+     "baseTypes-sling-stones",
+     "Sling stone"
+    ],
+    [
+     "baseTypes-buckler",
+     "Buckler"
+    ],
+    [
+     "baseTypes-tower-shield",
+     "Tower shield"
+    ],
+    [
+     "piles-arrows",
+     "Arrow"
+    ],
+    [
+     "piles-bolts",
+     "Bolt"
+    ],
+    [
+     "piles-sling-bullets",
+     "Sling bullet"
+    ],
+    [
+     "piles-sling-stones",
+     "Sling stone"
+    ],
+    [
+     "baseTypes-longbow",
+     "Longbow"
+    ],
+    [
+     "baseTypes-round-shield",
+     "Round shield"
+    ]
+   ]
+  ],
+  [
+   "Jewellery, gems and tools",
+   [
+    [
+     "baseTypes-band",
+     "Band"
+    ],
+    [
+     "baseTypes-thumb-ring",
+     "Thumb ring"
+    ],
+    [
+     "baseTypes-feather-ring",
+     "Feather ring"
+    ],
+    [
+     "baseTypes-warding-ring",
+     "Warding ring"
+    ],
+    [
+     "baseTypes-amulet",
+     "Amulet"
+    ],
+    [
+     "baseTypes-torc",
+     "Torc"
+    ],
+    [
+     "baseTypes-salamander-amulet",
+     "Salamander amulet"
+    ],
+    [
+     "baseTypes-zircon",
+     "Citrine"
+    ],
+    [
+     "baseTypes-key",
+     "Key"
+    ],
+    [
+     "baseTypes-lockpicks",
+     "Lockpicks"
+    ],
+    [
+     "baseTypes-trap-kit",
+     "Trap kit"
+    ],
+    [
+     "baseTypes-curio",
+     "Curio"
+    ],
+    [
+     "baseTypes-ring",
+     "Ring"
+    ]
+   ]
+  ],
+  [
+   "Armour and clothes",
+   [
+    [
+     "baseTypes-belt",
+     "Belt"
+    ],
+    [
+     "baseTypes-cloak",
+     "Cloak"
+    ],
+    [
+     "baseTypes-chain-shirt",
+     "Chain shirt"
+    ],
+    [
+     "baseTypes-scale-hauberk",
+     "Scale hauberk"
+    ],
+    [
+     "baseTypes-jerkin",
+     "Jerkin"
+    ],
+    [
+     "baseTypes-leggings",
+     "Leggings"
+    ],
+    [
+     "baseTypes-cap",
+     "Cap"
+    ],
+    [
+     "baseTypes-gloves",
+     "Gloves"
+    ],
+    [
+     "baseTypes-boots",
+     "Boots"
+    ],
+    [
+     "baseTypes-robe",
+     "Robe"
+    ],
+    [
+     "baseTypes-helm",
+     "Helm"
+    ],
+    [
+     "baseTypes-bracers",
+     "Bracers"
+    ],
+    [
+     "baseTypes-greaves",
+     "Greaves"
+    ]
+   ]
+  ],
+  [
+   "Potions, stones and the scroll",
+   [
+    [
+     "authored-the-seamless-knife",
+     "The seamless knife"
+    ],
+    [
+     "authored-brannas-band",
+     "Brannas band"
+    ],
+    [
+     "authored-the-road-grey-cloak",
+     "The road grey cloak"
+    ],
+    [
+     "authored-goblin-kings-relic",
+     "Goblin kings relic"
+    ],
+    [
+     "authored-goblin-kings-key",
+     "Goblin kings key"
+    ],
+    [
+     "authored-ward-breaker",
+     "Ward breaker"
+    ],
+    [
+     "authored-grey-spoon",
+     "Grey spoon"
+    ],
+    [
+     "authored-seamless-hinge",
+     "Seamless hinge"
+    ],
+    [
+     "authored-burnt-grip",
+     "Burnt grip"
+    ],
+    [
+     "authored-strange-buckle",
+     "Strange buckle"
+    ],
+    [
+     "authored-patterned-flake",
+     "Patterned flake"
+    ],
+    [
+     "authored-scored-tally",
+     "Scored tally"
+    ],
+    [
+     "authored-sheet-of-points",
+     "Sheet of points"
+    ],
+    [
+     "authored-small-journal",
+     "Small journal"
+    ],
+    [
+     "authored-bright-wire",
+     "Bright wire"
+    ],
+    [
+     "appearances-potion-black",
+     "Black potion"
+    ],
+    [
+     "appearances-potion-bubbling",
+     "Bubbling potion"
+    ],
+    [
+     "appearances-potion-cloudy",
+     "Cloudy potion"
+    ],
+    [
+     "appearances-potion-fizzing",
+     "Fizzing potion"
+    ],
+    [
+     "appearances-potion-glowing",
+     "Glowing potion"
+    ],
+    [
+     "appearances-potion-golden",
+     "Golden potion"
+    ],
+    [
+     "appearances-potion-milky",
+     "Milky potion"
+    ],
+    [
+     "appearances-potion-murky",
+     "Murky potion"
+    ],
+    [
+     "appearances-potion-oily",
+     "Oily potion"
+    ],
+    [
+     "appearances-potion-ruby",
+     "Ruby potion"
+    ],
+    [
+     "appearances-potion-smoky",
+     "Smoky potion"
+    ],
+    [
+     "appearances-potion-viscous",
+     "Viscous potion"
+    ],
+    [
+     "appearances-stone-banded",
+     "Banded stone"
+    ],
+    [
+     "appearances-stone-chipped",
+     "Chipped stone"
+    ],
+    [
+     "appearances-stone-cracked",
+     "Cracked stone"
+    ],
+    [
+     "appearances-stone-dull",
+     "Dull stone"
+    ],
+    [
+     "appearances-stone-glassy",
+     "Glassy stone"
+    ],
+    [
+     "appearances-stone-lustrous",
+     "Lustrous stone"
+    ],
+    [
+     "appearances-stone-mossy",
+     "Mossy stone"
+    ],
+    [
+     "appearances-stone-pitted",
+     "Pitted stone"
+    ],
+    [
+     "appearances-stone-smooth",
+     "Smooth stone"
+    ],
+    [
+     "appearances-stone-speckled",
+     "Speckled stone"
+    ],
+    [
+     "appearances-stone-veined",
+     "Veined stone"
+    ],
+    [
+     "appearances-stone-warm",
+     "Warm stone"
+    ],
+    [
+     "appearances-scroll",
+     "Scroll"
+    ]
+   ]
+  ],
+  [
+   "Food and camp gear",
+   [
+    [
+     "food-ration",
+     "Ration"
+    ],
+    [
+     "food-mushroom",
+     "Mushroom"
+    ],
+    [
+     "food-root",
+     "Root"
+    ],
+    [
+     "food-herb",
+     "Herb"
+    ],
+    [
+     "food-egg",
+     "Egg"
+    ],
+    [
+     "food-raw-meat",
+     "Raw meat"
+    ],
+    [
+     "food-cooked-meat",
+     "Cooked meat"
+    ],
+    [
+     "food-wheat",
+     "Wheat"
+    ],
+    [
+     "food-bread",
+     "Bread"
+    ],
+    [
+     "food-milk",
+     "Milk"
+    ],
+    [
+     "food-cheese",
+     "Cheese"
+    ],
+    [
+     "food-salt",
+     "Salt"
+    ],
+    [
+     "food-herb-tea",
+     "Herb tea"
+    ],
+    [
+     "food-mushroom-stew",
+     "Mushroom stew"
+    ],
+    [
+     "food-hunters-stew",
+     "Hunter's stew"
+    ],
+    [
+     "food-sandwich",
+     "Sandwich"
+    ],
+    [
+     "food-cheese-bread",
+     "Cheese bread"
+    ],
+    [
+     "food-salted-meat",
+     "Salted meat"
+    ],
+    [
+     "food-omelette",
+     "Omelette"
+    ],
+    [
+     "food-meat-pie",
+     "Meat pie"
+    ],
+    [
+     "food-firewood",
+     "Firewood"
+    ],
+    [
+     "food-flint-and-tinder",
+     "Flint and tinder"
+    ],
+    [
+     "food-roast-meat",
+     "Roast meat"
+    ],
+    [
+     "food-corpse",
+     "Corpse"
+    ]
+   ]
+  ]
+ ]
+}
