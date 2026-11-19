@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Grenze+Gotisch:wght@500;700&family=Silkscreen&display=swap">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="title/title.css">
+  <link rel="stylesheet" href="side/side.css">
   <style>
     /* The section stands alone here, so the footer's rules above and below it go. */
     .foot { border: 0; margin: 0; padding-block: 48px 56px; }
@@ -22,6 +23,34 @@
 </head>
 <body>
   <main class="foot">
+    <!-- the play screen's margins, experiment 035 (project-r0guelike art/explore/035-side-panels/), added on top 2026-11-19; its files are side/, written by 035's build35.py --publish -->
+    <section class="sp" id="around-the-map" aria-labelledby="sp-h" data-side-concepts data-base="side/">
+      <div class="wrap">
+        <span class="eyebrow">New · 19 November 2026 · concepts, not in the game</span>
+        <h2 class="art-h" id="sp-h">Around the map</h2>
+        <p class="art-lede">Three concepts for the dark space around the map while you play: the hero with what they wear in each Slot, the numbers you check every turn, the Pack, and quick slots on the number keys (an idea; the game has none). The map is the same room of the Mines in all three; what changes is what stands around it. None of it is in the game yet. Point at anything on a screen, or use the arrow keys, to see what it is.</p>
+        <div class="sp-tabs" role="group" aria-label="The concepts">
+            <button class="sp-tab" type="button" data-concept="a" aria-pressed="true"><img src="side/a/still.png" width="960" height="540" alt=""><span>A · The side column</span></button>
+            <button class="sp-tab" type="button" data-concept="b" aria-pressed="false"><img src="side/b/still.png" width="960" height="540" alt=""><span>B · The two flanks</span></button>
+            <button class="sp-tab" type="button" data-concept="c" aria-pressed="false"><img src="side/c/still.png" width="960" height="540" alt=""><span>C · The strip below</span></button>
+        </div>
+        <figure class="sp-figure">
+          <div class="sp-stage shot-frame" tabindex="0" role="application" aria-label="The side column: a concept for the play screen. Arrow keys walk what is on it.">
+            <div class="sp-box">
+              <img class="sp-still" src="side/a/still.png" width="960" height="540" alt="Everything in one slate column right of the view, read top to bottom: the hero in a lit recess with the Worn Slots round it, the numbers, the Pack, the quick slots.">
+              <div class="sp-mark" hidden></div>
+            </div>
+          </div>
+          <figcaption>
+            <p class="sp-readout" aria-live="polite"></p>
+            <h3 class="art-name sp-name">The side column</h3>
+            <p class="sp-about">Everything in one slate column right of the view, read top to bottom: the hero in a lit recess with the Worn Slots round it, the numbers, the Pack, the quick slots.</p>
+            <p class="sp-hint">Point or use the arrow keys · F: full screen, at the largest whole-number size</p>
+            <button class="sp-full" type="button">Full screen</button>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
     <!-- the Title screen concepts, experiments 030 and 031 (project-r0guelike art/explore/030-title-screen/, 031-title-screen-a-ii/), added on top 2026-11-17, the fourth tab (A2) the same day; its files are title/, written by 031's build.py --publish -->
     <section class="tc" id="title-screen" aria-labelledby="tc-h" data-title-concepts data-base="title/">
       <div class="wrap">
@@ -142,5 +171,6 @@
     </section>
   </main>
   <script src="title/title.js" defer></script>
+  <script src="side/side.js" defer></script>
 </body>
 </html>

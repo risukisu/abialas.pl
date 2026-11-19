@@ -1,0 +1,475 @@
+{
+ "name": "The side column",
+ "about": "Everything in one slate column right of the view, read top to bottom: the hero in a lit recess with the Worn Slots round it, the numbers, the Pack, the quick slots.",
+ "alt": "Everything in one slate column right of the view, read top to bottom: the hero in a lit recess with the Worn Slots round it, the numbers, the Pack, the quick slots.",
+ "w": 960,
+ "h": 540,
+ "view": [
+  12,
+  12,
+  20,
+  14
+ ],
+ "regions": [
+  {
+   "id": "slot-main-hand",
+   "label": "Main hand: Iron Shortsword",
+   "box": [
+    670,
+    14,
+    706,
+    50
+   ]
+  },
+  {
+   "id": "slot-off-hand",
+   "label": "Off hand: Wood Round shield",
+   "box": [
+    670,
+    50,
+    706,
+    86
+   ]
+  },
+  {
+   "id": "slot-body",
+   "label": "Body: Rawhide Jerkin",
+   "box": [
+    906,
+    122,
+    942,
+    158
+   ]
+  },
+  {
+   "id": "slot-legs",
+   "label": "Legs: Rawhide Leggings",
+   "box": [
+    906,
+    194,
+    942,
+    230
+   ]
+  },
+  {
+   "id": "slot-girdle",
+   "label": "Girdle: Rawhide Belt",
+   "box": [
+    906,
+    158,
+    942,
+    194
+   ]
+  },
+  {
+   "id": "slot-head",
+   "label": "Head: Rawhide Cap",
+   "box": [
+    906,
+    14,
+    942,
+    50
+   ]
+  },
+  {
+   "id": "slot-hands",
+   "label": "Hands: Rawhide Gloves",
+   "box": [
+    670,
+    86,
+    706,
+    122
+   ]
+  },
+  {
+   "id": "slot-feet",
+   "label": "Feet: Rawhide Boots",
+   "box": [
+    906,
+    230,
+    942,
+    266
+   ]
+  },
+  {
+   "id": "slot-cloak",
+   "label": "Cloak: Rough hemp Cloak",
+   "box": [
+    906,
+    86,
+    942,
+    122
+   ]
+  },
+  {
+   "id": "slot-ring-1",
+   "label": "Ring: Iron Ring",
+   "box": [
+    670,
+    194,
+    706,
+    230
+   ]
+  },
+  {
+   "id": "slot-ring-2",
+   "label": "Ring: nothing worn",
+   "box": [
+    670,
+    230,
+    706,
+    266
+   ]
+  },
+  {
+   "id": "slot-amulet",
+   "label": "Amulet: nothing worn",
+   "box": [
+    906,
+    50,
+    942,
+    86
+   ]
+  },
+  {
+   "id": "slot-launcher",
+   "label": "Launcher: Wood Shortbow",
+   "box": [
+    670,
+    122,
+    706,
+    158
+   ]
+  },
+  {
+   "id": "slot-quiver",
+   "label": "Quiver: Wood Arrow x34",
+   "box": [
+    670,
+    158,
+    706,
+    194
+   ]
+  },
+  {
+   "id": "figure",
+   "label": "Wren, Level 4 Adventurer",
+   "box": [
+    713,
+    47,
+    899,
+    266
+   ]
+  },
+  {
+   "id": "hp",
+   "label": "HP 23 of 38",
+   "box": [
+    671,
+    279,
+    941,
+    293
+   ]
+  },
+  {
+   "id": "mp",
+   "label": "MP 6 of 12",
+   "box": [
+    671,
+    295,
+    941,
+    309
+   ]
+  },
+  {
+   "id": "level",
+   "label": "Level 4, XP 61 of 90",
+   "box": [
+    671,
+    311,
+    941,
+    325
+   ]
+  },
+  {
+   "id": "gold",
+   "label": "Gold 212",
+   "box": [
+    671,
+    330,
+    731,
+    344
+   ]
+  },
+  {
+   "id": "depth",
+   "label": "Mines 2, Depth 6",
+   "box": [
+    808,
+    330,
+    917,
+    344
+   ]
+  },
+  {
+   "id": "armour",
+   "label": "Armour 9, Evasion 4",
+   "box": [
+    671,
+    345,
+    877,
+    359
+   ]
+  },
+  {
+   "id": "weight",
+   "label": "Weight 148 of 340",
+   "box": [
+    785,
+    389,
+    941,
+    403
+   ]
+  },
+  {
+   "id": "hunger",
+   "label": "Hunger: Fed",
+   "box": [
+    671,
+    360,
+    707,
+    374
+   ]
+  },
+  {
+   "id": "statuses",
+   "label": "Statuses: Bleeding, 3 turns left",
+   "box": [
+    806,
+    358,
+    919,
+    375
+   ]
+  },
+  {
+   "id": "pack",
+   "label": "Pack: a) Murky potion x2, b) Scroll, c) Ration x3, d) Cooked meat, e) Bread x2, f) Iron Throwing knife x6, g) Lockpicks, h) Flint and tinder, i) Firewood x2, j) Iron Dagger",
+   "box": [
+    669,
+    389,
+    943,
+    475
+   ]
+  },
+  {
+   "id": "quick",
+   "label": "Quick slot 1: Murky potion; Quick slot 2: Ration; Quick slot 3: Iron Throwing knife; Quick slot 4: Scroll; Quick slot 5: empty; Quick slot 6: empty; Quick slot 7: empty; Quick slot 8: empty",
+   "box": [
+    669,
+    489,
+    943,
+    525
+   ]
+  },
+  {
+   "id": "log",
+   "label": "Messages: You arrive at Mines 2. / A goblin comes into view. / The goblin hits you. You bleed. / You hit the goblin. / You see a murky potion here.",
+   "box": [
+    10,
+    468,
+    652,
+    533
+   ]
+  },
+  {
+   "id": "view",
+   "label": "The Mines, around Wren",
+   "box": [
+    12,
+    12,
+    652,
+    460
+   ]
+  },
+  {
+   "id": "pack-a",
+   "label": "Pack a) Murky potion x2",
+   "box": [
+    670,
+    406,
+    704,
+    440
+   ]
+  },
+  {
+   "id": "pack-b",
+   "label": "Pack b) Scroll",
+   "box": [
+    704,
+    406,
+    738,
+    440
+   ]
+  },
+  {
+   "id": "pack-c",
+   "label": "Pack c) Ration x3",
+   "box": [
+    738,
+    406,
+    772,
+    440
+   ]
+  },
+  {
+   "id": "pack-d",
+   "label": "Pack d) Cooked meat",
+   "box": [
+    772,
+    406,
+    806,
+    440
+   ]
+  },
+  {
+   "id": "pack-e",
+   "label": "Pack e) Bread x2",
+   "box": [
+    806,
+    406,
+    840,
+    440
+   ]
+  },
+  {
+   "id": "pack-f",
+   "label": "Pack f) Iron Throwing knife x6",
+   "box": [
+    840,
+    406,
+    874,
+    440
+   ]
+  },
+  {
+   "id": "pack-g",
+   "label": "Pack g) Lockpicks",
+   "box": [
+    874,
+    406,
+    908,
+    440
+   ]
+  },
+  {
+   "id": "pack-h",
+   "label": "Pack h) Flint and tinder",
+   "box": [
+    908,
+    406,
+    942,
+    440
+   ]
+  },
+  {
+   "id": "pack-i",
+   "label": "Pack i) Firewood x2",
+   "box": [
+    670,
+    440,
+    704,
+    474
+   ]
+  },
+  {
+   "id": "pack-j",
+   "label": "Pack j) Iron Dagger",
+   "box": [
+    704,
+    440,
+    738,
+    474
+   ]
+  },
+  {
+   "id": "quick-1",
+   "label": "Quick slot 1: Murky potion",
+   "box": [
+    670,
+    490,
+    704,
+    524
+   ]
+  },
+  {
+   "id": "quick-2",
+   "label": "Quick slot 2: Ration",
+   "box": [
+    704,
+    490,
+    738,
+    524
+   ]
+  },
+  {
+   "id": "quick-3",
+   "label": "Quick slot 3: Iron Throwing knife",
+   "box": [
+    738,
+    490,
+    772,
+    524
+   ]
+  },
+  {
+   "id": "quick-4",
+   "label": "Quick slot 4: Scroll",
+   "box": [
+    772,
+    490,
+    806,
+    524
+   ]
+  },
+  {
+   "id": "quick-5",
+   "label": "Quick slot 5: empty",
+   "box": [
+    806,
+    490,
+    840,
+    524
+   ]
+  },
+  {
+   "id": "quick-6",
+   "label": "Quick slot 6: empty",
+   "box": [
+    840,
+    490,
+    874,
+    524
+   ]
+  },
+  {
+   "id": "quick-7",
+   "label": "Quick slot 7: empty",
+   "box": [
+    874,
+    490,
+    908,
+    524
+   ]
+  },
+  {
+   "id": "quick-8",
+   "label": "Quick slot 8: empty",
+   "box": [
+    908,
+    490,
+    942,
+    524
+   ]
+  }
+ ]
+}

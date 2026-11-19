@@ -1,0 +1,122 @@
+/* 035's section: the space round the game view, three concepts. Uses the art page's tokens
+   (styles.css) and falls back to their values where it stands alone. Pixel geometry stays in px
+   on purpose. */
+
+.sp {
+  padding-block: 8px var(--space-s, 3rem);
+  margin-block-end: var(--space-s, 3rem);
+  border-block-end: 1px solid var(--hairline, #221f2a);
+}
+.foot .sp .wrap {
+  display: block;
+}
+
+.sp-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 12px;
+  margin-block: 28px 18px;
+}
+
+.sp-tab {
+  display: grid;
+  gap: 8px;
+  padding: 6px 6px 10px;
+  background: var(--panel, #1a1a24);
+  border: 2px solid var(--border, #2c2c3a);
+  color: var(--muted, #9a94a6);
+  font-family: var(--f-pixel, monospace);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: start;
+  cursor: pointer;
+}
+/* A thumbnail is smaller than the picture, so it is scaled smoothly. */
+.sp-tab img {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+.sp-tab[aria-pressed="true"] {
+  border-color: var(--candle, #f2b45a);
+  color: var(--wax, #f6e7c8);
+  box-shadow: 0 0 18px -4px color-mix(in oklch, var(--candle, #f2b45a) 60%, transparent);
+}
+@media (hover: hover) and (pointer: fine) {
+  .sp-tab:hover {
+    color: var(--text, #e2dbcc);
+    border-color: var(--timber, #6b5030);
+  }
+}
+.sp-tab:focus-visible {
+  outline: 2px solid var(--candle, #f2b45a);
+  outline-offset: 2px;
+}
+
+.sp-figure {
+  margin: 0;
+}
+
+.sp-stage {
+  display: grid;
+  place-items: center;
+  background: var(--abyss, #060509);
+  overflow: clip;
+}
+.sp-stage:focus-visible {
+  outline: 2px solid var(--candle, #f2b45a);
+  outline-offset: 6px;
+}
+.sp-stage:fullscreen {
+  border: 0;
+  padding: 0;
+  background: #000;
+}
+
+.sp-box {
+  position: relative;
+}
+.sp-still {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  image-rendering: pixelated;
+}
+.sp-mark {
+  position: absolute;
+  box-sizing: border-box;
+  border: 2px solid var(--candle, #f2b45a);
+  box-shadow: 0 0 0 2px #000;
+  pointer-events: none;
+}
+
+.sp-readout {
+  min-block-size: 1.6em;
+  margin-block: 14px 6px;
+  color: var(--wax, #f6e7c8);
+  font-family: var(--f-pixel, monospace);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+}
+.sp-about,
+.sp-hint,
+.sp-note {
+  color: var(--muted, #9a94a6);
+}
+.sp-hint {
+  font-size: 0.8125rem;
+}
+.sp-full {
+  padding: 4px 10px;
+  background: var(--panel, #1a1a24);
+  border: 2px solid var(--border, #2c2c3a);
+  color: var(--text, #e2dbcc);
+  font-family: var(--f-pixel, monospace);
+  font-size: 0.6875rem;
+  cursor: pointer;
+}
+.sp-full:focus-visible {
+  outline: 2px solid var(--candle, #f2b45a);
+  outline-offset: 2px;
+}

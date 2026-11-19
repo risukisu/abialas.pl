@@ -1,0 +1,295 @@
+{
+ "name": "The strip below",
+ "about": "Today's view width kept, a band of numbers, the Worn belt and quick slots under it, and a narrow column of the log and the Pack beside it: the least frame, the most map.",
+ "alt": "Today's view width kept, a band of numbers, the Worn belt and quick slots under it, and a narrow column of the log and the Pack beside it: the least frame, the most map.",
+ "w": 960,
+ "h": 540,
+ "view": [
+  8,
+  8,
+  25,
+  13
+ ],
+ "regions": [
+  {
+   "id": "log",
+   "label": "The log's last lines: You arrive at Mines 2. A goblin comes into view. The goblin hits you. You bleed. You hit the goblin. You see a murky potion here.",
+   "box": [
+    814,
+    7,
+    952,
+    120
+   ]
+  },
+  {
+   "id": "statuses",
+   "label": "Statuses: Bleeding, 3 turns left",
+   "box": [
+    814,
+    128,
+    952,
+    162
+   ]
+  },
+  {
+   "id": "pack",
+   "label": "Pack: a, Murky potion x2; b, Scroll; c, Ration x3; d, Cooked meat; e, Bread x2; f, Iron Throwing knife x6; g, Lockpicks; h, Flint and tinder; i, Firewood x2; j, Iron Dagger",
+   "box": [
+    814,
+    184,
+    952,
+    424
+   ]
+  },
+  {
+   "id": "figure",
+   "label": "Wren, Level 4 Adventurer",
+   "box": [
+    8,
+    442,
+    76,
+    510
+   ]
+  },
+  {
+   "id": "level",
+   "label": "Level 4, XP 61 of 90",
+   "box": [
+    82,
+    457,
+    200,
+    495
+   ]
+  },
+  {
+   "id": "hp",
+   "label": "HP 23 of 38",
+   "box": [
+    216,
+    441,
+    460,
+    456
+   ]
+  },
+  {
+   "id": "mp",
+   "label": "MP 6 of 12",
+   "box": [
+    216,
+    457,
+    460,
+    472
+   ]
+  },
+  {
+   "id": "gold",
+   "label": "Gold 212",
+   "box": [
+    216,
+    478,
+    275,
+    491
+   ]
+  },
+  {
+   "id": "depth",
+   "label": "Mines 2, Depth 6",
+   "box": [
+    352,
+    478,
+    451,
+    491
+   ]
+  },
+  {
+   "id": "armour",
+   "label": "Armour 9, Evasion 4",
+   "box": [
+    216,
+    493,
+    336,
+    506
+   ]
+  },
+  {
+   "id": "weight",
+   "label": "Weight 148 of 340",
+   "box": [
+    352,
+    493,
+    443,
+    506
+   ]
+  },
+  {
+   "id": "hunger",
+   "label": "Hunger: Fed",
+   "box": [
+    216,
+    508,
+    250,
+    521
+   ]
+  },
+  {
+   "id": "slot-main-hand",
+   "label": "Main hand: Iron Shortsword",
+   "box": [
+    512,
+    436,
+    546,
+    470
+   ]
+  },
+  {
+   "id": "slot-off-hand",
+   "label": "Off hand: Wood Round shield",
+   "box": [
+    552,
+    436,
+    586,
+    470
+   ]
+  },
+  {
+   "id": "slot-body",
+   "label": "Body: Rawhide Jerkin",
+   "box": [
+    592,
+    436,
+    626,
+    470
+   ]
+  },
+  {
+   "id": "slot-legs",
+   "label": "Legs: Rawhide Leggings",
+   "box": [
+    632,
+    436,
+    666,
+    470
+   ]
+  },
+  {
+   "id": "slot-girdle",
+   "label": "Girdle: Rawhide Belt",
+   "box": [
+    672,
+    436,
+    706,
+    470
+   ]
+  },
+  {
+   "id": "slot-head",
+   "label": "Head: Rawhide Cap",
+   "box": [
+    712,
+    436,
+    746,
+    470
+   ]
+  },
+  {
+   "id": "slot-hands",
+   "label": "Hands: Rawhide Gloves",
+   "box": [
+    752,
+    436,
+    786,
+    470
+   ]
+  },
+  {
+   "id": "slot-feet",
+   "label": "Feet: Rawhide Boots",
+   "box": [
+    512,
+    484,
+    546,
+    518
+   ]
+  },
+  {
+   "id": "slot-cloak",
+   "label": "Cloak: Rough hemp Cloak",
+   "box": [
+    552,
+    484,
+    586,
+    518
+   ]
+  },
+  {
+   "id": "slot-ring-1",
+   "label": "Ring: Iron Ring",
+   "box": [
+    592,
+    484,
+    626,
+    518
+   ]
+  },
+  {
+   "id": "slot-ring-2",
+   "label": "Ring: nothing worn",
+   "box": [
+    632,
+    484,
+    666,
+    532
+   ]
+  },
+  {
+   "id": "slot-amulet",
+   "label": "Amulet: nothing worn",
+   "box": [
+    672,
+    484,
+    706,
+    532
+   ]
+  },
+  {
+   "id": "slot-launcher",
+   "label": "Launcher: Wood Shortbow",
+   "box": [
+    712,
+    484,
+    746,
+    518
+   ]
+  },
+  {
+   "id": "slot-quiver",
+   "label": "Quiver: Wood Arrow x34",
+   "box": [
+    752,
+    484,
+    786,
+    518
+   ]
+  },
+  {
+   "id": "quick",
+   "label": "Quick slot 1: Murky potion; Quick slot 2: Ration; Quick slot 3: Iron Throwing knife; Quick slot 4: Scroll; Quick slot 5: empty; Quick slot 6: empty; Quick slot 7: empty; Quick slot 8: empty",
+   "box": [
+    810,
+    436,
+    952,
+    518
+   ]
+  },
+  {
+   "id": "view",
+   "label": "The Mines: Mines 2, Depth 6",
+   "box": [
+    8,
+    8,
+    808,
+    424
+   ]
+  }
+ ]
+}
