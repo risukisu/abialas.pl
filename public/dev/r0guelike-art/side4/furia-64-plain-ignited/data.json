@@ -1,0 +1,1036 @@
+{
+ "name": "The side column, round 3",
+ "about": "036's screen with the author's round-3 feedback: the numbers held tight to their lines with an iron separator between the columns, filter tabs over a taller Pack, a button to save the log, a faint halo round the moon.",
+ "alt": "036's screen with the author's round-3 feedback: the numbers held tight to their lines with an iron separator between the columns, filter tabs over a taller Pack, a button to save the log, a faint halo round the moon. (Furia and a tower shield, Furia ignited, the 64 × 64 figure at ×2, no background)",
+ "switchWords": "Furia and a tower shield, Furia ignited, the 64 × 64 figure at ×2, no background",
+ "w": 1280,
+ "h": 720,
+ "anims": [
+  {
+   "src": "figure.png",
+   "x": 750,
+   "y": 107,
+   "w": 128,
+   "h": 128,
+   "n": 6,
+   "durations": [
+    140,
+    120,
+    120,
+    140,
+    120,
+    120
+   ]
+  },
+  {
+   "src": "slot.png",
+   "x": 674,
+   "y": 19,
+   "w": 38,
+   "h": 38,
+   "n": 6,
+   "durations": [
+    140,
+    120,
+    120,
+    140,
+    120,
+    120
+   ]
+  }
+ ],
+ "log": [
+  "You wake in the City of Angband.",
+  "Water runs in the fountain.",
+  "The smith says, \"Bring me ore and I will make you something worth carrying.\"",
+  "You buy a potion for 20 gold.",
+  "You sell an iron dagger for 6 gold.",
+  "You arrive at the City of Angband.",
+  "A fire burns in the hearth.",
+  "The merchant says, \"The Mines eat firewood, flint and food. I keep all three.\"",
+  "You buy a ration for 4 gold.",
+  "There are stairs leading down here.",
+  "You arrive at Mines 1.",
+  "You hear something scurry.",
+  "You kill the giant rat.",
+  "You pick up an iron dagger.",
+  "There are stairs leading down here.",
+  "You arrive at Mines 2.",
+  "A goblin comes into view.",
+  "The goblin hits you. You bleed.",
+  "You hit the goblin.",
+  "You see a murky potion here."
+ ],
+ "regions": [
+  {
+   "id": "slot-main-hand",
+   "label": "Main hand: Furia",
+   "box": [
+    674,
+    19,
+    712,
+    57
+   ],
+   "card": "cards/furia-furia-ignited-1.png",
+   "note": {
+    "src": "notes/furia-furia-ignited-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "slot-off-hand",
+   "label": "Off hand: Iron Tower shield",
+   "box": [
+    674,
+    59,
+    712,
+    97
+   ],
+   "card": "cards/tower-shield-iron-tower-shield-1.png",
+   "note": {
+    "src": "notes/tower-shield-iron-tower-shield-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "slot-body",
+   "label": "Body: Rawhide Jerkin",
+   "box": [
+    917,
+    139,
+    955,
+    177
+   ],
+   "card": "cards/jerkin-rawhide-jerkin-1.png",
+   "note": {
+    "src": "notes/jerkin-rawhide-jerkin-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "slot-legs",
+   "label": "Legs: Rawhide Leggings",
+   "box": [
+    917,
+    219,
+    955,
+    257
+   ],
+   "card": "cards/leggings-rawhide-leggings-1.png",
+   "note": {
+    "src": "notes/leggings-rawhide-leggings-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "slot-girdle",
+   "label": "Girdle: Rawhide Belt",
+   "box": [
+    917,
+    179,
+    955,
+    217
+   ],
+   "card": "cards/belt-rawhide-belt-1.png",
+   "note": {
+    "src": "notes/belt-rawhide-belt-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "slot-head",
+   "label": "Head: Iron Helm",
+   "box": [
+    917,
+    19,
+    955,
+    57
+   ],
+   "card": "cards/helm-iron-helm-1.png",
+   "note": {
+    "src": "notes/helm-iron-helm-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "slot-hands",
+   "label": "Hands: Rawhide Gloves",
+   "box": [
+    674,
+    99,
+    712,
+    137
+   ],
+   "card": "cards/gloves-rawhide-gloves-1.png",
+   "note": {
+    "src": "notes/gloves-rawhide-gloves-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "slot-feet",
+   "label": "Feet: Rawhide Boots",
+   "box": [
+    917,
+    259,
+    955,
+    297
+   ],
+   "card": "cards/boots-rawhide-boots-1.png",
+   "note": {
+    "src": "notes/boots-rawhide-boots-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "slot-cloak",
+   "label": "Cloak: Rough hemp Cloak",
+   "box": [
+    917,
+    99,
+    955,
+    137
+   ],
+   "card": "cards/cloak-rough-hemp-cloak-1.png",
+   "note": {
+    "src": "notes/cloak-rough-hemp-cloak-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "slot-ring-1",
+   "label": "Ring: Iron Ring",
+   "box": [
+    674,
+    219,
+    712,
+    257
+   ],
+   "card": "cards/ring-iron-ring-1.png",
+   "note": {
+    "src": "notes/ring-iron-ring-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "slot-ring-2",
+   "label": "Ring: nothing worn",
+   "box": [
+    674,
+    259,
+    712,
+    297
+   ]
+  },
+  {
+   "id": "slot-amulet",
+   "label": "Amulet: nothing worn",
+   "box": [
+    917,
+    59,
+    955,
+    97
+   ]
+  },
+  {
+   "id": "slot-launcher",
+   "label": "Launcher: Wood Shortbow",
+   "box": [
+    674,
+    139,
+    712,
+    177
+   ],
+   "card": "cards/shortbow-wood-shortbow-1.png",
+   "note": {
+    "src": "notes/shortbow-wood-shortbow-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "slot-quiver",
+   "label": "Quiver: Wood Arrow x34",
+   "box": [
+    674,
+    179,
+    712,
+    217
+   ],
+   "card": "cards/pile-arrows-wood-arrow-34.png",
+   "note": {
+    "src": "notes/pile-arrows-wood-arrow-34.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "figure",
+   "label": "Wren, as worn: Furia, Iron Tower shield, Iron Helm, Rawhide Jerkin, Rough hemp Cloak",
+   "box": [
+    750,
+    107,
+    878,
+    235
+   ]
+  },
+  {
+   "id": "hp",
+   "label": "HP 23 of 38",
+   "box": [
+    25,
+    25,
+    227,
+    38
+   ]
+  },
+  {
+   "id": "mp",
+   "label": "MP 6 of 12",
+   "box": [
+    25,
+    38,
+    227,
+    51
+   ]
+  },
+  {
+   "id": "level",
+   "label": "Level 4, XP 61 of 90",
+   "box": [
+    25,
+    51,
+    227,
+    64
+   ]
+  },
+  {
+   "id": "place",
+   "label": "Mines 2, Depth 6",
+   "box": [
+    520,
+    20,
+    652,
+    43
+   ]
+  },
+  {
+   "id": "gold",
+   "label": "Gold 212",
+   "box": [
+    677,
+    313,
+    739,
+    329
+   ]
+  },
+  {
+   "id": "tools",
+   "label": "Lockpicks 1, Trap kits 2",
+   "box": [
+    677,
+    330,
+    759,
+    363
+   ]
+  },
+  {
+   "id": "hunger",
+   "label": "Hunger: Fed",
+   "box": [
+    775,
+    313,
+    860,
+    329
+   ]
+  },
+  {
+   "id": "statuses",
+   "label": "Status: Bleeding, 3 turns left",
+   "box": [
+    774,
+    329,
+    935,
+    347
+   ]
+  },
+  {
+   "id": "weight",
+   "label": "Weight: Normal, 148 of 340",
+   "box": [
+    775,
+    347,
+    877,
+    363
+   ]
+  },
+  {
+   "id": "pack",
+   "label": "Pack: a) Murky potion x2, b) Scroll, c) Ration x3, d) Cooked meat, e) Bread x2, f) Iron Throwing knife x6, g) Lockpicks, h) Flint and tinder, i) Firewood x2, j) Iron Dagger",
+   "box": [
+    676,
+    407,
+    950,
+    698
+   ]
+  },
+  {
+   "id": "hotbar",
+   "label": "The number keys 1 to 8: 1: Murky potion x2; 2: Ration x3; 3: Iron Throwing knife x6; 4: Scroll; 5: Tend wounds (Healing); 6: empty; 7: empty; 8: empty",
+   "box": [
+    138,
+    515,
+    534,
+    561
+   ]
+  },
+  {
+   "id": "log",
+   "label": "Messages, newest last: You arrive at Mines 2. / A goblin comes into view. / The goblin hits you. You bleed. / You hit the goblin. / You see a murky potion here.",
+   "box": [
+    968,
+    11,
+    1210,
+    642
+   ]
+  },
+  {
+   "id": "skills",
+   "label": "Skills: Pick the lock (Lockpicking); Disarm the trap (Disarm); Tend wounds (Healing); Study a thing (Lore); Cook (Cooking); Brew (Alchemy); Mine (Mining); Fish (Fishing)",
+   "box": [
+    1216,
+    11,
+    1269,
+    378
+   ]
+  },
+  {
+   "id": "compendium",
+   "label": "Compendium: what all your characters have learned",
+   "box": [
+    968,
+    672,
+    1115,
+    709
+   ]
+  },
+  {
+   "id": "options",
+   "label": "Options: settings and the system menu",
+   "box": [
+    1121,
+    672,
+    1269,
+    709
+   ]
+  },
+  {
+   "id": "view",
+   "label": "The Mines, around Wren",
+   "box": [
+    16,
+    16,
+    656,
+    496
+   ]
+  },
+  {
+   "id": "key-1",
+   "label": "Key 1: Murky potion x2",
+   "box": [
+    139,
+    516,
+    183,
+    560
+   ],
+   "card": "cards/potion-murky-murky-potion-2.png",
+   "note": {
+    "src": "notes/potion-murky-murky-potion-2.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "key-2",
+   "label": "Key 2: Ration x3",
+   "box": [
+    189,
+    516,
+    233,
+    560
+   ],
+   "card": "cards/ration-ration-3.png",
+   "note": {
+    "src": "notes/ration-ration-3.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "key-3",
+   "label": "Key 3: Iron Throwing knife x6",
+   "box": [
+    239,
+    516,
+    283,
+    560
+   ],
+   "card": "cards/pile-throwing-knife-iron-throwing-knife-6.png",
+   "note": {
+    "src": "notes/pile-throwing-knife-iron-throwing-knife-6.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "key-4",
+   "label": "Key 4: Scroll",
+   "box": [
+    289,
+    516,
+    333,
+    560
+   ],
+   "card": "cards/scroll-scroll-1.png",
+   "note": {
+    "src": "notes/scroll-scroll-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "key-5",
+   "label": "Key 5: Tend wounds (Healing)",
+   "box": [
+    339,
+    516,
+    383,
+    560
+   ]
+  },
+  {
+   "id": "key-6",
+   "label": "Key 6: empty",
+   "box": [
+    389,
+    516,
+    433,
+    560
+   ]
+  },
+  {
+   "id": "key-7",
+   "label": "Key 7: empty",
+   "box": [
+    439,
+    516,
+    483,
+    560
+   ]
+  },
+  {
+   "id": "key-8",
+   "label": "Key 8: empty",
+   "box": [
+    489,
+    516,
+    533,
+    560
+   ]
+  },
+  {
+   "id": "pack-filter-all",
+   "label": "Pack filter: All",
+   "box": [
+    676,
+    381,
+    743,
+    401
+   ]
+  },
+  {
+   "id": "pack-filter-gear",
+   "label": "Pack filter: Gear, every item that can be worn or wielded",
+   "box": [
+    746,
+    381,
+    812,
+    401
+   ]
+  },
+  {
+   "id": "pack-filter-cons",
+   "label": "Pack filter: Consumables (CONS.), food and potions",
+   "box": [
+    815,
+    381,
+    881,
+    401
+   ]
+  },
+  {
+   "id": "pack-filter-other",
+   "label": "Pack filter: Other, tools and everything else",
+   "box": [
+    884,
+    381,
+    950,
+    401
+   ]
+  },
+  {
+   "id": "pack-weight",
+   "label": "Weight 148 of 340",
+   "box": [
+    714,
+    407,
+    952,
+    421
+   ]
+  },
+  {
+   "id": "pack-a",
+   "label": "Pack a) Murky potion x2",
+   "box": [
+    678,
+    426,
+    712,
+    460
+   ],
+   "card": "cards/potion-murky-murky-potion-2.png",
+   "note": {
+    "src": "notes/potion-murky-murky-potion-2.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "pack-b",
+   "label": "Pack b) Scroll",
+   "box": [
+    712,
+    426,
+    746,
+    460
+   ],
+   "card": "cards/scroll-scroll-1.png",
+   "note": {
+    "src": "notes/scroll-scroll-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "pack-c",
+   "label": "Pack c) Ration x3",
+   "box": [
+    746,
+    426,
+    780,
+    460
+   ],
+   "card": "cards/ration-ration-3.png",
+   "note": {
+    "src": "notes/ration-ration-3.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "pack-d",
+   "label": "Pack d) Cooked meat",
+   "box": [
+    780,
+    426,
+    814,
+    460
+   ],
+   "card": "cards/cooked-meat-cooked-meat-1.png",
+   "note": {
+    "src": "notes/cooked-meat-cooked-meat-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "pack-e",
+   "label": "Pack e) Bread x2",
+   "box": [
+    814,
+    426,
+    848,
+    460
+   ],
+   "card": "cards/bread-bread-2.png",
+   "note": {
+    "src": "notes/bread-bread-2.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "pack-f",
+   "label": "Pack f) Iron Throwing knife x6",
+   "box": [
+    848,
+    426,
+    882,
+    460
+   ],
+   "card": "cards/pile-throwing-knife-iron-throwing-knife-6.png",
+   "note": {
+    "src": "notes/pile-throwing-knife-iron-throwing-knife-6.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "pack-g",
+   "label": "Pack g) Lockpicks",
+   "box": [
+    882,
+    426,
+    916,
+    460
+   ],
+   "card": "cards/lockpicks-lockpicks-1.png",
+   "note": {
+    "src": "notes/lockpicks-lockpicks-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "pack-h",
+   "label": "Pack h) Flint and tinder",
+   "box": [
+    916,
+    426,
+    950,
+    460
+   ],
+   "card": "cards/flint-and-tinder-flint-and-tinder-1.png",
+   "note": {
+    "src": "notes/flint-and-tinder-flint-and-tinder-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "pack-i",
+   "label": "Pack i) Firewood x2",
+   "box": [
+    678,
+    460,
+    712,
+    494
+   ],
+   "card": "cards/firewood-firewood-2.png",
+   "note": {
+    "src": "notes/firewood-firewood-2.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "pack-j",
+   "label": "Pack j) Iron Dagger",
+   "box": [
+    712,
+    460,
+    746,
+    494
+   ],
+   "card": "cards/dagger-iron-dagger-1.png",
+   "note": {
+    "src": "notes/dagger-iron-dagger-1.png",
+    "close": [
+     221,
+     11,
+     234,
+     24
+    ]
+   }
+  },
+  {
+   "id": "filter-all",
+   "label": "Show All messages (shown)",
+   "box": [
+    978,
+    21,
+    1033,
+    39
+   ]
+  },
+  {
+   "id": "filter-combat",
+   "label": "Show Combat messages",
+   "box": [
+    1036,
+    21,
+    1123,
+    39
+   ]
+  },
+  {
+   "id": "filter-world",
+   "label": "Show World messages",
+   "box": [
+    1126,
+    21,
+    1200,
+    39
+   ]
+  },
+  {
+   "id": "filter-items",
+   "label": "Show Items messages",
+   "box": [
+    978,
+    41,
+    1038,
+    59
+   ]
+  },
+  {
+   "id": "filter-people",
+   "label": "Show People messages",
+   "box": [
+    1041,
+    41,
+    1105,
+    59
+   ]
+  },
+  {
+   "id": "filter-character",
+   "label": "Show Character messages",
+   "box": [
+    1108,
+    41,
+    1200,
+    59
+   ]
+  },
+  {
+   "id": "log-search",
+   "label": "Search the messages",
+   "box": [
+    978,
+    63,
+    1200,
+    81
+   ]
+  },
+  {
+   "id": "turn",
+   "label": "Mines 2 · turn 1412 · (11, 6)",
+   "box": [
+    970,
+    644,
+    1120,
+    659
+   ]
+  },
+  {
+   "id": "log-download",
+   "label": "Save the log as a text file",
+   "box": [
+    1192,
+    645,
+    1210,
+    659
+   ]
+  },
+  {
+   "id": "skill-lockpicking",
+   "label": "Pick the lock (Lockpicking)",
+   "box": [
+    1222,
+    19,
+    1263,
+    60
+   ]
+  },
+  {
+   "id": "skill-disarm",
+   "label": "Disarm the trap (Disarm)",
+   "box": [
+    1222,
+    63,
+    1263,
+    104
+   ]
+  },
+  {
+   "id": "skill-healing",
+   "label": "Tend wounds (Healing)",
+   "box": [
+    1222,
+    107,
+    1263,
+    148
+   ]
+  },
+  {
+   "id": "skill-lore",
+   "label": "Study a thing (Lore)",
+   "box": [
+    1222,
+    151,
+    1263,
+    192
+   ]
+  },
+  {
+   "id": "skill-cooking",
+   "label": "Cook (Cooking)",
+   "box": [
+    1222,
+    195,
+    1263,
+    236
+   ]
+  },
+  {
+   "id": "skill-alchemy",
+   "label": "Brew (Alchemy)",
+   "box": [
+    1222,
+    239,
+    1263,
+    280
+   ]
+  },
+  {
+   "id": "skill-mining",
+   "label": "Mine (Mining)",
+   "box": [
+    1222,
+    283,
+    1263,
+    324
+   ]
+  },
+  {
+   "id": "skill-fishing",
+   "label": "Fish (Fishing)",
+   "box": [
+    1222,
+    327,
+    1263,
+    368
+   ]
+  }
+ ]
+}

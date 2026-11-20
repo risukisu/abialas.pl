@@ -64,3 +64,9 @@
   letter-spacing: 0.04em;
   pointer-events: none;
 }
+
+/* The host page sets img { display: block }, which beats the hidden attribute, so the card never
+   went away on abialas.pl (the author, 2026-11-20). Restore it in the stage. */
+.sp-stage [hidden] {
+  display: none !important;
+}

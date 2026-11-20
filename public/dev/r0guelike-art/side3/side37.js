@@ -110,6 +110,7 @@
       return;
     }
     const place = () => {
+      if (!cur || cur.data.regions[current] !== r) return; // the pointer has moved on
       const w = card.naturalWidth * scale;
       const h = card.naturalHeight * scale;
       const [x0, y0, x1, y1] = r.box.map((v) => v * scale);
