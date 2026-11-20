@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Screens — Old Legends: Grim Awakening</title>
+  <meta name="description" content="The play screen and the Title screen being tried for Old Legends: Grim Awakening, a turn-based roguelike, round by round. None of it is in the game yet.">
+  <meta name="theme-color" content="#121119">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%2314141c'/%3E%3Cpath fill='%23f2b45a' d='M7 1h2v1H7zM6 2h4v4H6zM7 6h2v1H7z'/%3E%3Cpath fill='%23ffd88a' d='M7 3h2v3H7z'/%3E%3Cpath fill='%23f6e7c8' d='M6 8h4v5H6z'/%3E%3Cpath fill='%23cdb991' d='M9 8h1v5H9z'/%3E%3Cpath fill='%236b5030' d='M4 13h8v2H4z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Grenze+Gotisch:wght@500;700&family=Silkscreen&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="title/title.css">
+  <link rel="stylesheet" href="side/side.css">
+  <link rel="stylesheet" href="side2/side36.css">
+  <link rel="stylesheet" href="side3/side37.css">
+  <link rel="stylesheet" href="side4/side38.css">
+  <link rel="stylesheet" href="side5/side39.css">
+  <link rel="stylesheet" href="side6/side40.css">
+  <style>
+    /* The section stands alone here, so the footer's rules above and below it go. */
+    .foot { border: 0; margin: 0; padding-block: 48px 56px; }
+    .foot .art { border: 0; margin-block-end: 0; padding-block-end: 0; }
+    .sc-back { font-family: "Silkscreen", monospace; font-size: 13px; letter-spacing: .04em; }
+    .sc-back a { color: inherit; }
+  </style>
+</head>
+<body>
+  <main class="foot">
+    <div class="wrap"><p class="sc-back"><a href="./">← Art exploration</a></p></div>
+    <!-- the screens: the side-panel rounds (experiments 035 to 040) and the Title screen, moved here from index.html on 2026-11-20 at the author's word ("fold all character / ui screens into one subpage"); a new round goes on top, under this line -->
+    <!-- concept A, round 6, experiment 040 (project-r0guelike art/explore/040-doll-three-quarter/), added on top 2026-11-20; its files are side6/, written by 040's build40.py --publish; it uses side/side.css and side2/side36.css -->
+    <section class="sp" id="around-the-map-vi" aria-labelledby="sp6-h" data-side-round6 data-base="side6/">
+      <div class="wrap">
+        <span class="eyebrow">New · 20 November 2026 · concept A, round 6, not in the game</span>
+        <h2 class="art-h" id="sp6-h">Around the map, round 6</h2>
+        <p class="art-lede">The 64 × 64 hero turned three-quarter toward the map, slimmer and with a smaller head, in three proportions to compare on the Body switch (A, three heads, B, four heads, C, five heads). A third loadout, a mage&#x27;s robe, cloak and quarterstaff; the tower shield from the shoulder to the ground; a tray of 14 keys under the map; a weight for the Weight mark. Furia is raging and the background is on throughout. Rest the pointer on an item for its short card, click it for the full note. None of it is in the game yet.</p>
+        <ul class="sp6-bodies"><li><b>A, Three heads:</b> A compact hero three heads tall: the head is 21 px of a 63 px figure, so the helm and the face stay big and readable at the panel&#x27;s size.</li><li><b>B, Four heads:</b> A sturdy adult about four heads tall: the head 16 px of a 63 px figure, square shoulders, long legs, a waist under the belt.</li><li><b>C, Five heads:</b> Tall and lean: a 13 px head on a 63 px figure, long legs and a narrow waist, a grown man&#x27;s build.</li></ul>
+        <div class="sp2-switches">
+            <div class="sp2-switch" role="group" aria-label="Gear" data-switch="gear"><span class="sp2-switch-name">Gear</span><button type="button" data-value="furia" aria-pressed="true">Furia and a tower shield</button><button type="button" data-value="kit" aria-pressed="false">Starting kit</button><button type="button" data-value="mage" aria-pressed="false">Mage</button></div>
+            <div class="sp2-switch" role="group" aria-label="Figure" data-switch="size"><span class="sp2-switch-name">Figure</span><button type="button" data-value="32" aria-pressed="false">32 × 32 at ×4</button><button type="button" data-value="64" aria-pressed="true">64 × 64 at ×2</button></div>
+            <div class="sp2-switch" role="group" aria-label="Body" data-switch="face" data-face-only><span class="sp2-switch-name">Body</span><button type="button" data-value="a" aria-pressed="false">A · Three heads</button><button type="button" data-value="b" aria-pressed="true">B · Four heads</button><button type="button" data-value="c" aria-pressed="false">C · Five heads</button></div>
+            <button class="sp3-full" type="button">Full screen</button>
+        </div>
+        <figure class="sp-figure">
+          <div class="sp-stage shot-frame" tabindex="0" role="application" aria-label="The side column, round 3: Furia and a tower shield, Furia raging, the 64 × 64 figure at ×2, body B (Four heads), the night scene behind. Arrow keys walk what is on it.">
+            <div class="sp-box">
+              <canvas class="sp-still sp3-canvas" width="1280" height="720" role="img" aria-label="036&#x27;s screen with the author&#x27;s round-3 feedback: the numbers held tight to their lines with an iron separator between the columns, filter tabs over a taller Pack, a button to save the log, a faint halo round the moon. (Furia and a tower shield, Furia raging, the 64 × 64 figure at ×2, body B (Four heads), the night scene behind)"></canvas>
+              <div class="sp-mark" hidden></div>
+            </div>
+            <p class="sp3-fsbar" aria-hidden="true"></p>
+          </div>
+          <figcaption>
+            <p class="sp-readout" aria-live="polite"></p>
+            <h3 class="art-name">The side column, round 3</h3>
+            <p class="sp-about">036&#x27;s screen with the author&#x27;s round-3 feedback: the numbers held tight to their lines with an iron separator between the columns, filter tabs over a taller Pack, a button to save the log, a faint halo round the moon.</p>
+            <p class="sp-hint">Point or use the arrow keys · click or Enter for an item's full note · F full screen · B body · G gear · S figure size</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+    <!-- concept A, round 5, experiment 039 (project-r0guelike art/explore/039-doll-64-faces/), added on top 2026-11-20; its files are side5/, written by 039's build39.py --publish; it uses side/side.css and side2/side36.css -->
+    <section class="sp" id="around-the-map-v" aria-labelledby="sp5-h" data-side-round5 data-base="side5/">
+      <div class="wrap">
+        <span class="eyebrow">New · 20 November 2026 · concept A, round 5, not in the game</span>
+        <h2 class="art-h" id="sp5-h">Around the map, round 5</h2>
+        <p class="art-lede">Round 4 with four darker faces for the 64 × 64 hero, to compare on the Face switch (A, the veteran, B, the hollow, C, under the helm, D, the wanderer). Only the head changes; the gear, Furia and the 32 × 32 hero are as in round 4. Rest the pointer on an item for its short card, click it for the full note. None of it is in the game yet.</p>
+        <ul class="sp5-faces"><li><b>A, The veteran:</b> A hard man past his first youth: a low, scarred brow, narrowed eyes and a grizzled jaw.</li><li><b>B, The hollow:</b> A survivor worn thin: pale cold skin, eyes sunk in shadow with a cold glint, hollow cheeks.</li><li><b>C, Under the helm:</b> A grim, bearded man whose face is lost in his helm&#x27;s shadow, two dim glints where the eyes are.</li><li><b>D, The wanderer:</b> A lean young man, already hard, with long dark hair falling from under his helm to his shoulders.</li></ul>
+        <div class="sp2-switches">
+            <div class="sp2-switch" role="group" aria-label="Gear" data-switch="gear"><span class="sp2-switch-name">Gear</span><button type="button" data-value="kit" aria-pressed="false">Starting kit</button><button type="button" data-value="furia" aria-pressed="true">Furia and a tower shield</button></div>
+            <div class="sp2-switch" role="group" aria-label="Furia" data-switch="state" data-furia-only><span class="sp2-switch-name">Furia</span><button type="button" data-value="dormant" aria-pressed="false">Dormant</button><button type="button" data-value="ignited" aria-pressed="true">Ignited</button><button type="button" data-value="raging" aria-pressed="false">Raging</button></div>
+            <div class="sp2-switch" role="group" aria-label="Figure" data-switch="size"><span class="sp2-switch-name">Figure</span><button type="button" data-value="32" aria-pressed="false">32 × 32 at ×4</button><button type="button" data-value="64" aria-pressed="true">64 × 64 at ×2</button></div>
+            <div class="sp2-switch" role="group" aria-label="Face" data-switch="face" data-face-only><span class="sp2-switch-name">Face</span><button type="button" data-value="a" aria-pressed="true">A · The veteran</button><button type="button" data-value="b" aria-pressed="false">B · The hollow</button><button type="button" data-value="c" aria-pressed="false">C · Under the helm</button><button type="button" data-value="d" aria-pressed="false">D · The wanderer</button></div>
+            <div class="sp2-switch" role="group" aria-label="Background" data-switch="bg"><span class="sp2-switch-name">Background</span><button type="button" data-value="plain" aria-pressed="true">Off</button><button type="button" data-value="bg" aria-pressed="false">On</button></div>
+            <button class="sp3-full" type="button">Full screen</button>
+        </div>
+        <figure class="sp-figure">
+          <div class="sp-stage shot-frame" tabindex="0" role="application" aria-label="The side column, round 3: Furia and a tower shield, Furia ignited, the 64 × 64 figure at ×2, face A (The veteran), no background. Arrow keys walk what is on it.">
+            <div class="sp-box">
+              <canvas class="sp-still sp3-canvas" width="1280" height="720" role="img" aria-label="036&#x27;s screen with the author&#x27;s round-3 feedback: the numbers held tight to their lines with an iron separator between the columns, filter tabs over a taller Pack, a button to save the log, a faint halo round the moon. (Furia and a tower shield, Furia ignited, the 64 × 64 figure at ×2, face A (The veteran), no background)"></canvas>
+              <div class="sp-mark" hidden></div>
+            </div>
+            <p class="sp3-fsbar" aria-hidden="true"></p>
+          </div>
+          <figcaption>
+            <p class="sp-readout" aria-live="polite"></p>
+            <h3 class="art-name">The side column, round 3</h3>
+            <p class="sp-about">036&#x27;s screen with the author&#x27;s round-3 feedback: the numbers held tight to their lines with an iron separator between the columns, filter tabs over a taller Pack, a button to save the log, a faint halo round the moon.</p>
+            <p class="sp-hint">Point or use the arrow keys · click or Enter for an item's full note · F full screen · V face · G gear · T Furia's state · S figure size · B background</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+    <!-- concept A, round 4, experiment 038 (project-r0guelike art/explore/038-doll-64-fidelity/), added on top 2026-11-20; its files are side4/, written by 038's build38.py --publish; it uses side/side.css and side2/side36.css -->
+    <section class="sp" id="around-the-map-iv" aria-labelledby="sp4-h" data-side-round4 data-base="side4/">
+      <div class="wrap">
+        <span class="eyebrow">New · 20 November 2026 · concept A, round 4, not in the game</span>
+        <h2 class="art-h" id="sp4-h">Around the map, round 4</h2>
+        <p class="art-lede">Round 3 with the hero drawn anew at 64 × 64: a face with eyes, brows and a mouth, the scarf as one cloth, Furia straight in the hand, the tower shield larger, and the bow worn across the back at both sizes. Rest the pointer on an item for its short card; click it for the full note, as the game&#x27;s Examine shows it, and close that with its X, a click outside or Escape. The short card now goes away when the pointer leaves the item. Full screen and the keys below work as in round 3. None of it is in the game yet.</p>
+        <div class="sp2-switches">
+            <div class="sp2-switch" role="group" aria-label="Gear" data-switch="gear"><span class="sp2-switch-name">Gear</span><button type="button" data-value="kit" aria-pressed="false">Starting kit</button><button type="button" data-value="furia" aria-pressed="true">Furia and a tower shield</button></div>
+            <div class="sp2-switch" role="group" aria-label="Furia" data-switch="state" data-furia-only><span class="sp2-switch-name">Furia</span><button type="button" data-value="dormant" aria-pressed="false">Dormant</button><button type="button" data-value="ignited" aria-pressed="true">Ignited</button><button type="button" data-value="raging" aria-pressed="false">Raging</button></div>
+            <div class="sp2-switch" role="group" aria-label="Figure" data-switch="size"><span class="sp2-switch-name">Figure</span><button type="button" data-value="32" aria-pressed="false">32 × 32 at ×4</button><button type="button" data-value="64" aria-pressed="true">64 × 64 at ×2</button></div>
+            <div class="sp2-switch" role="group" aria-label="Background" data-switch="bg"><span class="sp2-switch-name">Background</span><button type="button" data-value="plain" aria-pressed="true">Off</button><button type="button" data-value="bg" aria-pressed="false">On</button></div>
+            <button class="sp3-full" type="button">Full screen</button>
+        </div>
+        <figure class="sp-figure">
+          <div class="sp-stage shot-frame" tabindex="0" role="application" aria-label="The side column, round 3: Furia and a tower shield, Furia ignited, the 64 × 64 figure at ×2, no background. Arrow keys walk what is on it.">
+            <div class="sp-box">
+              <canvas class="sp-still sp3-canvas" width="1280" height="720" role="img" aria-label="036&#x27;s screen with the author&#x27;s round-3 feedback: the numbers held tight to their lines with an iron separator between the columns, filter tabs over a taller Pack, a button to save the log, a faint halo round the moon. (Furia and a tower shield, Furia ignited, the 64 × 64 figure at ×2, no background)"></canvas>
+              <div class="sp-mark" hidden></div>
+            </div>
+            <p class="sp3-fsbar" aria-hidden="true"></p>
+          </div>
+          <figcaption>
+            <p class="sp-readout" aria-live="polite"></p>
+            <h3 class="art-name">The side column, round 3</h3>
+            <p class="sp-about">036&#x27;s screen with the author&#x27;s round-3 feedback: the numbers held tight to their lines with an iron separator between the columns, filter tabs over a taller Pack, a button to save the log, a faint halo round the moon.</p>
+            <p class="sp-hint">Point or use the arrow keys · click or Enter for an item's full note · F full screen · G gear · T Furia's state · S figure size · B background</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+    <!-- concept A, round 3, experiment 037 (project-r0guelike art/explore/037-doll-furia-states/), added on top 2026-11-20; its files are side3/, written by 037's build37.py --publish; it uses side/side.css and side2/side36.css -->
+    <section class="sp" id="around-the-map-iii" aria-labelledby="sp3-h" data-side-round3 data-base="side3/">
+      <div class="wrap">
+        <span class="eyebrow">New · 20 November 2026 · concept A, round 3, not in the game</span>
+        <h2 class="art-h" id="sp3-h">Around the map, round 3</h2>
+        <p class="art-lede">Round 2 with Furia awake: pick the Furia gear and switch her between dormant, ignited and raging, and the sword in the hero&#x27;s hand and her picture in the Main hand Slot play the same loop. The tower shield on the figure is redrawn from its picture in the Off hand Slot, so the two now match. Rest the pointer on any item, worn, in the Pack or on the number keys, to see its card. New on the screen: filter tabs over the Pack (all, gear, consumables, other), the numbers drawn tighter with a separator, a button that saves the log (it works here too), and a faint glow round the moon. Full screen shows it at the largest whole-number size (×2 on a 2560 × 1440 screen), and the keys below switch it there too. None of it is in the game yet.</p>
+        <div class="sp2-switches">
+            <div class="sp2-switch" role="group" aria-label="Gear" data-switch="gear"><span class="sp2-switch-name">Gear</span><button type="button" data-value="kit" aria-pressed="false">Starting kit</button><button type="button" data-value="furia" aria-pressed="true">Furia and a tower shield</button></div>
+            <div class="sp2-switch" role="group" aria-label="Furia" data-switch="state" data-furia-only><span class="sp2-switch-name">Furia</span><button type="button" data-value="dormant" aria-pressed="false">Dormant</button><button type="button" data-value="ignited" aria-pressed="true">Ignited</button><button type="button" data-value="raging" aria-pressed="false">Raging</button></div>
+            <div class="sp2-switch" role="group" aria-label="Figure" data-switch="size"><span class="sp2-switch-name">Figure</span><button type="button" data-value="32" aria-pressed="false">32 × 32 at ×4</button><button type="button" data-value="64" aria-pressed="true">64 × 64 at ×2</button></div>
+            <div class="sp2-switch" role="group" aria-label="Background" data-switch="bg"><span class="sp2-switch-name">Background</span><button type="button" data-value="plain" aria-pressed="true">Off</button><button type="button" data-value="bg" aria-pressed="false">On</button></div>
+            <button class="sp3-full" type="button">Full screen</button>
+        </div>
+        <figure class="sp-figure">
+          <div class="sp-stage shot-frame" tabindex="0" role="application" aria-label="The side column, round 3: Furia and a tower shield, Furia ignited, the 64 × 64 figure at ×2, no background. Arrow keys walk what is on it.">
+            <div class="sp-box">
+              <canvas class="sp-still sp3-canvas" width="1280" height="720" role="img" aria-label="036&#x27;s screen with the author&#x27;s round-3 feedback: the numbers held tight to their lines with an iron separator between the columns, filter tabs over a taller Pack, a button to save the log, a faint halo round the moon. (Furia and a tower shield, Furia ignited, the 64 × 64 figure at ×2, no background)"></canvas>
+              <div class="sp-mark" hidden></div>
+            </div>
+            <p class="sp3-fsbar" aria-hidden="true"></p>
+          </div>
+          <figcaption>
+            <p class="sp-readout" aria-live="polite"></p>
+            <h3 class="art-name">The side column, round 3</h3>
+            <p class="sp-about">036&#x27;s screen with the author&#x27;s round-3 feedback: the numbers held tight to their lines with an iron separator between the columns, filter tabs over a taller Pack, a button to save the log, a faint halo round the moon.</p>
+            <p class="sp-hint">Point or use the arrow keys · F full screen · G gear · T Furia's state · S figure size · B background</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+    <!-- concept A, round 2, experiment 036 (project-r0guelike art/explore/036-side-panels-a-ii/), added on top 2026-11-19; its files are side2/, written by 036's build36.py --publish; it uses side/side.css -->
+    <section class="sp" id="around-the-map-ii" aria-labelledby="sp2-h" data-side-round2 data-base="side2/">
+      <div class="wrap">
+        <span class="eyebrow">New · 19 November 2026 · concept A, round 2, not in the game</span>
+        <h2 class="art-h" id="sp2-h">Around the map, round 2</h2>
+        <p class="art-lede">The side column, chosen from the three below, worked into a whole screen: the map with the bars on its corner, a row of eight slots under it for potions and abilities, the hero with what they wear in each Slot, the Pack, the full message log, the skills and crafts at hand, the Compendium and the Options. The hero now shows the gear: each worn thing is a layer laid on one body, so a tower shield or Furia in the hand changes the figure without a drawing for every combination. Switch the figure between a 32 × 32 drawing shown four times over and a 64 × 64 one shown twice, the gear between the starting kit and Furia with a tower shield, and a quiet night scene behind on or off. None of it is in the game yet.</p>
+        <div class="sp2-switches">
+            <div class="sp2-switch" role="group" aria-label="Figure" data-switch="size"><span class="sp2-switch-name">Figure</span><button type="button" data-value="32" aria-pressed="false">32 × 32 at ×4</button><button type="button" data-value="64" aria-pressed="true">64 × 64 at ×2</button></div>
+            <div class="sp2-switch" role="group" aria-label="Gear" data-switch="gear"><span class="sp2-switch-name">Gear</span><button type="button" data-value="kit" aria-pressed="true">Starting kit</button><button type="button" data-value="furia" aria-pressed="false">Furia and a tower shield</button></div>
+            <div class="sp2-switch" role="group" aria-label="Background" data-switch="bg"><span class="sp2-switch-name">Background</span><button type="button" data-value="plain" aria-pressed="true">Off</button><button type="button" data-value="bg" aria-pressed="false">On</button></div>
+        </div>
+        <figure class="sp-figure">
+          <div class="sp-stage shot-frame" tabindex="0" role="application" aria-label="The side column, round 2: The starting kit, the 64 × 64 figure at ×2, no background. Arrow keys walk what is on it.">
+            <div class="sp-box">
+              <img class="sp-still" src="side2/kit-64-plain/still.png" width="1280" height="720" alt="035 A&#x27;s column at 1280 x 720: the figure large in its arch with the gear it wears, the bars on the map&#x27;s corner, the number keys under the map, the full log, the Skill strip. (The starting kit, the 64 × 64 figure at ×2, no background)">
+              <div class="sp-mark" hidden></div>
+            </div>
+          </div>
+          <figcaption>
+            <p class="sp-readout" aria-live="polite"></p>
+            <h3 class="art-name">The side column, round 2</h3>
+            <p class="sp-about">035 A&#x27;s column at 1280 x 720: the figure large in its arch with the gear it wears, the bars on the map&#x27;s corner, the number keys under the map, the full log, the Skill strip.</p>
+            <p class="sp-hint">Point or use the arrow keys · F: full screen, at the largest whole-number size (×2 on a 2560 × 1440 screen)</p>
+            <button class="sp-full" type="button">Full screen</button>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+    <!-- the play screen's margins, experiment 035 (project-r0guelike art/explore/035-side-panels/), added on top 2026-11-19; its files are side/, written by 035's build35.py --publish -->
+    <section class="sp" id="around-the-map" aria-labelledby="sp-h" data-side-concepts data-base="side/">
+      <div class="wrap">
+        <span class="eyebrow">New · 19 November 2026 · concepts, not in the game</span>
+        <h2 class="art-h" id="sp-h">Around the map</h2>
+        <p class="art-lede">Three concepts for the dark space around the map while you play: the hero with what they wear in each Slot, the numbers you check every turn, the Pack, and quick slots on the number keys (an idea; the game has none). The map is the same room of the Mines in all three; what changes is what stands around it. None of it is in the game yet. Point at anything on a screen, or use the arrow keys, to see what it is.</p>
+        <div class="sp-tabs" role="group" aria-label="The concepts">
+            <button class="sp-tab" type="button" data-concept="a" aria-pressed="true"><img src="side/a/still.png" width="960" height="540" alt=""><span>A · The side column</span></button>
+            <button class="sp-tab" type="button" data-concept="b" aria-pressed="false"><img src="side/b/still.png" width="960" height="540" alt=""><span>B · The two flanks</span></button>
+            <button class="sp-tab" type="button" data-concept="c" aria-pressed="false"><img src="side/c/still.png" width="960" height="540" alt=""><span>C · The strip below</span></button>
+        </div>
+        <figure class="sp-figure">
+          <div class="sp-stage shot-frame" tabindex="0" role="application" aria-label="The side column: a concept for the play screen. Arrow keys walk what is on it.">
+            <div class="sp-box">
+              <img class="sp-still" src="side/a/still.png" width="960" height="540" alt="Everything in one slate column right of the view, read top to bottom: the hero in a lit recess with the Worn Slots round it, the numbers, the Pack, the quick slots.">
+              <div class="sp-mark" hidden></div>
+            </div>
+          </div>
+          <figcaption>
+            <p class="sp-readout" aria-live="polite"></p>
+            <h3 class="art-name sp-name">The side column</h3>
+            <p class="sp-about">Everything in one slate column right of the view, read top to bottom: the hero in a lit recess with the Worn Slots round it, the numbers, the Pack, the quick slots.</p>
+            <p class="sp-hint">Point or use the arrow keys · F: full screen, at the largest whole-number size</p>
+            <button class="sp-full" type="button">Full screen</button>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+    <!-- the Title screen concepts, experiments 030 and 031 (project-r0guelike art/explore/030-title-screen/, 031-title-screen-a-ii/), added on top 2026-11-17, the fourth tab (A2) the same day; its files are title/, written by 031's build.py --publish -->
+    <section class="tc" id="title-screen" aria-labelledby="tc-h" data-title-concepts data-base="title/">
+      <div class="wrap">
+        <span class="eyebrow">New · 17 November 2026 · concepts, not in the game</span>
+        <h2 class="art-h" id="tc-h">The Title screen</h2>
+        <p class="art-lede">The first screen of the game, before the Roster: a lone hero at a campfire under the night sky, the monsters waiting where the light ends, the title, and the menu. Three concepts, and A2, a second round of the first: the City&#x27;s castle high on its crag, new trees, a hero who breathes. None of it is in the game yet. Each one is live: click it, walk the menu with the arrow keys, and Enter or a click says what a row opens.</p>
+        <div class="tc-tabs" role="group" aria-label="The concepts">
+            <button class="tc-tab" type="button" data-concept="a" aria-pressed="false"><img src="title/a/still.png" width="480" height="270" alt=""><span>A · The edge of the light</span></button>
+            <button class="tc-tab" type="button" data-concept="a2" aria-pressed="true"><img src="title/a2/still.png" width="480" height="270" alt=""><span>A2 · The edge of the light, round 2</span></button>
+            <button class="tc-tab" type="button" data-concept="b" aria-pressed="false"><img src="title/b/still.png" width="480" height="270" alt=""><span>B · The mouth of the Mines</span></button>
+            <button class="tc-tab" type="button" data-concept="c" aria-pressed="false"><img src="title/c/still.png" width="480" height="270" alt=""><span>C · The vigil</span></button>
+        </div>
+        <figure class="tc-figure">
+          <div class="tc-stage shot-frame" tabindex="0" role="application" aria-label="The edge of the light, round 2: a Title screen concept. Arrow keys walk the menu, Enter picks.">
+            <img class="tc-still" src="title/a2/still.png" width="480" height="270" alt="A forest clearing at night: the lone hero by a campfire, the City&#x27;s castle far behind on its crag, and at the edge of the firelight, under the dark trees, goblins, a wolf and the Goblin King waiting.">
+            <canvas class="tc-canvas" width="480" height="270" hidden></canvas>
+          </div>
+          <figcaption>
+            <p class="tc-readout" aria-live="polite"></p>
+            <h3 class="art-name tc-name">The edge of the light, round 2</h3>
+            <p class="tc-about">A forest clearing at night: the lone hero by a campfire, the City&#x27;s castle far behind on its crag, and at the edge of the firelight, under the dark trees, goblins, a wolf and the Goblin King waiting.</p>
+            <p class="tc-hint">Arrow keys walk the menu · Enter or a click picks · F: full screen</p>
+            <button class="tc-full" type="button">Full screen</button>
+          </figcaption>
+        </figure>
+        <p class="tc-menu">Every concept carries the same menu, in the game&#x27;s own words: Continue (shown once a character exists), New character, Roster, Settings and Quit (in the desktop app only), and the records every character adds to: the Compendium, the Graveyard, the Hall of Fame, and the Credits. Where those sit is what the concepts try: a panel and a row of icons (A and A2), things in the world (B), or words in the dark (C).</p>
+      </div>
+    </section>
+  </main>
+  <script src="title/title.js" defer></script>
+  <script src="side/side.js" defer></script>
+  <script src="side2/side36.js" defer></script>
+  <script src="side3/side37.js" defer></script>
+  <script src="side4/side38.js" defer></script>
+  <script src="side5/side39.js" defer></script>
+  <script src="side6/side40.js" defer></script>
+</body>
+</html>
