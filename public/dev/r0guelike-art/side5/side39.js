@@ -1,5 +1,5 @@
 /* 039's section: concept A, round 5, on 038's script with a fifth switch, the 64 hero's face
-   (a, b, c; dimmed while the 32 shows; key V). 038's notes follow.
+   (its buttons; dimmed while the 32 shows; key V). 038's notes follow.
 
    038's section: concept A, round 4, on 037's script. Four switches (the gear, Furia's state,
    the figure's size, the background) pick one still; a Furia still carries two loops (the figure
@@ -31,7 +31,7 @@
   const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const HINT = "Point at anything on the screen, or use the arrow keys, to see what it is.";
   const ORDER = {
-    face: ["a", "b", "c"],
+    face: [...root.querySelectorAll('[data-switch="face"] button')].map((b) => b.dataset.value),
     gear: ["kit", "furia"],
     state: ["dormant", "ignited", "raging"],
     size: ["32", "64"],
