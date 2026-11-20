@@ -1,0 +1,670 @@
+{
+ "name": "The side column, round 2",
+ "about": "035 A's column at 1280 x 720: the figure large in its arch with the gear it wears, the bars on the map's corner, the number keys under the map, the full log, the Skill strip.",
+ "alt": "035 A's column at 1280 x 720: the figure large in its arch with the gear it wears, the bars on the map's corner, the number keys under the map, the full log, the Skill strip. (The starting kit, the 32 × 32 figure at ×4, no background)",
+ "switchWords": "The starting kit, the 32 × 32 figure at ×4, no background",
+ "w": 1280,
+ "h": 720,
+ "regions": [
+  {
+   "id": "slot-main-hand",
+   "label": "Main hand: Iron Shortsword",
+   "box": [
+    674,
+    19,
+    712,
+    57
+   ]
+  },
+  {
+   "id": "slot-off-hand",
+   "label": "Off hand: Wood Round shield",
+   "box": [
+    674,
+    59,
+    712,
+    97
+   ]
+  },
+  {
+   "id": "slot-body",
+   "label": "Body: Rawhide Jerkin",
+   "box": [
+    917,
+    139,
+    955,
+    177
+   ]
+  },
+  {
+   "id": "slot-legs",
+   "label": "Legs: Rawhide Leggings",
+   "box": [
+    917,
+    219,
+    955,
+    257
+   ]
+  },
+  {
+   "id": "slot-girdle",
+   "label": "Girdle: Rawhide Belt",
+   "box": [
+    917,
+    179,
+    955,
+    217
+   ]
+  },
+  {
+   "id": "slot-head",
+   "label": "Head: Iron Helm",
+   "box": [
+    917,
+    19,
+    955,
+    57
+   ]
+  },
+  {
+   "id": "slot-hands",
+   "label": "Hands: Rawhide Gloves",
+   "box": [
+    674,
+    99,
+    712,
+    137
+   ]
+  },
+  {
+   "id": "slot-feet",
+   "label": "Feet: Rawhide Boots",
+   "box": [
+    917,
+    259,
+    955,
+    297
+   ]
+  },
+  {
+   "id": "slot-cloak",
+   "label": "Cloak: Rough hemp Cloak",
+   "box": [
+    917,
+    99,
+    955,
+    137
+   ]
+  },
+  {
+   "id": "slot-ring-1",
+   "label": "Ring: Iron Ring",
+   "box": [
+    674,
+    219,
+    712,
+    257
+   ]
+  },
+  {
+   "id": "slot-ring-2",
+   "label": "Ring: nothing worn",
+   "box": [
+    674,
+    259,
+    712,
+    297
+   ]
+  },
+  {
+   "id": "slot-amulet",
+   "label": "Amulet: nothing worn",
+   "box": [
+    917,
+    59,
+    955,
+    97
+   ]
+  },
+  {
+   "id": "slot-launcher",
+   "label": "Launcher: Wood Shortbow",
+   "box": [
+    674,
+    139,
+    712,
+    177
+   ]
+  },
+  {
+   "id": "slot-quiver",
+   "label": "Quiver: Wood Arrow x34",
+   "box": [
+    674,
+    179,
+    712,
+    217
+   ]
+  },
+  {
+   "id": "figure",
+   "label": "Wren, as worn: Iron Shortsword, Wood Round shield, Iron Helm, Rawhide Jerkin, Rough hemp Cloak",
+   "box": [
+    750,
+    107,
+    878,
+    235
+   ]
+  },
+  {
+   "id": "hp",
+   "label": "HP 23 of 38",
+   "box": [
+    25,
+    25,
+    227,
+    38
+   ]
+  },
+  {
+   "id": "mp",
+   "label": "MP 6 of 12",
+   "box": [
+    25,
+    38,
+    227,
+    51
+   ]
+  },
+  {
+   "id": "level",
+   "label": "Level 4, XP 61 of 90",
+   "box": [
+    25,
+    51,
+    227,
+    64
+   ]
+  },
+  {
+   "id": "place",
+   "label": "Mines 2, Depth 6",
+   "box": [
+    520,
+    20,
+    652,
+    43
+   ]
+  },
+  {
+   "id": "gold",
+   "label": "Gold 212",
+   "box": [
+    677,
+    353,
+    739,
+    369
+   ]
+  },
+  {
+   "id": "tools",
+   "label": "Lockpicks 1, Trap kits 2",
+   "box": [
+    677,
+    377,
+    759,
+    417
+   ]
+  },
+  {
+   "id": "hunger",
+   "label": "Hunger: Fed",
+   "box": [
+    775,
+    353,
+    860,
+    369
+   ]
+  },
+  {
+   "id": "statuses",
+   "label": "Status: Bleeding, 3 turns left",
+   "box": [
+    774,
+    376,
+    935,
+    394
+   ]
+  },
+  {
+   "id": "weight",
+   "label": "Weight: Normal, 148 of 340",
+   "box": [
+    775,
+    401,
+    877,
+    417
+   ]
+  },
+  {
+   "id": "pack",
+   "label": "Pack: a) Murky potion x2, b) Scroll, c) Ration x3, d) Cooked meat, e) Bread x2, f) Iron Throwing knife x6, g) Lockpicks, h) Flint and tinder, i) Firewood x2, j) Iron Dagger",
+   "box": [
+    676,
+    472,
+    950,
+    695
+   ]
+  },
+  {
+   "id": "hotbar",
+   "label": "The number keys 1 to 8: 1: Murky potion x2; 2: Ration x3; 3: Iron Throwing knife x6; 4: Scroll; 5: Tend wounds (Healing); 6: empty; 7: empty; 8: empty",
+   "box": [
+    138,
+    515,
+    534,
+    561
+   ]
+  },
+  {
+   "id": "log",
+   "label": "Messages, newest last: You arrive at Mines 2. / A goblin comes into view. / The goblin hits you. You bleed. / You hit the goblin. / You see a murky potion here.",
+   "box": [
+    968,
+    11,
+    1210,
+    642
+   ]
+  },
+  {
+   "id": "skills",
+   "label": "Skills: Pick the lock (Lockpicking); Disarm the trap (Disarm); Tend wounds (Healing); Study a thing (Lore); Cook (Cooking); Brew (Alchemy); Mine (Mining); Fish (Fishing)",
+   "box": [
+    1216,
+    11,
+    1269,
+    378
+   ]
+  },
+  {
+   "id": "compendium",
+   "label": "Compendium: what all your characters have learned",
+   "box": [
+    968,
+    672,
+    1115,
+    709
+   ]
+  },
+  {
+   "id": "options",
+   "label": "Options: settings and the system menu",
+   "box": [
+    1121,
+    672,
+    1269,
+    709
+   ]
+  },
+  {
+   "id": "view",
+   "label": "The Mines, around Wren",
+   "box": [
+    16,
+    16,
+    656,
+    496
+   ]
+  },
+  {
+   "id": "key-1",
+   "label": "Key 1: Murky potion x2",
+   "box": [
+    139,
+    516,
+    183,
+    560
+   ]
+  },
+  {
+   "id": "key-2",
+   "label": "Key 2: Ration x3",
+   "box": [
+    189,
+    516,
+    233,
+    560
+   ]
+  },
+  {
+   "id": "key-3",
+   "label": "Key 3: Iron Throwing knife x6",
+   "box": [
+    239,
+    516,
+    283,
+    560
+   ]
+  },
+  {
+   "id": "key-4",
+   "label": "Key 4: Scroll",
+   "box": [
+    289,
+    516,
+    333,
+    560
+   ]
+  },
+  {
+   "id": "key-5",
+   "label": "Key 5: Tend wounds (Healing)",
+   "box": [
+    339,
+    516,
+    383,
+    560
+   ]
+  },
+  {
+   "id": "key-6",
+   "label": "Key 6: empty",
+   "box": [
+    389,
+    516,
+    433,
+    560
+   ]
+  },
+  {
+   "id": "key-7",
+   "label": "Key 7: empty",
+   "box": [
+    439,
+    516,
+    483,
+    560
+   ]
+  },
+  {
+   "id": "key-8",
+   "label": "Key 8: empty",
+   "box": [
+    489,
+    516,
+    533,
+    560
+   ]
+  },
+  {
+   "id": "pack-weight",
+   "label": "Weight 148 of 340",
+   "box": [
+    714,
+    472,
+    952,
+    486
+   ]
+  },
+  {
+   "id": "pack-a",
+   "label": "Pack a) Murky potion x2",
+   "box": [
+    678,
+    491,
+    712,
+    525
+   ]
+  },
+  {
+   "id": "pack-b",
+   "label": "Pack b) Scroll",
+   "box": [
+    712,
+    491,
+    746,
+    525
+   ]
+  },
+  {
+   "id": "pack-c",
+   "label": "Pack c) Ration x3",
+   "box": [
+    746,
+    491,
+    780,
+    525
+   ]
+  },
+  {
+   "id": "pack-d",
+   "label": "Pack d) Cooked meat",
+   "box": [
+    780,
+    491,
+    814,
+    525
+   ]
+  },
+  {
+   "id": "pack-e",
+   "label": "Pack e) Bread x2",
+   "box": [
+    814,
+    491,
+    848,
+    525
+   ]
+  },
+  {
+   "id": "pack-f",
+   "label": "Pack f) Iron Throwing knife x6",
+   "box": [
+    848,
+    491,
+    882,
+    525
+   ]
+  },
+  {
+   "id": "pack-g",
+   "label": "Pack g) Lockpicks",
+   "box": [
+    882,
+    491,
+    916,
+    525
+   ]
+  },
+  {
+   "id": "pack-h",
+   "label": "Pack h) Flint and tinder",
+   "box": [
+    916,
+    491,
+    950,
+    525
+   ]
+  },
+  {
+   "id": "pack-i",
+   "label": "Pack i) Firewood x2",
+   "box": [
+    678,
+    525,
+    712,
+    559
+   ]
+  },
+  {
+   "id": "pack-j",
+   "label": "Pack j) Iron Dagger",
+   "box": [
+    712,
+    525,
+    746,
+    559
+   ]
+  },
+  {
+   "id": "filter-all",
+   "label": "Show All messages (shown)",
+   "box": [
+    978,
+    21,
+    1033,
+    39
+   ]
+  },
+  {
+   "id": "filter-combat",
+   "label": "Show Combat messages",
+   "box": [
+    1036,
+    21,
+    1123,
+    39
+   ]
+  },
+  {
+   "id": "filter-world",
+   "label": "Show World messages",
+   "box": [
+    1126,
+    21,
+    1200,
+    39
+   ]
+  },
+  {
+   "id": "filter-items",
+   "label": "Show Items messages",
+   "box": [
+    978,
+    41,
+    1038,
+    59
+   ]
+  },
+  {
+   "id": "filter-people",
+   "label": "Show People messages",
+   "box": [
+    1041,
+    41,
+    1105,
+    59
+   ]
+  },
+  {
+   "id": "filter-character",
+   "label": "Show Character messages",
+   "box": [
+    1108,
+    41,
+    1200,
+    59
+   ]
+  },
+  {
+   "id": "log-search",
+   "label": "Search the messages",
+   "box": [
+    978,
+    63,
+    1200,
+    81
+   ]
+  },
+  {
+   "id": "turn",
+   "label": "Mines 2 · turn 1412 · (11, 6)",
+   "box": [
+    970,
+    644,
+    1120,
+    659
+   ]
+  },
+  {
+   "id": "skill-lockpicking",
+   "label": "Pick the lock (Lockpicking)",
+   "box": [
+    1222,
+    19,
+    1263,
+    60
+   ]
+  },
+  {
+   "id": "skill-disarm",
+   "label": "Disarm the trap (Disarm)",
+   "box": [
+    1222,
+    63,
+    1263,
+    104
+   ]
+  },
+  {
+   "id": "skill-healing",
+   "label": "Tend wounds (Healing)",
+   "box": [
+    1222,
+    107,
+    1263,
+    148
+   ]
+  },
+  {
+   "id": "skill-lore",
+   "label": "Study a thing (Lore)",
+   "box": [
+    1222,
+    151,
+    1263,
+    192
+   ]
+  },
+  {
+   "id": "skill-cooking",
+   "label": "Cook (Cooking)",
+   "box": [
+    1222,
+    195,
+    1263,
+    236
+   ]
+  },
+  {
+   "id": "skill-alchemy",
+   "label": "Brew (Alchemy)",
+   "box": [
+    1222,
+    239,
+    1263,
+    280
+   ]
+  },
+  {
+   "id": "skill-mining",
+   "label": "Mine (Mining)",
+   "box": [
+    1222,
+    283,
+    1263,
+    324
+   ]
+  },
+  {
+   "id": "skill-fishing",
+   "label": "Fish (Fishing)",
+   "box": [
+    1222,
+    327,
+    1263,
+    368
+   ]
+  }
+ ]
+}

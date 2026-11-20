@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="title/title.css">
   <link rel="stylesheet" href="side/side.css">
+  <link rel="stylesheet" href="side2/side36.css">
   <style>
     /* The section stands alone here, so the footer's rules above and below it go. */
     .foot { border: 0; margin: 0; padding-block: 48px 56px; }
@@ -23,6 +24,34 @@
 </head>
 <body>
   <main class="foot">
+    <!-- concept A, round 2, experiment 036 (project-r0guelike art/explore/036-side-panels-a-ii/), added on top 2026-11-19; its files are side2/, written by 036's build36.py --publish; it uses side/side.css -->
+    <section class="sp" id="around-the-map-ii" aria-labelledby="sp2-h" data-side-round2 data-base="side2/">
+      <div class="wrap">
+        <span class="eyebrow">New · 19 November 2026 · concept A, round 2, not in the game</span>
+        <h2 class="art-h" id="sp2-h">Around the map, round 2</h2>
+        <p class="art-lede">The side column, chosen from the three below, worked into a whole screen: the map with the bars on its corner, a row of eight slots under it for potions and abilities, the hero with what they wear in each Slot, the Pack, the full message log, the skills and crafts at hand, the Compendium and the Options. The hero now shows the gear: each worn thing is a layer laid on one body, so a tower shield or Furia in the hand changes the figure without a drawing for every combination. Switch the figure between a 32 × 32 drawing shown four times over and a 64 × 64 one shown twice, the gear between the starting kit and Furia with a tower shield, and a quiet night scene behind on or off. None of it is in the game yet.</p>
+        <div class="sp2-switches">
+            <div class="sp2-switch" role="group" aria-label="Figure" data-switch="size"><span class="sp2-switch-name">Figure</span><button type="button" data-value="32" aria-pressed="false">32 × 32 at ×4</button><button type="button" data-value="64" aria-pressed="true">64 × 64 at ×2</button></div>
+            <div class="sp2-switch" role="group" aria-label="Gear" data-switch="gear"><span class="sp2-switch-name">Gear</span><button type="button" data-value="kit" aria-pressed="true">Starting kit</button><button type="button" data-value="furia" aria-pressed="false">Furia and a tower shield</button></div>
+            <div class="sp2-switch" role="group" aria-label="Background" data-switch="bg"><span class="sp2-switch-name">Background</span><button type="button" data-value="plain" aria-pressed="true">Off</button><button type="button" data-value="bg" aria-pressed="false">On</button></div>
+        </div>
+        <figure class="sp-figure">
+          <div class="sp-stage shot-frame" tabindex="0" role="application" aria-label="The side column, round 2: The starting kit, the 64 × 64 figure at ×2, no background. Arrow keys walk what is on it.">
+            <div class="sp-box">
+              <img class="sp-still" src="side2/kit-64-plain/still.png" width="1280" height="720" alt="035 A&#x27;s column at 1280 x 720: the figure large in its arch with the gear it wears, the bars on the map&#x27;s corner, the number keys under the map, the full log, the Skill strip. (The starting kit, the 64 × 64 figure at ×2, no background)">
+              <div class="sp-mark" hidden></div>
+            </div>
+          </div>
+          <figcaption>
+            <p class="sp-readout" aria-live="polite"></p>
+            <h3 class="art-name">The side column, round 2</h3>
+            <p class="sp-about">035 A&#x27;s column at 1280 x 720: the figure large in its arch with the gear it wears, the bars on the map&#x27;s corner, the number keys under the map, the full log, the Skill strip.</p>
+            <p class="sp-hint">Point or use the arrow keys · F: full screen, at the largest whole-number size (×2 on a 2560 × 1440 screen)</p>
+            <button class="sp-full" type="button">Full screen</button>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
     <!-- the play screen's margins, experiment 035 (project-r0guelike art/explore/035-side-panels/), added on top 2026-11-19; its files are side/, written by 035's build35.py --publish -->
     <section class="sp" id="around-the-map" aria-labelledby="sp-h" data-side-concepts data-base="side/">
       <div class="wrap">
@@ -172,5 +201,6 @@
   </main>
   <script src="title/title.js" defer></script>
   <script src="side/side.js" defer></script>
+  <script src="side2/side36.js" defer></script>
 </body>
 </html>

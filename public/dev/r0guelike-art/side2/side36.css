@@ -1,0 +1,49 @@
+/* 036's section: the switches above round 2's screen. The rest is 035's side.css (.sp-*),
+   which the page loads first. */
+
+.sp2-switches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  margin-block: 24px 16px;
+}
+
+.sp2-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.sp2-switch-name {
+  margin-inline-end: 4px;
+  color: var(--muted, #9a94a6);
+  font-family: var(--f-pixel, monospace);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sp2-switch button {
+  padding: 5px 10px;
+  background: var(--panel, #1a1a24);
+  border: 2px solid var(--border, #2c2c3a);
+  color: var(--muted, #9a94a6);
+  font-family: var(--f-pixel, monospace);
+  font-size: 0.6875rem;
+  cursor: pointer;
+}
+.sp2-switch button[aria-pressed="true"] {
+  border-color: var(--candle, #f2b45a);
+  color: var(--wax, #f6e7c8);
+}
+@media (hover: hover) and (pointer: fine) {
+  .sp2-switch button:hover {
+    color: var(--text, #e2dbcc);
+    border-color: var(--timber, #6b5030);
+  }
+}
+.sp2-switch button:focus-visible {
+  outline: 2px solid var(--candle, #f2b45a);
+  outline-offset: 2px;
+}
