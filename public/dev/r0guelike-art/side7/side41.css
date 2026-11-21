@@ -1,0 +1,112 @@
+/* 041's section: 040's rules (039's, 038's and 037's before them; see side40.css) without the
+   body list, and round 7's two stacked screens at the end. */
+
+.sp3-full {
+  margin-inline-start: auto;
+  padding: 8px 14px;
+  background: var(--panel-2, #211f2c);
+  border: 2px solid var(--timber-dark, #5c4529);
+  color: var(--wax, #f6e7c8);
+  font-family: var(--f-pixel, monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .sp3-full:hover {
+    border-color: var(--candle, #f2b45a);
+  }
+}
+.sp3-full:focus-visible {
+  outline: 2px solid var(--candle, #f2b45a);
+  outline-offset: 2px;
+}
+
+.sp2-switch[data-off] {
+  opacity: 0.45;
+}
+
+.sp3-canvas {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  image-rendering: pixelated;
+}
+
+.sp-stage {
+  position: relative;
+}
+
+/* An item's card on hover: the screen's own pixels at its scale. */
+.sp3-card {
+  position: absolute;
+  z-index: 2;
+  image-rendering: pixelated;
+  pointer-events: none;
+  box-shadow: 0 6px 18px -6px #000;
+}
+.sp3-fsbar {
+  display: none;
+}
+.sp-stage:fullscreen .sp3-fsbar {
+  display: block;
+  position: absolute;
+  inset-block-end: 12px;
+  inset-inline-start: 12px;
+  margin: 0;
+  padding: 6px 10px;
+  background: color-mix(in oklch, #000 72%, transparent);
+  color: var(--wax, #f6e7c8);
+  font-family: var(--f-pixel, monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+/* Round 4. The host page sets img { display: block }, which beats the hidden attribute: restore
+   it for everything the script hides in the stage (round 3's card never went away). */
+.sp-stage [hidden] {
+  display: none !important;
+}
+
+/* An item's full note, opened by a click: the screen's own pixels at its scale, in the middle. */
+.sp4-note {
+  position: absolute;
+  z-index: 3;
+  image-rendering: pixelated;
+  box-shadow: 0 10px 30px -8px #000;
+}
+.sp4-close {
+  position: absolute;
+  z-index: 4;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.sp4-close:focus-visible {
+  outline: 2px solid var(--candle, #f2b45a);
+  outline-offset: 1px;
+}
+
+/* Round 7: two screens in one section, one above the other, each with its heading and a line. */
+.sp7-screen + .sp7-screen {
+  margin-block-start: 56px;
+  padding-block-start: 32px;
+  border-block-start: 2px solid var(--timber-dark, #5c4529);
+}
+.sp7-h {
+  margin: 0 0 4px;
+  color: var(--wax, #f6e7c8);
+  font-family: var(--f-pixel, monospace);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sp7-about {
+  margin: 0 0 12px;
+  max-width: 72ch;
+  font-size: 0.9rem;
+}
