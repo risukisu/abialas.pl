@@ -20,7 +20,8 @@
     const groups = [...root.querySelectorAll("[data-switch]")];
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const HINT = "Point at anything on the screen, or use the arrow keys, to see what it is.";
-    const ORDER = { gear: ["furia", "kit", "mage"] }; // the buttons' order
+    const ORDER = { gear: ["furia", "kit", "mage", "vulgata"] }; // the buttons' order
+    const MOVING = { furia: "raging", vulgata: "purple" }; // the state a gear's screen animates
     const state = { gear: "furia" };
 
     let cur = null; // { data, still, sheets }
@@ -29,8 +30,8 @@
     let shownAt = performance.now();
     const cache = new Map();
 
-    // the block's body at 64, the background on, Furia raging
-    const keyOf = () => `${state.gear}-64${body}-bg` + (state.gear === "furia" ? "-raging" : "");
+    // the block's body at 64, the background on, Furia raging, Vul'gata's eyes purple
+    const keyOf = () => `${state.gear}-64${body}-bg` + (MOVING[state.gear] ? `-${MOVING[state.gear]}` : "");
 
     const image = (src) =>
       new Promise((ok, fail) => {
